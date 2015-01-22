@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
 	private int mImageViewArray[] = { R.drawable.tab_wifi, R.drawable.tab_map, R.drawable.tab_discover, R.drawable.tab_mine };
 	
 	public FragmentTabHost mTabHost;
-	private int previousTab = 1;
+	private int previousTab = 0;
 	
 	public TextView mTitleView;
 	
