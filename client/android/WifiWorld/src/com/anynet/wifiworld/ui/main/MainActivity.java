@@ -1,16 +1,15 @@
 package com.anynet.wifiworld.ui.main;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.ui.map.MapFragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
