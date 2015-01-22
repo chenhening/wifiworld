@@ -4,13 +4,11 @@ import com.anynet.wifiworld.R;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +23,7 @@ public class MainActivity extends FragmentActivity {
 	private int mImageViewArray[] = { R.drawable.tab_wifi, R.drawable.tab_map, R.drawable.tab_discover, R.drawable.tab_mine };
 	
 	public FragmentTabHost mTabHost;
-	private int previousTab = 1;
+	private int previousTab = 0;
 	
 	public TextView mTitleView;
 	

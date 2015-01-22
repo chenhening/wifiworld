@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/wifi_connected_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left|center" >
+        
+        <ImageView
+            android:id="@+id/wifi_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/id_default"
+            android:contentDescription="@string/wifi_icon"
+            android:layout_margin="10dip" />
+        
+        <TextView
+            android:id="@+id/wifi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/wifi_name"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+    <View
+   		android:layout_width="match_parent"  
+    	android:layout_height="1px" 
+   		android:background="?android:attr/listDivider" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    
+    <View
+   		android:layout_width="match_parent"  
+    	android:layout_height="1px" 
+   		android:background="?android:attr/listDivider" />
+
+</LinearLayout>
