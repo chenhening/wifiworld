@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
@@ -61,8 +62,8 @@ public class MainActivity extends FragmentActivity {
 		for (int i = 0; i < mFragmentArray.length; ++i) {
 			TabSpec tabSpec = mTabHost.newTabSpec(mTextViewArray[i]).setIndicator(getTabItemView(i));
 			mTabHost.addTab(tabSpec, mFragmentArray[i], null);
-			mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_bg);
 		}
+		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
 		mTabHost.setCurrentTab(previousTab);
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
