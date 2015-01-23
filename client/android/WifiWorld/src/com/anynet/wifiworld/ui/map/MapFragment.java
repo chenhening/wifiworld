@@ -3,14 +3,14 @@
  * @Author: buffer(179770346@qq.com or binfeix.li@intel.com)
  * @Time: 2015/01/22
  * 
- * 	v0.1: Implement onAttach()
+ * 	v0.1(2015/01/22,1:20): add map2d feature
+ * 	v0.2(2015/01/23,1:40): replace map2d to 3dmap and add location feature
  */
 package com.anynet.wifiworld.ui.map;
 
 import com.anynet.wifiworld.R;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -29,8 +27,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 
-public class MapFragment 
-	extends Fragment implements LocationSource, AMapLocationListener, OnCheckedChangeListener {
+public class MapFragment extends Fragment implements LocationSource, AMapLocationListener {
 	private View mapLayout;
 	
 	private MapView mapView;
@@ -51,8 +48,8 @@ public class MapFragment
 		mapView.onCreate(savedInstanceState);
 		if (aMap == null) {
 			aMap = mapView.getMap();
+			setUpMap();
 		}
-		setUpMap();
 		
         return mapLayout;
     }
@@ -150,11 +147,6 @@ public class MapFragment
 		
 	}
 
-	@Override
-	public void onCheckedChanged(RadioGroup arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * 定位成功后回调函数
