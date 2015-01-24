@@ -11,6 +11,7 @@ package com.anynet.wifiworld.ui.map;
 import com.anynet.wifiworld.R;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,10 +25,21 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMap.InfoWindowAdapter;
+import com.amap.api.maps.AMap.OnInfoWindowClickListener;
+import com.amap.api.maps.AMap.OnMarkerClickListener;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 
-public class MapFragment extends Fragment implements LocationSource, AMapLocationListener {
+public class MapFragment extends Fragment implements LocationSource, AMapLocationListener, 
+	OnMarkerClickListener, OnInfoWindowClickListener, InfoWindowAdapter {
 	private View mapLayout;
 	
 	private MapView mapView;
@@ -36,6 +48,7 @@ public class MapFragment extends Fragment implements LocationSource, AMapLocatio
 	private LocationManagerProxy mAMapLocationManager;
 	
 	//---------------------------------------------------------------------------------------------
+	//for Fragment
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +103,7 @@ public class MapFragment extends Fragment implements LocationSource, AMapLocatio
     }
 
 	//---------------------------------------------------------------------------------------------
+	//for LocationSource
 	/**
 	 * 激活定位
 	 */
@@ -123,6 +137,7 @@ public class MapFragment extends Fragment implements LocationSource, AMapLocatio
 	}
 	
 	//---------------------------------------------------------------------------------------------
+	//for AMapLocationListener
 	@Override
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
@@ -156,6 +171,37 @@ public class MapFragment extends Fragment implements LocationSource, AMapLocatio
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
 				mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+				CameraUpdate update = CameraUpdateFactory.zoomBy(3);  
+		        aMap.moveCamera(update);
+		        
+		        //add wifi label
+		        float scale = aMap.getScalePerPixel();
+		        float r = amapLocation.getAccuracy();
+		        double y = amapLocation.getLongitude();
+		        double x = amapLocation.getLatitude();
+		        LatLng llwifi1 = new LatLng(x + 0.0002, y + 0.0002); 
+		        aMap.addMarker(new MarkerOptions().position(llwifi1).title("好用又便宜的wifi")  
+		        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+		        .draggable(true)).showInfoWindow();
+		        LatLng llwifi2 = new LatLng(x + 0.0003, y+0.0003); 
+		        aMap.addMarker(new MarkerOptions().position(llwifi2).title("wifi出租")  
+		        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+		        .draggable(true)).showInfoWindow();
+		        LatLng llwifi4 = new LatLng(x - 0.0004, y+0.0004); 
+		        aMap.addMarker(new MarkerOptions().position(llwifi4).title("我家的wifi免费")  
+		        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+		        .draggable(true)).showInfoWindow();
+		        LatLng llwifi5 = new LatLng(x - 0.0005, y-0.0005); 
+		        aMap.addMarker(new MarkerOptions().position(llwifi5).title("想用wifi点我私聊")  
+		        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+		        .draggable(true)).showInfoWindow();
+		        LatLng llwifi3 = new LatLng(x - 0.0004, y-0.0006); 
+		        aMap.addMarker(new MarkerOptions().position(llwifi3).title("思聪的私人wifi")  
+		        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+		        .draggable(true)).showInfoWindow();
+		        aMap.setOnMarkerClickListener(this);  
+		        aMap.setOnInfoWindowClickListener(this);  
+		        aMap.setInfoWindowAdapter(this);  
 			} else {
 				Log.e("AmapErr","Location ERR:" + amapLocation.getAMapException().getErrorCode());
 			}
@@ -163,10 +209,47 @@ public class MapFragment extends Fragment implements LocationSource, AMapLocatio
 	}
 	
 	//---------------------------------------------------------------------------------------------
+	//for MarkerClickListener
+	@Override
+	public boolean onMarkerClick(Marker arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	//for OnInfoWindowClickListener
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//---------------------------------------------------------------------------------------------
+	//for InfoWindowAdapter
+	@Override
+	public View getInfoContents(Marker arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public View getInfoWindow(Marker arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	//for self-define functions
 	/**
 	 * 设置一些amap的属性
 	 */
 	private void setUpMap() {
+		MyLocationStyle myLocationStyle = new MyLocationStyle();  
+        //myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.gps));  
+        myLocationStyle.strokeColor(Color.BLACK);  
+        myLocationStyle.strokeWidth(5);  
+        aMap.setMyLocationStyle(myLocationStyle); 
+		
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 		// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
