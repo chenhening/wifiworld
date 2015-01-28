@@ -1,62 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-    android:layout_width="match_parent"  
-    android:layout_height="match_parent"  
-    android:orientation="vertical" >  
-  
-    <LinearLayout  
-        android:id="@+id/sort_key_layout"  
-        android:layout_width="fill_parent"  
-        android:layout_height="18dip"  
-        android:background="#303030" >  
-  
-        <TextView  
-            android:id="@+id/sort_key"  
-            android:layout_width="wrap_content"  
-            android:layout_height="wrap_content"  
-            android:layout_gravity="center_horizontal"  
-            android:layout_marginLeft="10dip"  
-            android:textColor="#ffffff"  
-            android:textSize="13sp" />  
-    </LinearLayout>  
-  	
-    <LinearLayout
-        android:id="@+id/name_layout"  
-        android:layout_width="match_parent"  
-        android:layout_height="50dip"
-        android:orientation="horizontal" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wifi_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:padding="15dip" >
         
-	    <ImageView
-	        android:layout_width="50dip"  
-	        android:layout_height="50dip"  
-	        android:layout_gravity="center_vertical"  
-	        android:layout_margin="10dip" 
-	        android:src="@drawable/id_default" />  
-	  
-	    <TextView  
-	        android:id="@+id/wifi_name"  
-	        android:layout_width="wrap_content"  
-	        android:layout_height="wrap_content"  
-	        android:layout_gravity="center_vertical"  
-	        android:textColor="#ffffff"  
-	        android:textSize="22sp" />
+	<ImageView
+	    android:id="@+id/wifi_icon"
+	    android:layout_width="30dip"
+	    android:layout_height="30dip"
+	    android:layout_gravity="center_vertical"
+	    android:src="@drawable/id_default" />
+	
+	<TextView
+	    android:id="@+id/wifi_name"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_vertical"
+	    android:paddingLeft="15dip"
+	    android:textColor="@color/black"
+	    android:textSize="22sp" />
 	    
-	    <LinearLayout
+	<LinearLayout
+	    android:id="@+id/wifi_status"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:gravity="center|right" >
+	        
+	    <ImageView
+	        android:id="@+id/wifi_status_icon"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="5dip"
+		    android:src="@drawable/lock_wifi_signal_icon3" />
+	    
+	    <TextView
+	        android:id="@+id/wifi_status_digit"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:orientation="vertical"
-	        android:layout_gravity="right" >
-	        
-	        <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:src="@drawable/lock_wifi_signal_icon3" />
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="@color/darkgrey"
-	            android:textSize="12sp"
-	            android:text="100%" />
-	    </LinearLayout>
-    </LinearLayout>
+	        android:textColor="@color/darkgrey"
+	        android:textSize="12sp"
+	        android:text="100%" />
+	</LinearLayout>
 </LinearLayout>

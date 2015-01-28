@@ -1,6 +1,6 @@
 package com.anynet.wifiworld.wifi;
 
-public class WifiInfoScaned {
+public class WifiInfoScanned {
 	private String wifi_name;
 	private Integer wifi_signal;
 	private String wifi_sectoin;
