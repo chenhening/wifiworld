@@ -7,10 +7,10 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,21 +18,19 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 
 public class MainActivity extends FragmentActivity {
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private LayoutInflater mLayoutInflater;
 	private Class<?> mFragmentArray[] = { WifiFragment.class, MapFragment.class, DiscoverFragment.class, MineFragment.class};
-	private final static String mTextViewArray[] = { "连接", "附近", "发现", "我" };
+	private final static String mTextViewArray[] = { "杩炴帴", "闄勮繎", "鍙戠幇", "鎴�" };
 	private int mImageViewArray[] = { R.drawable.tab_wifi, R.drawable.tab_map, R.drawable.tab_discover, R.drawable.tab_mine };
 	
 	public FragmentTabHost mTabHost;
-	private int previousTab = 0;
-	
-	public TextView mTitleView;
+	private int currentTabId = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.activity_main);
 		mLayoutInflater = LayoutInflater.from(this);
 		
@@ -56,7 +54,8 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@SuppressLint("NewApi") private void initTabView() {
-
+		Log.i(TAG, "initTabView");
+		
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
@@ -65,21 +64,10 @@ public class MainActivity extends FragmentActivity {
 			mTabHost.addTab(tabSpec, mFragmentArray[i], null);
 		}
 		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
-		mTabHost.setCurrentTab(previousTab);
+		mTabHost.setCurrentTab(currentTabId);
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabName) {
-				if (tabName.equals(mTextViewArray[1])) {
-					if (mTabHost.getCurrentTab() < previousTab) {
-					}
-				}
-
-				if (tabName.equals(mTextViewArray[2])) {
-				}
-				
-				if (tabName.equals(mTextViewArray[0])) {
-				}
-				previousTab = mTabHost.getCurrentTab();
 			}
 		});
 	}

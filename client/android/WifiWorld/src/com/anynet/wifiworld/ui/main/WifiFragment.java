@@ -1,7 +1,9 @@
 package com.anynet.wifiworld.ui.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiAdmin;
@@ -16,8 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AlphabetIndexer;
 import android.widget.ListView;
 
 public class WifiFragment extends Fragment {
@@ -26,54 +26,48 @@ public class WifiFragment extends Fragment {
 	private View mView;
 	private ListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
-	private List<WifiInfoScanned> mWifiList;
-
-	//list:数据集合
-	private List<String> mListName = new ArrayList<String>();
-	//listTag:Tag集合，其中Tag是分类的分割标签，每个分组的header
-	private List<String> mListTag = new ArrayList<String>();
+	private List<ScanResult> mWifiListScanned;
+	private List<WifiConfiguration> mWifiConfigurationScanned;
+	private Map<String, WifiInfoScanned> mWifiFree = new HashMap<String, WifiInfoScanned>();
+	private Map<String, WifiInfoScanned> mWifiEncrypt = new HashMap<String, WifiInfoScanned>();
 	 
-	public void setWifiData(List<ScanResult> wifiList){
-		mListName.add("Free");
-		mListTag.add("Free");
-	    for(int i=0;i<3;i++){
-	        mListName.add("Fuck You"+i);
-	    }
-	    mListName.add("Advance");
-	    mListTag.add("Advance");
-	    for(int i=0;i<wifiList.size();i++){
-	        mListName.add(wifiList.get(i).SSID);
-	    }
+	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration){
+		for (int i = 0; i < wifiList.size(); i++) {
+			ScanResult scanResult = wifiList.get(i);
+			for (int j = 0; j < wificonfiguration.size(); j++) {
+				if (scanResult.BSSID.equals(wificonfiguration.get(j).BSSID)) {
+					String pwd = wificonfiguration.get(j).preSharedKey;
+					if (!pwd.isEmpty() && pwd.equals("*")) {
+						String wifiName = wificonfiguration.get(j).SSID;
+						WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, scanResult.level);
+						mWifiFree.put(wifiName, wifiInfoScanned);
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		WifiAdmin wifiAdmin = new WifiAdmin(getActivity());
+		wifiAdmin.openWifi();
 		wifiAdmin.startScan();
-		List<ScanResult> wifiList = wifiAdmin.getWifiList();
-		List<WifiConfiguration> wifiConfiguration = wifiAdmin.getConfiguration();
-		if (wifiList!=null) {
-            for (int i=0;i<wifiList.size();i++) {
-                //得到扫描结果
-            	ScanResult scanResult = wifiList.get(i);
-            	WifiConfiguration wifiConfig = wifiConfiguration.get(i);
-                Log.i(TAG, scanResult.SSID + ": " + wifiConfig.preSharedKey); 
-            }
-        }
-		setWifiData(wifiList);
+		mWifiListScanned = wifiAdmin.getWifiList();
+		mWifiConfigurationScanned = wifiAdmin.getConfiguration();
+		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.i(TAG, "onCreateView");
+		
 		mView = inflater.inflate(R.layout.fragment_wifi, null);
 		mWifiListView = (ListView) mView.findViewById(R.id.wifi_list_view);
 		
-		mWifiList = new ArrayList<WifiInfoScanned>();
-		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mListName, mListTag);
-		mWifiListView.setAdapter(mWifiListAdapter);
+//		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiList, mWifiListTag);
+//		mWifiListView.setAdapter(mWifiListAdapter);
 		
 		return mView;
 	}

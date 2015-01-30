@@ -3,14 +3,12 @@ package com.anynet.wifiworld.wifi;
 public class WifiInfoScanned {
 	private String wifi_name;
 	private Integer wifi_signal;
-	private String wifi_sectoin;
 	
-	public String getWifi_sectoin() {
-		return wifi_sectoin;
+	public WifiInfoScanned(String name, Integer level) {
+		wifi_name = name;
+		wifi_signal = level;
 	}
-	public void setWifi_sectoin(String wifi_sectoin) {
-		this.wifi_sectoin = wifi_sectoin;
-	}
+	
 	public String getWifi_name() {
 		return wifi_name;
 	}
