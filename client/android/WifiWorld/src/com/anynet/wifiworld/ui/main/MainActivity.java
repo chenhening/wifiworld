@@ -22,7 +22,7 @@ public class MainActivity extends FragmentActivity {
 
 	private LayoutInflater mLayoutInflater;
 	private Class<?> mFragmentArray[] = { WifiFragment.class, MapFragment.class, DiscoverFragment.class, MineFragment.class};
-	private final static String mTextViewArray[] = { "杩炴帴", "闄勮繎", "鍙戠幇", "鎴�" };
+	private final static String mTextViewArray[] = { "连接", "附近", "发现", "我" };
 	private int mImageViewArray[] = { R.drawable.tab_wifi, R.drawable.tab_map, R.drawable.tab_discover, R.drawable.tab_mine };
 	
 	public FragmentTabHost mTabHost;
