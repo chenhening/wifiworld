@@ -1,6 +1,7 @@
 package com.anynet.wifiworld.ui.main;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.ui.map.MapFragment;
 
 import android.annotation.SuppressLint;
@@ -21,7 +22,7 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private LayoutInflater mLayoutInflater;
-	private Class<?> mFragmentArray[] = { WifiFragment.class, MapFragment.class, DiscoverFragment.class, MineFragment.class};
+	private Class<?> mFragmentArray[] = { WifiFragment.class, MapFragment.class, DiscoverFragment.class, MeFragment.class};
 	private final static String mTextViewArray[] = { "连接", "附近", "发现", "我" };
 	private int mImageViewArray[] = { R.drawable.tab_wifi, R.drawable.tab_map, R.drawable.tab_discover, R.drawable.tab_mine };
 	
