@@ -1,4 +1,5 @@
 package com.anynet.wifiworld.wifi;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.anynet.wifiworld.R;
@@ -13,8 +14,8 @@ import android.widget.TextView;
 
 public class WifiListAdapter extends BaseAdapter {
 
-	private List<WifiInfoScanned> mWifiList;
-	private List<WifiInfoScanned> mWifiTags;
+	private List<WifiInfoScanned> mWifiList = new ArrayList<WifiInfoScanned>();
+	private List<WifiInfoScanned> mWifiTags = new ArrayList<WifiInfoScanned>();
 	private Context context;
 
 	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
@@ -67,7 +68,7 @@ public class WifiListAdapter extends BaseAdapter {
             view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
             textView = (TextView) view.findViewById(R.id.wifi_name);
         }
-        textView.setText((String)getItem(position));
+        textView.setText(((WifiInfoScanned)getItem(position)).getWifi_name());
         return view;
 	}
 
