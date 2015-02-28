@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class WifiFragment extends Fragment {
@@ -25,6 +27,7 @@ public class WifiFragment extends Fragment {
 	
 	private View mView;
 	private ListView mWifiListView;
+	WifiAdmin mWifiAdmin;
 	private WifiListAdapter mWifiListAdapter;
 	private List<ScanResult> mWifiListScanned;
 	private List<WifiConfiguration> mWifiConfigurationScanned;
@@ -34,19 +37,11 @@ public class WifiFragment extends Fragment {
 	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration){
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult scanResult = wifiList.get(i);
-			Boolean wifiFreeFlag = false;
-			for (int j = 0; j < wificonfiguration.size(); j++) {
-				if (scanResult.BSSID.equals(wificonfiguration.get(j).BSSID)) {
-					String pwd = wificonfiguration.get(j).preSharedKey;
-					if (!pwd.isEmpty() && pwd.equals("*")) {
-						String wifiName = wificonfiguration.get(j).SSID;
-						WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, scanResult.level);
-						mWifiFree.add(wifiInfoScanned);
-						wifiFreeFlag = true;
-					}
-				}
-			}
-			if (!wifiFreeFlag) {
+			if (mWifiAdmin.isExsits(scanResult.SSID) != null) {
+				String wifiName = scanResult.SSID;
+				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, scanResult.level);
+				mWifiFree.add(wifiInfoScanned);
+			} else {
 				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, scanResult.level));
 			}
 		}
@@ -55,11 +50,11 @@ public class WifiFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		WifiAdmin wifiAdmin = new WifiAdmin(getActivity());
-		wifiAdmin.openWifi();
-		wifiAdmin.startScan();
-		mWifiListScanned = wifiAdmin.getWifiList();
-		mWifiConfigurationScanned = wifiAdmin.getConfiguration();
+		mWifiAdmin = WifiAdmin.getInstance(getActivity());
+		mWifiAdmin.openWifi();
+		mWifiAdmin.startScan();
+		mWifiListScanned = mWifiAdmin.getWifiList();
+		mWifiConfigurationScanned = mWifiAdmin.getConfiguration();
 		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
 	}
 
@@ -73,6 +68,15 @@ public class WifiFragment extends Fragment {
 		
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree, mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
+		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		return mView;
 	}
