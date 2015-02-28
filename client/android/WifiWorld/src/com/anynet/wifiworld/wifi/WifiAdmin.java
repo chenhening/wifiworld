@@ -46,7 +46,7 @@ public class WifiAdmin {
         return mWifiManager.getWifiState();
     }
     
-    //lock wifi
+    //lock wifi, when download large file
     public void acquireWifiLock() {
         mWifiLock.acquire();
     }
@@ -117,7 +117,7 @@ public class WifiAdmin {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.toString();
     }
     
-    public void addNetWork(WifiConfiguration configuration) {
+    public void connectWifi(WifiConfiguration configuration) {
         int wcgId = mWifiManager.addNetwork(configuration);
         mWifiManager.enableNetwork(wcgId, true);
     }

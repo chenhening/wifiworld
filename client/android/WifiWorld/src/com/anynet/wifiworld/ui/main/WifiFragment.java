@@ -28,21 +28,26 @@ public class WifiFragment extends Fragment {
 	private WifiListAdapter mWifiListAdapter;
 	private List<ScanResult> mWifiListScanned;
 	private List<WifiConfiguration> mWifiConfigurationScanned;
-	private Map<String, WifiInfoScanned> mWifiFree = new HashMap<String, WifiInfoScanned>();
-	private Map<String, WifiInfoScanned> mWifiEncrypt = new HashMap<String, WifiInfoScanned>();
+	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
+	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	 
 	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration){
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult scanResult = wifiList.get(i);
+			Boolean wifiFreeFlag = false;
 			for (int j = 0; j < wificonfiguration.size(); j++) {
 				if (scanResult.BSSID.equals(wificonfiguration.get(j).BSSID)) {
 					String pwd = wificonfiguration.get(j).preSharedKey;
 					if (!pwd.isEmpty() && pwd.equals("*")) {
 						String wifiName = wificonfiguration.get(j).SSID;
 						WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, scanResult.level);
-						mWifiFree.put(wifiName, wifiInfoScanned);
+						mWifiFree.add(wifiInfoScanned);
+						wifiFreeFlag = true;
 					}
 				}
+			}
+			if (!wifiFreeFlag) {
+				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, scanResult.level));
 			}
 		}
 	}
@@ -66,8 +71,8 @@ public class WifiFragment extends Fragment {
 		mView = inflater.inflate(R.layout.fragment_wifi, null);
 		mWifiListView = (ListView) mView.findViewById(R.id.wifi_list_view);
 		
-//		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiList, mWifiListTag);
-//		mWifiListView.setAdapter(mWifiListAdapter);
+		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree, mWifiEncrypt);
+		mWifiListView.setAdapter(mWifiListAdapter);
 		
 		return mView;
 	}
