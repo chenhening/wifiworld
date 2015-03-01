@@ -1,6 +1,7 @@
 package com.anynet.wifiworld.ui.main;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,16 +35,29 @@ public class WifiFragment extends Fragment {
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	 
-	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration){
+	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration) {
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult scanResult = wifiList.get(i);
-			if (mWifiAdmin.isExsits(scanResult.SSID) != null) {
+			WifiConfiguration wifiCfg = mWifiAdmin.isExsits(scanResult.SSID);
+			if (wifiCfg != null) {
 				String wifiName = scanResult.SSID;
-				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, scanResult.level);
+				String wifiPwd = wifiCfg.preSharedKey;
+				WifiAdmin.WifiCipherType wifiType = getWifiType(wifiCfg.allowedKeyManagement);
+				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, wifiPwd, wifiType, scanResult.level);
 				mWifiFree.add(wifiInfoScanned);
 			} else {
-				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, scanResult.level));
+				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, null, null, scanResult.level));
 			}
+		}
+	}
+	
+	private WifiAdmin.WifiCipherType getWifiType(BitSet kmtBitSet) {
+		if (kmtBitSet.equals(WifiConfiguration.KeyMgmt.NONE)) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_NOPASS;
+		} else if (kmtBitSet.equals(WifiConfiguration.KeyMgmt.WPA_PSK)) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WPA;
+		} else {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WEP;
 		}
 	}
 	
@@ -72,7 +86,10 @@ public class WifiFragment extends Fragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
+				if (position < (mWifiFree.size() + 1)) {
+					WifiInfoScanned wifiSelected = mWifiFree.get(position-1);
+					mWifiAdmin.Connect(wifiSelected.getWifi_name(), wifiSelected.getWifi_pwd(), WifiAdmin.WifiCipherType.WIFICIPHER_WPA);
+				}
 				
 			}
 			

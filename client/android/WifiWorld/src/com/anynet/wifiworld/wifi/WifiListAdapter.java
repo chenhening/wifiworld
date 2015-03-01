@@ -25,14 +25,14 @@ public class WifiListAdapter extends BaseAdapter {
 		super();
 		this.context = context;
 		
-		WifiInfoScanned freeTag = new WifiInfoScanned("Free", 0);
+		WifiInfoScanned freeTag = new WifiInfoScanned("Free", null, null, 0);
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
 		wifiFreeCnt = wifiFree.size();
 		for (int i = 0; i < wifiFree.size(); i++) {
 			mWifiList.add(wifiFree.get(i));
 		}
-		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", 0);
+		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", null, null, 0);
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
 		wifiEncryptCnt = wifiEncrypt.size();

@@ -55,21 +55,66 @@ public class WifiAdmin {
            }  
        }
        
-       WifiConfiguration wifiConfig = this.CreateWifiInfo(SSID, Password, Type);
-       if (wifiConfig == null) {  
-    	   return false;  
+       WifiConfiguration wifiConfig = null;
+       boolean isExisted = false;
+       int networkId = -1;
+       for (int i = this.mWifiConfigurations.size() - 1; i >= 0; i--)
+       {
+    	   wifiConfig = mWifiConfigurations.get(i);
+           if (wifiConfig.SSID.equals(SSID)) {
+               networkId = wifiConfig.networkId;
+               isExisted = true;
+               break;
+           }
+       }
+       if (!isExisted) {
+    	   wifiConfig = this.CreateWifiInfo(SSID, Password, Type);
+           if (wifiConfig == null) {
+        	   Log.i(TAG, "Failed to create wifi configuration info");
+        	   return false;  
+           }
+           networkId = mWifiManager.addNetwork(wifiConfig);
+           if (networkId != -1)
+           {
+        	   mWifiManager.saveConfiguration();
+           }
+       } else {
+           WifiInfo curConnection = mWifiManager.getConnectionInfo();
+           if (curConnection != null && SSID.equals(curConnection.getSSID())) {
+               return true;
+           }
+           
+           int encryptionType = getKeyMgmtType(Type);
+           wifiConfig.allowedKeyManagement.set(encryptionType);
+           if (encryptionType != 0)
+           {
+        	   wifiConfig.preSharedKey = Password;
+           }
+           mWifiManager.updateNetwork(wifiConfig);
        }
        
-       WifiConfiguration tempConfig = this.isExsits(SSID);
-       
-       if(tempConfig != null) {
-    	   this.mWifiManager.removeNetwork(tempConfig.networkId);
+       boolean bRet = false;
+       if (networkId != -1) {
+           mWifiManager.disconnect();
+           bRet = mWifiManager.enableNetwork(networkId, true);
        }
-       
-       int netID = this.mWifiManager.addNetwork(wifiConfig);  
-       boolean bRet = mWifiManager.enableNetwork(netID, false);    
+         
        return bRet;
     }  
+    
+    private int getKeyMgmtType(WifiCipherType type) {  
+        if (type == WifiCipherType.WIFICIPHER_NOPASS) {
+            return WifiConfiguration.KeyMgmt.NONE;  
+        }
+        if (type == WifiCipherType.WIFICIPHER_WEP) {
+            return WifiConfiguration.KeyMgmt.IEEE8021X;
+        }
+        else if (type == WifiCipherType.WIFICIPHER_WPA) {
+            return WifiConfiguration.KeyMgmt.WPA_PSK;
+        }
+        
+        return WifiConfiguration.KeyMgmt.NONE;
+    }
     
     public WifiConfiguration isExsits(String str) {
         Iterator<WifiConfiguration> localIterator = this.mWifiManager.getConfiguredNetworks().iterator();
@@ -93,8 +138,7 @@ public class WifiAdmin {
         	config.wepKeys[0] = "";
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
             config.wepTxKeyIndex = 0;
-       }
-       if(Type == WifiCipherType.WIFICIPHER_WEP) {  
+       } else if(Type == WifiCipherType.WIFICIPHER_WEP) {  
            config.preSharedKey = "\""+Password+"\"";
            config.hiddenSSID = true;
            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
@@ -104,9 +148,8 @@ public class WifiAdmin {
            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
            config.wepTxKeyIndex = 0;
-       }
-       if(Type == WifiCipherType.WIFICIPHER_WPA) {  
-    	   config.preSharedKey = "\""+Password+"\"";
+       } else if(Type == WifiCipherType.WIFICIPHER_WPA) {  
+    	   config.preSharedKey = Password;
     	   config.hiddenSSID = true;
     	   config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
     	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);                      
