@@ -1,18 +1,33 @@
 package com.anynet.wifiworld.me;
 
-import com.anynet.wifiworld.R;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import cn.bmob.v3.Bmob;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaPreferences;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaWebViewImpl;
+import org.apache.cordova.PluginEntry;
+import org.apache.cordova.engine.SystemWebView;
+import org.apache.cordova.engine.SystemWebViewEngine;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import cn.bmob.v3.Bmob;
 
-public class MeFragment extends Fragment {
-	private View view_;
-	private WebView webview_;
+import com.anynet.wifiworld.R;
+
+public class MeFragment extends Fragment  implements CordovaInterface {
+	private View view_ = null;
+	private CordovaWebView cordovaWebView = null; 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
          // TODO Auto-generated method stub
@@ -23,13 +38,37 @@ public class MeFragment extends Fragment {
     }
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		//hybrid
 		view_ = inflater.inflate(R.layout.fragment_me, null);
-		//hybrid 
-		webview_ = (WebView) view_.findViewById(R.id.webview_me);
-		webview_.loadUrl("file:///android_asset/www/index.html");
+		SystemWebView webView = (SystemWebView)view_.findViewById(R.id.cordovaWebView);
+        cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
+        cordovaWebView.init(this, new ArrayList<PluginEntry>(), new CordovaPreferences());
+        cordovaWebView.loadUrl("file:///android_asset/www/index.html");
 		
 		return view_;
+	}
+
+	@Override
+	public ExecutorService getThreadPool() {
+	    return Executors.newSingleThreadExecutor();
+	}
+
+	@Override
+	public Object onMessage(String arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setActivityResultCallback(CordovaPlugin arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
 	}
 }
