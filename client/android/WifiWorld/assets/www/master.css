@@ -17,8 +17,7 @@
        under the License.
 */
 
-
- body {
+  body {
     background:#222 none repeat scroll 0 0;
     color:#666;
     font-family:Helvetica;
@@ -43,32 +42,32 @@
     font-size:.95em;
     margin:5px 0;
   }
- 	
+    
   #stage.theme{
     padding-top:3px;
   }
 
   /* Definition List */
   #stage.theme > dl{
-  	padding-top:10px;
-  	clear:both;
-  	margin:0;
-  	list-style-type:none;
-  	padding-left:10px;
-  	overflow:auto;
+    padding-top:10px;
+    clear:both;
+    margin:0;
+    list-style-type:none;
+    padding-left:10px;
+    overflow:auto;
   }
 
   #stage.theme > dl > dt{
-  	font-weight:bold;
-  	float:left;
-  	margin-left:5px;
+    font-weight:bold;
+    float:left;
+    margin-left:5px;
   }
 
   #stage.theme > dl > dd{
-  	width:45px;
-  	float:left;
-  	color:#a87;
-  	font-weight:bold;
+    width:45px;
+    float:left;
+    color:#a87;
+    font-weight:bold;
   }
 
   /* Content Styling */
@@ -86,7 +85,7 @@
   }
 
   #stage.theme > h2{
-  	clear:both;
+    clear:both;
     margin:0;
     padding:3px;
     font-size:1em;
@@ -95,22 +94,43 @@
 
   /* Stage Buttons */
   #stage.theme a.btn{
-  	border: 1px solid #555;
-  	-webkit-border-radius: 5px;
-  	border-radius: 5px;
-  	text-align:center;
-  	display:block;
-  	float:left;
-  	background:#444;
-  	width:150px;
-  	color:#9ab;
-  	font-size:1.1em;
-  	text-decoration:none;
-  	padding:1.2em 0;
-  	margin:3px 0px 3px 5px;
+    border: 1px solid #555;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    text-align:center;
+    display:block;
+    float:left;
+    background:#444;
+    width:150px;
+    color:#9ab;
+    font-size:1.1em;
+    text-decoration:none;
+    padding:1.2em 0;
+    margin:3px 0px 3px 5px;
   }
   #stage.theme a.btn.large{
-  	width:308px;
-  	padding:1.2em 0;
+    width:308px;
+    padding:1.2em 0;
+  }
+
+  /* Stage Buttons */
+  #stage.theme button.btn{
+    border: 1px solid #555;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    text-align:center;
+    display:block;
+    float:left;
+    background:#444;
+    width:150px;
+    color:#9ab;
+    font-size:1.1em;
+    text-decoration:none;
+    padding:1.2em 0;
+    margin:3px 0px 3px 5px;
+  }
+#stage.theme button.btn.large{
+    width:308px;
+    padding:1.2em 0;
   }
 

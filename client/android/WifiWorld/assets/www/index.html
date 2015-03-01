@@ -1,60 +1,63 @@
-<!DOCTYPE HTML>
 <!--
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
+         Licensed to the Apache Software Foundation (ASF) under one
+         or more contributor license agreements.  See the NOTICE file
+         distributed with this work for additional information
+         regarding copyright ownership.  The ASF licenses this file
+         to you under the Apache License, Version 2.0 (the
+         "License"); you may not use this file except in compliance
+         with the License.  You may obtain a copy of the License at
 
-         http://www.apache.org/licenses/LICENSE-2.0
+           http://www.apache.org/licenses/LICENSE-2.0
 
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
+         Unless required by applicable law or agreed to in writing,
+         software distributed under the License is distributed on an
+         "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+         KIND, either express or implied.  See the License for the
+         specific language governing permissions and limitations
+         under the License.
 -->
+<!DOCTYPE HTML>
 <html>
   <head>
-    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta name="viewport" content="width=320, user-scalable=no" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>PhoneGap</title>
+    <title>Cordova Tests</title>
       <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="no title">
       <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
       <script type="text/javascript" charset="utf-8" src="main.js"></script>
+      <script>
+      function startActivity(url, opts, className) {
+          cordova.exec(function() {console.log("Success");}, function(e) {console.log("Error: "+e);}, "Activity", "start", [className, url, opts || {}]);
+      };
+      
+      localStorage.lifecyclestatus = "";
+      localStorage.backgroundstatus = "";
+      </script>
 
   </head>
   <body onload="init();" id="stage" class="theme">
-    <h1>Welcome to Cordova!</h1>
-    <h2>this file is located at assets/www/index.html</h2>
+    <h1>Cordova Android Native Tests</h1>
     <div id="info">
-        <h4>Platform: <span id="platform"> &nbsp;</span>,   Version: <span id="version">&nbsp;</span></h4>
-        <h4>UUID: <span id="uuid"> &nbsp;</span>,   Name: <span id="name">&nbsp;</span></h4>
-        <h4>Width: <span id="width"> &nbsp;</span>,   Height: <span id="height">&nbsp;
-                   </span>, Color Depth: <span id="colorDepth"></span></h4>
+        <h4>Cordova: <span id="cordova"> &nbsp;</span></h4>
+        <h4>Deviceready: <span id="deviceready"> &nbsp;</span></h4>
      </div>
-    <dl id="accel-data">
-      <dt>X:</dt><dd id="x">&nbsp;</dd>
-      <dt>Y:</dt><dd id="y">&nbsp;</dd>
-      <dt>Z:</dt><dd id="z">&nbsp;</dd>
-    </dl>
-    <a href="#" class="btn large" onclick="toggleAccel();">Toggle Accelerometer</a>
-    <a href="#" class="btn large" onclick="getLocation();">Get Location</a>
-    <a href="tel:411" class="btn large">Call 411</a>
-    <a href="#" class="btn large" onclick="beep();">Beep</a>
-    <a href="#" class="btn large" onclick="vibrate();">Vibrate</a>
-    <a href="#" class="btn large" onclick="show_pic();">Get a Picture</a>
-    <a href="#" class="btn large" onclick="get_contacts();return false;">Get Phone's Contacts</a>
-    <a href="#" class="btn large" onclick="check_network();return false;">Check Network</a>
-    <dl>
-    <dt>Compass Heading:</dt><dd id="h">Off</dd>
-    </dl>
-    <a href="#" class="btn large" onclick="toggleCompass();return false;">Toggle Compass</a>
-    <div id="viewport" class="viewport" style="display: none;">
-      <img style="width:60px;height:60px" id="test_img" src="" />
+    <div id="info">
+        <h4>Run each of the test activities below:</h4>
     </div>
+    <button class="btn large" onclick="startActivity('jqmtabbackbutton/index.html');">Backbutton jQM tab</button>
+    <button class="btn large" onclick="startActivity('backbuttonmultipage/index.html');">Backbutton with multiple pages</button>
+    <button class="btn large" onclick="startActivity('backgroundcolor/index.html', {backgroundcolor: -16711936});">Background Color</button>
+    <button class="btn large" onclick="startActivity('basicauth/index.html');">Basic Authentication</button>
+    <button class="btn large" onclick="startActivity('errorurl/index.html', {testErrorUrl: 'file:///android_asset/www/htmlnotfound/error.html'});">Error URL</button>
+    <button class="btn large" onclick="startActivity('fullscreen/index.html', {fullscreen: true});">Full Screen</button>
+    <button class="btn large" onclick="startActivity('htmlnotfound/index.html');">HTML not found</button>
+    <button class="btn large" onclick="startActivity('iframe/index.html');">IFrame</button>
+    <button class="btn large" onclick="startActivity('lifecycle/index.html');">Lifecycle</button>
+    <button class="btn large" onclick="startActivity('menus/index.html', null, 'org.apache.cordova.test.menus');">Menus</button>
+    <button class="btn large" onclick="startActivity('background/index.html', {keeprunning: false});">No multitasking</button>
+    <button class="btn large" onclick="startActivity('http://www.google.com', {loadurltimeoutvalue: 10});">Load timeout</button>
+    <button class="btn large" onclick="startActivity('userwebview/index.html', null, 'org.apache.cordova.test.userwebview');">User WebView/Client/Chrome</button>
+    <button class="btn large" onclick="startActivity('whitelist/index.html');">Whitelist</button>
+    <button class="btn large" onclick="startActivity('xhr/index.html');">XHR</button>
   </body>
 </html>

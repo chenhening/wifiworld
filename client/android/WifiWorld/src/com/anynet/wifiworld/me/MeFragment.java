@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.cordova.Config;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaPreferences;
@@ -43,7 +44,8 @@ public class MeFragment extends Fragment  implements CordovaInterface {
 		view_ = inflater.inflate(R.layout.fragment_me, null);
 		SystemWebView webView = (SystemWebView)view_.findViewById(R.id.cordovaWebView);
         cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
-        cordovaWebView.init(this, new ArrayList<PluginEntry>(), new CordovaPreferences());
+        Config.init(this.getActivity());
+        cordovaWebView.init(this, Config.getPluginEntries(), Config.getPreferences());
         cordovaWebView.loadUrl("file:///android_asset/www/index.html");
 		
 		return view_;
