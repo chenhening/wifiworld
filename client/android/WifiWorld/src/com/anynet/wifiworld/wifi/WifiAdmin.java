@@ -3,7 +3,6 @@ package com.anynet.wifiworld.wifi;
 import java.util.Iterator;
 import java.util.List;
 
-import a.thing;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -17,7 +16,7 @@ public class WifiAdmin {
 	
 	private static  WifiAdmin wifiAdmin = null;
     private WifiManager mWifiManager;
-    private WifiInfo mWifiInfo;
+    private WifiInfo mWifiInfo = null;
     private List<ScanResult> mWifiList;
     private List<WifiConfiguration> mWifiConfigurations;
     private WifiLock mWifiLock;
@@ -61,7 +60,8 @@ public class WifiAdmin {
        for (int i = this.mWifiConfigurations.size() - 1; i >= 0; i--)
        {
     	   wifiConfig = mWifiConfigurations.get(i);
-           if (wifiConfig.SSID.equals(SSID)) {
+    	   String wifiSSID = wifiConfig.SSID;
+           if (wifiSSID.substring(1, wifiSSID.length()-1).equals(SSID)) {
                networkId = wifiConfig.networkId;
                isExisted = true;
                break;
@@ -79,17 +79,18 @@ public class WifiAdmin {
         	   mWifiManager.saveConfiguration();
            }
        } else {
-           WifiInfo curConnection = mWifiManager.getConnectionInfo();
-           if (curConnection != null && SSID.equals(curConnection.getSSID())) {
+    	   this.mWifiInfo = mWifiManager.getConnectionInfo();
+           if (this.mWifiInfo != null && SSID.equals(this.mWifiInfo.getSSID())) {
+        	   Log.i(TAG, "Have connect wifi: " + SSID);
                return true;
            }
            
            int encryptionType = getKeyMgmtType(Type);
            wifiConfig.allowedKeyManagement.set(encryptionType);
-           if (encryptionType != 0)
-           {
-        	   wifiConfig.preSharedKey = Password;
-           }
+//           if (encryptionType != 0)
+//           {
+//        	   wifiConfig.preSharedKey = Password;
+//           }
            mWifiManager.updateNetwork(wifiConfig);
        }
        
@@ -244,12 +245,22 @@ public class WifiAdmin {
         return sb;
     }
     
+    public WifiInfo getWifiConnection() {
+    	this.mWifiInfo = this.mWifiManager.getConnectionInfo();
+    	return this.mWifiInfo;
+    }
+    
     public String getMacAddress() {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.getMacAddress();
     }
     
     public String getBSSID() {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.getBSSID();
+    }
+    
+    public String getSSID() {
+    	mWifiInfo = mWifiManager.getConnectionInfo();
+    	return (mWifiInfo == null) ? "NULL" : mWifiInfo.getSSID();
     }
     
     public int getIpAddress() {

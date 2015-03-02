@@ -5,6 +5,7 @@ import java.util.List;
 import com.anynet.wifiworld.R;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,55 @@ public class WifiListAdapter extends BaseAdapter {
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
 		wifiFreeCnt = wifiFree.size();
+		if (wifiFree.isEmpty()) {
+			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare", null, null, 0);
+			wifiFree.add(freeDeclare);
+		}
 		for (int i = 0; i < wifiFree.size(); i++) {
 			mWifiList.add(wifiFree.get(i));
 		}
+		
 		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", null, null, 0);
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
 		wifiEncryptCnt = wifiEncrypt.size();
+		if (wifiEncrypt.isEmpty()) {
+			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare", null, null, 0);
+			wifiEncrypt.add(encryptDeclare);
+		}
 		for (int i = 0; i < wifiEncrypt.size(); i++) {
 			mWifiList.add(wifiEncrypt.get(i));
 		}
+	}
+	
+	public void refreshWifiList(List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
+		mWifiList.clear();
+		
+		WifiInfoScanned freeTag = new WifiInfoScanned("Free", null, null, 0);
+		mWifiList.add(freeTag);
+		mWifiTags.add(freeTag);
+		wifiFreeCnt = wifiFree.size();
+		if (wifiFree.isEmpty()) {
+			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare", null, null, 0);
+			wifiFree.add(freeDeclare);
+		}
+		for (int i = 0; i < wifiFree.size(); i++) {
+			mWifiList.add(wifiFree.get(i));
+		}
+		
+		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", null, null, 0);
+		mWifiList.add(encryptTag);
+		mWifiTags.add(encryptTag);
+		wifiEncryptCnt = wifiEncrypt.size();
+		if (wifiEncrypt.isEmpty()) {
+			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare", null, null, 0);
+			wifiEncrypt.add(encryptDeclare);
+		}
+		for (int i = 0; i < wifiEncrypt.size(); i++) {
+			mWifiList.add(wifiEncrypt.get(i));
+		}
+		
+		notifyDataSetChanged();
 	}
 	
 	@Override
@@ -58,7 +98,9 @@ public class WifiListAdapter extends BaseAdapter {
 	
 	@Override
     public boolean isEnabled(int position) {
-        if(mWifiTags.contains(getItem(position))){
+        if(mWifiTags.contains(getItem(position)) ||
+        		((WifiInfoScanned)getItem(position)).getWifi_name() == "FreeDeclare" ||
+        		((WifiInfoScanned)getItem(position)).getWifi_name() == "EncryptDeclare"){
             return false;
         }
         return super.isEnabled(position);
@@ -77,12 +119,26 @@ public class WifiListAdapter extends BaseAdapter {
 				textView.setText("扫描到" + wifiEncryptCnt + "个需要密码的WiFi");
 			}
         } else {
-            view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
-            textView = (TextView) view.findViewById(R.id.wifi_name);
-            textView.setText(((WifiInfoScanned)getItem(position)).getWifi_name());
-            if (position >= (wifiFreeCnt + 2)) {
-            	ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-                imageView.setImageResource(R.drawable.id_locked);
+            if (((WifiInfoScanned)getItem(position)).getWifi_name() == "FreeDeclare") {
+            	view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
+                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+				textView.setText("免费WiFi出现在这里");
+				textView.setTextColor(Color.GRAY);
+			} else if (((WifiInfoScanned)getItem(position)).getWifi_name() == "EncryptDeclare") {
+				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
+                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+				textView.setText("需要密码的WiFi出现在这里");
+				textView.setTextColor(Color.GRAY);
+			} else {
+				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
+	            textView = (TextView) view.findViewById(R.id.wifi_name);
+	            ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
+				textView.setText(((WifiInfoScanned)getItem(position)).getWifi_name());
+	            if (position >= (wifiFreeCnt + 2)) {
+	                imageView.setImageResource(R.drawable.id_locked);
+				} else {
+					imageView.setImageResource(R.drawable.id_default);
+				}
 			}
         }
         return view;

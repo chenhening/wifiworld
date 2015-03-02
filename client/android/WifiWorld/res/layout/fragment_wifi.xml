@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/wifi_name"
-            android:textColor="@color/black"
+            android:text="@string/wifi_default_text"
+            android:textColor="@color/darkgray"
             android:textSize="18sp" />
     </LinearLayout>
     

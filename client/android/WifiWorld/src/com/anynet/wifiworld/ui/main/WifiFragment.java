@@ -2,15 +2,15 @@ package com.anynet.wifiworld.ui.main;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListAdapter;
 
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -34,7 +35,7 @@ public class WifiFragment extends Fragment {
 	private List<WifiConfiguration> mWifiConfigurationScanned;
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
-	 
+	
 	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration) {
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult scanResult = wifiList.get(i);
@@ -61,15 +62,39 @@ public class WifiFragment extends Fragment {
 		}
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	private void scanWifi() {
 		mWifiAdmin = WifiAdmin.getInstance(getActivity());
 		mWifiAdmin.openWifi();
 		mWifiAdmin.startScan();
 		mWifiListScanned = mWifiAdmin.getWifiList();
 		mWifiConfigurationScanned = mWifiAdmin.getConfiguration();
 		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
+	}
+	
+	private boolean rmWifiConnected(String wifiName, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
+		for (Iterator<WifiInfoScanned> it = wifiFree.iterator(); it.hasNext(); ) {
+			WifiInfoScanned tmpInfo = it.next();
+			if (wifiName.equals(tmpInfo.getWifi_name())) {
+				it.remove();
+				return true;
+			}
+		}
+		
+		for (Iterator<WifiInfoScanned> it = wifiEncrypt.iterator(); it.hasNext(); ) {
+			WifiInfoScanned tmpInfo = it.next();
+			if (wifiName.equals(tmpInfo.getWifi_name())) {
+				it.remove();
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.scanWifi();
 	}
 
 	@Override
@@ -78,8 +103,16 @@ public class WifiFragment extends Fragment {
 		Log.i(TAG, "onCreateView");
 		
 		mView = inflater.inflate(R.layout.fragment_wifi, null);
-		mWifiListView = (ListView) mView.findViewById(R.id.wifi_list_view);
 		
+		String wifiConnected = mWifiAdmin.getSSID();
+		if (!wifiConnected.equals("")) {
+			TextView wifi_connected = (TextView)mView.findViewById(R.id.wifi_name);
+			wifi_connected.setText("已连接" + wifiConnected.substring(1, wifiConnected.length()-1));
+			wifi_connected.setTextColor(Color.BLACK);
+			this.rmWifiConnected(wifiConnected.substring(1, wifiConnected.length()-1), mWifiFree, mWifiEncrypt);
+		}
+		
+		mWifiListView = (ListView) mView.findViewById(R.id.wifi_list_view);
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree, mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
 		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
@@ -89,6 +122,17 @@ public class WifiFragment extends Fragment {
 				if (position < (mWifiFree.size() + 1)) {
 					WifiInfoScanned wifiSelected = mWifiFree.get(position-1);
 					mWifiAdmin.Connect(wifiSelected.getWifi_name(), wifiSelected.getWifi_pwd(), WifiAdmin.WifiCipherType.WIFICIPHER_WPA);
+					
+					mWifiFree.remove(position-1);
+					mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+					TextView wifi_connected = (TextView)mView.findViewById(R.id.wifi_name);
+					String wifiConnected = mWifiAdmin.getSSID();
+					while (wifiConnected == "") {
+						wifiConnected = mWifiAdmin.getSSID();
+					}
+					wifi_connected.setText("已连接" + wifiConnected.substring(1, wifiConnected.length()-1));
+					wifi_connected.setTextColor(Color.BLACK);
+					wifi_connected.refreshDrawableState();
 				}
 				
 			}

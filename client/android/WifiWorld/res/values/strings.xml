@@ -4,6 +4,6 @@
     <string name="app_name">网络宝</string>
     <string name="action_settings">Settings</string>
     <string name="wifi_icon">wifi_connected_icon</string>
-    <string name="wifi_name">已连接</string>
+    <string name="wifi_default_text">未连接WiFi</string>
 
 </resources>
