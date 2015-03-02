@@ -41,25 +41,6 @@
             </intent-filter>
         </activity>
         
-        <activity
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/app_name" 
-            android:configChanges="orientation|keyboardHidden"
-            android:name="com.anynet.wifiworld.me.MainTestActivity" >
-        </activity>
-        <activity
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/app_name" 
-            android:configChanges="orientation|keyboardHidden"
-            android:name="com.anynet.wifiworld.me.menus" >
-        </activity>
-        <activity
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/app_name" 
-            android:configChanges="orientation|keyboardHidden"
-            android:name="com.anynet.wifiworld.me.userwebview" >
-        </activity>
-        
     </application>
 
 </manifest>
