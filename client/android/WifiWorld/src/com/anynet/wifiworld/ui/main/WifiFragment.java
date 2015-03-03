@@ -2,6 +2,9 @@ package com.anynet.wifiworld.ui.main;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +39,8 @@ public class WifiFragment extends Fragment {
 	private List<WifiConfiguration> mWifiConfigurationScanned;
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
+	private Handler mWifiUpdatorHanlder = new Handler();
+	private Runnable mWifiUpdatorRunnable = null;
 	
 	public void setWifiData(List<ScanResult> wifiList, List<WifiConfiguration> wificonfiguration) {
 		for (int i = 0; i < wifiList.size(); i++) {
@@ -43,23 +49,31 @@ public class WifiFragment extends Fragment {
 			if (wifiCfg != null) {
 				String wifiName = scanResult.SSID;
 				String wifiPwd = wifiCfg.preSharedKey;
-				WifiAdmin.WifiCipherType wifiType = getWifiType(wifiCfg.allowedKeyManagement);
-				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, wifiPwd, wifiType, scanResult.level);
+				WifiAdmin.WifiCipherType wifiType = mWifiAdmin.getWifiType(wifiCfg.allowedKeyManagement);
+				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, wifiPwd, wifiType, scanResult.level+150);
 				mWifiFree.add(wifiInfoScanned);
 			} else {
-				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, null, null, scanResult.level));
+				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, null, null, scanResult.level+150));
 			}
 		}
+		
+		Collections.sort(mWifiFree, new SortBySignalStrength());
+		Collections.sort(mWifiEncrypt, new SortBySignalStrength());
 	}
 	
-	private WifiAdmin.WifiCipherType getWifiType(BitSet kmtBitSet) {
-		if (kmtBitSet.equals(WifiConfiguration.KeyMgmt.NONE)) {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_NOPASS;
-		} else if (kmtBitSet.equals(WifiConfiguration.KeyMgmt.WPA_PSK)) {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_WPA;
-		} else {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_WEP;
+	private class SortBySignalStrength implements Comparator {
+
+		@Override
+		public int compare(Object arg0, Object arg1) {
+			WifiInfoScanned wifi0 = (WifiInfoScanned)arg0;
+			WifiInfoScanned wifi1 = (WifiInfoScanned)arg1;
+			if (wifi0.getWifi_level() > wifi1.getWifi_level()) {
+				return 1;
+			}
+			
+			return 0;
 		}
+		
 	}
 	
 	private void scanWifi() {
@@ -95,6 +109,7 @@ public class WifiFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.scanWifi();
+		//updateWifiList();
 	}
 
 	@Override
@@ -158,6 +173,28 @@ public class WifiFragment extends Fragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+	}
+	
+	private void updateWifiList() {
+		if (mWifiUpdatorRunnable == null) {
+			mWifiUpdatorRunnable = new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						Thread.currentThread();
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					scanWifi();
+					mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+					mWifiUpdatorHanlder.postDelayed(this, 100);
+				}
+			};
+		}
+		mWifiUpdatorHanlder.post(mWifiUpdatorRunnable);
 	}
 	
 }

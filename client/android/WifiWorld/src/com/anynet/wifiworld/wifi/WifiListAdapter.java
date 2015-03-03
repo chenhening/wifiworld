@@ -139,6 +139,17 @@ public class WifiListAdapter extends BaseAdapter {
 				} else {
 					imageView.setImageResource(R.drawable.id_default);
 				}
+	            int signalStrength = ((WifiInfoScanned)getItem(position)).getWifi_level();
+	            TextView signalLevelView = (TextView) view.findViewById(R.id.wifi_status_digit);
+	            signalLevelView.setText(signalStrength + "%");
+	            ImageView signalImage = (ImageView) view.findViewById(R.id.wifi_status_icon);
+	            if (signalStrength >= 80) {
+	            	signalImage.setImageResource(R.drawable.lock_wifi_signal_icon3);
+				} else if (signalStrength >= 60) {
+					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon2);
+				} else {
+					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon1);
+				}
 			}
         }
         return view;

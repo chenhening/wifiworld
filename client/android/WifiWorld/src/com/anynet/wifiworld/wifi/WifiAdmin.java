@@ -1,8 +1,10 @@
 package com.anynet.wifiworld.wifi;
 
+import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -45,10 +47,10 @@ public class WifiAdmin {
             return false;  
        }
        
-       while (this.mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {  
+       while (this.mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
     	   try {
-    		   Thread.currentThread();  
-    		   Thread.sleep(100);  
+    		   Thread.currentThread();
+    		   Thread.sleep(100);
            } catch (InterruptedException ie) {
         	   
            }  
@@ -103,11 +105,33 @@ public class WifiAdmin {
        return bRet;
     }  
     
+    private int parseBitSet(BitSet kmtBitSet) {
+    	for (int i = 0; i < kmtBitSet.size(); i++) {
+			if (kmtBitSet.get(i)) {
+				return i;
+			}
+		}
+    	
+    	return -1;
+    }
+    
+    public WifiAdmin.WifiCipherType getWifiType(BitSet kmtBitSet) {
+    	int type = parseBitSet(kmtBitSet);
+		if (type == WifiConfiguration.KeyMgmt.NONE) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_NOPASS;
+		} else if (type == WifiConfiguration.KeyMgmt.WPA_PSK) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WPA;
+		} else {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WEP;
+		}
+	}
+    
     private int getKeyMgmtType(WifiCipherType type) {  
         if (type == WifiCipherType.WIFICIPHER_NOPASS) {
             return WifiConfiguration.KeyMgmt.NONE;  
         }
         if (type == WifiCipherType.WIFICIPHER_WEP) {
+        	//WPA_EAP
             return WifiConfiguration.KeyMgmt.IEEE8021X;
         }
         else if (type == WifiCipherType.WIFICIPHER_WPA) {
@@ -139,7 +163,7 @@ public class WifiAdmin {
         	config.wepKeys[0] = "";
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
             config.wepTxKeyIndex = 0;
-       } else if(Type == WifiCipherType.WIFICIPHER_WEP) {  
+       } else if(Type == WifiCipherType.WIFICIPHER_WEP) {
            config.preSharedKey = "\""+Password+"\"";
            config.hiddenSSID = true;
            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
@@ -149,14 +173,17 @@ public class WifiAdmin {
            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
            config.wepTxKeyIndex = 0;
-       } else if(Type == WifiCipherType.WIFICIPHER_WPA) {  
+       } else if(Type == WifiCipherType.WIFICIPHER_WPA) {
     	   config.preSharedKey = Password;
     	   config.hiddenSSID = true;
     	   config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-    	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);                      
-    	   config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);                      
-    	   config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);           
-    	   config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);          
+    	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+    	   config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+    	   config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+    	   config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+    	   //maybe for WiFi AP
+//    	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+//         config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
     	   config.status = WifiConfiguration.Status.ENABLED;
        } else {
            return null;
