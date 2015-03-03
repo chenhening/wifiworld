@@ -1,29 +1,21 @@
 package com.anynet.wifiworld.me;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
-import org.apache.cordova.Config;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.CordovaWebViewImpl;
-import org.apache.cordova.engine.SystemWebView;
-import org.apache.cordova.engine.SystemWebViewEngine;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 
 import com.anynet.wifiworld.R;
 
-public class MeFragment extends Fragment  implements CordovaInterface {
+public class MeFragment extends Fragment{
 	private View view_ = null;
-	private CordovaWebView cordovaWebView = null; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +30,8 @@ public class MeFragment extends Fragment  implements CordovaInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//hybrid
 		view_ = inflater.inflate(R.layout.fragment_me, null);
+		view_.findViewById(R.id.button_sms).setOnClickListener(btn_listener_);
+		view_.findViewById(R.id.button_login).setOnClickListener(btn_listener_);
 		//SystemWebView webView = (SystemWebView)view_.findViewById(R.id.cordovaWebView);
         //cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
         //Config.init(this.getActivity());
@@ -46,27 +40,28 @@ public class MeFragment extends Fragment  implements CordovaInterface {
 		
 		return view_;
 	}
+	
+	//---------------------------------------------------------------------------------------------
+	//for click event
+	View.OnClickListener btn_listener_ = new View.OnClickListener() {
 
-	@Override
-	public ExecutorService getThreadPool() {
-	    return Executors.newSingleThreadExecutor();
-	}
-
-	@Override
-	public Object onMessage(String arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setActivityResultCallback(CordovaPlugin arg0) {
-		// TODO Auto-generated method stub
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.button_sms:
+				EditText ett_username = (EditText)(view_.findViewById(R.id.editText_username));
+				String phone_number = ett_username.getText().toString();
+				Pattern pattern = Pattern.compile("/^1[3|5|7|8][0-9]//d{4,8}$/");
+				if (!pattern.matcher(phone_number).find()) {
+					String message = "请输入11位手机正确号码.";
+					Toast.makeText(getActivity().getApplicationContext(), message, message.length()).show();
+					return;
+				}
+				break;
+			case R.id.button_login:
+				break;
+			}
+		}
 		
-	}
-
-	@Override
-	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-		// TODO Auto-generated method stub
-		
-	}
+	};
 }

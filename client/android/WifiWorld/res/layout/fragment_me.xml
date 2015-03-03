@@ -4,18 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <!--
-    <org.apache.cordova.engine.SystemWebView
-        android:id="@+id/cordovaWebView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-    -->
-    
-    <LinearLayout 
+    <LinearLayout
         android:id="@+id/layout_userprofile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
         android:orientation="vertical" >
 
         <ImageView
@@ -50,7 +43,7 @@
                 android:layout_alignLeft="@+id/editText_password"
                 android:layout_alignRight="@+id/button_sms"
                 android:layout_below="@+id/editText_password"
-                android:text="登陆" />
+                android:text="账号登陆" />
 
             <EditText
                 android:id="@+id/editText_username"
@@ -60,6 +53,7 @@
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:ems="10"
+                android:hint="11位手机号码"
                 android:inputType="phone" >
 
                 <requestFocus />
@@ -73,9 +67,16 @@
                 android:layout_below="@+id/editText_username"
                 android:layout_centerInParent="true"
                 android:ems="10"
+                android:hint="6位数字"
                 android:inputType="number" />
 
         </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.21" >
     </LinearLayout>
 
 </LinearLayout>
