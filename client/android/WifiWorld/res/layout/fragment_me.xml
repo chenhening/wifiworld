@@ -1,12 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <!--
     <org.apache.cordova.engine.SystemWebView
         android:id="@+id/cordovaWebView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+    -->
+    
+    <LinearLayout 
+        android:id="@+id/layout_userprofile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/image_userprofile"
+            android:layout_width="110dp"
+            android:layout_height="113dp"
+            android:layout_gravity="center"
+            android:src="@drawable/tab_mine_nor" />
+
+        <RelativeLayout
+            android:id="@+id/layout_loginout"
+            android:layout_width="271dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/button_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/editText_password"
+                android:layout_alignParentBottom="false"
+                android:layout_alignRight="@+id/editText_username"
+                android:layout_alignTop="@+id/editText_password"
+                android:layout_centerInParent="false"
+                android:text="短信验证码(60)" />
+
+            <Button
+                android:id="@+id/button_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/editText_password"
+                android:layout_alignRight="@+id/button_sms"
+                android:layout_below="@+id/editText_password"
+                android:text="登陆" />
+
+            <EditText
+                android:id="@+id/editText_username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:ems="10"
+                android:inputType="phone" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/editText_password"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/editText_username"
+                android:layout_below="@+id/editText_username"
+                android:layout_centerInParent="true"
+                android:ems="10"
+                android:inputType="number" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

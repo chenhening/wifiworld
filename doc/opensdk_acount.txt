@@ -1,0 +1,9 @@
+1. sms短信验证码开放平台账号
+	http://mob.com/
+	179770346@qq.com
+2. 免费数据存储baas服务平台账号
+	http://www.bmob.cn/
+	179770346@qq.com
+3. 免费地图服务平台账号
+	http://lbs.amap.com/
+	buffer8848

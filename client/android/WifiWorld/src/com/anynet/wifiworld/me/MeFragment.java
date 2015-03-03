@@ -38,11 +38,11 @@ public class MeFragment extends Fragment  implements CordovaInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//hybrid
 		view_ = inflater.inflate(R.layout.fragment_me, null);
-		SystemWebView webView = (SystemWebView)view_.findViewById(R.id.cordovaWebView);
-        cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
-        Config.init(this.getActivity());
-        cordovaWebView.init(this, Config.getPluginEntries(), Config.getPreferences());
-        cordovaWebView.loadUrl("file:///android_asset/www/index.html");
+		//SystemWebView webView = (SystemWebView)view_.findViewById(R.id.cordovaWebView);
+        //cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
+        //Config.init(this.getActivity());
+        //cordovaWebView.init(this, Config.getPluginEntries(), Config.getPreferences());
+        //cordovaWebView.loadUrl("file:///android_asset/www/index.html");
 		
 		return view_;
 	}
