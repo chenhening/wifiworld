@@ -30,7 +30,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:singleLine="true"
-        android:text="@string/feedback_suggestion"
+        android:text="@string/userprofile"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_title"
         android:visibility="visible" />

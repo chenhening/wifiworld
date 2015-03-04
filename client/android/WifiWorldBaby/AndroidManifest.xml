@@ -51,6 +51,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
+        
         <activity
             android:name="com.anynet.wifiworld.MainActivity"
             android:label="@string/app_name"
@@ -63,6 +64,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Add SMS GUI -->
+        <activity
+            android:name="cn.smssdk.SMSSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        
         <activity
             android:name="com.anynet.wifiworld.DiggerHistoryActivity"
             android:label="@string/app_name"

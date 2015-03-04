@@ -139,7 +139,7 @@
 
     <!-- setting header -->
     <string name="feedback_finish">提交</string>
-    <string name="feedback_suggestion">反馈建议</string>
+    <string name="userprofile">账户</string>
     <string name="header_test_txt">水晶监控</string>
     <string name="header_testip_txt">0.0.0.0</string>
     <string name="header_test_machine_txt">None</string>

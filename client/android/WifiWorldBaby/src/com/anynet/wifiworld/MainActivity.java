@@ -74,8 +74,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
-		isFromWelcomeActivity = i.getBooleanExtra("isFromWelcomeActivity",
-				false);
+		isFromWelcomeActivity = i.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
 		initView();
 
@@ -84,8 +83,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		discoverFragment = new DiscoverFragment();
 		meFragment = new MeFragment();
 
-		fragments = new MainFragment[] { wifiFragment, mapFragment,
-				discoverFragment, meFragment };
+		fragments = new MainFragment[] { wifiFragment, mapFragment, discoverFragment, meFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment_container, wifiFragment)
