@@ -1,0 +1,94 @@
+/* @author   -------- xuanjie 
+ * @design -------- zhengying
+ * @time   -------- 20141128 */
+
+/*reset*/
+html, body, p, ul, ol,input,figure{ margin: 0; padding: 0; border: 0; font:20px/1.5 Arial,DroidSansFallback,Helvetica,Tahoma,\5FAE\8F6F\96C5\9ED1,sans-serif,Sans;}
+ul,ol{list-style:none;}
+body{word-wrap: break-word; -webkit-text-size-adjust: none; -webkit-font-smoothing:antialiased;}
+h1, h2, h3, h4, h5, h6,p{margin:0; font-size:100%; font-weight: normal; }
+img {display:block; width: 100%; border: 0; vertical-align:middle;}
+table { width:auto; border-collapse: collapse;border-spacing: 0; }
+a{text-decoration:none;}
+a,button,button:active,input{-webkit-tap-highlight-color:rgba(0,0,0,0); -webkit-tap-highlight-color: transparent;}
+mark{background-color:transparent;color:inherit;}
+html,body{ width:100%; height:100%; box-sizing:border-box;}
+em{ font-style:normal;}
+
+.col-grey{ color:#999;}
+
+.wp{ display:-webkit-box; -webkit-box-orient:vertical; height:100%;}
+.tit{ position:relative; margin-bottom:.5rem; padding:.5rem 0 0 .5rem; height:2.34rem; line-height:2.34rem; font-weight:normal; font-size:1.06rem; color:#fff; background-color:#ca2525;}
+.tit:after{ position:absolute; left:0; bottom:-.26rem; height:.26rem; width:100%; content:""; background:url(../img/border.png) no-repeat; background-size:100% 100%;}
+.listbox{ position:relative; -webkit-box-flex:1; overflow:hidden; overflow-y:auto;}
+.list li{ position:relative; padding:.78rem 0 .78rem 4.33rem; font-size:1.2rem; min-height:2.6rem; border-bottom:1px solid #c6c6c6;}
+.list p{ line-height:2.6rem;}
+.list em{ margin:0 .2rem; color:#f10303;}
+.pic{ position:absolute; left:.5rem; top:.78rem; width:2.75rem; height:2.53rem; border:1px solid #c6c6c6; border-radius:.4rem;}
+.open,.result{ position:absolute; right:.7rem; top:.78rem; width:5rem; text-align:center;}
+.open{ height:2.37rem; line-height:2.37rem; color:#fff; background-color:#f10303; border-radius:.4rem;}
+.result{ line-height:2.6rem; color:#999;}
+
+.more{ display:block; height:2.22rem; line-height:2.22rem; font-size:1.06rem; color:#fff; text-align:center; background-color:#7f7f7f;}
+
+.pop{ position:absolute; left:0; top:0; bottom:0; right:0; text-align:center; color:#fff; background-color:rgba(0,0,0,.8); z-index:10;}
+.popmain{ box-sizing:border-box; position:absolute; left:50%; top:50%; margin:-6rem 0 0 -9.7rem; padding:.5rem 0 0; width:19.4rem; height:12rem; text-align:center; background-color:#f8f8f8; border-radius:.2rem;}
+.popmain p{ margin:.2rem 0; font-size:1.2rem; color:#444;}
+.popmain p strong{ color:#f00000;}
+.poptxt{ padding-top:2rem;}
+.poptxt .btnpop{ margin-top:1.4rem;}
+.poppic{ display:inline-block; width:8.1rem; height:4.22rem;}
+.btnpop{ margin-top:.6rem; display:inline-block; width:12rem; height:2.66rem; line-height:2.66rem; font-size:1.28rem; color:#444; background-color:#fff; border:1px solid #c6c6c6; border-radius:.4rem;}
+.btnpop:active{ opacity:.8;}
+
+.sorry{ padding-top:11rem; font-size:1.06rem; text-align:center; color:#787878;}
+.sorry-img{ display:block; margin:0 auto 1.5rem; width:7.56rem; height:7.56rem;}
+
+.loading,.loading2{ margin-left:.5rem; display:inline-block; vertical-align:middle; width:1.3rem; height:1.3rem; -webkit-animation:loading 2s linear infinite both; animation:loading 2s linear infinite both;}
+.loading{ background:url(../img/loading.png) no-repeat; background-size:100% 100%;}
+.loading2{ background:url(../img/loading2.png) no-repeat; background-size:100% 100%;}
+@-webkit-keyframes loading{
+  0%{ -webkit-transform:rotate(0);}
+  100%{ -webkit-transform:rotate(360deg);}
+}
+@keyframes loading{
+  0%{ transform:rotate(0);}
+  100%{ transform:rotate(360deg);}
+}
+
+
+@media only screen and (min-width:1440px) and (max-width:1440px){
+html,body{font-size: 60px;}
+}
+/* for 1080 px width screen */
+@media only screen and (max-device-width:1080px),only screen and (max-width:1080px){
+html,body{font-size:45px;}
+}
+/* for 800 px width screen */
+@media only screen and (max-device-width:800px),only screen and (max-width:800px){
+html,body{font-size:33px}
+}
+/* for 750 px width screen */
+@media only screen and (max-width:750px),only screen and (max-width:750px){
+html,body{font-size:31.25px}
+}
+/* for 720 px width screen */
+@media only screen and (max-width:720px),only screen and (max-width:720px){
+html,body{font-size:30px}
+}
+/* for 640 px width screen */
+@media only screen and (max-device-width:640px),only screen and (max-width:640px){
+html,body{font-size:27px}
+}
+/* for 540 px width screen */
+@media only screen and (max-device-width:540px),only screen and (max-width:540px){
+html,body{font-size:22.5px}
+}
+/* for 480 px width screen */
+@media only screen and (max-device-width:480px),only screen and (max-width:480px){
+html,body{font-size:20px}
+}
+/* for 320 px width screen */
+@media only screen and (max-width:320px),only screen and (max-device-width:320px){
+html,body{font-size:13.5px}
+}

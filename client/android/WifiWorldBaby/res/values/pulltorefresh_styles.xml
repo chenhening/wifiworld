@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+      <style name="TextAppearancePullToRefreshText">
+        <item name="android:textColor">#20222a</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearancePullToRefreshSubText">
+        <item name="android:textColor">#20222a</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

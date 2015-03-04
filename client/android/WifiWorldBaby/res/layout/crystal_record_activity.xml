@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:id="@+id/lv_record_list_ly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fafafa"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+  			  android:background="@color/white"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+     			   android:paddingLeft="15dp"
+                    android:text="累计入账："
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_toRightOf="@+id/total"
+                    android:id="@+id/totalValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:text="12345"
+                    android:textColor="#F62929"
+                    android:textSize="18dp" />
+                
+            </RelativeLayout>
+            
+              <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="#CCCCCC" />
+            
+            
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                android:id="@+id/lv_record_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/common_div_line"
+                android:dividerHeight="@dimen/divider_height"
+                android:fadingEdge="none"
+                android:scrollingCache="false"
+                android:tag="lvRecordList" >
+            </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_record_filter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#66000000"
+            android:orientation="vertical"
+            android:tag="llRecordFilter"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tv_record_filter_all"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="23dp"
+                android:tag="tvRecordFilterAll"
+                android:text="@string/crystal_record_filter_all"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="#e5e5e5" />
+
+            <TextView
+                android:id="@+id/tv_record_filter_expense"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="23dp"
+                android:tag="tvRecordFilterExpense"
+                android:text="@string/crystal_record_filter_expense"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="#e5e5e5" />
+
+            <TextView
+                android:id="@+id/tv_record_filter_income"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="23dp"
+                android:tag="tvRecordFilterIncome"
+                android:text="@string/crystal_record_filter_income"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

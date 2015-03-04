@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/common_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <EditText
+        android:id="@+id/et_feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/setting_feedback_bg"
+        android:gravity="top|left"
+        android:hint="@string/setting_feedback_input_tip"
+        android:inputType="textMultiLine"
+        android:maxLines="8"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingTop="16dp"
+        android:scrollbars="vertical"
+        android:textColor="#000000"
+        android:textColorHint="#CACACA"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_feedback_contact"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/setting_feedback_bg"
+        android:gravity="center_vertical|left"
+        android:hint="@string/setting_feedback_contact_tip"
+        android:imeOptions="actionDone"
+        android:paddingBottom="8dp"
+       android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+         android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingTop="8dp"
+        android:scrollbars="vertical"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textColorHint="#CACACA"
+        android:textSize="14sp" />
+
+    
+
+</LinearLayout>

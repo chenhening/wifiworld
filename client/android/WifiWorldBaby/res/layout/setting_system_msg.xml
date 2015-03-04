@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:id="@+id/lv_record_list_ly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fafafa"
+            android:orientation="vertical" >
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                android:id="@+id/lv_sys_msg_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="@dimen/divider_height"
+                android:fadingEdge="none"
+                android:scrollingCache="false"
+                android:tag="lvSystemMsgList" >
+            </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+    
+    
+	</FrameLayout>
+</LinearLayout>

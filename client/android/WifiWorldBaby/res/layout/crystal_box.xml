@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xunlei.crystalandroid.SpecialRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:id="@+id/rlRoot"
+                                                 android:tag="rlRoot"
+                                                 android:background="@color/white"
+                                                 android:orientation="vertical">
+    <WebView
+            android:id="@+id/wb_box"
+            android:tag="wbBox"
+            android:layout_marginTop="-16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    <RelativeLayout
+            android:id="@+id/loading"
+            android:visibility="visible"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:tag="loading"
+            android:background="@drawable/crystal_enter_mine_bg">
+        <TextView
+                android:id="@+id/networkTips"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="#ff0000"
+                android:visibility="gone"
+                android:text="网络出错了"/>
+        <ImageView
+                    android:id="@+id/circle"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:src="@drawable/mine_loading"
+                    android:scaleType="matrix"
+                     android:layout_centerInParent="true"/>
+        <ImageView
+                android:id="@+id/enterTips"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/mine_loading_tips"
+                android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <TextView
+            android:id="@+id/tvClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mine_return"
+            android:tag="tvClose"
+
+            android:layout_alignParentRight="true"/>
+
+    <ImageView
+            android:id="@+id/ivWorld"
+            android:tag="ivWorld"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="matrix"
+            android:src="@drawable/crystal_enter_mine_bg"/>
+    <include android:id="@+id/header" layout="@layout/header_setting"/>
+
+    <LinearLayout android:id="@+id/bottom" android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:orientation="vertical">
+        <!-- 未收取的红水晶 -->
+
+        <RelativeLayout
+                android:id="@+id/checkDeviceLayout"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="93dp"
+                android:orientation="vertical"
+                android:tag="checkDeviceLayout">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="矿机今日水晶产量"
+                        android:textColor="#636363"
+                        android:textSize="15sp"/>
+
+                <TextView
+                        android:id="@+id/tvCrystalTodayCollected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:tag="tvCrystalTodayCollected"
+                        android:text="32700"
+                        android:textColor="#636363"
+                        android:textSize="22sp"/>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/totalSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_toLeftOf="@+id/kbps"
+                    android:tag="tvDiggerSpeed"
+                    android:text="--"
+                    android:textColor="#636363"
+                    android:textSize="22sp">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/kbps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+
+                    android:layout_marginRight="4dp"
+                    android:layout_toLeftOf="@+id/enter"
+                    android:tag="tvkbps"
+                    android:text="Kbps"
+                    android:textColor="#636363"
+                    android:textSize="15sp">
+            </TextView>
+
+            <ImageView
+                    android:id="@+id/enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="11dp"
+                    android:background="@drawable/crystal_diglist_selector"/>
+        </RelativeLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line"/>
+
+        <RelativeLayout
+                android:id="@+id/boxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:tag="checkDeviceLayout">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tvTotalBoxIncomeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:tag="tvTotalCount"
+                        android:text="宝箱今日水晶收益"
+                        android:textColor="#636363"
+                        android:textSize="15sp"/>
+
+                <TextView
+                        android:id="@+id/tvTotalBoxIncome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:tag="tvBoxIncome"
+                        android:text="32700"
+                        android:textColor="#636363"
+                        android:textSize="22sp"/>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/tvBoxTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="11dp"
+                    android:tag="tvBoxTips"
+                    android:text="已开启2个宝箱"
+                    android:textColor="#b8b8b8"
+                    android:textSize="15sp">
+            </TextView>
+        </RelativeLayout>
+
+        <LinearLayout
+                android:id="@+id/main_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/main_bottom_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <RelativeLayout
+                    android:id="@+id/rl_container_crystal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                <Button
+                        android:id="@+id/btn_crystal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_bottom_bg"
+                        android:drawableTop="@drawable/main_crystal_normal"
+                        android:paddingBottom="2dip"
+                        android:paddingTop="7dip"
+                        android:scaleType="matrix"
+                        android:text="水晶矿场"
+                        android:textColor="@color/main_botton_text_color"
+                        android:textSize="10sp"/>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                    android:id="@+id/btn_container_setting"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                <Button
+                        android:id="@+id/btn_myasset"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_bottom_bg"
+                        android:paddingBottom="2dip"
+                        android:paddingTop="7dip"
+                        android:scaleType="matrix"
+                        android:text="提现"
+                        android:textColor="@color/main_botton_text_color"
+                        android:textSize="10sp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/btn_container_my"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                <Button
+                        android:id="@+id/btn_my"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_bottom_bg"
+                        android:paddingBottom="2dip"
+                        android:paddingTop="7dip"
+                        android:scaleType="matrix"
+                        android:text="我的"
+                        android:textColor="@color/main_botton_text_color"
+                        android:textSize="10sp"/>
+
+                <ImageView
+                        android:id="@+id/iv_my_new"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="40dp"
+                        android:background="@drawable/common_new_msg_ico"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</com.xunlei.crystalandroid.SpecialRelativeLayout>
+

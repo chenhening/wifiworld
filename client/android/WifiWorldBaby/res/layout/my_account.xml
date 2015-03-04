@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include layout="@layout/header_setting" />
+
+            <!-- 邮箱， 交易密码 ，消息通知开关, 消息通知 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/settings_group_bg"
+                android:orientation="vertical"
+                android:visibility="visible" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/common_div_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_account_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="77dp"
+                    android:background="@drawable/settings_item_radius_bg_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                     android:paddingRight="18dp" 
+                    android:paddingLeft="15dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/my_account_head"
+                        android:textColor="@color/setting_txt"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_my_header_middle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:id="@+id/iv_my_head"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/my_header_logo"
+                            android:tag="ivMyHead"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_setting_head_front"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/my_header_logo_front"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                      android:layout_marginLeft="15dp"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/common_div_line" />
+                    
+
+                <RelativeLayout
+                    android:id="@+id/rl_mid"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/settings_item_radius_bg_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                   android:layout_marginLeft="15dp"
+                    android:layout_marginRight="23dp" >
+
+                    <TextView
+                        android:id="@+id/tv_mid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/my_account_mid"
+                        android:textColor="@color/setting_txt"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_trade_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                          android:tag="tvMid"
+                        android:text="未设置"
+                        android:textColor="#BDBDBD"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                
+                    <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                      android:layout_marginLeft="15dp"
+                    android:background="@color/common_div_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/settings_item_radius_bg_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                      android:layout_marginLeft="15dp"
+                    android:layout_marginRight="23dp"  >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/my_account_nikename"
+                        android:textColor="@color/setting_txt"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_my_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:tag="tvMyName"
+                        android:text="未设置"
+                        android:textColor="#BDBDBD"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                      android:layout_marginLeft="15dp"
+                    android:background="@color/common_div_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_xl_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/settings_item_radius_bg_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                        android:layout_marginLeft="15dp"
+                    android:layout_marginRight="23dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/my_account_thunder_id"
+                        android:textColor="@color/setting_txt"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_xl_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:tag="tvXlAccount"
+                        android:text="未设置"
+                        android:textColor="#BDBDBD"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                      android:layout_marginLeft="15dp"
+                    android:background="@color/common_div_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/settings_item_radius_bg_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                        android:layout_marginLeft="15dp"
+                    android:layout_marginRight="23dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/my_account_phone"
+                        android:textColor="@color/setting_txt"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:tag="tvPhone"
+                        android:text="未设置"
+                        android:textColor="#BDBDBD"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/common_div_line" />
+            </LinearLayout>
+            
+
+
+
+            <!-- 退出组 -->
+
+            <LinearLayout
+                android:id="@+id/ll_settting_exit"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginBottom="9dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/login_fail_btn_selector"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_exit"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

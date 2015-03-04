@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/root"
+    android:background="@drawable/splash_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="95dp"
+        android:src="@drawable/splash_logo" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="53dp"
+        android:src="@drawable/splash_title" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/splash_title_tip" />
+
+   <RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+    
+       <TextView
+        android:id="@+id/tv_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="31dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="Copyright © Xunlei Networking Technologies \n 2003 –2015"
+        android:textColor="#F7E0E0"
+        android:textSize="11sp" />
+    
+    <TextView
+        android:id="@+id/tv_splash_version"
+        android:layout_above="@id/tv_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:gravity="center"
+        android:layout_marginBottom="14dp"
+        android:text="V1.0"
+        android:textColor="#F7E0E0"
+        android:textSize="17sp" >
+    </TextView>
+
+
+    
+    </RelativeLayout>
+
+</LinearLayout>

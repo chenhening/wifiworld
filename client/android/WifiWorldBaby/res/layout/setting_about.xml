@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:src="@drawable/setting_about_logo" />
+
+        
+
+        <TextView
+            android:id="@+id/setting_about_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:text="V1.0"
+            android:textColor="#4F4F4F"
+            android:textSize="17sp" >
+        </TextView>
+
+        <!-- 更新 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/settings_group_bg"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E7E7E7" />
+
+            <RelativeLayout
+                android:id="@+id/rl_check_update"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/settings_item_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp" >
+
+                <TextView
+                    android:id="@+id/tv_check_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_check_update"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_check_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/crystal_right_rocket"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/tv_version_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/iv_check_update"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:tag="tvVersionState"
+                    android:text="@string/setting_about_find_new_version"
+                    android:textColor="#939393"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E7E7E7" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_about_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/setting_about_bubble_remind"
+            android:gravity="center"
+            android:tag="llSettingAboutRemind"
+            android:visibility="visible" >
+
+            <TextView
+                android:id="@+id/tv_setting_about_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="tvSettingAboutRemind"
+                android:text="当前已经是最新版本"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="迅雷网络版权所有"
+            android:textColor="#BCBEBF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="Xunlei Networking Technologies, LTD(©) 2003 –2014"
+            android:textColor="#BCBEBF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

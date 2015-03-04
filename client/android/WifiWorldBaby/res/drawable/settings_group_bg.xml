@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 灰色(#FFCFD0D5)填充的四周圆角的背景图 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <corners 
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"/>
+	<solid android:color="@color/setting_group_bg"/>
+</shape>

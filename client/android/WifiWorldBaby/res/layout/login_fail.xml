@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_setting_system_empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:visibility="visible" >
+
+    <include layout="@layout/header_setting" />
+
+    <ImageView
+        android:id="@+id/iv_login_fail_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="123dp"
+        android:src="@drawable/login_fail_noprivilege"
+        android:tag="ivLoginFailLogo"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="33dp"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/tv_login_fail_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:tag="tvLoginFailRemind"
+            android:text="您的账号暂未获得水晶矿场公测资格，\n快去red.xunlei.com抢资格吧！"
+            android:textColor="#4E4E4E"
+            android:textSize="18sp" />
+    </LinearLayout>
+ 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        >
+    
+    <LinearLayout
+        android:id="@+id/ll_login_fail_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="287dp"
+        android:minHeight="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="213dp"
+        android:background="@drawable/login_fail_btn_selector"
+        android:gravity="center"
+        android:tag="llLoginFailConfirm" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="返回"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+    </LinearLayout>
+    
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+/*for retina screen*/
+/* for 1080 px width screen */
+@media only screen and (min-device-width:1080px),only screen and (min-width:1080px){
+html{font-size:37.33px}
+}
+
+/* for 1080 px width screen */
+@media only screen and (max-device-width:1080px),only screen and (max-width:1080px){
+html{font-size:31.5px}
+}
+
+/* for 800 px width screen */
+@media only screen and (max-device-width:800px),only screen and (max-width:800px){
+html{font-size:23.33px}
+}
+/* for 720 px width screen */
+@media only screen and (max-width:720px),only screen and (max-width:720px){
+html{font-size:21px}
+}
+/* for 640 px width screen */
+@media only screen and (max-device-width:640px),only screen and (max-width:640px){
+html{font-size:18.67px}
+}
+/* for 540 px width screen */
+@media only screen and (max-device-width:540px),only screen and (max-width:540px){
+html{font-size:15.75px}
+}
+/* for 480 px width screen */
+@media only screen and (max-device-width:480px),only screen and (max-width:480px){
+html{font-size:14px;}
+}
+
+/* for 320 px width screen */
+@media only screen and (max-width:320px),only screen and (max-device-width:320px){
+html{font-size:13.5px}
+}

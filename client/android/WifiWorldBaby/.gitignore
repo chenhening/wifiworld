@@ -1,0 +1,10 @@
+/gen
+/bin
+/proguard
+/project.properties
+/proguard-project.txt
+/lint.xml
+/.setting
+/.idea
+/.gradle
+/out
