@@ -51,12 +51,15 @@ public class MeFragment extends Fragment{
 			case R.id.button_sms:
 				EditText ett_username = (EditText)(view_.findViewById(R.id.editText_username));
 				String phone_number = ett_username.getText().toString();
-				Pattern pattern = Pattern.compile("/^1[3|5|7|8][0-9]//d{4,8}$/");
+				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 				if (!pattern.matcher(phone_number).find()) {
-					String message = "请输入11位手机正确号码.";
+					String message = "请输入11位手机正确号码!";
 					Toast.makeText(getActivity().getApplicationContext(), message, message.length()).show();
 					return;
 				}
+				//send message
+				//verify message
+				
 				break;
 			case R.id.button_login:
 				break;
