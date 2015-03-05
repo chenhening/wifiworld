@@ -1,4 +1,4 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -15,6 +15,10 @@ import cn.bmob.v3.Bmob;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 
 import cn.smssdk.gui.RegisterPage;

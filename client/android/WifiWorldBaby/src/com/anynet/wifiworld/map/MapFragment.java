@@ -6,9 +6,14 @@
  * 	v0.1(2015/01/22,1:20): add map2d feature
  * 	v0.2(2015/01/23,1:40): replace map2d to 3dmap and add location feature
  */
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.map;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R.drawable;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseFragment;
 
