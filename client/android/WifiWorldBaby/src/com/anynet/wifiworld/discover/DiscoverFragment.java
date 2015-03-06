@@ -93,5 +93,4 @@ public class DiscoverFragment extends MainFragment {
 		super.onViewCreated(view, savedInstanceState);
 	}
 	
-	
 }

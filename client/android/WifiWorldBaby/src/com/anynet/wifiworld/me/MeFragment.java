@@ -20,6 +20,7 @@ import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.app.WifiWorldApplication;
 
 import cn.smssdk.gui.RegisterPage;
 
@@ -28,14 +29,17 @@ public class MeFragment extends MainFragment{
 	private String SMSSDK_KEY = "5ea9dee43eb2";
 	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
 	
-	private void bingdingTitleUI() {
-
+	private void bingdingTitleUI(boolean isLogin) {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(getString(R.string.my));
-
+		if(isLogin)mTitlebar.tvTitle.setText(getString(R.string.login_login));
+		else mTitlebar.tvTitle.setText(getString(R.string.my));
+	}
+	
+	private void bingdingTitleUI() {
+		bingdingTitleUI(false);
 	}
 	
 	@Override
@@ -63,17 +67,27 @@ public class MeFragment extends MainFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//hybrid
-		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
-		mPageRoot.findViewById(R.id.button_sms).setOnClickListener(btn_listener_);
-		mPageRoot.findViewById(R.id.button_login).setOnClickListener(btn_listener_);
-		//SystemWebView webView = (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
-        //cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
-        //Config.init(this.getActivity());
-        //cordovaWebView.init(this, Config.getPluginEntries(), Config.getPreferences());
-        //cordovaWebView.loadUrl("file:///android_asset/www/index.html");
-		super.onCreateView(inflater, container, savedInstanceState);
-		bingdingTitleUI();
-		return mPageRoot;
+		boolean isLogin = WifiWorldApplication.isLogin();
+		if(!isLogin){
+			mPageRoot = inflater.inflate(R.layout.login, null);
+			mPageRoot.findViewById(R.id.button_sms).setOnClickListener(btn_listener_);
+			mPageRoot.findViewById(R.id.button_login).setOnClickListener(btn_listener_);
+			//SystemWebView webView = (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
+	        //cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
+	        //Config.init(this.getActivity());
+	        //cordovaWebView.init(this, Config.getPluginEntries(), Config.getPreferences());
+	        //cordovaWebView.loadUrl("file:///android_asset/www/index.html");
+			super.onCreateView(inflater, container, savedInstanceState);
+			bingdingTitleUI(true);
+			return mPageRoot;
+		}else{
+			mPageRoot = inflater.inflate(R.layout.fragment_me, null);
+ 
+			super.onCreateView(inflater, container, savedInstanceState);
+			bingdingTitleUI();
+			return mPageRoot;
+		}
+
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -84,7 +98,7 @@ public class MeFragment extends MainFragment{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.button_sms:
-				EditText ett_username = (EditText)(mPageRoot.findViewById(R.id.editText_username));
+				EditText ett_username = (EditText)(mPageRoot.findViewById(R.id.tv_login_account));
 				String phone_number = ett_username.getText().toString();
 				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 				if (!pattern.matcher(phone_number).find()) {

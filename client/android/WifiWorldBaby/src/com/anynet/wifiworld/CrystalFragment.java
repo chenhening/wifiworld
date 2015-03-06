@@ -173,10 +173,10 @@ public class CrystalFragment extends MainFragment implements OnClickListener,
 				DiggerHistoryActivity.startActivity(mActivity);
 			}
 		});
-		btnCrystalEnterMine.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
+//		btnCrystalEnterMine.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
 //				animate = new EnterWorldAnimate(rlRoot,ivWorld);
 //				animate.setEnterWorldAnimateInterface(new EnterWorldAnimate.EnterWorldAnimateInterface() {
 //					@Override
@@ -185,11 +185,11 @@ public class CrystalFragment extends MainFragment implements OnClickListener,
 //					}
 //				});
 //				animate.startAnimate();
-				MineActivity.startActivity(mActivity, mCrystalMineInfoResp.todayMineIncome,
-						mCrystalMineInfoResp.todayBoxIncome, mCrystalMineInfoResp.openedBoxCnt,
-						mCrystalMineInfoResp.missedBoxCnt, mLastDevicesStatResp.totalSpeed, false);
-			}
-		});
+//				MineActivity.startActivity(mActivity, mCrystalMineInfoResp.todayMineIncome,
+//						mCrystalMineInfoResp.todayBoxIncome, mCrystalMineInfoResp.openedBoxCnt,
+//						mCrystalMineInfoResp.missedBoxCnt, mLastDevicesStatResp.totalSpeed, false);
+//			}
+//		});
 		tvDiggerSpeed.setText("0");
 		inner_circle.setAlpha((int) (0.4f * 255));
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ivWorld.getLayoutParams();

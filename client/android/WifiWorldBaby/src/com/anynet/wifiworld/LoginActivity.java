@@ -340,7 +340,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private void binddingUI() {
 
-		llLogin = (LinearLayout) findViewById(R.id.ll_login);
+		llLogin = (LinearLayout) findViewById(R.id.button_login);
 
 		etLoginAccount = (EditText) findViewById(R.id.tv_login_account);
 		etLoginPasswd = (EditText) findViewById(R.id.tv_login_passwd);
@@ -565,7 +565,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.ll_login:
+		case R.id.button_login:
 
 			initLogin();
 			processLogin();
@@ -673,7 +673,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			setTheLoginingState(false);
 			return;
 		}
-
+		
 //		XLUserUtil.getInstance().userLogin(account, false, passwd, "", "", "",
 //				mLoginListener,// 登录回调
 //				null);

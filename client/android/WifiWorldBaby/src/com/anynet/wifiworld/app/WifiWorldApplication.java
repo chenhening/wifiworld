@@ -297,5 +297,10 @@ public class WifiWorldApplication extends Application
         }
         return daoSession;
     }
+
+	public static boolean isLogin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     
 }

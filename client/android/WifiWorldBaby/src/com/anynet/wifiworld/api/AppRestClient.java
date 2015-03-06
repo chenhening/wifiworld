@@ -43,7 +43,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 public class AppRestClient {
-	public static boolean TEST = false;
+	public static boolean TEST = true;
 	private static boolean isReal = true;
 	private static boolean isToastNetworkDisconnect = false;
 	// private static final String TEST_URL = "http://test.red.local/index.php";
@@ -72,13 +72,13 @@ public class AppRestClient {
 			AsyncHttpResponseHandler responseHandler) {
 		// AsyncHttpClient client = new AsyncHttpClient();
 		Log.e("Crystal", "get url:" + url);
-		client.get(getAbsoluteUrl(url), params, responseHandler);
+		//client.get(getAbsoluteUrl(url), params, responseHandler);
 
 	}
 
 	public static void post(String url, RequestParams params,
 			AsyncHttpResponseHandler responseHandler) {
-		client.post(getAbsoluteUrl(url), params, responseHandler);
+		//client.post(getAbsoluteUrl(url), params, responseHandler);
 	}
 
 	

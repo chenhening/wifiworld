@@ -114,9 +114,9 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		changeToConnect();
 
 		updateData();
-		if (isFromWelcomeActivity) {
-			MineActivity.startActivity(this, 0, 0, 0, 0, 0, true);
-		}
+//		if (isFromWelcomeActivity) {
+//			MineActivity.startActivity(this, 0, 0, 0, 0, 0, true);
+//		}
 
 	}
 
