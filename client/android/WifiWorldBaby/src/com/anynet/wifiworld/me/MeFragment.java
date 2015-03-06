@@ -69,8 +69,7 @@ public class MeFragment extends MainFragment{
 		//hybrid
 		boolean isLogin = WifiWorldApplication.isLogin();
 		if(!isLogin){
-			mPageRoot = inflater.inflate(R.layout.login, null);
-			mPageRoot.findViewById(R.id.button_sms).setOnClickListener(btn_listener_);
+			mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 			mPageRoot.findViewById(R.id.button_login).setOnClickListener(btn_listener_);
 			//SystemWebView webView = (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
 	        //cordovaWebView = new CordovaWebViewImpl(getActivity(), new SystemWebViewEngine(webView));
@@ -87,7 +86,6 @@ public class MeFragment extends MainFragment{
 			bingdingTitleUI();
 			return mPageRoot;
 		}
-
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -97,21 +95,13 @@ public class MeFragment extends MainFragment{
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.button_sms:
-				EditText ett_username = (EditText)(mPageRoot.findViewById(R.id.tv_login_account));
-				String phone_number = ett_username.getText().toString();
-				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
-				if (!pattern.matcher(phone_number).find()) {
-					showToast("请输入11位手机正确号码.");
-					return;
-				}
+			case R.id.button_login:
 				// 打开注册页面
 				RegisterPage registerPage = new RegisterPage();
 				registerPage.setRegisterCallback(new EventHandler() {
 					public void afterEvent(int event, int result, Object data) {
 						// 解析注册结果
 						if (result == SMSSDK.RESULT_COMPLETE) {
-							@SuppressWarnings("unchecked")
 							HashMap<String,Object> phoneMap = (HashMap<String, Object>) data;
 							String country = (String) phoneMap.get("country");
 							String phone = (String) phoneMap.get("phone");
@@ -121,8 +111,6 @@ public class MeFragment extends MainFragment{
 					}
 				});
 				registerPage.show(getActivity().getApplicationContext());
-				break;
-			case R.id.button_login:
 				break;
 			}
 		}

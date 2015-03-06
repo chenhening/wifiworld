@@ -29,7 +29,7 @@ public class DiscoverFragment extends MainFragment {
 		// TODO Auto-generated method stub
 		mPageRoot = inflater.inflate(R.layout.fragment_find, null);
 		super.onCreateView(inflater, container, savedInstanceState);
-		bingdingTitleUI();
+		//bingdingTitleUI();
 		return mPageRoot;
 	}
 

@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-<include layout="@layout/header_setting" />
+
+	<include layout="@layout/header_setting" />
+
     <LinearLayout
         android:id="@+id/layout_userprofile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="175dp"
         android:background="@color/gray"
         android:orientation="vertical" >
 
@@ -18,65 +20,13 @@
             android:layout_gravity="center"
             android:src="@drawable/tab_mine_nor" />
 
-        <RelativeLayout
-            android:id="@+id/layout_loginout"
-            android:layout_width="271dp"
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="127dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical" >
+            android:text="账号登录" />
 
-            <Button
-                android:id="@+id/button_sms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/editText_password"
-                android:layout_alignParentBottom="false"
-                android:layout_alignRight="@+id/editText_username"
-                android:layout_alignTop="@+id/editText_password"
-                android:layout_centerInParent="false"
-                android:text="短信验证码(60)" />
-
-            <Button
-                android:id="@+id/button_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/editText_password"
-                android:layout_alignRight="@+id/button_sms"
-                android:layout_below="@+id/editText_password"
-                android:text="账号登陆" />
-
-            <EditText
-                android:id="@+id/editText_username"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
-                android:ems="10"
-                android:hint="11位手机号码"
-                android:inputType="phone" >
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/editText_password"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/editText_username"
-                android:layout_below="@+id/editText_username"
-                android:layout_centerInParent="true"
-                android:ems="10"
-                android:hint="6位数字"
-                android:inputType="number" />
-
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3.21" >
     </LinearLayout>
 
 </LinearLayout>
