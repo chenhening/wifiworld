@@ -69,11 +69,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private EditText etLoginAccount;
 
-	private EditText etLoginPasswd;
+//	private EditText etLoginPasswd;
 
 	private Button btClearLoginAccount;
 
-	private Button btClearLoginPasswd;
+//	private Button btClearLoginPasswd;
 
 	private TextView tvLoginErrortip;
 
@@ -234,9 +234,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				etLoginAccount.setText(saveAccount);
 			}
 
-			if (!TextUtils.isEmpty(savePasswd)) {
-				etLoginPasswd.setText(savePasswd);
-			}
+//			if (!TextUtils.isEmpty(savePasswd)) {
+//				etLoginPasswd.setText(savePasswd);
+//			}
 
 		}
 
@@ -300,7 +300,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private void initManualLogin() {
 
-		etLoginPasswd.setText("");
+		//etLoginPasswd.setText("");
 
 		// 以下是手动登录的初始化操作
 
@@ -319,8 +319,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putString(SAVE_USER_ACCOUNT, etLoginAccount.getText()
 				.toString().trim());
-		outState.putString(SAVE_USER_PASSWD, etLoginPasswd.getText().toString()
-				.trim());
+//		outState.putString(SAVE_USER_PASSWD, etLoginPasswd.getText().toString()
+//				.trim());
 		super.onSaveInstanceState(outState);
 
 	}
@@ -343,11 +343,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		llLogin = (LinearLayout) findViewById(R.id.button_login);
 
 		etLoginAccount = (EditText) findViewById(R.id.tv_login_account);
-		etLoginPasswd = (EditText) findViewById(R.id.tv_login_passwd);
+		//etLoginPasswd = (EditText) findViewById(R.id.tv_login_passwd);
 
 		// 清除按钮
 		btClearLoginAccount = (Button) findViewById(R.id.bt_clear_login_account);
-		btClearLoginPasswd = (Button) findViewById(R.id.bt_clear_login_passwd);
+		//btClearLoginPasswd = (Button) findViewById(R.id.bt_clear_login_passwd);
 
 		tvLoginErrortip = (TextView) findViewById(R.id.tv_login_errortip);
 
@@ -369,7 +369,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		btClearLoginAccount.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				etLoginAccount.setText("");
-				etLoginPasswd.setText("");
+//				etLoginPasswd.setText("");
 
 				// 删除账号资料
 				pref.setString(Const.USER_ACCOUNT, "");
@@ -380,117 +380,117 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}
 		});
 
-		btClearLoginPasswd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				etLoginPasswd.setText("");
-				etLoginPasswd.requestFocus();
-				llLoginErrortip.setVisibility(View.INVISIBLE);
-				showInputMethod(etLoginPasswd);
-			}
-		});
+//		btClearLoginPasswd.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
+//				etLoginPasswd.setText("");
+//				etLoginPasswd.requestFocus();
+//				llLoginErrortip.setVisibility(View.INVISIBLE);
+//				showInputMethod(etLoginPasswd);
+//			}
+//		});
 
 		// 监听变化
-		etLoginAccount.addTextChangedListener(new LoginTextWatcher(
-				btClearLoginAccount));
-		etLoginPasswd.addTextChangedListener(new LoginTextWatcher(
-				btClearLoginPasswd));
+//		etLoginAccount.addTextChangedListener(new LoginTextWatcher(
+//				btClearLoginAccount));
+//		etLoginPasswd.addTextChangedListener(new LoginTextWatcher(
+//				btClearLoginPasswd));
 
 		// 账号焦点改变
-		etLoginAccount
-				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (hasFocus) {
-
-							btClearLoginPasswd.setVisibility(View.INVISIBLE);
-							btClearLoginAccount.setVisibility(etLoginAccount
-									.length() > 0 ? View.VISIBLE
-									: View.INVISIBLE);
-
-						} else {
-							btClearLoginAccount.setVisibility(View.INVISIBLE);
-
-						}
-					}
-				});
-
-		// 密码焦点改变
-		etLoginPasswd
-				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (hasFocus) {
-
-							btClearLoginAccount.setVisibility(View.INVISIBLE);
-							btClearLoginPasswd.setVisibility(etLoginPasswd
-									.length() > 0 ? View.VISIBLE
-									: View.INVISIBLE);
-
-						} else {
-							btClearLoginPasswd.setVisibility(View.INVISIBLE);
-
-						}
-					}
-				});
+//		etLoginAccount
+//				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//					public void onFocusChange(View v, boolean hasFocus) {
+//						if (hasFocus) {
+//
+//							btClearLoginPasswd.setVisibility(View.INVISIBLE);
+//							btClearLoginAccount.setVisibility(etLoginAccount
+//									.length() > 0 ? View.VISIBLE
+//									: View.INVISIBLE);
+//
+//						} else {
+//							btClearLoginAccount.setVisibility(View.INVISIBLE);
+//
+//						}
+//					}
+//				});
+//
+//		// 密码焦点改变
+//		etLoginPasswd
+//				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//					public void onFocusChange(View v, boolean hasFocus) {
+//						if (hasFocus) {
+//
+//							btClearLoginAccount.setVisibility(View.INVISIBLE);
+//							btClearLoginPasswd.setVisibility(etLoginPasswd
+//									.length() > 0 ? View.VISIBLE
+//									: View.INVISIBLE);
+//
+//						} else {
+//							btClearLoginPasswd.setVisibility(View.INVISIBLE);
+//
+//						}
+//					}
+//				});
 
 		// 下一步，密码框取得焦点
-		etLoginAccount.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_NEXT
-						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-					etLoginPasswd.requestFocus();
-					return true;
-				}
-				return false;
-			}
-		});
+//		etLoginAccount.setOnEditorActionListener(new OnEditorActionListener() {
+//
+//			@Override
+//			public boolean onEditorAction(TextView v, int actionId,
+//					KeyEvent event) {
+//				if (actionId == EditorInfo.IME_ACTION_NEXT
+//						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+//					etLoginPasswd.requestFocus();
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
 
 		// 点击键盘完成键触发登录
-		etLoginPasswd.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_DONE
-						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-					initLogin();
-					processLogin();
-					return true;
-				}
-				return false;
-			}
-		});
-
-		// 解决键盘遮挡问题
-		etLoginAccount.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				llLoginErrortip.setVisibility(View.INVISIBLE);
-				tvLoginErrortip.setText("");
-				btClearLoginAccount.setVisibility(etLoginAccount.length() > 0 ? View.VISIBLE
-						: View.INVISIBLE);
-
-				// 解决键盘遮挡问题
-				changeScrollView();
-				return false;
-			}
-		});
-
-		etLoginPasswd.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				llLoginErrortip.setVisibility(View.INVISIBLE);
-				tvLoginErrortip.setText("");
-				btClearLoginPasswd.setVisibility(etLoginPasswd.length() > 0 ? View.VISIBLE
-						: View.INVISIBLE);
-
-				// 解决键盘遮挡问题
-				changeScrollView();
-				return false;
-			}
-		});
-
+//		etLoginPasswd.setOnEditorActionListener(new OnEditorActionListener() {
+//
+//			@Override
+//			public boolean onEditorAction(TextView v, int actionId,
+//					KeyEvent event) {
+//				if (actionId == EditorInfo.IME_ACTION_DONE
+//						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+//					initLogin();
+//					processLogin();
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+//
+//		// 解决键盘遮挡问题
+//		etLoginAccount.setOnTouchListener(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				llLoginErrortip.setVisibility(View.INVISIBLE);
+//				tvLoginErrortip.setText("");
+//				btClearLoginAccount.setVisibility(etLoginAccount.length() > 0 ? View.VISIBLE
+//						: View.INVISIBLE);
+//
+//				// 解决键盘遮挡问题
+//				changeScrollView();
+//				return false;
+//			}
+//		});
+//
+//		etLoginPasswd.setOnTouchListener(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				llLoginErrortip.setVisibility(View.INVISIBLE);
+//				tvLoginErrortip.setText("");
+//				btClearLoginPasswd.setVisibility(etLoginPasswd.length() > 0 ? View.VISIBLE
+//						: View.INVISIBLE);
+//
+//				// 解决键盘遮挡问题
+//				changeScrollView();
+//				return false;
+//			}
+//		});
+//
 	}
 
 	// 出键盘
@@ -503,7 +503,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	public void hideSoftInput() {
 		InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		im.hideSoftInputFromWindow(etLoginAccount.getWindowToken(), 0);
-		im.hideSoftInputFromWindow(etLoginPasswd.getWindowToken(), 0);
+//		im.hideSoftInputFromWindow(etLoginPasswd.getWindowToken(), 0);
 	}
 
 	/**
@@ -587,7 +587,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		// 隐藏清除
 		btClearLoginAccount.setVisibility(View.INVISIBLE);
-		btClearLoginPasswd.setVisibility(View.INVISIBLE);
+//		btClearLoginPasswd.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -611,7 +611,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			// 账号和密码设置不可用状态
 			etLoginAccount.setEnabled(false);
-			etLoginPasswd.setEnabled(false);
+//			etLoginPasswd.setEnabled(false);
 
 			// 设置状态
 			isNowLogining = true;
@@ -630,7 +630,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			// 账号和密码恢复为可用状态
 			etLoginAccount.setEnabled(true);
-			etLoginPasswd.setEnabled(true);
+//			etLoginPasswd.setEnabled(true);
 
 			// 设置状态
 			isNowLogining = false;
@@ -657,7 +657,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		// 获取账号密码
 		account = etLoginAccount.getText().toString().trim();
-		passwd = etLoginPasswd.getText().toString().trim();
+//		passwd = etLoginPasswd.getText().toString().trim();
 
 		// 判断名称和密码
 		if (TextUtils.isEmpty(account)) {
@@ -686,7 +686,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		initLogin();
 
-		etLoginPasswd.setText("********");
+//		etLoginPasswd.setText("********");
 
 		// 判断网络
 		if (!NetHelper.isNetworkAvailable(getApplicationContext())) {
