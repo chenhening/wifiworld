@@ -1,6 +1,8 @@
 package com.anynet.wifiworld.me;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,11 @@ public class MeFragment extends MainFragment {
 	private String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
 	private String SMSSDK_KEY = "5ea9dee43eb2";
 	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
+	
+	//for SMSSDK
+	private EventHandler mEventHandler;
+	private int mVerifyTime = 60;
+	private TimerTask mTask;
 
 	private void bingdingTitleUI(boolean isLogin) {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -54,18 +62,37 @@ public class MeFragment extends MainFragment {
 		Bmob.initialize(getActivity(), BMOB_KEY);
 		// initialize sms
 		SMSSDK.initSDK(getActivity(), SMSSDK_KEY, SMSSDK_SECRECT);
-		final Handler handler = new Handler();
-		EventHandler eventHandler = new EventHandler() {
+		mEventHandler = new EventHandler() {
 			public void afterEvent(int event, int result, Object data) {
-				Message msg = new Message();
-				msg.arg1 = event;
-				msg.arg2 = result;
-				msg.obj = data;
-				handler.sendMessage(msg);
+				if (result == SMSSDK.RESULT_COMPLETE) {
+	                //回调完成
+	                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+	                //提交验证码成功
+	                }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+	                	getActivity().runOnUiThread(new Runnable() {
+	                		@Override  
+                            public void run() { 
+	                			showToast("获取验证码成功，请输入验证码点击登陆.");
+	                		}
+	                	});
+	                //获取验证码成功
+	                }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
+	                //返回支持发送验证码的国家列表
+	                } 
+				 }else{                                                                 
+					 ((Throwable)data).printStackTrace(); 
+				 }
 			}
 		};
 		// 注册回调监听接口
-		SMSSDK.registerEventHandler(eventHandler);
+		SMSSDK.registerEventHandler(mEventHandler);
+	}
+	
+	@Override
+	public void onDestroy() {
+		//registerEventHandler必须和unregisterEventHandler配套使用，否则可能造成内存泄漏。
+		SMSSDK.unregisterEventHandler(mEventHandler);
+		super.onDestroy();
 	}
 
 	@Override
@@ -79,14 +106,44 @@ public class MeFragment extends MainFragment {
 				
 				@Override
 				public void onClick(View v) {
-					String phone_number = ((EditText) 
+					String phone_number =((EditText)
 						mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim();
 					Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 					if (!pattern.matcher(phone_number).find()) {
 						showToast("请输入11位手机正确号码.");
 						return;
 					}
-					SMSSDK.getVerificationCode("+86", phone_number, null);
+					
+					//发送验证码
+					SMSSDK.getVerificationCode("86", phone_number);
+					
+					//按钮进入60秒倒计时
+					final TextView tv_verify = 
+						(TextView)mPageRoot.findViewById(R.id.tv_button_sms);
+					tv_verify.setEnabled(false);
+					final String verify_txt = getString(R.string.smschecknum);
+					final Timer timer = new Timer();
+					mTask = new TimerTask() {
+
+                        @Override  
+                        public void run() {  
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override  
+                                public void run() {  
+                                    if (mVerifyTime <= 0) {  
+                                    	tv_verify.setEnabled(true);  
+                                    	tv_verify.setText(verify_txt);  
+                                    	mTask.cancel();  
+                                    } else {  
+                                    	tv_verify.setText(verify_txt + "(" + mVerifyTime + ")"); 
+                                    }
+                                    --mVerifyTime;
+                                }  
+                            });  
+                        }  
+                    };
+                    mVerifyTime = 60;
+                    timer.schedule(mTask, 0, 1000);  
 				}
 			});
 			mPageRoot.findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
@@ -112,7 +169,6 @@ public class MeFragment extends MainFragment {
 			return mPageRoot;
 		} else {
 			mPageRoot = inflater.inflate(R.layout.fragment_me, null);
-
 			super.onCreateView(inflater, container, savedInstanceState);
 			bingdingTitleUI();
 			return mPageRoot;
