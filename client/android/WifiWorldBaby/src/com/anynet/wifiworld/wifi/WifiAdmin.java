@@ -104,43 +104,7 @@ public class WifiAdmin {
          
        return bRet;
     }  
-    
-    private int parseBitSet(BitSet kmtBitSet) {
-    	for (int i = 0; i < kmtBitSet.size(); i++) {
-			if (kmtBitSet.get(i)) {
-				return i;
-			}
-		}
-    	
-    	return -1;
-    }
-    
-    public WifiAdmin.WifiCipherType getWifiType(BitSet kmtBitSet) {
-    	int type = parseBitSet(kmtBitSet);
-		if (type == WifiConfiguration.KeyMgmt.NONE) {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_NOPASS;
-		} else if (type == WifiConfiguration.KeyMgmt.WPA_PSK) {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_WPA;
-		} else {
-			return WifiAdmin.WifiCipherType.WIFICIPHER_WEP;
-		}
-	}
-    
-    private int getKeyMgmtType(WifiCipherType type) {  
-        if (type == WifiCipherType.WIFICIPHER_NOPASS) {
-            return WifiConfiguration.KeyMgmt.NONE;  
-        }
-        if (type == WifiCipherType.WIFICIPHER_WEP) {
-        	//WPA_EAP
-            return WifiConfiguration.KeyMgmt.IEEE8021X;
-        }
-        else if (type == WifiCipherType.WIFICIPHER_WPA) {
-            return WifiConfiguration.KeyMgmt.WPA_PSK;
-        }
-        
-        return WifiConfiguration.KeyMgmt.NONE;
-    }
-    
+
     public WifiConfiguration isExsits(String str) {
         Iterator<WifiConfiguration> localIterator = this.mWifiManager.getConfiguredNetworks().iterator();
         WifiConfiguration localWifiConfiguration;
@@ -189,6 +153,51 @@ public class WifiAdmin {
            return null;
        }
        return config;
+    }
+    
+    private int parseBitSet(BitSet kmtBitSet) {
+    	for (int i = 0; i < kmtBitSet.size(); i++) {
+			if (kmtBitSet.get(i)) {
+				return i;
+			}
+		}
+    	
+    	return -1;
+    }
+    
+    public WifiAdmin.WifiCipherType getWifiType(BitSet kmtBitSet) {
+    	int type = parseBitSet(kmtBitSet);
+		if (type == WifiConfiguration.KeyMgmt.NONE) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_NOPASS;
+		} else if (type == WifiConfiguration.KeyMgmt.WPA_PSK) {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WPA;
+		} else {
+			return WifiAdmin.WifiCipherType.WIFICIPHER_WEP;
+		}
+	}
+    
+    private int getKeyMgmtType(WifiCipherType type) {  
+        if (type == WifiCipherType.WIFICIPHER_NOPASS) {
+            return WifiConfiguration.KeyMgmt.NONE;  
+        }
+        if (type == WifiCipherType.WIFICIPHER_WEP) {
+        	//WPA_EAP
+            return WifiConfiguration.KeyMgmt.IEEE8021X;
+        }
+        else if (type == WifiCipherType.WIFICIPHER_WPA) {
+            return WifiConfiguration.KeyMgmt.WPA_PSK;
+        }
+        
+        return WifiConfiguration.KeyMgmt.NONE;
+    }
+
+    public int getWifiStrength(int dBm) {
+    	if(dBm <= -100)
+            return 0;
+        else if(dBm >= -50)
+        	return 100;
+        else
+        	return 2 * (dBm + 100);
     }
     
     //open WIFI

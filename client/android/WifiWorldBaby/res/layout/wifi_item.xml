@@ -56,7 +56,7 @@
 	    </LinearLayout>
 	    
 	    <Button
-	        android:id="@+id/wifi_more_btn"
+	        android:id="@+id/wifi_details_btn"
 	        android:layout_width="40dp"
 	        android:layout_height="40dp"
 	        android:focusable="false"

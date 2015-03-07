@@ -148,6 +148,18 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.anynet.wifiworld.ui.wifi.WifiDetailsActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+            
+            <intent-filter>
+              <action android:name="com.anynet.wifiworld.ui.wifi.DETAILS_DISPLAY" />
+              <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+          
+        </activity>
 
         <!-- 友盟统计配置开始，为了区分测试环境和正式环境， 这里需要通过代码配置 -->
 

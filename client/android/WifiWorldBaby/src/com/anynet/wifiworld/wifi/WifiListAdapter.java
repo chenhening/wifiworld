@@ -5,11 +5,13 @@ import java.util.List;
 import com.anynet.wifiworld.R;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -132,13 +134,15 @@ public class WifiListAdapter extends BaseAdapter {
 			} else {
 				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
 	            textView = (TextView) view.findViewById(R.id.wifi_name);
-	            ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 				textView.setText(((WifiInfoScanned)getItem(position)).getWifi_name());
+				
+				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 	            if (position >= (wifiFreeCnt + 2)) {
 	                imageView.setImageResource(R.drawable.id_locked);
 				} else {
 					imageView.setImageResource(R.drawable.id_default);
 				}
+	            
 	            int signalStrength = ((WifiInfoScanned)getItem(position)).getWifi_level();
 	            TextView signalLevelView = (TextView) view.findViewById(R.id.wifi_status_digit);
 	            signalLevelView.setText(signalStrength + "%");
@@ -150,6 +154,16 @@ public class WifiListAdapter extends BaseAdapter {
 				} else {
 					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon1);
 				}
+	            
+	            Button wifiDetails = (Button)view.findViewById(R.id.wifi_details_btn);
+	            wifiDetails.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						Intent intent = new Intent("com.anynet.wifiworld.ui.wifi.DETAILS_DISPLAY");
+						context.startActivity(intent);
+					}
+				});
 			}
         }
         return view;
