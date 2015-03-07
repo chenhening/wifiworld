@@ -12,9 +12,14 @@ import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListAdapter;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -41,8 +46,9 @@ public class WifiFragment extends MainFragment {
 
 	public void setWifiData(List<ScanResult> wifiList,
 			List<WifiConfiguration> wificonfiguration) {
-		mWifiFree = new ArrayList<WifiInfoScanned>();
-		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
+		mWifiFree.clear();
+		mWifiEncrypt.clear();
+		
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult scanResult = wifiList.get(i);
 			WifiConfiguration wifiCfg = mWifiAdmin.isExsits(scanResult.SSID);
@@ -52,11 +58,11 @@ public class WifiFragment extends MainFragment {
 				WifiAdmin.WifiCipherType wifiType = mWifiAdmin
 						.getWifiType(wifiCfg.allowedKeyManagement);
 				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName,
-						wifiPwd, wifiType, scanResult.level + 150);
+						wifiPwd, wifiType, mWifiAdmin.getWifiStrength(scanResult.level));
 				mWifiFree.add(wifiInfoScanned);
 			} else {
 				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, null,
-						null, scanResult.level + 150));
+						null, mWifiAdmin.getWifiStrength(scanResult.level)));
 			}
 		}
 
@@ -91,7 +97,6 @@ public class WifiFragment extends MainFragment {
 	}
 
 	private void scanWifi() {
-		mWifiAdmin = WifiAdmin.getInstance(getActivity());
 		mWifiAdmin.openWifi();
 		mWifiAdmin.startScan();
 		mWifiListScanned = mWifiAdmin.getWifiList();
@@ -99,6 +104,7 @@ public class WifiFragment extends MainFragment {
 		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
 	}
 
+	//从WiFi列表中删除已连接的WiFi
 	private boolean rmWifiConnected(String wifiName,
 			List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		for (Iterator<WifiInfoScanned> it = wifiFree.iterator(); it.hasNext();) {
@@ -124,8 +130,11 @@ public class WifiFragment extends MainFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.scanWifi();
-		// updateWifiList();
+		mWifiAdmin = WifiAdmin.getInstance(getActivity());
+		mWifiFree = new ArrayList<WifiInfoScanned>();
+		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
+		
+		scanWifi();
 	}
 
 	@Override
@@ -151,6 +160,7 @@ public class WifiFragment extends MainFragment {
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree,
 				mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
+		
 		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -193,36 +203,29 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
+		getActivity().unregisterReceiver(mReceiver);
 	}
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
+		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		getActivity().registerReceiver(mReceiver, filter);
+		scanWifi();
 	}
-
-	private void updateWifiList() {
-		if (mWifiUpdatorRunnable == null) {
-			mWifiUpdatorRunnable = new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						Thread.currentThread();
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					scanWifi();
-					mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-					mWifiUpdatorHanlder.postDelayed(this, 1000);
-				}
-			};
+	
+	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			final String action = intent.getAction();
+			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+				scanWifi();
+				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+			}
+			
 		}
-		mWifiUpdatorHanlder.post(mWifiUpdatorRunnable);
-	}
+	};
 
 }
