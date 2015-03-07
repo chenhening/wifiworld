@@ -69,8 +69,8 @@ public class MeFragment extends MainFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(
+			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// hybrid
 		boolean isLogin = WifiWorldApplication.isLogin();
 		if (!isLogin) {
@@ -79,38 +79,26 @@ public class MeFragment extends MainFragment {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					// 打开注册页面
-//					RegisterPage registerPage = new RegisterPage();
-//					registerPage.setRegisterCallback(new EventHandler() {
-//								public void afterEvent(int event,
-//										int result, Object data) {
-//									// 解析注册结果
-//									if (result == SMSSDK.RESULT_COMPLETE) {
-//										HashMap<String, Object> phoneMap = (HashMap<String, Object>) data;
-//										String country = (String) phoneMap
-//												.get("country");
-//										String phone = (String) phoneMap
-//												.get("phone");
-//										// 提交用户信息
-//										// registerUser(country, phone);
-//									}
-//								}
-//							});
-					SMSSDK.getVerificationCode("+86",// code,
-							((EditText) mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim(), null);
-//					registerPage.show(getActivity());
+					String phone_number = ((EditText) 
+						mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim();
+					Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
+					if (!pattern.matcher(phone_number).find()) {
+						showToast("请输入11位手机正确号码.");
+						return;
+					}
+					SMSSDK.getVerificationCode("+86", phone_number, null);
 				}
 			});
-			mPageRoot.findViewById(R.id.button_login).setOnClickListener(
-					new OnClickListener() {
+			mPageRoot.findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							SMSSDK.submitVerificationCode("+86", ((EditText) mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim(), ((EditText) mPageRoot.findViewById(R.id.tv_login_sms)).getText().toString().trim());
-						}
-					});
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SMSSDK.submitVerificationCode("+86", 
+						((EditText) mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim(), 
+						((EditText) mPageRoot.findViewById(R.id.tv_login_sms)).getText().toString().trim());
+				}
+			});
 			// SystemWebView webView =
 			// (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
 			// cordovaWebView = new CordovaWebViewImpl(getActivity(), new

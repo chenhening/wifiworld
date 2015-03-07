@@ -1,0 +1,4 @@
+code style
+=================
+1. Limit about 100 characters each line for better reading.
+2. Prefer to follow google java code style. 
