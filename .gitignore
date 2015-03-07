@@ -8,6 +8,7 @@
 /client/android/WifiWorldBaby/.idea
 /client/android/WifiWorldBaby/.gradle
 /client/android/WifiWorldBaby/out/client/android/WifiWorld/gen
+/client/android/WifiWorld/gen
 /client/android/WifiWorld/bin
 /client/android/WifiWorld/proguard
 /client/android/WifiWorld/project.properties
@@ -16,4 +17,5 @@
 /client/android/WifiWorld/.settings
 /client/android/WifiWorld/.idea
 /client/android/WifiWorld/.gradle
-/client/android/WifiWorld/out
+/client/android/WifiWorld/out
+*.DS_Store
