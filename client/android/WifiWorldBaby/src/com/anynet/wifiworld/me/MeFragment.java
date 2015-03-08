@@ -1,39 +1,40 @@
 package com.anynet.wifiworld.me;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.R.id;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.WifiWorldApplication;
-
-import cn.smssdk.gui.RegisterPage;
 
 public class MeFragment extends MainFragment {
 	private String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
 	private String SMSSDK_KEY = "5ea9dee43eb2";
 	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
+	
+	//for saved data
+	private static String mUserprofileDataFile = "userprofile.conf";
+	private static String mAliasUser = "phone_number";
+	private static String mAliasPwd = "password";
+	private SharedPreferences.Editor mSharedata;
+	private boolean mIsLogin = false;
 	
 	//for SMS verify
 	private String mPhone_code = "86";
@@ -45,6 +46,8 @@ public class MeFragment extends MainFragment {
 	private LinearLayout mLL_Login;
 	private LinearLayout mLL_Verify;
 	private TextView mTV_Verify;
+	private String mPhoneNumber;
+	private String mSmsCode;
 
 	private void bingdingTitleUI(boolean isLogin) {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -74,14 +77,15 @@ public class MeFragment extends MainFragment {
 				if (result == SMSSDK.RESULT_COMPLETE) {
 	                //回调完成
 	                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-	                //提交验证码成功
-                	//TODO(binfei): 将类似的函数整理成一个公共函数
-                	getActivity().runOnUiThread(new Runnable() {
-                		@Override  
-                        public void run() { 
-                			showToast("服务器验证成功，正在登陆。");
-                		}
-                	});
+		                //提交验证码成功
+	                	//TODO(binfei): 将类似的函数整理成一个公共函数
+	                	getActivity().runOnUiThread(new Runnable() {
+	                		@Override  
+	                        public void run() {
+	                			showToast("服务器验证成功，正在登陆。");
+	                		}
+	                	});
+	                	SaveUserprofile();
 	                }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
 	                	//获取验证码成功
 	                	//TODO(binfei): 将类似的函数整理成一个公共函数
@@ -89,10 +93,10 @@ public class MeFragment extends MainFragment {
 	                		@Override  
                             public void run() { 
 	                			showToast("获取验证码成功，请输入验证码点击登陆.");
+	                			mET_Account.setEnabled(false);
+	    	                	mLL_Login.setEnabled(true);
 	                		}
 	                	});
-	                	mET_Account.setEnabled(false);
-	                	mLL_Login.setEnabled(true);
 	                }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
 	                //返回支持发送验证码的国家列表
 	                } 
@@ -116,8 +120,9 @@ public class MeFragment extends MainFragment {
 	public View onCreateView(
 			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//TODO(binfei): need to be removed into functions onAttach for better performance
-		boolean isLogin = WifiWorldApplication.isLogin();
-		if (!isLogin) {
+		//boolean isLogin = WifiWorldApplication.isLogin();
+		VerifyUserprofile();
+		if (!mIsLogin) {
 			mPageRoot = inflater.inflate(R.layout.login, null);
 			//get verify code
 			mLL_Verify = (LinearLayout)mPageRoot.findViewById(R.id.button_sms);
@@ -126,15 +131,15 @@ public class MeFragment extends MainFragment {
 				@Override
 				public void onClick(View v) {
 					mET_Account = (EditText)mPageRoot.findViewById(R.id.tv_login_account);
-					String phone_number = mET_Account.getText().toString().trim();
+					mPhoneNumber = mET_Account.getText().toString().trim();
 					Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
-					if (!pattern.matcher(phone_number).find()) {
+					if (!pattern.matcher(mPhoneNumber).find()) {
 						showToast("请输入11位手机正确号码.");
 						return;
 					}
 					
 					//发送验证码
-					SMSSDK.getVerificationCode(mPhone_code, phone_number);
+					SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
 					
 					//按钮进入60秒倒计时
 					mTV_Verify = (TextView)mPageRoot.findViewById(R.id.tv_button_sms);
@@ -148,7 +153,8 @@ public class MeFragment extends MainFragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override  
                                 public void run() {  
-                                    if (mVerifyTime <= 0) {  
+                                    if (mVerifyTime <= 0) {
+                                    	mET_Account.setEnabled(true);
                                     	mLL_Verify.setEnabled(true);  
                                     	mTV_Verify.setText("点击再次发送");  
                                     	mTask.cancel();  
@@ -174,15 +180,14 @@ public class MeFragment extends MainFragment {
 					// TODO Auto-generated method stub
 					mLL_Login.setEnabled(false);
 					mET_SMS = ((EditText) mPageRoot.findViewById(R.id.tv_login_sms));
-					String sms_code = mET_SMS.getText().toString().trim();
+					mSmsCode = mET_SMS.getText().toString().trim();
 					Pattern pattern = Pattern.compile("^[0-9]{4}$");
-					if (!pattern.matcher(sms_code).find()) {
+					if (!pattern.matcher(mSmsCode).find()) {
 						showToast("请输入正确的4位验证码.");
 						return;
 					}
 					
-					String phone_number = mET_Account.getText().toString().trim();
-					SMSSDK.submitVerificationCode(mPhone_code, phone_number, sms_code);
+					SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
 				}
 			});
 			mLL_Login.setEnabled(false);
@@ -207,31 +212,69 @@ public class MeFragment extends MainFragment {
 	}
 
 	// ---------------------------------------------------------------------------------------------
-	// for click event
-	View.OnClickListener btn_listener_ = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.button_login:
-				// 打开注册页面
-				RegisterPage registerPage = new RegisterPage();
-				registerPage.setRegisterCallback(new EventHandler() {
-					public void afterEvent(int event, int result, Object data) {
-						// 解析注册结果
-						if (result == SMSSDK.RESULT_COMPLETE) {
-							HashMap<String, Object> phoneMap = (HashMap<String, Object>) data;
-							String country = (String) phoneMap.get("country");
-							String phone = (String) phoneMap.get("phone");
-							// 提交用户信息
-							// registerUser(country, phone);
-						}
-					}
-				});
-				registerPage.show(getActivity());
-				break;
-			}
+	//util functions
+	private void VerifyUserprofile() {
+		//读取本地保存的账号密码文件
+		SharedPreferences sharedata = getActivity().getSharedPreferences(mUserprofileDataFile, 0);  
+		mPhoneNumber = sharedata.getString(mAliasUser, null);  
+		String password = sharedata.getString(mAliasPwd, null);
+		
+		//如果本地已经存有数据，那么取出来与服务器验证是否成功
+		if (mPhoneNumber == null || password == null || mPhoneNumber.isEmpty() || 
+			password.isEmpty()) {
+			showToast("用户未登陆。");
+			return;
 		}
+		
+		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
+		query.addWhereNotEqualTo(mAliasPwd, password);
+		query.findObjects(getApplicationContext(), new FindListener<UserProfile>() {
+		        @Override
+		        public void onSuccess(List<UserProfile> object) {
+		            // TODO Auto-generated method stub
+		        	if (object.size() == 1) {
+		        		showToast("用户登陆成功。");
+		        		mIsLogin = true;
+		        	}
+		        	else {
+		        		showToast("用户登陆数据失效。");
+		        	}
+		        }
+		        @Override
+		        public void onError(int code, String msg) {
+		            // TODO Auto-generated method stub
+		        	showToast("用户登陆数据失效。");
+		        }
+		});
+	}
+	
+	private void SaveUserprofile() {
+		//保存账号密码到本地用于下次登陆
+    	//得到加密后的密码
+    	String password = Base64Util.encode(mPhoneNumber + mSmsCode);
+    	//TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
+    	mSharedata = getActivity().getSharedPreferences(mUserprofileDataFile, 0).edit();
+    	mSharedata.putString(mAliasUser, mPhoneNumber);
+    	mSharedata.putString(mAliasPwd, password);
+    	mSharedata.commit();
+    	
+    	//通过bmob保存到服务器，以便于做数据验证
+    	final UserProfile user = new UserProfile();
+    	user.mPhoneNumber = mPhoneNumber;
+    	user.mPassword = password;
+    	user.save(getApplicationContext(), new SaveListener() {
 
-	};
+    	    @Override
+    	    public void onSuccess() {
+    	        // TODO Auto-generated method stub
+    	    	showToast("添加数据成功，返回objectId为："+ user.getObjectId());
+    	    }
+
+    	    @Override
+    	    public void onFailure(int code, String arg0) {
+    	        // TODO Auto-generated method stub
+    	        // 添加失败
+    	    }
+    	});
+	}
 }
