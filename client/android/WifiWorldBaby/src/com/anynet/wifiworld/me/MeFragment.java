@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.Bmob;
@@ -34,10 +35,16 @@ public class MeFragment extends MainFragment {
 	private String SMSSDK_KEY = "5ea9dee43eb2";
 	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
 	
-	//for SMSSDK
-	private EventHandler mEventHandler;
+	//for SMS verify
+	private String mPhone_code = "86";
 	private int mVerifyTime = 60;
+	private EventHandler mEventHandler;
 	private TimerTask mTask;
+	private EditText mET_Account; //account input
+	private EditText mET_SMS; //sms input
+	private LinearLayout mLL_Login;
+	private LinearLayout mLL_Verify;
+	private TextView mTV_Verify;
 
 	private void bingdingTitleUI(boolean isLogin) {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -68,14 +75,24 @@ public class MeFragment extends MainFragment {
 	                //回调完成
 	                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
 	                //提交验证码成功
+                	//TODO(binfei): 将类似的函数整理成一个公共函数
+                	getActivity().runOnUiThread(new Runnable() {
+                		@Override  
+                        public void run() { 
+                			showToast("服务器验证成功，正在登陆。");
+                		}
+                	});
 	                }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+	                	//获取验证码成功
+	                	//TODO(binfei): 将类似的函数整理成一个公共函数
 	                	getActivity().runOnUiThread(new Runnable() {
 	                		@Override  
                             public void run() { 
 	                			showToast("获取验证码成功，请输入验证码点击登陆.");
 	                		}
 	                	});
-	                //获取验证码成功
+	                	mET_Account.setEnabled(false);
+	                	mLL_Login.setEnabled(true);
 	                }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
 	                //返回支持发送验证码的国家列表
 	                } 
@@ -98,16 +115,18 @@ public class MeFragment extends MainFragment {
 	@Override
 	public View onCreateView(
 			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// hybrid
+		//TODO(binfei): need to be removed into functions onAttach for better performance
 		boolean isLogin = WifiWorldApplication.isLogin();
 		if (!isLogin) {
 			mPageRoot = inflater.inflate(R.layout.login, null);
-			mPageRoot.findViewById(R.id.button_sms).setOnClickListener(new OnClickListener() {
+			//get verify code
+			mLL_Verify = (LinearLayout)mPageRoot.findViewById(R.id.button_sms);
+			mLL_Verify.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					String phone_number =((EditText)
-						mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim();
+					mET_Account = (EditText)mPageRoot.findViewById(R.id.tv_login_account);
+					String phone_number = mET_Account.getText().toString().trim();
 					Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 					if (!pattern.matcher(phone_number).find()) {
 						showToast("请输入11位手机正确号码.");
@@ -115,12 +134,11 @@ public class MeFragment extends MainFragment {
 					}
 					
 					//发送验证码
-					SMSSDK.getVerificationCode("86", phone_number);
+					SMSSDK.getVerificationCode(mPhone_code, phone_number);
 					
 					//按钮进入60秒倒计时
-					final TextView tv_verify = 
-						(TextView)mPageRoot.findViewById(R.id.tv_button_sms);
-					tv_verify.setEnabled(false);
+					mTV_Verify = (TextView)mPageRoot.findViewById(R.id.tv_button_sms);
+					mLL_Verify.setEnabled(false);
 					final String verify_txt = getString(R.string.smschecknum);
 					final Timer timer = new Timer();
 					mTask = new TimerTask() {
@@ -131,11 +149,11 @@ public class MeFragment extends MainFragment {
                                 @Override  
                                 public void run() {  
                                     if (mVerifyTime <= 0) {  
-                                    	tv_verify.setEnabled(true);  
-                                    	tv_verify.setText(verify_txt);  
+                                    	mLL_Verify.setEnabled(true);  
+                                    	mTV_Verify.setText("点击再次发送");  
                                     	mTask.cancel();  
                                     } else {  
-                                    	tv_verify.setText(verify_txt + "(" + mVerifyTime + ")"); 
+                                    	mTV_Verify.setText(verify_txt + "(" + mVerifyTime + ")");
                                     }
                                     --mVerifyTime;
                                 }  
@@ -146,16 +164,29 @@ public class MeFragment extends MainFragment {
                     timer.schedule(mTask, 0, 1000);  
 				}
 			});
-			mPageRoot.findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
+			
+			//login
+			mLL_Login = (LinearLayout)mPageRoot.findViewById(R.id.button_login);
+			mLL_Login.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					SMSSDK.submitVerificationCode("+86", 
-						((EditText) mPageRoot.findViewById(R.id.tv_login_account)).getText().toString().trim(), 
-						((EditText) mPageRoot.findViewById(R.id.tv_login_sms)).getText().toString().trim());
+					mLL_Login.setEnabled(false);
+					mET_SMS = ((EditText) mPageRoot.findViewById(R.id.tv_login_sms));
+					String sms_code = mET_SMS.getText().toString().trim();
+					Pattern pattern = Pattern.compile("^[0-9]{4}$");
+					if (!pattern.matcher(sms_code).find()) {
+						showToast("请输入正确的4位验证码.");
+						return;
+					}
+					
+					String phone_number = mET_Account.getText().toString().trim();
+					SMSSDK.submitVerificationCode(mPhone_code, phone_number, sms_code);
 				}
 			});
+			mLL_Login.setEnabled(false);
+			
 			// SystemWebView webView =
 			// (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
 			// cordovaWebView = new CordovaWebViewImpl(getActivity(), new
