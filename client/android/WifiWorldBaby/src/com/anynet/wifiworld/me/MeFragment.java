@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +24,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.app.WifiWorldApplication;
+import com.anynet.wifiworld.util.Base64Util;
 
 public class MeFragment extends MainFragment {
 	private String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
@@ -83,6 +85,8 @@ public class MeFragment extends MainFragment {
 	                		@Override  
 	                        public void run() {
 	                			showToast("服务器验证成功，正在登陆。");
+	                			mPageRoot.findViewById(R.id.sl_profile).setVisibility(View.VISIBLE);
+	                			mPageRoot.findViewById(R.id.sl_login).setVisibility(View.GONE);
 	                		}
 	                	});
 	                	SaveUserprofile();
@@ -122,8 +126,13 @@ public class MeFragment extends MainFragment {
 		//TODO(binfei): need to be removed into functions onAttach for better performance
 		//boolean isLogin = WifiWorldApplication.isLogin();
 		VerifyUserprofile();
+		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
+		super.onCreateView(inflater, container, savedInstanceState);
+		bingdingTitleUI();
 		if (!mIsLogin) {
-			mPageRoot = inflater.inflate(R.layout.login, null);
+			mPageRoot.findViewById(R.id.sl_profile).setVisibility(View.GONE);
+			mPageRoot.findViewById(R.id.sl_login).setVisibility(View.VISIBLE);
+			//mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 			//get verify code
 			mLL_Verify = (LinearLayout)mPageRoot.findViewById(R.id.button_sms);
 			mLL_Verify.setOnClickListener(new OnClickListener() {
@@ -190,8 +199,7 @@ public class MeFragment extends MainFragment {
 					SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
 				}
 			});
-			mLL_Login.setEnabled(false);
-			
+			mLL_Login.setEnabled(false);			
 			// SystemWebView webView =
 			// (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
 			// cordovaWebView = new CordovaWebViewImpl(getActivity(), new
@@ -200,17 +208,35 @@ public class MeFragment extends MainFragment {
 			// cordovaWebView.init(this, Config.getPluginEntries(),
 			// Config.getPreferences());
 			// cordovaWebView.loadUrl("file:///android_asset/www/index.html");
-			super.onCreateView(inflater, container, savedInstanceState);
-			bingdingTitleUI(true);
-			return mPageRoot;
-		} else {
-			mPageRoot = inflater.inflate(R.layout.fragment_me, null);
-			super.onCreateView(inflater, container, savedInstanceState);
-			bingdingTitleUI();
-			return mPageRoot;
+		}else{
+			mPageRoot.findViewById(R.id.sl_profile).setVisibility(View.VISIBLE);
+			mPageRoot.findViewById(R.id.sl_login).setVisibility(View.GONE);
 		}
+		return mPageRoot;
 	}
 
+	private void changeFragment() {
+
+		// 1.获取FragmentManager对象
+
+		FragmentManager manager = getActivity().getSupportFragmentManager();
+
+		// 2.获取fragment的事务操作 代表：activity对fragment执行的多个改变的操作
+
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		// 添加替换或删除Fragment这时候就需要FragmentTransaction的布局动态文件
+
+		// 执行替换
+
+		//参数1:父元素的id值，参数2：替换新fragment对象
+
+		transaction.replace(R.id.fragment_container, new MeFragment());
+
+		// 3.提交事务
+		transaction.commit();
+		}
+	
 	// ---------------------------------------------------------------------------------------------
 	//util functions
 	private void VerifyUserprofile() {
@@ -218,11 +244,11 @@ public class MeFragment extends MainFragment {
 		SharedPreferences sharedata = getActivity().getSharedPreferences(mUserprofileDataFile, 0);  
 		mPhoneNumber = sharedata.getString(mAliasUser, null);  
 		String password = sharedata.getString(mAliasPwd, null);
-		
+		mIsLogin = false;
 		//如果本地已经存有数据，那么取出来与服务器验证是否成功
 		if (mPhoneNumber == null || password == null || mPhoneNumber.isEmpty() || 
 			password.isEmpty()) {
-			showToast("用户未登陆。");
+			showToast("用户未登陆。");			
 			return;
 		}
 		

@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.util.XLLog;
 
 /**
  * 开关
