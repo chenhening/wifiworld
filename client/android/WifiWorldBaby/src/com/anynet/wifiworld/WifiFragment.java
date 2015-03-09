@@ -12,21 +12,27 @@ import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListAdapter;
 
+import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -43,6 +49,9 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private Handler mWifiUpdatorHanlder = new Handler();
 	private Runnable mWifiUpdatorRunnable = null;
+	private TextView mWifiNameView;
+	private LinearLayout mWifiTasteLayout;
+	private PopupWindow mPopupWindow;
 
 	public void setWifiData(List<ScanResult> wifiList,
 			List<WifiConfiguration> wificonfiguration) {
@@ -66,10 +75,10 @@ public class WifiFragment extends MainFragment {
 			}
 		}
 
-		if (mWifiFree.size() > 1)
-			Collections.sort(mWifiFree, new SortBySignalStrength());
-		if (mWifiEncrypt.size() > 1)
-			Collections.sort(mWifiEncrypt, new SortBySignalStrength());
+//		if (mWifiFree.size() > 1)
+//			Collections.sort(mWifiFree, new SortBySignalStrength());
+//		if (mWifiEncrypt.size() > 1)
+//			Collections.sort(mWifiEncrypt, new SortBySignalStrength());
 	}
 
 	private class SortBySignalStrength implements Comparator<Object> {
@@ -103,6 +112,22 @@ public class WifiFragment extends MainFragment {
 		mWifiConfigurationScanned = mWifiAdmin.getConfiguration();
 		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
 	}
+	
+	private void displayWifiConnected(TextView wifiNameView) {
+		String wifiConnected = mWifiAdmin.getSSID();
+		if (!wifiConnected.equals("")) {
+			wifiNameView.setText("已连接"
+					+ wifiConnected.substring(1, wifiConnected.length() - 1));
+			wifiNameView.setTextColor(Color.BLACK);
+			rmWifiConnected(
+					wifiConnected.substring(1, wifiConnected.length() - 1),
+					mWifiFree, mWifiEncrypt);
+			mWifiTasteLayout.setVisibility(View.VISIBLE);
+		} else {
+			wifiNameView.setText("未连接任何Wifi");
+			mWifiTasteLayout.setVisibility(View.GONE);
+		}
+	}
 
 	//从WiFi列表中删除已连接的WiFi
 	private boolean rmWifiConnected(String wifiName,
@@ -126,6 +151,39 @@ public class WifiFragment extends MainFragment {
 
 		return false;
 	}
+	
+	private void initWififTastePopupView() {
+		if (mPopupWindow == null) {
+			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
+			// 创建一个PopuWidow对象
+			mPopupWindow = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void showPopupWindow(View view) {
+		Log.i(TAG, "showPopupWindow");
+		mPopupWindow.setFocusable(true);
+		mPopupWindow.setOutsideTouchable(true);
+		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+		mPopupWindow.setAnimationStyle(R.style.PopupAnimation);
+		mPopupWindow.showAsDropDown(view);
+		Log.i(TAG, "showPopupWindow finish");
+	}
+	
+	private void setWifiTasteListener(LinearLayout wifiTasteLayout) {
+		TextView wifiSpeed = (TextView) wifiTasteLayout.findViewById(R.id.wifi_speed_test);
+		wifiSpeed.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				showPopupWindow(view);
+				
+			}
+		});
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -142,19 +200,13 @@ public class WifiFragment extends MainFragment {
 			Bundle savedInstanceState) {
 		Log.i(TAG, "onCreateView");
 
+		initWififTastePopupView();
+		
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
-
-		String wifiConnected = mWifiAdmin.getSSID();
-		if (!wifiConnected.equals("")) {
-			TextView wifi_connected = (TextView) mPageRoot
-					.findViewById(R.id.wifi_name);
-			wifi_connected.setText("已连接"
-					+ wifiConnected.substring(1, wifiConnected.length() - 1));
-			wifi_connected.setTextColor(Color.BLACK);
-			this.rmWifiConnected(
-					wifiConnected.substring(1, wifiConnected.length() - 1),
-					mWifiFree, mWifiEncrypt);
-		}
+		mWifiTasteLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_taste);
+		setWifiTasteListener(mWifiTasteLayout);
+		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+		displayWifiConnected(mWifiNameView);
 
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_view);
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree,
@@ -191,6 +243,7 @@ public class WifiFragment extends MainFragment {
 
 		});
 		super.onCreateView(inflater, container, savedInstanceState);
+		
 		bingdingTitleUI();
 		return mPageRoot;
 	}
@@ -222,6 +275,7 @@ public class WifiFragment extends MainFragment {
 			final String action = intent.getAction();
 			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
 				scanWifi();
+				displayWifiConnected(mWifiNameView);
 				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 			}
 			

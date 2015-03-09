@@ -4,7 +4,6 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 
-import android.R.integer;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;

@@ -60,7 +60,7 @@
 	        android:layout_width="40dp"
 	        android:layout_height="40dp"
 	        android:focusable="false"
-	        android:background="@drawable/wifi_more" />
+	        android:background="@drawable/btn_wifi_more" />
 	</LinearLayout>
 
 </LinearLayout>
