@@ -1,6 +1,8 @@
 package com.anynet.wifiworld.wifi;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -263,9 +265,40 @@ public class WifiAdmin {
             }
         }
         mWifiManager.startScan();
-        mWifiList = mWifiManager.getScanResults();
-        mWifiConfigurations = mWifiManager.getConfiguredNetworks();  
-    }  
+        List<ScanResult> scanResults = mWifiManager.getScanResults();
+        mWifiList = filterWifiScanned(scanResults);
+        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
+    }
+    
+    private List<ScanResult> filterWifiScanned(List<ScanResult> wifiList) {
+    	ArrayList<ScanResult> wifiItems = new ArrayList<ScanResult>();
+    	HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
+    	
+    	int wifiPos = 0;
+    	for (int i = 0; i < wifiList.size(); i++) {
+			ScanResult result = wifiList.get(i);
+			if (!result.SSID.isEmpty()) {
+				String key = result.SSID + " " + result.capabilities;
+				if (!signalStrength.containsKey(key)) {
+					signalStrength.put(key, wifiPos++);
+					wifiItems.add(result);
+				} else {
+					int position = signalStrength.get(key);
+					ScanResult updateItem = wifiItems.get(position);
+					if (calculateSignalStength(mWifiManager, updateItem.level)
+							> calculateSignalStength(mWifiManager, result.level)) {
+						wifiItems.set(position, updateItem);
+					}
+				}
+			}
+		}
+    	
+    	return wifiItems;
+    }
+    
+    public static int calculateSignalStength(WifiManager wifiManager, int level){
+        return wifiManager.calculateSignalLevel(level, 5) + 1;
+    }
     
     public List<ScanResult> getWifiList() {
         return this.mWifiList;
