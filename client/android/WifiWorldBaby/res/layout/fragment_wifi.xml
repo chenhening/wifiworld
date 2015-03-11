@@ -34,9 +34,48 @@
     	android:layout_height="1px" 
    		android:background="?android:attr/listDivider" />
     
-    <View
+    <LinearLayout
+        android:id="@+id/wifi_taste"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+        
+        <TextView
+            android:id="@+id/wifi_speed_test"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="测一测" />
+        
+        <View
+	        android:layout_width="1px"  
+	        android:layout_height="match_parent" 
+	        android:background="?android:attr/listDivider" />
+        
+        <TextView
+            android:id="@+id/wifi_share"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="共享" />
+        
+        <View
+            android:layout_width="1px"  
+            android:layout_height="match_parent" 
+            android:background="?android:attr/listDivider" />
+        
+        <TextView
+            android:id="@+id/wifi_trumpet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="喇叭" />
+        
+    </LinearLayout>
     
     <View
    		android:layout_width="match_parent"  

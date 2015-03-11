@@ -37,9 +37,8 @@ public class MeFragment extends MainFragment {
 
 	// for saved data
 	private static String mUserprofileDataFile = "userprofile.conf";
-	private static String mAliasUser = "phone_number";
-	private static String mAliasPwd = "password";
-	private SharedPreferences.Editor mSharedata;
+	private static String mAliasUser = "PhoneNumber";
+	private static String mAliasPwd = "Password";
 	private boolean mIsLogin = false;
 
 	// for SMS verify
@@ -163,31 +162,30 @@ public class MeFragment extends MainFragment {
 					mTV_Verify = (TextView) mPageRoot
 							.findViewById(R.id.tv_button_sms);
 					mLL_Verify.setEnabled(false);
-					final String verify_txt = getString(R.string.smschecknum);
 					final Timer timer = new Timer();
 					mTask = new TimerTask() {
 
-						@Override
-						public void run() {
-							getActivity().runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									if (mVerifyTime <= 0) {
-										mET_Account.setEnabled(true);
-										mLL_Verify.setEnabled(true);
-										mTV_Verify.setText("点击再次发送");
-										mTask.cancel();
-									} else {
-										mTV_Verify.setText(verify_txt + "("
-												+ mVerifyTime + ")");
-									}
-									--mVerifyTime;
-								}
-							});
-						}
-					};
-					mVerifyTime = 60;
-					timer.schedule(mTask, 0, 1000);
+
+                        @Override  
+                        public void run() {  
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override  
+                                public void run() {  
+                                    if (mVerifyTime <= 0) {
+                                    	mET_Account.setEnabled(true);
+                                    	mLL_Verify.setEnabled(true);  
+                                    	mTV_Verify.setText("点击再次发送");  
+                                    	mTask.cancel();  
+                                    } else {  
+                                    	mTV_Verify.setText("验证码" + "(" + mVerifyTime + ")");
+                                    }
+                                    --mVerifyTime;
+                                }  
+                            });  
+                        }  
+                    };
+                    mVerifyTime = 60;
+                    timer.schedule(mTask, 0, 1000);  
 				}
 			});
 
@@ -266,11 +264,10 @@ public class MeFragment extends MainFragment {
 	// ---------------------------------------------------------------------------------------------
 	// util functions
 	private void VerifyUserprofile() {
-		// 读取本地保存的账号密码文件
-		SharedPreferences sharedata = getActivity().getSharedPreferences(
-				mUserprofileDataFile, 0);
-		mPhoneNumber = sharedata.getString(mAliasUser, null);
-		String password = sharedata.getString(mAliasPwd, null);
+		//读取本地保存的账号密码文件
+		SharedPreferences sharedata = getActivity().getSharedPreferences(mUserprofileDataFile, 0);  
+		mPhoneNumber = sharedata.getString(mAliasUser, "").trim();  
+		String password = sharedata.getString(mAliasPwd, "").trim();
 		mIsLogin = false;
 		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
 		if (mPhoneNumber == null || password == null || mPhoneNumber.isEmpty()
@@ -280,56 +277,55 @@ public class MeFragment extends MainFragment {
 		}
 
 		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
-		query.addWhereNotEqualTo(mAliasPwd, password);
-		query.findObjects(getApplicationContext(),
-				new FindListener<UserProfile>() {
-					@Override
-					public void onSuccess(List<UserProfile> object) {
-						// TODO Auto-generated method stub
-						if (object.size() == 1) {
-							showToast("用户登陆成功。");
-							mIsLogin = true;
-						} else {
-							showToast("用户登陆数据失效。");
-						}
-					}
-
-					@Override
-					public void onError(int code, String msg) {
-						// TODO Auto-generated method stub
-						showToast("用户登陆数据失效。");
-					}
-				});
+		query.addWhereEqualTo(mAliasPwd, password);
+		query.findObjects(getApplicationContext(), new FindListener<UserProfile>() {
+		        @Override
+		        public void onSuccess(List<UserProfile> object) {
+		            // TODO Auto-generated method stub
+		        	if (object.size() == 1) {
+		        		showToast("用户登陆成功。");
+		        		mIsLogin = true;
+		        	}
+		        	else {
+		        		showToast("用户登陆数据失效。");
+		        	}
+		        }
+		        @Override
+		        public void onError(int code, String msg) {
+		            // TODO Auto-generated method stub
+		        	showToast("用户登陆数据失效。");
+		        }
+		});
 	}
 
 	private void SaveUserprofile() {
-		// 保存账号密码到本地用于下次登陆
-		// 得到加密后的密码
-		String password = Base64Util.encode(mPhoneNumber + mSmsCode);
-		// TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
-		mSharedata = getActivity()
-				.getSharedPreferences(mUserprofileDataFile, 0).edit();
-		mSharedata.putString(mAliasUser, mPhoneNumber);
-		mSharedata.putString(mAliasPwd, password);
-		mSharedata.commit();
 
-		// 通过bmob保存到服务器，以便于做数据验证
-		final UserProfile user = new UserProfile();
-		user.mPhoneNumber = mPhoneNumber;
-		user.mPassword = password;
-		user.save(getApplicationContext(), new SaveListener() {
+		//得到加密后的密码
+    	final String password = Base64Util.encode(mPhoneNumber + mSmsCode);
+    	//通过bmob保存到服务器，以便于做数据验证
+    	final UserProfile user = new UserProfile();
+    	user.PhoneNumber = mPhoneNumber;
+    	user.Password = password.trim();
+    	user.save(getApplicationContext(), new SaveListener() {
 
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				showToast("添加数据成功，返回objectId为：" + user.getObjectId());
-			}
+    	    @Override
+    	    public void onSuccess() {
+    	        // TODO Auto-generated method stub
+    	    	showToast("添加数据成功，返回objectId为："+ user.getObjectId());
+    	    	//保存账号密码到本地用于下次登陆
+    	    	//TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
+    	    	SharedPreferences.Editor sharedata = 
+    	    			getActivity().getSharedPreferences(mUserprofileDataFile, 0).edit();
+    	    	sharedata.putString(mAliasUser, user.PhoneNumber);
+    	    	sharedata.putString(mAliasPwd, user.Password);
+    	    	sharedata.commit();
+    	    }
 
-			@Override
-			public void onFailure(int code, String arg0) {
-				// TODO Auto-generated method stub
-				// 添加失败
-			}
-		});
+    	    @Override
+    	    public void onFailure(int code, String arg0) {
+    	        // TODO Auto-generated method stub
+    	        // 添加失败
+    	    }
+    	});
 	}
 }
