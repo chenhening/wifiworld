@@ -104,10 +104,10 @@
     <string name="setting_binding_words">已连线设备：</string>
     <string name="setting_binding_amount">0</string>
     <string name="setting_office_notice">官方公告</string>
-    <string name="setting_system_msg">系统消息</string>
+    <string name="setting_system_msg">我是WiFi提供者</string>
     <string name="setting_push_msg">接收宝箱通知</string>
     <string name="setting_version_update">版本更新</string>
-    <string name="setting_in_account">累计入账</string>
+    <string name="setting_in_account">我是WiFi使用者</string>
     <string name="setting_in_setting">设置</string>
     <string name="setting_my_asset">我的资产</string>
     <string name="setting_3g_flow_protect">3G流量保护</string>
