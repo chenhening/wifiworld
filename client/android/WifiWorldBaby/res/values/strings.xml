@@ -9,30 +9,30 @@
     <string name="action_settings">Settings</string>
     <string name="wifi_icon">wifi_connected_icon</string>
     <string name="wifi_default_text">未连接WiFi</string>
-    
     <string name="complete">完成</string>
     <string name="close">关闭</string>
     <string name="loading">正在加载数据，请稍候</string>
     <string name="net_error_try_later">网络异常，请稍候再试</string>
-	
+    <string name="normal">标准</string>
+    <string name="satellite">卫星</string>
+    <string name="night_mode">夜间</string>
+    <string name="wifi_provider">我是WIFI提供者</string>
+    <string name="wifi_user">我是WIFI使用者</string>
+    <string name="share_friends">邀请好友（奖励）</string>
+     <string name="my_settting">设置</string>
+      <string name="aboutus">关于我们</string>
     <!-- testin崩溃测试key -->
     <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>
     <!-- testin 崩溃正式key -->
-     <string name="release_testin_crash_key">4a206f73512bf81400a7ceb0edd7e7e7</string>
-     
-     
+    <string name="release_testin_crash_key">4a206f73512bf81400a7ceb0edd7e7e7</string>
+
     <!-- 友盟key -->
     <string name="test_umeng_appkey">54572823fd98c547e1002e49</string>
     <string name="release_umeng_appkey">5457284bfd98c5364f003432</string>
-    
     <string name="test_umeng_message_secret">daa5d420bf5b19e84d7d0420895fe64e</string>
     <string name="release_umeng_message_secret">306acd093390ee3d1214920efa6b1c48</string>
-
     <string name="test_umeng_channel">xunlei-test</string>
     <string name="release_umeng_channel">xunlei</string>
-
-   
-
     <string name="empty_data">--</string>
 
     <!-- login -->
@@ -68,9 +68,7 @@
     <string name="crystal_collect_failure">收取水晶失败：%1$s</string>
     <string name="crystal_collect_ok">收取水晶成功</string>
     <string name="crystal_collect_success">%1$s</string>
-    
-     <string name="crystal_work_count">总速度(共 %1$s台矿机工作中) </string>
-    
+    <string name="crystal_work_count">总速度(共 %1$s台矿机工作中) </string>
 
     <!-- 矿机 -->
     <string name="device_state_online">正在挖矿</string>
@@ -84,7 +82,7 @@
     <!-- my account -->
     <string name="my_account_phone">手机号</string>
     <string name="my_account_thunder_id">帐号</string>
-     <string name="my_settting">设置</string>
+   
     <string name="my_account_nikename">昵称</string>
     <string name="my_account_head">头像</string>
     <string name="my_account_mid">矿工编号</string>
@@ -107,10 +105,10 @@
     <string name="setting_binding_amount">0</string>
     <string name="setting_office_notice">官方公告</string>
     <string name="setting_system_msg">系统消息</string>
-     <string name="setting_push_msg">接收宝箱通知</string>
+    <string name="setting_push_msg">接收宝箱通知</string>
     <string name="setting_version_update">版本更新</string>
-     <string name="setting_in_account">累计入账</string>
-       <string name="setting_in_setting">设置</string>
+    <string name="setting_in_account">累计入账</string>
+    <string name="setting_in_setting">设置</string>
     <string name="setting_my_asset">我的资产</string>
     <string name="setting_3g_flow_protect">3G流量保护</string>
     <string name="setting_binding_sina_weibo">新浪微博</string>
@@ -135,7 +133,7 @@
     <string name="setting_title_system_msg">系统消息</string>
     <string name="setting_version_newest">V%1$s</string>
     <string name="setting_version_new">发现新版本</string>
-      <string name="setting_version_isnewst_toast">已是最新版本，棒棒哒！</string>
+    <string name="setting_version_isnewst_toast">已是最新版本，棒棒哒！</string>
 
     <!-- setting header -->
     <string name="feedback_finish">提交</string>
@@ -151,7 +149,7 @@
     <string name="my_asset_title">提现</string>
     <string name="my_account_title">我的帐户</string>
     <string name="my_title">我的</string>
-     <string name="my_box">领取宝箱</string>
+    <string name="my_box">领取宝箱</string>
     <string name="my_crystal_title">我的矿机</string>
     <string name="login_fail_title">登录失败</string>
 
@@ -160,10 +158,8 @@
     <string name="crystal_record_filter_expense">出账</string>
     <string name="crystal_record_filter_income">累计入账</string>
     <string name="crystal_record_no_more">无更多数据</string>
-    
     <string name="remark">关注微信公众号 水晶矿场( xunlei-crystal ), 并根据公众号提示完成水晶矿场ID绑定,即可提现账户余额至微信红包</string>
     <string name="remark_keyword">水晶矿场 </string>
-
-<string name="crystal_fragment_devices_stat">我的矿机</string>
+    <string name="crystal_fragment_devices_stat">我的矿机</string>
 
 </resources>

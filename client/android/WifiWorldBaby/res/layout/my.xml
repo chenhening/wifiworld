@@ -104,7 +104,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="12dp"
-                            android:background="@drawable/crystal_diglist_selector"
+                            android:background="@drawable/wifi_diglist_selector"
                             android:gravity="center_vertical" />
                     </RelativeLayout>
                 </RelativeLayout>
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/crystal_diglist_selector"
+                        android:background="@drawable/wifi_diglist_selector"
                         android:gravity="center_vertical" />
 
                     <ImageView
@@ -241,7 +241,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/crystal_diglist_selector"
+                        android:background="@drawable/wifi_diglist_selector"
                         android:gravity="center_vertical"
                         android:tag="ivSettingInAccount"
                         android:visibility="visible" />
@@ -305,7 +305,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/crystal_diglist_selector"
+                        android:background="@drawable/wifi_diglist_selector"
                         android:gravity="center_vertical"
                         android:tag="ivSettingInAccount"
                         android:visibility="visible" />

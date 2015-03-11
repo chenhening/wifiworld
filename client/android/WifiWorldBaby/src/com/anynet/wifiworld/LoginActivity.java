@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private int userId;
 
-	private ScrollView slLogin;
+//	private ScrollView slLogin;
 
 	private int screenHeight;
 
@@ -356,7 +356,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 登录文字
 		tvLogin = (TextView) findViewById(R.id.tv_login);
 
-		slLogin = (ScrollView) findViewById(R.id.sl_login);
+//		slLogin = (ScrollView) findViewById(R.id.sl_login);
 
 		mAnidot = (AnimationDot) findViewById(R.id.login_animation_dot);
 
@@ -1068,7 +1068,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		h.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				slLogin.scrollTo(0, slLogin.getHeight());
+				//slLogin.scrollTo(0, slLogin.getHeight());
 				// slLogin.scrollTo(0, screenHeight);
 			}
 		}, 300);
@@ -1078,7 +1078,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		h.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				slLogin.scrollTo(0, 0);
+				//slLogin.scrollTo(0, 0);
 			}
 		}, 300);
 	}

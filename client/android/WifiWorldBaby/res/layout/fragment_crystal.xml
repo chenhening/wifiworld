@@ -183,7 +183,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="11dp"
-                        android:background="@drawable/crystal_diglist_selector"/>
+                        android:background="@drawable/wifi_diglist_selector"/>
             </RelativeLayout>
 
             <View
