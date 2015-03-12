@@ -13,6 +13,7 @@
         android:scrollbars="vertical" >
 
         <LinearLayout
+            android:id="@+id/ll_userprofile_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -37,7 +38,7 @@
                     <RelativeLayout
                         android:id="@+id/rl_setting_my_account"
                         android:layout_width="match_parent"
-                        android:layout_height="97dp"
+                        android:layout_height="77dp"
                         android:background="@drawable/settings_item_radius_bg_selector" >
 
                         <LinearLayout
@@ -59,19 +60,6 @@
                             android:background="@drawable/wifi_diglist_selector"
                             android:gravity="center_vertical" />
 
-                        <TextView
-                            android:id="@+id/tv_xl_id"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:singleLine="true"
-                            android:tag="tvXlId"
-                            android:text="用户名"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
                         <ImageView
                             android:id="@+id/iv_my_head"
                             android:layout_width="wrap_content"
@@ -81,6 +69,19 @@
                             android:src="@drawable/my_header_logo"
                             android:tag="ivMyHead"
                             android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tv_xl_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_my_head"
+                            android:layout_centerHorizontal="true"
+                            android:singleLine="true"
+                            android:tag="tvXlId"
+                            android:text="用户名"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -276,7 +277,7 @@
 
                     <TextView
                         android:id="@+id/tv_money_get"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
                         android:layout_height="84dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignTop="@+id/ll_money_get"

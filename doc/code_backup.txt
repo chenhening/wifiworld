@@ -1,0 +1,10 @@
+1.如何采用cordova来加载web页面
+// mPageRoot = inflater.inflate(R.layout.fragment_me, null);			
+// SystemWebView webView =
+// (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
+// cordovaWebView = new CordovaWebViewImpl(getActivity(), new
+// SystemWebViewEngine(webView));
+// Config.init(this.getActivity());
+// cordovaWebView.init(this, Config.getPluginEntries(),
+// Config.getPreferences());
+// cordovaWebView.loadUrl("file:///android_asset/www/index.html");

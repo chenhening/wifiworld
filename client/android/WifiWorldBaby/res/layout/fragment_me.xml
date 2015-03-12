@@ -7,219 +7,364 @@
     <include layout="@layout/header_setting" />
 
     <LinearLayout
-        android:id="@+id/sl_profile"
+        android:id="@+id/ll_userprofile_1"
         android:layout_width="match_parent"
-        android:layout_height="275dp"
-        android:background="@drawable/splash_bg"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/image_userprofile"
-            android:layout_width="110dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/tab_mine_nor" />
-
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/rl_setting_my_account"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="97dp"
+            android:layout_weight="0.07"
+            android:background="@drawable/settings_item_radius_bg_selector" >
 
-            <LinearLayout
-                android:id="@+id/sl_login"
+            <ImageView
+                android:id="@+id/iv_my_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/wifi_diglist_selector"
+                android:gravity="center_vertical" />
+
+            <ImageView
+                android:id="@+id/iv_my_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/my_header_logo"
+                android:tag="ivMyHead"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_xl_id"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:background="@drawable/splash_bg"
-                android:orientation="vertical" >
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_weight="0.21"
+                android:gravity="bottom|center"
+                android:singleLine="true"
+                android:tag="tvXlId"
+                android:text="用户名"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="37dp"
-                    android:layout_marginRight="37dp"
-                    android:layout_marginTop="20dp" >
+        </RelativeLayout>
 
-                    <EditText
-                        android:id="@+id/tv_login_account"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:background="#00000000"
-                        android:gravity="left|center_vertical"
-                        android:hint="@string/login_account"
-                        android:imeOptions="actionNext"
-                        android:inputType="phone|textUri"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/login_tv_txt"
-                        android:textColorHint="@color/white"
-                        android:textSize="17sp" />
+        <!-- 消息通知 -->
 
-                    <Button
-                        android:id="@+id/bt_clear_login_account"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/login_edit_text_clear_btn_selector"
-                        android:visibility="invisible" />
-                </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/settings_group_bg"
+            android:orientation="vertical"
+            android:visibility="visible" >
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="37dp"
-                    android:layout_marginRight="37dp"
-                    android:background="@drawable/login_line"
-                    android:contentDescription="@string/app_name" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="37dp"
-                    android:layout_marginRight="37dp"
-                    android:layout_marginTop="11dp" >
-
-                    <EditText
-                        android:id="@+id/tv_login_sms"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.3"
-                        android:background="#00000000"
-                        android:gravity="left|center_vertical"
-                        android:hint="@string/sms_check_num"
-                        android:imeOptions="actionDone"
-                        android:inputType="number|textPassword"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/login_tv_txt"
-                        android:textColorHint="@color/white"
-                        android:textSize="17sp" />
-
-                    <LinearLayout
-                        android:id="@+id/button_sms"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/login_bottom_btn_selector"
-                        android:gravity="center_vertical" >
-
-                        <TextView
-                            android:id="@+id/tv_button_sms"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:text="@string/smschecknum"
-                            android:textColor="#E22B2B"
-                            android:textSize="19sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/ll_setting_system_msg"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:background="@drawable/settings_item_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" >
 
                 <ImageView
-                    android:layout_width="140dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="37dp"
-                    android:background="@drawable/login_line"
-                    android:contentDescription="@string/app_name" />
-                <!-- android:layout_marginRight="37dp" -->
-
-                <LinearLayout
-                    android:id="@+id/button_login"
-                    android:layout_width="280dp"
+                    android:id="@+id/iv_my_message_logo"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/login_bottom_btn_selector"
-                    android:gravity="center"
-                    android:minHeight="39dp" >
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/my_message_logo" />
 
-                    <TextView
-                        android:id="@+id/tv_login"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:text="@string/login_login"
-                        android:textColor="#E22B2B"
-                        android:textSize="19sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_my_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_my_message_logo"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_system_msg"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="16sp" />
 
-                    <com.anynet.wifiworld.view.AnimationDot
-                        android:id="@+id/login_animation_dot"
-                        android:layout_width="20dip"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dip"
-                        android:clickable="false"
-                        android:gravity="left|bottom"
-                        android:textColor="#E22B2B"
-                        android:textSize="19sp"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_setting_system_msg_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/wifi_diglist_selector"
+                    android:gravity="center_vertical" />
 
-            <LinearLayout
-                android:id="@+id/sl_usersys"
+                <ImageView
+                    android:id="@+id/iv_setting_system_msg_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/iv_setting_system_msg_more"
+                    android:background="@drawable/common_new_msg_ico"
+                    android:gravity="center_vertical"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:background="@drawable/splash_bg"
-                android:orientation="vertical" >
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/settings_group_bg"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_in_account"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/settings_item_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:tag="rlSettingInAccount" >
+
+                <ImageView
+                    android:id="@+id/iv_in_account_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/my_in_account_logo" />
+
+                <TextView
+                    android:id="@+id/tv_in_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_in_account_logo"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_in_account"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_in_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/wifi_diglist_selector"
+                    android:gravity="center_vertical"
+                    android:tag="ivSettingInAccount"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/settings_group_bg"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <RelativeLayout
+                android:id="@+id/rl_wallet_info"
+                android:layout_width="match_parent"
+                android:layout_height="88dp"
+                android:background="@drawable/settings_item_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:tag="rlSettingInAccount" >
 
                 <LinearLayout
-                    android:id="@+id/wifi_provider"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="37dp"
-                    android:layout_marginRight="37dp"
-                    android:layout_marginTop="11dp"
-                    android:orientation="horizontal" >
+                    android:id="@+id/ll_money_get"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/id_locked" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/wifi_provider"
-                        android:textSize="19sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/wifi_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="37dp"
-                    android:layout_marginRight="37dp"
-                    android:layout_marginTop="11dp"
-                    android:orientation="horizontal" >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/id_default" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/wifi_user"
-                        android:textSize="19sp" />
+                    android:id="@+id/ll_money_put"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical" >
                 </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_money_put"
+                    android:layout_width="148dp"
+                    android:layout_height="84dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/ll_money_get"
+                    android:background="@color/bisque"
+                    android:text="支出" />
+
+                <TextView
+                    android:id="@+id/tv_money_get"
+                    android:layout_width="90dp"
+                    android:layout_height="84dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignTop="@+id/ll_money_get"
+                    android:layout_toLeftOf="@+id/tv_money_put"
+                    android:background="@color/bisque"
+                    android:text="收益" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- 关于水晶， 意见反馈 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/settings_group_bg"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
+
+            <RelativeLayout
+                android:id="@+id/ll_setting_about"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@drawable/settings_item_bottom_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp" >
+
+                <ImageView
+                    android:id="@+id/iv_my_about_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/my_about_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_my_about_logo"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_about"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/crystal_right_rocket" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/common_div_line" />
+
+            <RelativeLayout
+                android:id="@+id/ll_setting_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@drawable/settings_item_top_radius_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp" >
+
+                <ImageView
+                    android:id="@+id/iv_my_suggestion_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/my_suggestion_logo" />
+
+                <TextView
+                    android:id="@+id/check_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_my_suggestion_logo"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/setting_feedback"
+                    android:textColor="@color/setting_txt"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/crystal_right_rocket" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/common_div_line" />
+        </LinearLayout>
     </LinearLayout>
+
+    <include layout="@layout/framme_buttom" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-    <include layout="@layout/framme_buttom" />
 
 </LinearLayout>

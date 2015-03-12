@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -25,7 +23,6 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
-import com.anynet.wifiworld.LoginActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.Base64Util;
@@ -53,26 +50,6 @@ public class MeFragment extends MainFragment {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
-
-	private void bingdingTitleUI() {
-		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
-		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(getString(R.string.my));
-	}
-
-	private void setLoginedUI(boolean isLogin) {
-		if (!isLogin) {
-			mTitlebar.tvTitle.setText(getString(R.string.login_login));
-			mPageRoot.findViewById(R.id.sl_usersys).setVisibility(View.GONE);
-			mPageRoot.findViewById(R.id.sl_login).setVisibility(View.VISIBLE);
-		} else {
-			mTitlebar.tvTitle.setText(getString(R.string.my));
-			mPageRoot.findViewById(R.id.sl_usersys).setVisibility(View.VISIBLE);
-			mPageRoot.findViewById(R.id.sl_login).setVisibility(View.GONE);
-		}
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,136 +108,132 @@ public class MeFragment extends MainFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO(binfei): need to be removed into functions onAttach for better
-		// performance
-		// boolean isLogin = WifiWorldApplication.isLogin();
 		VerifyUserprofile();
 		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
+		mIsLogin = true;
 		if (!mIsLogin) {
 			setLoginedUI(false);
-			// mPageRoot = inflater.inflate(R.layout.fragment_me, null);
-			// get verify code
-			mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
-			mLL_Verify.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mET_Account = (EditText) mPageRoot
-							.findViewById(R.id.tv_login_account);
-					mPhoneNumber = mET_Account.getText().toString().trim();
-					Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
-					if (!pattern.matcher(mPhoneNumber).find()) {
-						showToast("请输入11位手机正确号码.");
-						return;
-					}
-
-					// 发送验证码
-					SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
-
-					// 按钮进入60秒倒计时
-					mTV_Verify = (TextView) mPageRoot
-							.findViewById(R.id.tv_button_sms);
-					mLL_Verify.setEnabled(false);
-					final Timer timer = new Timer();
-					mTask = new TimerTask() {
-
-
-                        @Override  
-                        public void run() {  
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override  
-                                public void run() {  
-                                    if (mVerifyTime <= 0) {
-                                    	mET_Account.setEnabled(true);
-                                    	mLL_Verify.setEnabled(true);  
-                                    	mTV_Verify.setText("点击再次发送");  
-                                    	mTask.cancel();  
-                                    } else {  
-                                    	mTV_Verify.setText("验证码" + "(" + mVerifyTime + ")");
-                                    }
-                                    --mVerifyTime;
-                                }  
-                            });  
-                        }  
-                    };
-                    mVerifyTime = 60;
-                    timer.schedule(mTask, 0, 1000);  
-				}
-			});
-
-			// login
-			mLL_Login = (LinearLayout) mPageRoot
-					.findViewById(R.id.button_login);
-			mLL_Login.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					mLL_Login.setEnabled(false);
-					mET_SMS = ((EditText) mPageRoot
-							.findViewById(R.id.tv_login_sms));
-					mSmsCode = mET_SMS.getText().toString().trim();
-					Pattern pattern = Pattern.compile("^[0-9]{4}$");
-					if (!pattern.matcher(mSmsCode).find()) {
-						showToast("请输入正确的4位验证码.");
-						return;
-					}
-
-					SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
-							mSmsCode);
-				}
-			});
-			mLL_Login.setEnabled(false);
-			// SystemWebView webView =
-			// (SystemWebView)mPageRoot.findViewById(R.id.cordovaWebView);
-			// cordovaWebView = new CordovaWebViewImpl(getActivity(), new
-			// SystemWebViewEngine(webView));
-			// Config.init(this.getActivity());
-			// cordovaWebView.init(this, Config.getPluginEntries(),
-			// Config.getPreferences());
-			// cordovaWebView.loadUrl("file:///android_asset/www/index.html");
+			DoLogin();
 		} else {
 			setLoginedUI(true);
-//			(mPageRoot.findViewById(R.id.button_login1))
-//					.setOnClickListener(new OnClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							Toast.makeText(getApplicationContext(), "Login!!!!!", Toast.LENGTH_SHORT).show();
-//							LoginActivity.startForKick(getActivity(), "Login");
-//							// startActivity(new
-//							// Intent(getActivity().getApplicationContext(),
-//							// LoginActivity.class));
-//						}
-//					});
 		}
 		return mPageRoot;
 	}
+	
+// ---------------------------------------------------------------------------------------------
+	// for custom UI
+	private void bingdingTitleUI() {
+		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+		mTitlebar.llFinish.setVisibility(View.VISIBLE);
+		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
+		mTitlebar.tvTitle.setText(getString(R.string.my));
+	}
+
+	private void setLoginedUI(boolean isLogin) {
+		if (!isLogin) {
+			mTitlebar.tvTitle.setText(getString(R.string.login_login));
+			mPageRoot.findViewById(R.id.ll_userprofile_1).setVisibility(View.GONE);
+			//mPageRoot.findViewById(R.id.sl_login).setVisibility(View.VISIBLE);
+		} else {
+			mTitlebar.tvTitle.setText(getString(R.string.my));
+			mPageRoot.findViewById(R.id.ll_userprofile_1).setVisibility(View.VISIBLE);
+			//mPageRoot.findViewById(R.id.sl_login).setVisibility(View.GONE);
+		}
+	}
 
 	private void changeFragment() {
-
 		// 1.获取FragmentManager对象
-
 		FragmentManager manager = getActivity().getSupportFragmentManager();
-
 		// 2.获取fragment的事务操作 代表：activity对fragment执行的多个改变的操作
-
 		FragmentTransaction transaction = manager.beginTransaction();
-
 		// 添加替换或删除Fragment这时候就需要FragmentTransaction的布局动态文件
-
 		// 执行替换
-
 		// 参数1:父元素的id值，参数2：替换新fragment对象
-
 		transaction.replace(R.id.fragment_container, new MeFragment());
-
 		// 3.提交事务
 		transaction.commit();
 	}
 
+	// ---------------------------------------------------------------------------------------------
+	// UI event process functions
+	private void DoLogin() {
+		// get verify code
+		mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
+		mLL_Verify.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mET_Account = (EditText) mPageRoot
+						.findViewById(R.id.tv_login_account);
+				mPhoneNumber = mET_Account.getText().toString().trim();
+				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
+				if (!pattern.matcher(mPhoneNumber).find()) {
+					showToast("请输入11位手机正确号码.");
+					return;
+				}
+
+				// 发送验证码
+				SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
+
+				// 按钮进入60秒倒计时
+				mTV_Verify = (TextView) mPageRoot
+						.findViewById(R.id.tv_button_sms);
+				mLL_Verify.setEnabled(false);
+				final Timer timer = new Timer();
+				mTask = new TimerTask() {
+
+
+                    @Override  
+                    public void run() {  
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override  
+                            public void run() {  
+                                if (mVerifyTime <= 0) {
+                                	mET_Account.setEnabled(true);
+                                	mLL_Verify.setEnabled(true);  
+                                	mTV_Verify.setText("点击再次发送");  
+                                	mTask.cancel();  
+                                } else {  
+                                	mTV_Verify.setText("验证码" + "(" + mVerifyTime + ")");
+                                }
+                                --mVerifyTime;
+                            }  
+                        });  
+                    }  
+                };
+                mVerifyTime = 60;
+                timer.schedule(mTask, 0, 1000);  
+			}
+		});
+
+		// login
+		mLL_Login = (LinearLayout) mPageRoot
+				.findViewById(R.id.button_login);
+		mLL_Login.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mLL_Login.setEnabled(false);
+				mET_SMS = ((EditText) mPageRoot
+						.findViewById(R.id.tv_login_sms));
+				mSmsCode = mET_SMS.getText().toString().trim();
+				Pattern pattern = Pattern.compile("^[0-9]{4}$");
+				if (!pattern.matcher(mSmsCode).find()) {
+					showToast("请输入正确的4位验证码.");
+					return;
+				}
+
+				SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
+						mSmsCode);
+			}
+		});
+		mLL_Login.setEnabled(false);
+	}
+	
 	// ---------------------------------------------------------------------------------------------
 	// util functions
 	private void VerifyUserprofile() {
