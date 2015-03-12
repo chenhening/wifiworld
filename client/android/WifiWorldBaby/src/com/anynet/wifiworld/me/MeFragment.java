@@ -148,6 +148,14 @@ public class MeFragment extends MainFragment {
 					.setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					setLoginedUI(true);
+				}
+			});
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(
@@ -324,10 +332,8 @@ public class MeFragment extends MainFragment {
 		boolean isLogining = (mPageRoot.findViewById(R.id.ll_login).getVisibility()==View.VISIBLE);
 		if(isLogining){
 			setLoginedUI(true);
-			Toast.makeText(getApplicationContext(), "back!", Toast.LENGTH_LONG).show();
 			return true;
 		}
-		Toast.makeText(getApplicationContext(), "back2222222", Toast.LENGTH_LONG).show();
-		return true;//super.onBackPressed();
+		return super.onBackPressed();
 	}
 }

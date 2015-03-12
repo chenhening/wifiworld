@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
@@ -77,7 +78,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
-		isFromWelcomeActivity = i.getBooleanExtra("isFromWelcomeActivity", false);
+		isFromWelcomeActivity = i.getBooleanExtra("isFromWelcomeActivity",
+				false);
 		setContentView(R.layout.activity_main);
 		initView();
 
@@ -86,7 +88,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		discoverFragment = new DiscoverFragment();
 		meFragment = new MeFragment();
 
-		fragments = new MainFragment[] { wifiFragment, mapFragment, discoverFragment, meFragment };
+		fragments = new MainFragment[] { wifiFragment, mapFragment,
+				discoverFragment, meFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment_container, wifiFragment)
@@ -114,9 +117,9 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		changeToConnect();
 
 		updateData();
-//		if (isFromWelcomeActivity) {
-//			MineActivity.startActivity(this, 0, 0, 0, 0, 0, true);
-//		}
+		// if (isFromWelcomeActivity) {
+		// MineActivity.startActivity(this, 0, 0, 0, 0, 0, true);
+		// }
 
 	}
 
@@ -235,6 +238,22 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		// 把当前tab设为选中状态
 		mTabs[index].setSelected(true);
 		currentTabIndex = index;
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN
+					&& event.getRepeatCount() == 0) {
+				if(fragments[currentTabIndex].onBackPressed()){
+					return true;
+				}
+			} 
+			return super.dispatchKeyEvent(event);
+		} else {
+			return super.dispatchKeyEvent(event);
+		}
 	}
 
 	@Override
