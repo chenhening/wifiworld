@@ -10,6 +10,8 @@ package com.anynet.wifiworld.map;
 
 import java.util.ArrayList;
 
+import cn.bmob.v3.datatype.BmobGeoPoint;
+
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R.drawable;
 import com.anynet.wifiworld.R.id;
@@ -195,52 +197,68 @@ public class MapFragment extends MainFragment implements LocationSource,
 				mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
 				CameraUpdate update = CameraUpdateFactory.zoomBy(3);
 				aMap.moveCamera(update);
+				
+				TestForWifiData wifi = new TestForWifiData();
+				double y = amapLocation.getLongitude();
+				double x = amapLocation.getLatitude();
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"好用又便宜的wifi", "我的电话是多少？");
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"wifi出租", "我的电话是多少？");
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"我家的wifi免费", "我的电话是多少？");
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"想用wifi点我私聊", "我的电话是多少？");
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"思聪的私人wifi", "我的电话是多少？");
+				wifi.AddData(getActivity(), new BmobGeoPoint(x + 0.0002, y + 0.0002),
+						"思聪的公共wifi", "我的电话是多少？");
 
 				// add wifi label
 				float scale = aMap.getScalePerPixel();
 				float r = amapLocation.getAccuracy();
-				double y = amapLocation.getLongitude();
-				double x = amapLocation.getLatitude();
+				y = amapLocation.getLongitude();
+				x = amapLocation.getLatitude();
 				LatLng llwifi1 = new LatLng(x + 0.0002, y + 0.0002);
 				aMap.addMarker(
-						new MarkerOptions()
-								.position(llwifi1)
-								.title("好用又便宜的wifi")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_geo))
-								.draggable(true)).showInfoWindow();
+					new MarkerOptions()
+						.position(llwifi1)
+						.title("好用又便宜的wifi")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icon_geo))
+						.draggable(true)).showInfoWindow();
 				LatLng llwifi2 = new LatLng(x + 0.0003, y + 0.0003);
 				aMap.addMarker(
-						new MarkerOptions()
-								.position(llwifi2)
-								.title("wifi出租")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_geo))
-								.draggable(true)).showInfoWindow();
+					new MarkerOptions()
+						.position(llwifi2)
+						.title("wifi出租")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icon_geo))
+						.draggable(true)).showInfoWindow();
 				LatLng llwifi4 = new LatLng(x - 0.0004, y + 0.0004);
 				aMap.addMarker(
-						new MarkerOptions()
-								.position(llwifi4)
-								.title("我家的wifi免费")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_geo))
-								.draggable(true)).showInfoWindow();
+					new MarkerOptions()
+						.position(llwifi4)
+						.title("我家的wifi免费")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icon_geo))
+						.draggable(true)).showInfoWindow();
 				LatLng llwifi5 = new LatLng(x - 0.0005, y - 0.0005);
 				aMap.addMarker(
-						new MarkerOptions()
-								.position(llwifi5)
-								.title("想用wifi点我私聊")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_geo))
-								.draggable(true)).showInfoWindow();
+					new MarkerOptions()
+						.position(llwifi5)
+						.title("想用wifi点我私聊")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icon_geo))
+							.draggable(true)).showInfoWindow();
 				LatLng llwifi3 = new LatLng(x - 0.0004, y - 0.0006);
 				aMap.addMarker(
-						new MarkerOptions()
-								.position(llwifi3)
-								.title("思聪的私人wifi")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_geo))
-								.draggable(true)).showInfoWindow();
+					new MarkerOptions()
+						.position(llwifi3)
+						.title("思聪的私人wifi")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icon_geo))
+						.draggable(true)).showInfoWindow();
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);
 				aMap.setInfoWindowAdapter(this);
