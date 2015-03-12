@@ -19,8 +19,11 @@
     <string name="wifi_provider">我是WIFI提供者</string>
     <string name="wifi_user">我是WIFI使用者</string>
     <string name="share_friends">邀请好友（奖励）</string>
-     <string name="my_settting">设置</string>
-      <string name="aboutus">关于我们</string>
+    <string name="my_settting">设置</string>
+    <string name="aboutus">关于我们</string>
+    <string name="userid">用户名</string>
+    <string name="cashin">收入</string>
+    <string name="cashout">支出</string>
     <!-- testin崩溃测试key -->
     <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>
     <!-- testin 崩溃正式key -->
@@ -82,7 +85,6 @@
     <!-- my account -->
     <string name="my_account_phone">手机号</string>
     <string name="my_account_thunder_id">帐号</string>
-   
     <string name="my_account_nikename">昵称</string>
     <string name="my_account_head">头像</string>
     <string name="my_account_mid">矿工编号</string>

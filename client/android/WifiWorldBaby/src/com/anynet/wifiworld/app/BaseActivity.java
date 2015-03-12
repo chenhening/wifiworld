@@ -325,4 +325,13 @@ public class BaseActivity extends FragmentActivity
         }
         
     }
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		Toast.makeText(getApplicationContext(), "accccccccccccccc", Toast.LENGTH_LONG).show();
+		super.onBackPressed();
+	}
+    
+    
 }
