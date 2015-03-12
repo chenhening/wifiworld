@@ -40,6 +40,7 @@ import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.PreferenceHelper;
+import com.anynet.wifiworld.wifi.WifiFragment;
 import com.anynet.wifiworld.R;
 
 public class MainActivity extends BaseActivity implements MessageListener {

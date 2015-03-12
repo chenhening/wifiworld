@@ -1,4 +1,4 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,10 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
+import com.anynet.wifiworld.R.style;
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
-import com.anynet.wifiworld.wifi.WifiListAdapter;
 
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
@@ -40,60 +42,35 @@ import android.widget.ListView;
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 
+	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
-	WifiAdmin mWifiAdmin;
 	private WifiListAdapter mWifiListAdapter;
-	private List<ScanResult> mWifiListScanned;
-	private List<WifiConfiguration> mWifiConfigurationScanned;
 	private List<WifiInfoScanned> mWifiFree;
 	private List<WifiInfoScanned> mWifiEncrypt;
-	private Handler mWifiUpdatorHanlder = new Handler();
-	private Runnable mWifiUpdatorRunnable = null;
+	
 	private TextView mWifiNameView;
 	private LinearLayout mWifiTasteLayout;
 	private PopupWindow mPopupWindow;
 
-	public void setWifiData(List<ScanResult> wifiList,
-			List<WifiConfiguration> wificonfiguration) {
+	public void organizeWifiList(final List<ScanResult> wifiList) {
 		mWifiFree.clear();
 		mWifiEncrypt.clear();
 		
 		for (int i = 0; i < wifiList.size(); i++) {
-			ScanResult scanResult = wifiList.get(i);
-			WifiConfiguration wifiCfg = mWifiAdmin.isExsits(scanResult.SSID);
+			ScanResult hotspot = wifiList.get(i);
+			WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
 			if (wifiCfg != null) {
-				String wifiName = scanResult.SSID;
+				String wifiName = hotspot.SSID;
 				String wifiPwd = wifiCfg.preSharedKey;
-				WifiAdmin.WifiCipherType wifiType = mWifiAdmin
-						.getWifiType(wifiCfg.allowedKeyManagement);
+				String wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
 				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName,
-						wifiPwd, wifiType, mWifiAdmin.getWifiStrength(scanResult.level));
+						wifiPwd, wifiType, mWifiAdmin.getWifiStrength(hotspot.level));
 				mWifiFree.add(wifiInfoScanned);
 			} else {
-				mWifiEncrypt.add(new WifiInfoScanned(scanResult.SSID, null,
-						null, mWifiAdmin.getWifiStrength(scanResult.level)));
+				mWifiEncrypt.add(new WifiInfoScanned(hotspot.SSID, null,
+						null, mWifiAdmin.getWifiStrength(hotspot.level)));
 			}
 		}
-
-//		if (mWifiFree.size() > 1)
-//			Collections.sort(mWifiFree, new SortBySignalStrength());
-//		if (mWifiEncrypt.size() > 1)
-//			Collections.sort(mWifiEncrypt, new SortBySignalStrength());
-	}
-
-	private class SortBySignalStrength implements Comparator<Object> {
-
-		@Override
-		public int compare(Object arg0, Object arg1) {
-			WifiInfoScanned wifi0 = (WifiInfoScanned) arg0;
-			WifiInfoScanned wifi1 = (WifiInfoScanned) arg1;
-			if (wifi0.getWifi_level() > wifi1.getWifi_level()) {
-				return 1;
-			}
-
-			return 0;
-		}
-
 	}
 
 	private void bingdingTitleUI() {
@@ -107,14 +84,11 @@ public class WifiFragment extends MainFragment {
 
 	private void scanWifi() {
 		mWifiAdmin.openWifi();
-		mWifiAdmin.startScan();
-		mWifiListScanned = mWifiAdmin.getWifiList();
-		mWifiConfigurationScanned = mWifiAdmin.getConfiguration();
-		setWifiData(mWifiListScanned, mWifiConfigurationScanned);
+		organizeWifiList(mWifiAdmin.scanWifi());
 	}
 	
 	private void displayWifiConnected(TextView wifiNameView) {
-		String wifiConnected = mWifiAdmin.getSSID();
+		String wifiConnected = mWifiAdmin.getWifiNameConnection();
 		if (!wifiConnected.equals("")) {
 			wifiNameView.setText("已连接"
 					+ wifiConnected.substring(1, wifiConnected.length() - 1));
@@ -129,21 +103,20 @@ public class WifiFragment extends MainFragment {
 		}
 	}
 
-	//从WiFi列表中删除已连接的WiFi
+	//从WIFI列表中删除已连接的WIFI，需要后续更新，比对加密方式
 	private boolean rmWifiConnected(String wifiName,
 			List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		for (Iterator<WifiInfoScanned> it = wifiFree.iterator(); it.hasNext();) {
 			WifiInfoScanned tmpInfo = it.next();
-			if (wifiName.equals(tmpInfo.getWifi_name())) {
+			if (wifiName.equals(tmpInfo.getWifiName())) {
 				it.remove();
 				return true;
 			}
 		}
 
-		for (Iterator<WifiInfoScanned> it = wifiEncrypt.iterator(); it
-				.hasNext();) {
+		for (Iterator<WifiInfoScanned> it = wifiEncrypt.iterator(); it.hasNext();) {
 			WifiInfoScanned tmpInfo = it.next();
-			if (wifiName.equals(tmpInfo.getWifi_name())) {
+			if (wifiName.equals(tmpInfo.getWifiName())) {
 				it.remove();
 				return true;
 			}
@@ -152,10 +125,9 @@ public class WifiFragment extends MainFragment {
 		return false;
 	}
 	
-	private void initWififTastePopupView() {
+	private void initWififSquarePopupView() {
 		if (mPopupWindow == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
 			// 创建一个PopuWidow对象
 			mPopupWindow = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -200,7 +172,7 @@ public class WifiFragment extends MainFragment {
 			Bundle savedInstanceState) {
 		Log.i(TAG, "onCreateView");
 
-		initWififTastePopupView();
+		initWififSquarePopupView();
 		
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
 		mWifiTasteLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_taste);
@@ -220,17 +192,18 @@ public class WifiFragment extends MainFragment {
 					int position, long id) {
 				if (position < (mWifiFree.size() + 1)) {
 					WifiInfoScanned wifiSelected = mWifiFree.get(position - 1);
-					mWifiAdmin.Connect(wifiSelected.getWifi_name(),
-							wifiSelected.getWifi_pwd(),
-							WifiAdmin.WifiCipherType.WIFICIPHER_WPA);
+//					mWifiAdmin.Connect(wifiSelected.getWifiName(),
+//							wifiSelected.getWifiPwd(),
+//							wifiSelected.getWifiType());
+					mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiSelected), false);
 
 					mWifiFree.remove(position - 1);
 					mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 					TextView wifi_connected = (TextView) mPageRoot
 							.findViewById(R.id.wifi_name);
-					String wifiConnected = mWifiAdmin.getSSID();
+					String wifiConnected = mWifiAdmin.getWifiNameConnection();
 					while (wifiConnected == "") {
-						wifiConnected = mWifiAdmin.getSSID();
+						wifiConnected = mWifiAdmin.getWifiNameConnection();
 					}
 					wifi_connected.setText("已连接"
 							+ wifiConnected.substring(1,

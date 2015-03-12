@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.ui.wifi;
+package com.anynet.wifiworld.wifi.ui;
 
 import com.anynet.wifiworld.R;
 import android.app.Activity;
