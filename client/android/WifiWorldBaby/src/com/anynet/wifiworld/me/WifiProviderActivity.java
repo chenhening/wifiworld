@@ -1,14 +1,32 @@
 package com.anynet.wifiworld.me;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
+
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 
 public class WifiProviderActivity extends BaseActivity {
 
+	private WifiProfile mWifiProfile=new WifiProfile();
+	private Bitmap mLogo;
+	private BmobGeoPoint mBmobGeoPoint;
+	private boolean saveWifiProfile(){
+		mWifiProfile.Wifiid = ((EditText)findViewById(R.id.et_wifi_ssid)).getText().toString();
+		mWifiProfile.Password = ((EditText)findViewById(R.id.et_wifi_psw)).getText().toString();
+		mWifiProfile.Alias = ((EditText)findViewById(R.id.et_wifi_asia)).getText().toString();
+		mWifiProfile.Logo = mLogo;
+		mWifiProfile.Banner = ((EditText)findViewById(R.id.et_wifi_info)).getText().toString();
+		mWifiProfile.Geometry = mBmobGeoPoint;
+		mWifiProfile.save(getApplicationContext());
+		return false;
+	}
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -32,6 +50,14 @@ public class WifiProviderActivity extends BaseActivity {
 		setContentView(R.layout.wifi_provider_activity);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		findViewById(R.id.button_save).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				saveWifiProfile();
+			}
+		});
 	}
 
 	@Override

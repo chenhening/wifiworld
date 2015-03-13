@@ -310,7 +310,7 @@
                 android:contentDescription="@string/app_name" />
 
             <LinearLayout
-                android:id="@+id/button_login"
+                android:id="@+id/button_save"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
