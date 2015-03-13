@@ -15,6 +15,7 @@ import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 
 import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -164,7 +165,7 @@ public class WifiFragment extends MainFragment {
 		mWifiFree = new ArrayList<WifiInfoScanned>();
 		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 		
-		scanWifi();
+	    //scanWifi();
 	}
 
 	@Override
@@ -218,29 +219,30 @@ public class WifiFragment extends MainFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		
 		bingdingTitleUI();
+		
+		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		getActivity().registerReceiver(mReceiver, filter);
+		scanWifi();
 		return mPageRoot;
 	}
 
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
+		getActivity().unregisterReceiver(mReceiver);
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onPause() {
-		super.onPause();
-		getActivity().unregisterReceiver(mReceiver);
+		super.onPause();		
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-		getActivity().registerReceiver(mReceiver, filter);
-		scanWifi();
 	}
-	
+
 	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		
 		@Override

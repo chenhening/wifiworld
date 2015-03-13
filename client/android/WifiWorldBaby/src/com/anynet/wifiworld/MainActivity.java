@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			fragments[index].onResume();
+			//fragments[index].onResume();
 			trx.show(fragments[index]).commit();
 
 			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
