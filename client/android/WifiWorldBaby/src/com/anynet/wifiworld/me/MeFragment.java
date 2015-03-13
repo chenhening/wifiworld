@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -162,6 +163,14 @@ public class MeFragment extends MainFragment {
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					startActivity(new Intent(getActivity(), WifiProviderActivity.class));
+				}
+			});
 		}
 	}
 

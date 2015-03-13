@@ -24,6 +24,13 @@
     <string name="userid">用户名</string>
     <string name="cashin">收入</string>
     <string name="cashout">支出</string>
+    
+    <string name="wifissid">Wifi SSID:</string>
+    <string name="wifipsw">Wifi 密码:</string>
+    <string name="wifiasia">Wifi 别名:</string>
+    <string name="wifilogo">Wifi Logo:</string>
+    <string name="wifiinfo">展示信息:</string>
+    <string name="wifigeo">地理位置:</string>
     <!-- testin崩溃测试key -->
     <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>
     <!-- testin 崩溃正式key -->
@@ -49,7 +56,6 @@
     <string name="login_fail_noprivilege">你还没获得水晶矿场资格,快用电脑\n登录   %1$s 抢水晶\n资格吧</string>
     <string name="sessoin_fail_for_kickout">您的帐号已在别处登录</string>
     <string name="sessoin_fail_for_timeout">登录已失效，请重新登录</string>
-
     <string name="small_to_dot001">&lt;0.001</string>
     <string name="zero">0</string>
     <!-- my account -->
@@ -57,7 +63,7 @@
     <string name="my_account_thunder_id">帐号</string>
     <string name="my_account_nikename">昵称</string>
     <string name="my_account_head">头像</string>
-	<string name="my_account_id">账户ID</string>
+    <string name="my_account_id">账户ID</string>
     <!-- my asset -->
 
     <string name="asset_can_use">可用</string>
@@ -73,10 +79,8 @@
     <string name="setting_binding_words">已连线设备：</string>
     <string name="setting_binding_amount">0</string>
     <string name="setting_office_notice">官方公告</string>
-    <string name="setting_system_msg">我是WiFi提供者</string>
     <string name="setting_push_msg">接收宝箱通知</string>
     <string name="setting_version_update">版本更新</string>
-    <string name="setting_in_account">我是WiFi使用者</string>
     <string name="setting_in_setting">设置</string>
     <string name="setting_my_asset">我的资产</string>
     <string name="setting_3g_flow_protect">3G流量保护</string>

@@ -217,7 +217,7 @@
                     android:contentDescription="@string/app_name" />
 
                 <RelativeLayout
-                    android:id="@+id/ll_setting_system_msg"
+                    android:id="@+id/rl_wifi_provider"
                     android:layout_width="match_parent"
                     android:layout_height="41dp"
                     android:background="@drawable/settings_item_radius_bg_selector"
@@ -245,7 +245,7 @@
                         android:layout_toRightOf="@id/iv_my_message_logo"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@string/setting_system_msg"
+                        android:text="@string/wifi_provider"
                         android:textColor="@color/setting_txt"
                         android:textSize="16sp" />
 
@@ -294,7 +294,7 @@
                     android:contentDescription="@string/app_name" />
 
                 <RelativeLayout
-                    android:id="@+id/rl_in_account"
+                    android:id="@+id/rl_wifi_user"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:background="@drawable/settings_item_radius_bg_selector"
@@ -323,7 +323,7 @@
                         android:layout_toRightOf="@id/iv_in_account_logo"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@string/setting_in_account"
+                        android:text="@string/wifi_user"
                         android:textColor="@color/setting_txt"
                         android:textSize="15sp" />
 
