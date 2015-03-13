@@ -1,28 +1,24 @@
 package com.anynet.wifiworld.map;
 
-import java.util.List;
+import org.apache.cordova.LOG;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.anynet.wifiworld.me.WifiProfile;
 import com.anynet.wifiworld.me.WifiType;
 
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 public class TestForWifiData {
 
-	public void QueryData() {
-		
+	public static void QueryData() {
+		int a = 0;
+		a = 8;
 	}
 	
-	public void AddData(final Activity activity, BmobGeoPoint position,
+	public static void AddData(Activity activity, BmobGeoPoint position,
 			String alias, String Banner) {
 		final WifiProfile wifi = new WifiProfile();
 		wifi.Wifiid = "";
@@ -38,8 +34,7 @@ public class TestForWifiData {
     	    @Override
     	    public void onSuccess() {
     	        // TODO Auto-generated method stub
-    	    	Toast.makeText(activity.getApplicationContext(), 
-    	    			"添加数据成功，返回objectId为："+ wifi.getObjectId(), 0);
+    	    	LOG.d("test", "添加数据成功，返回objectId为："+ wifi.getObjectId());
     	    }
 
     	    @Override
