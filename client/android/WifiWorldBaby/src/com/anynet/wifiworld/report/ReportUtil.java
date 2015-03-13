@@ -2,14 +2,12 @@ package com.anynet.wifiworld.report;
 
 import java.util.HashMap;
 
-import com.anynet.wifiworld.bean.MineActivityResp;
 import org.json.JSONObject;
 
 import com.umeng.analytics.MobclickAgent;
 import com.anynet.wifiworld.api.AppRestClient;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.WifiWorldApplication;
-import com.anynet.wifiworld.bean.LastSpeedStatResp;
 import com.anynet.wifiworld.bean.ReportStatResp;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.util.PreferenceHelper;
@@ -153,14 +151,6 @@ public class ReportUtil {
 	//点击“登录”
 	public static void reportLogin(Context context){
 		reportUserBehavior(ReportActionId.LOGIN);
-
-	}
-	//新矿场活跃时间
-	public static void reportMineActivity(long stayTime,long delayTime) {
-
-		AppRestClient.reportMineActivity(stayTime,delayTime,new  ResponseCallback<MineActivityResp>(WifiWorldApplication.getInstance()){
-
-		});
 
 	}
 	//进入新矿场

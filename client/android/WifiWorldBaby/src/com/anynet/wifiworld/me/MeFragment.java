@@ -149,7 +149,7 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -329,8 +329,9 @@ public class MeFragment extends MainFragment {
 	@Override
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
-		boolean isLogining = (mPageRoot.findViewById(R.id.ll_login).getVisibility()==View.VISIBLE);
-		if(isLogining){
+		boolean isLogining = (mPageRoot.findViewById(R.id.ll_login)
+				.getVisibility() == View.VISIBLE);
+		if (isLogining) {
 			setLoginedUI(true);
 			return true;
 		}

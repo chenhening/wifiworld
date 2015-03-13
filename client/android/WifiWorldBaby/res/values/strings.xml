@@ -50,53 +50,20 @@
     <string name="sessoin_fail_for_kickout">您的帐号已在别处登录</string>
     <string name="sessoin_fail_for_timeout">登录已失效，请重新登录</string>
 
-    <!-- crystal -->
-
     <string name="small_to_dot001">&lt;0.001</string>
     <string name="zero">0</string>
-    <string name="no_produce">暂无产出</string>
-    <string name="offline">离线中</string>
-    <string name="pause">暂停中</string>
-    <string name="working">工作中</string>
-    <string name="open_device_success">开启设备成功</string>
-    <string name="open_device_fail">开启设备失败</string>
-    <string name="close_device_success">关闭设备成功</string>
-    <string name="close_device_fail">关闭设备失败</string>
-
-    <!-- 红水晶Fragment -->
-    <string name="crystal_fragment_title">水晶矿场</string>
-    <string name="crystal_current_speed">%1$s Kbps</string>
-    <string name="crystal_uncollected">未收取水晶 %1$s 个 </string>
-    <string name="crystal_collecting">正在收取水晶，请稍候</string>
-    <string name="crystal_collect_failure">收取水晶失败：%1$s</string>
-    <string name="crystal_collect_ok">收取水晶成功</string>
-    <string name="crystal_collect_success">%1$s</string>
-    <string name="crystal_work_count">总速度(共 %1$s台矿机工作中) </string>
-
-    <!-- 矿机 -->
-    <string name="device_state_online">正在挖矿</string>
-    <string name="device_state_offline">矿机离线</string>
-    <string name="device_state_pause">矿机已暂停</string>
-
-    <!-- my -->
-    <string name="my_crystal_sound">水晶提示音</string>
-    <string name="my_thuner_id">矿工编号: %1$s</string>
-
     <!-- my account -->
     <string name="my_account_phone">手机号</string>
     <string name="my_account_thunder_id">帐号</string>
     <string name="my_account_nikename">昵称</string>
     <string name="my_account_head">头像</string>
-    <string name="my_account_mid">矿工编号</string>
-
+	<string name="my_account_id">账户ID</string>
     <!-- my asset -->
 
     <string name="asset_can_use">可用</string>
     <string name="asset_ordering">订单中</string>
     <string name="asset_not_in_account">未到账</string>
     <string name="asset_total">总量</string>
-    <string name="asset_blue">水晶</string>
-    <string name="asset_coin">水晶币</string>
     <string name="asset_unit">%1$s个</string>
     <string name="wechat_unit">可提现%1$s元</string>
 
@@ -124,13 +91,13 @@
     <string name="setting_about_is_newest_version">当前已经是最新版本</string>
     <string name="setting_clear_cache">清除缓存</string>
     <string name="setting_feedback">意见反馈</string>
-    <string name="setting_about">关于水晶</string>
+    <string name="setting_about">关于</string>
     <string name="setting_exit">退出当前帐号</string>
     <string name="setting_feedback_input_tip">你的反馈,是我们前进的动力!</string>
     <string name="setting_feedback_contact_tip">请输入QQ方便我们联系你</string>
     <string name="setting_title_setting">设置</string>
     <string name="setting_title_feedback">意见反馈</string>
-    <string name="setting_title_about">关于水晶</string>
+    <string name="setting_title_about">关于</string>
     <string name="setting_title_office_notice">官方公告</string>
     <string name="setting_title_system_msg">系统消息</string>
     <string name="setting_version_newest">V%1$s</string>
@@ -140,19 +107,15 @@
     <!-- setting header -->
     <string name="feedback_finish">提交</string>
     <string name="userprofile">账户</string>
-    <string name="header_test_txt">水晶监控</string>
     <string name="header_testip_txt">0.0.0.0</string>
     <string name="header_test_machine_txt">None</string>
 
     <!-- 对话框 -->
     <string name="tips">提示</string>
     <string name="default_unified_loading_text">正在重试&#8230;&#8230;&#8230;</string>
-    <string name="crystal_monitor_title">挖掘机监测</string>
     <string name="my_asset_title">提现</string>
     <string name="my_account_title">我的帐户</string>
     <string name="my_title">我的</string>
-    <string name="my_box">领取宝箱</string>
-    <string name="my_crystal_title">我的矿机</string>
     <string name="login_fail_title">登录失败</string>
 
     <!-- 水晶矿场记录 -->
@@ -160,8 +123,5 @@
     <string name="crystal_record_filter_expense">出账</string>
     <string name="crystal_record_filter_income">累计入账</string>
     <string name="crystal_record_no_more">无更多数据</string>
-    <string name="remark">关注微信公众号 水晶矿场( xunlei-crystal ), 并根据公众号提示完成水晶矿场ID绑定,即可提现账户余额至微信红包</string>
-    <string name="remark_keyword">水晶矿场 </string>
-    <string name="crystal_fragment_devices_stat">我的矿机</string>
 
 </resources>

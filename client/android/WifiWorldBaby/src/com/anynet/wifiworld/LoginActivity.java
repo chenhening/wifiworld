@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.*;
@@ -14,10 +13,8 @@ import com.anynet.wifiworld.util.*;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,32 +23,23 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView.OnEditorActionListener;
 
-import com.testin.agent.TestinAgent;
 //import com.xunlei.common.member.XLErrorCode;
 //import com.xunlei.common.member.XLOnUserListener;
 //import com.xunlei.common.member.XLUserInfo;
 //import com.xunlei.common.member.XLUserInfo.USERINFOKEY;
 //import com.xunlei.common.member.XLUserUtil;
 import com.anynet.wifiworld.api.AppRestClient;
-import com.anynet.wifiworld.api.GsonHelper;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.WifiWorldApplication;
 import com.anynet.wifiworld.bean.AppConfigResp;
-import com.anynet.wifiworld.bean.PriviledgeResp;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.constant.ErrCode;
-import com.anynet.wifiworld.report.ReportUtil;
 import com.anynet.wifiworld.view.AnimationDot;
 import com.anynet.wifiworld.R;
 
@@ -839,171 +827,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private int retryCnt = 0;
-
-	/**
-	 * 查询用户是否是白名单
-	 */
-	private void privilege() {
-
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//					List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-//					NameValuePair pair = new BasicNameValuePair("r",
-//							"usr/privilege");
-//					pairs.add(pair);
-//					String resp = SendHttpsPOST("https://red.xunlei.com/",
-//							pairs, null);
-//					final PriviledgeResp priviledgeResp = GsonHelper
-//							.getGsonInstance().fromJson(resp,
-//									PriviledgeResp.class);
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							int retCode = priviledgeResp.getReturnCode();
-//							XLLog.log(TAG, "privilege onSuccess");
-//
-//							// 是白名单，具有交易资格
-//							if (retCode == ErrCode.OK) {
-//
-//								// 获取系统配置值
-//								updateConfig();
-//
-//								// 保存用户的邮箱
-//								pref.setString(Const.USER_MID,
-//										priviledgeResp.getMid());
-//
-//								pref.setString(Const.USER_PHONE,
-//										priviledgeResp.getPhone());
-//								long appLastUpdateTime = AppInfoUtil
-//										.getLastUpdateTime(LoginActivity.this);
-//								if (GlobalConfig.getInstance()
-//										.getLastUpdateTime() >= appLastUpdateTime) {
-//									MainActivity.startActivity(
-//											LoginActivity.this, false);
-//									ReportUtil.reportLogin(LoginActivity.this);
-//								} else {
-//									NewVersionActivity
-//											.startActivity(LoginActivity.this);
-//									GlobalConfig.getInstance()
-//											.setLastUpdateTime(
-//													appLastUpdateTime);
-//								}
-//
-//								finish();
-//							} else if (retCode == ErrCode.WHITE_FAIL_NOPRIVILEGE
-//									|| retCode == ErrCode.WHITE_FAIL_OLDPRIVILEGE) {
-//
-//								pref.setBoolean(Const.USER_AUTO_LOGIN, false);
-//
-//								Intent intent = new Intent();
-//
-//								intent.setClass(LoginActivity.this,
-//										LoginFailActivity.class);
-//
-//								startActivity(intent);
-//								// finish();
-//
-//							} else {
-//								tvLoginErrortip.setText(priviledgeResp
-//										.getReturnDesc());
-//								XLLog.e(TAG, priviledgeResp.getReturnDesc());
-//								setTheLoginingState(false);
-//
-//							}
-//
-//						}
-//					});
-//
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							tvLoginErrortip.setText("网络不可用，请检查网络设置");
-//							setTheLoginingState(false);
-//						}
-//					});
-//				}
-//			}
-//		}).start();
-//		
-		
-		AppRestClient.privilege(new ResponseCallback<PriviledgeResp>(
-				WifiWorldApplication.getInstance()) {
-
-			public void onSuccess(JSONObject paramJSONObject,
-					PriviledgeResp priviledgeResp) {
-				int retCode = priviledgeResp.getReturnCode();
-
-				// 是白名单，具有交易资格
-				if (retCode == ErrCode.OK) {
-
-					// 获取系统配置值
-					updateConfig();
-
-					// 保存用户的邮箱
-					pref.setString(Const.USER_MID, priviledgeResp.getMid());
-
-					pref.setString(Const.USER_PHONE, priviledgeResp.getPhone());
-					long appLastUpdateTime = AppInfoUtil
-							.getLastUpdateTime(LoginActivity.this);
-					if (GlobalConfig.getInstance().getLastUpdateTime() >= appLastUpdateTime) {
-						MainActivity.startActivity(LoginActivity.this, false);
-						ReportUtil.reportLogin(LoginActivity.this);
-					} else {
-						NewVersionActivity.startActivity(LoginActivity.this);
-						GlobalConfig.getInstance().setLastUpdateTime(
-								appLastUpdateTime);
-					}
-
-					finish();
-				} else if (retCode == ErrCode.WHITE_FAIL_NOPRIVILEGE
-						|| retCode == ErrCode.WHITE_FAIL_OLDPRIVILEGE) {
-
-					pref.setBoolean(Const.USER_AUTO_LOGIN, false);
-
-					Intent intent = new Intent();
-
-					intent.setClass(LoginActivity.this, LoginFailActivity.class);
-
-					startActivity(intent);
-					// finish();
-
-				} else {
-					tvLoginErrortip.setText(priviledgeResp.getReturnDesc());
-					XLLog.e(TAG, priviledgeResp.getReturnDesc());
-					setTheLoginingState(false);
-
-				}
-
-			}
-
-			public void onFailure(int paramInt, Throwable paramThrowable) {
-				XLLog.log(TAG, "privilege onFailure");
-				// if (retryCnt < 3){
-				// privilege();
-				// retryCnt++;
-				// XLLog.log(TAG, "privilege retryCnt:" + retryCnt);
-				//
-				// return;
-				// }
-				if (paramThrowable.toString().startsWith(
-						"javax.net.ssl.SSLPeerUnverifiedException")) {
-					tvLoginErrortip.setText("请检查手机时间是否正确");
-				} else {
-					tvLoginErrortip.setText("网络不可用，请检查网络设置");
-				}
-
-				XLLog.e(TAG, paramThrowable.toString());
-				setTheLoginingState(false);
-
-			}
-
-		});
-
-	}
 
 	/**
 	 * 获取全局值

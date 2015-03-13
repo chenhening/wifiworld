@@ -118,79 +118,6 @@ public class AppRestClient {
 	}
 
 	/**
-	 * 8.1.1.1 矿机摘要
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void crystalIncomeSummary(
-			ResponseCallback<CrystalIncomeSummaryResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-
-		params.put("r", "mine/summary");
-
-		params.put("addgft", 1);
-
-		AppRestClient.post("mine_summary.json", params,
-				new AppHttpHandler<CrystalIncomeSummaryResp>(
-						paramResponseCallback) {
-				});
-
-	}
-
-	/**
-	 * 8.1.2.6 新首页的信息
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void crystalMineInfo(
-			ResponseCallback<CrystalMineInfoResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-
-		params.put("r", "mine/info");
-
-		AppRestClient.post("mine_summary.json", params,
-				new AppHttpHandler<CrystalMineInfoResp>(paramResponseCallback) {
-				});
-
-	}
-
-	/**
-	 * 8.1.1.3 过去24小时的速度统计
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void lastSpeedStat(
-			ResponseCallback<LastSpeedStatResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "mine/speed_stat");
-
-		AppRestClient.post("last_speed_stat.json", params,
-				new AppHttpHandler<LastSpeedStatResp>(paramResponseCallback) {
-				});
-
-	}
-
-	/**
-	 * 权限判断
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void privilege(
-			ResponseCallback<PriviledgeResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "usr/privilege");
-
-		AppRestClient.post("privilege.json", params,
-				new AppHttpHandler<PriviledgeResp>(paramResponseCallback) {
-				});
-
-	}
-
-	/**
 	 * 获取用户设备状态
 	 * 
 	 * @param paramResponseCallback
@@ -255,23 +182,6 @@ public class AppRestClient {
 
 	}
 
-	/**
-	 * 获取个人财产
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void getMyAsset(
-			ResponseCallback<MyAssetResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "usr/asset");
-
-		AppRestClient.post("asset.json", params,
-				new AppHttpHandler<MyAssetResp>(paramResponseCallback) {
-				});
-
-	}
-
 	public static void collectCrystal(
 			ResponseCallback<CommonResp> paramResponseCallback) {
 		addPublic();
@@ -290,19 +200,6 @@ public class AppRestClient {
 		params.put("v", v);
 		AppRestClient.post("drawpkg.json", params,
 				new AppHttpHandler<GetPkgResp>(paramResponseCallback) {
-				});
-	}
-
-	public static void loadCrystalRecord(int filter, int pageIndex,
-			int pageSize, ResponseCallback<CrystalRecordResp> callback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("tp", filter);
-		params.put("p", pageIndex);
-		params.put("ps", pageSize);
-		params.put("r", "usr/assetio");
-		AppRestClient.post("drawpkg.json", params,
-				new AppHttpHandler<CrystalRecordResp>(callback) {
 				});
 	}
 
@@ -326,20 +223,6 @@ public class AppRestClient {
 		AppRestClient.get("hand.json", params,
 				new AppHttpHandler<ReportStatResp>(callback) {
 				});
-	}
-
-	public static void reportMineActivity(long stayTime, long delayTime,
-			ResponseCallback<MineActivityResp> callback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("v", 1);
-		params.put("r", "usr/reportPlayTime");
-		params.put("t", stayTime);
-		params.put("dl", delayTime);
-		AppRestClient.post("reportPlayTime.json", params,
-				new AppHttpHandler<MineActivityResp>(callback) {
-				});
-
 	}
 
 	/**
