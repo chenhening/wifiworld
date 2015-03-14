@@ -158,7 +158,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="com.anynet.wifiworld.ui.wifi.DETAILS_DISPLAY" />
+                <action android:name="com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

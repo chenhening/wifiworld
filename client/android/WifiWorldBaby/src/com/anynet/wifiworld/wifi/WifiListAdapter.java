@@ -7,6 +7,7 @@ import com.anynet.wifiworld.R;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,7 @@ public class WifiListAdapter extends BaseAdapter {
     }
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		TextView textView = null;
         if(mWifiTags.contains(getItem(position))){
@@ -160,7 +161,10 @@ public class WifiListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View arg0) {
-						Intent intent = new Intent("com.anynet.wifiworld.ui.wifi.DETAILS_DISPLAY");
+						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+						Bundle wifiData = new Bundle();
+						wifiData.putSerializable("WifiSelected", ((WifiInfoScanned)getItem(position)));
+						intent.putExtras(wifiData);
 						context.startActivity(intent);
 					}
 				});
