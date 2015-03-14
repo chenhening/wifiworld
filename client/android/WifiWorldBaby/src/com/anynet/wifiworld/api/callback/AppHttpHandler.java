@@ -129,7 +129,7 @@ public abstract class AppHttpHandler<T> extends JsonHttpResponseHandler
         if (!isKick)
         {
             isKick = true;
-            LoginHelper.getInstance().gotoLogin(WifiWorldApplication.getInstance(), content);
+            //LoginHelper.getInstance().gotoLogin(WifiWorldApplication.getInstance(), content);
            
         }
         
