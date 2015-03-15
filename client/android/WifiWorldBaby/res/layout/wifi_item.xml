@@ -15,15 +15,30 @@
 	    android:layout_height="30dip"
 	    android:layout_gravity="center_vertical" />
 	
-	<TextView
-	    android:id="@+id/wifi_name"
+	<LinearLayout
+	    android:id="@+id/wifi_name_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_vertical"
-	    android:paddingLeft="15dip"
-	    android:textColor="@color/black"
-	    android:textSize="22sp" />
+	    android:paddingLeft="15dp"
+	    android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/wifi_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:textColor="@color/black"
+	        android:textSize="22sp" />
 
+	    <TextView
+	        android:id="@+id/wifi_remark"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:textColor="@color/gray"
+	        android:textSize="12sp" />
+	</LinearLayout>
+	
 	<LinearLayout
 	    android:id="@+id/wifi_status"
 	    android:layout_width="match_parent"

@@ -65,11 +65,17 @@ public class WifiFragment extends MainFragment {
 				String wifiPwd = wifiCfg.preSharedKey;
 				String wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
 				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName,
-						wifiPwd, wifiType, mWifiAdmin.getWifiStrength(hotspot.level));
+						wifiPwd, wifiType, WifiAdmin.getWifiStrength(hotspot.level),"本地已保存");
 				mWifiFree.add(wifiInfoScanned);
 			} else {
-				mWifiEncrypt.add(new WifiInfoScanned(hotspot.SSID, null,
-						null, mWifiAdmin.getWifiStrength(hotspot.level)));
+				String wifiName = hotspot.SSID;
+				String wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+				Integer wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+					mWifiFree.add(new WifiInfoScanned(wifiName, null, wifiType, wifiStrength, "无密码"));
+				} else {
+					mWifiEncrypt.add(new WifiInfoScanned(wifiName, null, wifiType, WifiAdmin.getWifiStrength(hotspot.level), null));
+				}
 			}
 		}
 	}
@@ -196,21 +202,29 @@ public class WifiFragment extends MainFragment {
 //					mWifiAdmin.Connect(wifiSelected.getWifiName(),
 //							wifiSelected.getWifiPwd(),
 //							wifiSelected.getWifiType());
-					mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiSelected), false);
+					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
+					if (cfgSelected != null) {
+						mWifiAdmin.connectToConfiguredNetwork(getActivity(),
+								mWifiAdmin.getWifiConfiguration(wifiSelected),
+								false);
 
-					mWifiFree.remove(position - 1);
-					mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-					TextView wifi_connected = (TextView) mPageRoot
-							.findViewById(R.id.wifi_name);
-					String wifiConnected = mWifiAdmin.getWifiNameConnection();
-					while (wifiConnected == "") {
-						wifiConnected = mWifiAdmin.getWifiNameConnection();
+						mWifiFree.remove(position - 1);
+						mWifiListAdapter.refreshWifiList(mWifiFree,
+								mWifiEncrypt);
+						TextView wifi_connected = (TextView) mPageRoot
+								.findViewById(R.id.wifi_name);
+						String wifiConnected = mWifiAdmin
+								.getWifiNameConnection();
+						while (wifiConnected == "") {
+							wifiConnected = mWifiAdmin.getWifiNameConnection();
+						}
+						wifi_connected.setText("已连接"
+								+ wifiConnected.substring(1,
+										wifiConnected.length() - 1));
+						wifi_connected.setTextColor(Color.BLACK);
+						wifi_connected.refreshDrawableState();
 					}
-					wifi_connected.setText("已连接"
-							+ wifiConnected.substring(1,
-									wifiConnected.length() - 1));
-					wifi_connected.setTextColor(Color.BLACK);
-					wifi_connected.refreshDrawableState();
+					
 				}
 
 			}
