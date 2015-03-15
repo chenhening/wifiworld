@@ -1,6 +1,12 @@
 package com.anynet.wifiworld.wifi;
 
-public class WifiInfoScanned {
+import java.io.Serializable;
+
+public class WifiInfoScanned implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String mWifiName;
 	private String mWifiPwd;
 	private String mWifiType;

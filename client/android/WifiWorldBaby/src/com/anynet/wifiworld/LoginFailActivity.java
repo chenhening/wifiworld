@@ -72,7 +72,7 @@ public class LoginFailActivity extends BaseActivity implements OnClickListener
     {
         
         //手动退出
-        LoginHelper.getInstance().logout(LoginHelper.LOGOUT_BY_USER);
+        //LoginHelper.getInstance().logout(LoginHelper.LOGOUT_BY_USER);
         
         //跳转到登录页面
         Intent i = new Intent();

@@ -22,7 +22,6 @@ import com.anynet.wifiworld.dialog.XLWaitingDialog;
 import com.anynet.wifiworld.report.LogcatHelper;
 import com.anynet.wifiworld.util.ActivityUtil;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.LoginHelper.LogoutObserver;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.view.TitlebarHolder;
@@ -48,7 +47,7 @@ public class BaseActivity extends FragmentActivity
     private   boolean isKick = false;
     
     // 处理登录退出情形
-    private LogoutObserver mLogoutListener = new LogoutObserver()
+    /*private LogoutObserver mLogoutListener = new LogoutObserver()
     {
         
         @Override
@@ -58,7 +57,7 @@ public class BaseActivity extends FragmentActivity
             updateLoginState(logoutType);
             
         }
-    };
+    };*/
     private NetworkStateListener mNetworkListener = new NetworkStateListener()
     {
         @Override
@@ -196,7 +195,7 @@ public class BaseActivity extends FragmentActivity
         bindingView();
         // 将Activity放入堆栈中
         WifiWorldApplication.getInstance().activityCreated(this);
-        LoginHelper.getInstance().addLogoutObserver(mLogoutListener);
+        //LoginHelper.getInstance().addLogoutObserver(mLogoutListener);
         mTitlebar = new TitlebarHolder(this);
         networkConfirm = new XLTwoButtonDialog(this);        
     }
@@ -223,10 +222,10 @@ public class BaseActivity extends FragmentActivity
     {
         
         super.onDestroy();
-        if (mLogoutListener != null)
-        {
-            LoginHelper.getInstance().removeLogoutObserver(mLogoutListener);
-        }
+       // if (mLogoutListener != null)
+       // {
+       //     LoginHelper.getInstance().removeLogoutObserver(mLogoutListener);
+       // }
         WifiWorldApplication.getInstance().activityDestroyed(this);
         LogcatHelper.getInstance(this).start(); 
     }
@@ -302,7 +301,7 @@ public class BaseActivity extends FragmentActivity
         	 if (!isKick)
              {
                  isKick = true;
-                 LoginHelper.getInstance().gotoLogin(BaseActivity.this, content);
+                 //LoginHelper.getInstance().gotoLogin(BaseActivity.this, content);
              }
     }
     

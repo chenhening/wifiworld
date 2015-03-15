@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
+
 import com.anynet.wifiworld.LoginActivity;
 import com.anynet.wifiworld.app.WifiWorldApplication;
 import com.anynet.wifiworld.constant.Const;
+import com.anynet.wifiworld.me.UserProfile;
 
 
 
@@ -19,208 +26,194 @@ public class LoginHelper
     /**
      * 登录类型
      */
-    private int mLoginType = LOGIN_FROME_USERCENTER;
+    //private int mLoginType = LOGIN_FROME_USERCENTER;
     
-    public static final int LOGIN_FROME_AUTO = 0;
+    //public static final int LOGIN_FROME_AUTO = 0;
     
-    public static final int LOGIN_FROME_USERCENTER = 1;
+    //public static final int LOGIN_FROME_USERCENTER = 1;
     
-    public static final int LOGIN_FROME_YUNBO = 2;
+    //public static final int LOGIN_FROME_YUNBO = 2;
     
     /**
      * 登出类型
      */
-    private int mLogoutType = LOGOUT_BY_USER;
+   // private int mLogoutType = LOGOUT_BY_USER;
     
-    public static final int LOGOUT_BY_USER = 10;
+    //public static final int LOGOUT_BY_USER = 10;
     
-    public static final int LOGOUT_KICKOUT = 11;
+    //public static final int LOGOUT_KICKOUT = 11;
     
-    public static final int LOGOUT_TIMEOUT = 12;
+    //public static final int LOGOUT_TIMEOUT = 12;
     
-    public static final int LOGOUT_OTHER = 13;
+   // public static final int LOGOUT_OTHER = 13;
     
     /**
      * 当前用户状态
      */
-    private int mCurLoginStatus = STATUS_LOGOUT;
+    //private int mCurLoginStatus = STATUS_LOGOUT;
     
-    public static final int STATUS_LOGOUT = 0;
+    //public static final int STATUS_LOGOUT = 0;
     
-    public static final int STATUS_LOGINING = 1;
+    //public static final int STATUS_LOGINING = 1;
     
-    public static final int STATUS_UNLOGIN = 2;
+    //public static final int STATUS_UNLOGIN = 2;
     
-    public static final int STATUS_LOGINED = 3;
+    //public static final int STATUS_LOGINED = 3;
     
     //产品类型
-    public static final int BUSSNISS_TYPE = 61;
+    //public static final int BUSSNISS_TYPE = 61;
     
-    private PreferenceHelper pref = PreferenceHelper.getInstance();
+    //private PreferenceHelper pref = PreferenceHelper.getInstance();
     
+	private static String mUserprofileDataFile = "userprofile.conf";
+	private static String mAliasUser = "PhoneNumber";
+	private static String mAliasPwd = "Password";
+	private boolean mIsLogin = false;
+	
     private static LoginHelper mInstance = null;
+    private SharedPreferences mPreferences = null;
+    private Context globalContext = null;
     
    // private XLUserUtil mLoginUilt;
     
-    private List<LogoutObserver> mLogoutObservers;
+    //private List<LogoutObserver> mLogoutObservers;
     
-    private List<LoginObserver> mLoginObservers;
+    //private List<LoginObserver> mLoginObservers;
     
-    private List<RefreshUserInfoObserver> mRefreshUserInfoObservers;
+    //private List<RefreshUserInfoObserver> mRefreshUserInfoObservers;
     
     //private XLOnUserListener mLoginListener;
-    
-    public static LoginHelper getInstance()
-    {
-        if (null == mInstance)
-        {
+
+// ------------------------------------------------------------------------------------------------
+    public static LoginHelper getInstance() {
+        if (null == mInstance) {
             mInstance = new LoginHelper();
         }
         return mInstance;
     }
     
-    private LoginHelper()
-    {
-        
-        mLogoutObservers = new ArrayList<LogoutObserver>();
-        mLoginObservers = new ArrayList<LoginObserver>();
-        mRefreshUserInfoObservers = new ArrayList<RefreshUserInfoObserver>();
+    private LoginHelper() {
+        //mLogoutObservers = new ArrayList<LogoutObserver>();
+        //mLoginObservers = new ArrayList<LoginObserver>();
+        //mRefreshUserInfoObservers = new ArrayList<RefreshUserInfoObserver>();
     }
     
-    /**
-     * 保存和更新用户信息
-     */
-    public void storeLoginInfo()
-    
-    {
-        //记录当前时间
-        long curTime = System.currentTimeMillis();
-//        
-//        XLUserInfo userInfo = XLUserUtil.getInstance().getCurrentUser();
-//
-//        //保存昵称
-//        pref.setString(Const.NICK_NAME, userInfo.getStringValue(USERINFOKEY.NickName));
-//        
-//        pref.setString(Const.EN_PWD, userInfo.getStringValue(USERINFOKEY.EncryptedPassword));
-//        pref.setString(Const.PWD_CHECK_NUM, userInfo.getStringValue(USERINFOKEY.PasswordCheckNum));
-//        pref.setString(Const.USER_ID, String.valueOf(userInfo.getIntValue(USERINFOKEY.UserID)));
-//        
-        //保存时间
-        pref.setLong(Const.LAST_TIME, curTime);
-        
-        storeAutoLogWhenLaunch(true); 
-        
+    public void init(Context context) {
+    	this.globalContext = context;
+        mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
     }
-    
-    /**
-     * 重置用户登录信息
-     */
-    public void resetLoginInfo()
-    {
-        
-        pref.setString(Const.EN_PWD, null);
-        pref.setString(Const.PWD_CHECK_NUM, null);
-        pref.setString(Const.NICK_NAME, null);
-        
-        /** 不重置userid */
-        // pref.setString(Const.USER_ID,null);
-        
-      
-        
-    }
-    
-    public void init(Context cxt)
-    {
-//        mLoginUilt = XLUserUtil.getInstance();
-//        mLoginUilt.Init(cxt, BUSSNISS_TYPE, "1.0.0", PeerID.getPeerId(cxt));
-//        
-//        mLoginListener = new XLOnUserListener()
-//        {
-//            @Override
-//            public boolean onUserLogin(int errorCode, XLUserInfo userInfo, Object userdata, String errorDesc)
-//            {
-//                onLoginCompleted(errorCode, userInfo, userdata);
-//                return super.onUserLogin(errorCode, userInfo, userdata, errorDesc);
-//            }
-//            
-//            @Override
-//            public boolean onUserLogout(int errorCode, XLUserInfo userInfo, Object userdata)
-//            {
-//                onLogoutCompleted(errorCode, userInfo);
-//                return super.onUserLogout(errorCode, userInfo, userdata);
-//            }
-//            
-//            @Override
-//            public boolean onUserInfoCatched(int errorCode, List<USERINFOKEY> catchedInfoList, XLUserInfo userInfo, Object userdata)
-//            {
-//                onRefreshUserInfoCompleted(errorCode, catchedInfoList, userInfo);
-//                return super.onUserInfoCatched(errorCode, catchedInfoList, userInfo, userdata);
-//            }
-//            
-//            @Override
-//            public boolean onUserActivated(int errorCode, XLUserInfo userInfo, Object userdata, String errorDesc)
-//            {
-//                return super.onUserActivated(errorCode, userInfo, userdata, errorDesc);
-//            }
-//            
-//            @Override
-//            public boolean onHighSpeedCatched(int errorCode, XLUserInfo userInfo, xl_hspeed_capacity hcap, Object userdata)
-//            {
-//                
-//                return super.onHighSpeedCatched(errorCode, userInfo, hcap, userdata);
-//            }
-//            
-//            public boolean onUserVerifyCodeUpdated(int errorCode, String verifyKey, int imageType, final byte[] imageContent, Object userdata)
-//            {
-//                return true;
-//            }
-//            
-//        };
-//        mLoginUilt.attachListener(mLoginListener);
-//        
-    }
-    
   
-    
-    
-    public void storeAutoLogWhenLaunch(boolean auto) {
-        pref.setBoolean(Const.USER_AUTO_LOGIN,
-                 auto);
-    }
-    
-    /**
-     * 用户直接退出
-     * @param logoutType
-     */
-    public void logout(int logoutType)
-    {
+// ------------------------------------------------------------------------------------------------
+    public void Login(UserProfile profile) {
+    	mIsLogin = false;
+        final UserProfile user = profile;
         
-        mLoginType = logoutType;
-        mCurLoginStatus = STATUS_LOGOUT;
-        resetLoginInfo();
-        storeAutoLogWhenLaunch(false); 
-      //  mLoginUilt.userLogout(mLoginListener, null);
+        //存储数据到数据库，先查询数据库存在数据，如果存在便更新
+        BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
+		query.addWhereEqualTo(user.PhoneNumber.getClass().getName(), user.PhoneNumber);
+		query.findObjects(globalContext, new FindListener<UserProfile>() {
+			
+			@Override
+			public void onSuccess(List<UserProfile> object) {
+				// TODO Auto-generated method stub
+				if (object.size() == 1) {
+					object.get(0).Password = user.Password;
+					object.get(0).update(globalContext,new UpdateListener() {
+
+						@Override
+						public void onSuccess() {
+							// TODO Auto-generated method stub
+							Log.d(TAG, "用户登陆成功。");
+							SaveProfileLocal(user);
+							mIsLogin = true;
+							return;
+						}
+						
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				} else {
+					//查询失败则保存
+					user.save(globalContext, new SaveListener() {
+
+						@Override
+						public void onSuccess() {
+							SaveProfileLocal(user);
+							mIsLogin = true;
+						}
+
+						@Override
+						public void onFailure(int code, String arg0) {
+						}
+					});
+				}
+			}
+	
+			@Override
+			public void onError(int code, String msg) {
+			}
+		});
     }
     
-    
-    /**
-     * 自动退出，一般是点返回键
-     */
-    public void autoLogout()
-    {
-        
-        mCurLoginStatus = STATUS_LOGOUT;
-    //    mLoginUilt.userLogout(null, null);
+    public void AutoLogin() {
+    	mIsLogin = false;
+    	// 读取本地保存的账号密码文件
+    	final UserProfile user = new UserProfile();
+		SharedPreferences sharedata = globalContext.getSharedPreferences(mUserprofileDataFile, 0);
+		user.PhoneNumber = sharedata.getString(mAliasUser, "").trim();
+		user.Password = sharedata.getString(mAliasPwd, "").trim();
+		mIsLogin = false;
+		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
+		if (user.PhoneNumber == null || user.Password == null || user.PhoneNumber.isEmpty()
+				|| user.Password.isEmpty()) {
+			return;
+		}
+
+		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
+		query.addWhereEqualTo(mAliasPwd, user.Password);
+		query.findObjects(globalContext, new FindListener<UserProfile>() {
+			@Override
+			public void onSuccess(List<UserProfile> object) {
+				// TODO Auto-generated method stub
+				if (object.size() == 1) {
+					mIsLogin = true;
+				} else {
+				}
+			}
+
+			@Override
+			public void onError(int code, String msg) {
+				// TODO Auto-generated method stub
+			}
+		});
     }
     
+    public void logout() {
+    	mIsLogin = false; 
+    }
     
+    private void SaveProfileLocal(UserProfile user) {
+    	// 保存账号密码到本地用于下次登陆
+		// TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
+		SharedPreferences.Editor sharedata = globalContext
+				.getSharedPreferences(mUserprofileDataFile, globalContext.MODE_PRIVATE).edit();
+		sharedata.putString(mAliasUser, user.PhoneNumber);
+		sharedata.putString(mAliasPwd, user.Password);
+		sharedata.commit();
+    }
     
-    //返回登录页面,需要中心输入密码
+    public boolean getCurLoginStatus() {
+        return mIsLogin;
+    }
+    
+    /*//返回登录页面,需要中心输入密码
     public  void gotoLogin(Context context, String reason)
     {
         //退出登录
         LoginHelper.getInstance().storeAutoLogWhenLaunch(false);
-        /** 返回登录无需释放,否则登录失败空指针 */
         //释放对象
         //LoginHelper.getInstance().unInit();
 
@@ -228,100 +221,7 @@ public class LoginHelper
         LoginActivity.startForKick(WifiWorldApplication.getInstance(), reason);
         
     }
-    
-//    
-//    public void onLoginCompleted(final int errCode, XLUserInfo info, Object userdata)
-//    {
-//        if (errCode == XLErrorCode.SUCCESS)
-//        {
-//            //成功
-//            mCurLoginStatus = STATUS_LOGINED;
-//            
-//        }
-//        else if (errCode == XLErrorCode.ACCOUNT_INVALID)
-//        {
-//            //账户名不存在
-//            mCurLoginStatus = STATUS_UNLOGIN;
-//            
-//        }
-//        else if (errCode == XLErrorCode.PASSWORD_ERROR)
-//        {
-//            
-//            //密码错误
-//            mCurLoginStatus = STATUS_UNLOGIN;
-//            if (mLoginType != LOGIN_FROME_AUTO)
-//            {
-//                
-//            }
-//        }
-//        else
-//        {
-//            mCurLoginStatus = STATUS_UNLOGIN;
-//        }
-//        
-//        if (mLoginObservers != null)
-//        {
-//            Iterator<LoginObserver> iterator = mLoginObservers.iterator();
-//            while (iterator.hasNext())
-//            {
-//                iterator.next().OnLoginCompleted(errCode, (Integer) userdata);
-//            }
-//        }
-//        
-//    }
-//    
-//    public void onLogoutCompleted(int errCode, XLUserInfo userInfo)
-//    {
-//        Log.v("logout", "onUserLogoutCompleted,errCode = " + errCode);
-//        
-//        mCurLoginStatus = STATUS_LOGOUT;
-//        
-//        if (errCode == XLErrorCode.SUCCESS)
-//        {
-//            mLogoutType = LOGOUT_BY_USER;
-//        }
-//        else if (errCode == XLErrorCode.SESSIONID_KICKOUT)
-//        {
-//            mLogoutType = LOGOUT_KICKOUT;
-//        }
-//        else if (errCode == XLErrorCode.SESSIONID_TIMEOUT)
-//        {
-//            mLogoutType = LOGOUT_TIMEOUT;
-//        }
-//        else
-//        {
-//            mLogoutType = LOGOUT_OTHER;
-//        }
-//        
-//        //通知别的监听器
-//        if (null != mLogoutObservers)
-//        {
-//            for (int i = 0; i < mLogoutObservers.size(); i++)
-//            {
-//                if (mLogoutObservers.get(i) != null)
-//                {
-//                    mLogoutObservers.get(i).OnLogout(mLogoutType);
-//                }
-//            }
-//        }
-//        
-//    }
-//    
-//    public void onRefreshUserInfoCompleted(int errorCode, List<USERINFOKEY> catchedInfoList, XLUserInfo userInfo)
-//    {
-//        Log.v("refresh", "refresh errCode=" + errorCode);
-//        if (errorCode == XLErrorCode.SUCCESS)
-//        {
-//            boolean infoNew = false;
-//            Log.v("refresh", "refreshUserInfoObserverNotify,infoNew = " + infoNew);
-//            refreshUserInfoObserverNotify(errorCode, infoNew);
-//        }
-//        else
-//        {
-//            refreshUserInfoObserverNotify(errorCode, false);
-//        }
-//    }
-//    
+      
     public void refreshUserInfoObserverNotify(int errCode, boolean isInfoNew)
     {
         if (null != mRefreshUserInfoObservers)
@@ -371,24 +271,5 @@ public class LoginHelper
     public interface LogingStateChangedObserver
     {
         public void OnLoginStateChanged(boolean isLogging);
-    }
-    
-    
-    public int getCurLoginStatus() {
-        return mCurLoginStatus;
-    }
-
-    public void setCurLoginStatus(int status) {
-        this.mCurLoginStatus = status;
-    }
-    
-//    
-//    public void unInit() {
-//        if (mLoginUilt != null) {
-//            mLoginUilt.Uninit();
-//            mLoginUilt = null;
-//            mLoginListener = null;
-//        }
-//    }
-//    
+    }*/
 }

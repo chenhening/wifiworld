@@ -12,6 +12,7 @@ public class WifiProfile extends BmobObject {
 	private static final long serialVersionUID = 1L;
 
 	public String Wifiid; //wifi的唯一标识
+	public String Macid; //mac地址
 	public String Password; //wifi的密码，经过base64后保存
 	public String Userid; //绑定的用户账号，wifi提供者
 	public WifiType Type; //wifi的类型

@@ -209,9 +209,9 @@ public class WifiWorldApplication extends Application
     
     public void exitAplication()
     {
-        if(LoginHelper.getInstance().getCurLoginStatus()==LoginHelper.STATUS_LOGINED){
-            LoginHelper.getInstance().autoLogout();
-        }
+        //if(LoginHelper.getInstance().getCurLoginStatus()==LoginHelper.STATUS_LOGINED){
+        //    LoginHelper.getInstance().autoLogout();
+        //}
          
  //       LoginHelper.getInstance().unInit();
         finishAllActivity();

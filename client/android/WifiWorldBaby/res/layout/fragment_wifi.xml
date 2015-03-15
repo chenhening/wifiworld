@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
     <include layout="@layout/header_setting" />
+    
     <LinearLayout
         android:id="@+id/wifi_connected_info"
         android:layout_width="match_parent"
