@@ -1,93 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <include layout="@layout/header_setting"/>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="200dp"
-                    android:paddingBottom="14dp"
-                    android:background="@color/white"
+    <include layout="@layout/header_setting" />
 
-                    android:paddingTop="16dp">
-        <com.xunlei.crystalandroid.view.CurveGraphView
-                android:id="@+id/cgvDiggerHistory"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:paddingLeft="11dp"
-                android:paddingRight="11dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white"
-                android:minHeight="169dp"
-                />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/wifi_ssid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingRight="4dp"
+        android:tag="SSID"
+        android:text="(腾达)"
+        android:textColor="#636363"
+        android:textSize="20sp" >
+    </TextView>
 
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="#eaeaea"/>
     <RelativeLayout
-            android:id="@+id/checkDeviceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:paddingBottom="14dp"
+        android:paddingTop="16dp" >
+
+        <com.anynet.wifiworld.view.CurveGraphView
+            android:id="@+id/cgvDiggerHistory"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="220dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:tag="checkDeviceLayout">
-
-        <TextView
-                android:id="@+id/tvTotalCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:tag="tvTotalCount"
-                android:text="总速度 (共-台矿机工作中)"
-                android:textColor="#636363"
-                android:textSize="14sp"/>
-
-        <TextView
-                android:id="@+id/totalSpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="4dp"
-                android:layout_toLeftOf="@+id/kbps"
-                android:background="@color/white"
-                android:tag="tvDiggerSpeed"
-                android:text="--"
-                android:textColor="#636363"
-                android:textSize="22sp">
-        </TextView>
-
-        <TextView
-                android:id="@+id/kbps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/totalSpeed"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="11dp"
-                android:layout_toLeftOf="@+id/enter"
-                android:paddingRight="4dp"
-                android:tag="tvkbps"
-                android:text="Kbps"
-                android:textColor="#636363"
-                android:textSize="15sp">
-        </TextView>
+            android:minHeight="169dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp" />
     </RelativeLayout>
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="#eaeaea"/>
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="#eaeaea" />
+
+    
+    <LinearLayout
+        android:id="@+id/checkDeviceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:tag="checkDeviceLayout" >
+
+        <TextView
+            android:id="@+id/tvTotalCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:tag="tvTotalCount"
+            android:text="总速度 (共-台矿机工作中)"
+            android:textColor="#636363"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/totalSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:background="@color/white"
+            android:tag="tvDiggerSpeed"
+            android:text="--"
+            android:textColor="#636363"
+            android:textSize="22sp" >
+        </TextView>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="#eaeaea" />
 
     <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fafafa"
-            android:divider="@null"
-            android:dividerHeight="0px"
-            android:listSelector="@android:color/transparent">
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fafafa"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:listSelector="@android:color/transparent" >
     </ListView>
 
 </LinearLayout>
