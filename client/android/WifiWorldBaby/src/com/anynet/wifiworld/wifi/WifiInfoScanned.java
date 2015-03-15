@@ -11,12 +11,22 @@ public class WifiInfoScanned implements Serializable {
 	private String mWifiPwd;
 	private String mWifiType;
 	private Integer mWifiStrength;
+	private String mRemark;
 	
-	public WifiInfoScanned(String name, String pwd, String type, Integer strenghth) {
+	public WifiInfoScanned(String name, String pwd, String type, Integer strenghth, String remark) {
 		mWifiName = name;
 		mWifiPwd = pwd;
 		mWifiType = type;
 		mWifiStrength = strenghth;
+		mRemark = remark;
+	}
+
+	public String getRemark() {
+		return mRemark;
+	}
+
+	public void setRemark(String remark) {
+		this.mRemark = remark;
 	}
 
 	public String getWifiName() {

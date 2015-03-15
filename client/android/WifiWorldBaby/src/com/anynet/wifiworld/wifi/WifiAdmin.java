@@ -255,7 +255,7 @@ public class WifiAdmin {
     	return -1;
     }
 
-    public int getWifiStrength(int dBm) {
+    public static int getWifiStrength(int dBm) {
     	if(dBm <= -100)
             return 0;
         else if(dBm >= -50)
