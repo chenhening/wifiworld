@@ -163,14 +163,17 @@ public class MeFragment extends MainFragment {
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
-			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					startActivity(new Intent(getActivity(), WifiProviderActivity.class));
-				}
-			});
+			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							startActivity(new Intent(getActivity(),
+									WifiProviderListActivity.class));
+						}
+					});
+			// WifiProviderListActivity
 		}
 	}
 
@@ -198,7 +201,8 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				mET_Account = (EditText) mPageRoot.findViewById(R.id.tv_login_account);
+				mET_Account = (EditText) mPageRoot
+						.findViewById(R.id.tv_login_account);
 				mPhoneNumber = mET_Account.getText().toString().trim();
 				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 				if (!pattern.matcher(mPhoneNumber).find()) {
@@ -210,7 +214,8 @@ public class MeFragment extends MainFragment {
 				SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
 
 				// 按钮进入60秒倒计时
-				mTV_Verify = (TextView) mPageRoot.findViewById(R.id.tv_button_sms);
+				mTV_Verify = (TextView) mPageRoot
+						.findViewById(R.id.tv_button_sms);
 				mLL_Verify.setEnabled(false);
 				final Timer timer = new Timer();
 				mTask = new TimerTask() {

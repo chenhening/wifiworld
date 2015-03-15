@@ -21,4 +21,5 @@ public class WifiProfile extends BmobObject {
 	public BmobGeoPoint Geometry; //WiFi的地理位置
 	public String Banner; //wifi的展示页内容(TODO(binfei)还需要定义更多)
 	public float Income; //wifi 收入
+	public Long ctime; //添加时间戳——使用Unix时间戳
 }

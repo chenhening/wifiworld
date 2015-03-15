@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <TextView
+        android:id="@+id/wifi_ssid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="11dp"
+        android:paddingRight="4dp"
+        android:tag="SSID"
+        android:text="(腾达)"
+        android:textColor="#636363"
+        android:textSize="20sp" >
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:paddingBottom="14dp"
+        android:paddingTop="16dp" >
+
+        <com.anynet.wifiworld.view.CurveGraphView
+            android:id="@+id/cgvDiggerHistory"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/white"
+            android:minHeight="169dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="#eaeaea" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_evt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:tag="tvTotalCount"
+                android:text="总速度 (共-台矿机工作中)"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_evt_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="4dp"
+                android:background="@color/white"
+                android:tag="tvDiggerSpeed"
+                android:text="--"
+                android:textColor="#636363"
+                android:textSize="22sp" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_evg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:tag="tvTotalCount"
+                android:text="总速度 (共-台矿机工作中)"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_evg_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:background="@color/white"
+                android:tag="tvDiggerSpeed"
+                android:text="--"
+                android:textColor="#636363"
+                android:textSize="22sp" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="#eaeaea" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_ext1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:tag="tvTotalCount"
+                android:text="总速度 (共-台矿机工作中)"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_ext1_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:background="@color/white"
+                android:tag="tvDiggerSpeed"
+                android:text="--"
+                android:textColor="#636363"
+                android:textSize="22sp" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_ext2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:tag="tvTotalCount"
+                android:text="总速度 (共-台矿机工作中)"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_ext2_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:background="@color/white"
+                android:tag="tvDiggerSpeed"
+                android:text="--"
+                android:textColor="#636363"
+                android:textSize="22sp" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="#eaeaea" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fafafa"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:listSelector="@android:color/transparent" >
+    </ListView>
+
+</LinearLayout>
