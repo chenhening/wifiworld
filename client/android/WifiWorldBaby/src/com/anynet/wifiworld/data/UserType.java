@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.me;
+package com.anynet.wifiworld.data;
 
 public enum UserType {
 	USER_UNKNOWN, //未知用户

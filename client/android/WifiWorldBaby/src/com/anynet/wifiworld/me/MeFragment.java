@@ -27,6 +27,7 @@ import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.Base64Util;
 import com.anynet.wifiworld.util.LoginHelper;
 
@@ -36,10 +37,6 @@ public class MeFragment extends MainFragment {
 	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
 
 	// for saved data
-	//private static String mUserprofileDataFile = "userprofile.conf";
-	//private static String mAliasUser = "PhoneNumber";
-	//private static String mAliasPwd = "Password";
-	//private boolean mIsLogin = false;
 	private LoginHelper mLoginHelper;
 
 	// for SMS verify

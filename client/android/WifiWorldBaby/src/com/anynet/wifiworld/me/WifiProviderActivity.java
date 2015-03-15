@@ -10,6 +10,7 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderActivity extends BaseActivity {
 
@@ -17,7 +18,7 @@ public class WifiProviderActivity extends BaseActivity {
 	private Bitmap mLogo;
 	private BmobGeoPoint mBmobGeoPoint;
 	private boolean saveWifiProfile(){
-		mWifiProfile.Wifiid = ((EditText)findViewById(R.id.et_wifi_ssid)).getText().toString();
+		mWifiProfile.Ssid = ((EditText)findViewById(R.id.et_wifi_ssid)).getText().toString();
 		mWifiProfile.Password = ((EditText)findViewById(R.id.et_wifi_psw)).getText().toString();
 		mWifiProfile.Alias = ((EditText)findViewById(R.id.et_wifi_asia)).getText().toString();
 		mWifiProfile.Logo = mLogo;

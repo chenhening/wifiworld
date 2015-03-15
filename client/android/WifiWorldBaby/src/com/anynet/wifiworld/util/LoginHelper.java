@@ -1,15 +1,13 @@
 package com.anynet.wifiworld.util;
 
-import java.util.List;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
-import com.anynet.wifiworld.me.UserProfile;
+
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.UserProfile;
 
 public class LoginHelper {
     
@@ -18,7 +16,7 @@ public class LoginHelper {
 	private static String mUserprofileDataFile = "userprofile.conf";
 	private static String mAliasUser = "PhoneNumber";
 	private static String mAliasPwd = "Password";
-	private UserProfile mUser;
+	private UserProfile mUser = null;
 	private boolean mIsLogin = false;
 	
     private static LoginHelper mInstance = null;
@@ -33,58 +31,39 @@ public class LoginHelper {
         return mInstance;
     }
     
-    private LoginHelper() {
-    }
-    
     public void init(Context context) {
     	this.globalContext = context;
         mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
+    }
+    
+    public void ShowToast(final Context context, final CharSequence text, final int duration) {
+    	Activity activity = (Activity) globalContext;
+    	activity.runOnUiThread(new Runnable() {
+    		@Override
+    		public void run() {
+    			Toast.makeText(context, text, duration).show();
+    		}
+    	});
     }
   
 // ------------------------------------------------------------------------------------------------
     public void Login(UserProfile profile) {
     	mIsLogin = false;
     	mUser = profile;
-        
-        //存储数据到数据库，先查询数据库存在数据，如果存在便更新
-        BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
-		query.addWhereEqualTo(mAliasUser, mUser.PhoneNumber);
-		query.findObjects(globalContext, new FindListener<UserProfile>() {
-			
-			@Override
-			public void onSuccess(List<UserProfile> object) {
-				Log.d(TAG, "用户旧密码查询成功。");
-				if (object.size() == 1) {
-					object.get(0).Password = mUser.Password;
-					object.get(0).update(globalContext,new UpdateListener() {
+    	mUser.StoreRemote(new DataCallback<UserProfile>() {
 
-						@Override
-						public void onSuccess() {
-							Log.d(TAG, "用户密码更新成功。");
-							Toast.makeText(globalContext, "用户密码更新成功。", Toast.LENGTH_SHORT).show();
-							SaveProfileLocal(mUser);
-							mIsLogin = true;
-							return;
-						}
-						
-						@Override
-						public void onFailure(int arg0, String arg1) {
-							Log.d(TAG, "用户密码更新失败。");
-						}
-					});
-				} else {
-					SaveProfileRemote(mUser);
-					SaveProfileLocal(mUser);
-				}
-			}
-	
 			@Override
-			public void onError(int code, String msg) {
-				Log.d(TAG, "用户旧密码查询失败。");
-				SaveProfileRemote(mUser);
+			public void onSuccess(UserProfile object) {
+				ShowToast(globalContext, "用户信息更新成功。", Toast.LENGTH_SHORT);
 				SaveProfileLocal(mUser);
+				mIsLogin = true;
 			}
-		});
+
+			@Override
+			public void onFailed(String msg) {
+				ShowToast(globalContext, "用户信息更新失败，请重新更新。", Toast.LENGTH_SHORT);
+			}	
+    	});
     }
     
     public void AutoLogin() {
@@ -97,61 +76,36 @@ public class LoginHelper {
 		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
 		if (mUser.PhoneNumber == null || mUser.Password == null || mUser.PhoneNumber.isEmpty()
 				|| mUser.Password.isEmpty()) {
-			Log.d(TAG, "用户自动登陆失败，本地未保存登陆密码。");
+			Log.d(TAG, "用户未登录过");
+			ShowToast(globalContext, "用户未登录过。", Toast.LENGTH_SHORT);
 			return;
 		}
 
-		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
-		query.addWhereEqualTo(mAliasUser, mUser.PhoneNumber);
-		query.findObjects(globalContext, new FindListener<UserProfile>() {
+		final UserProfile remote_user = new UserProfile();
+		remote_user.QueryByPhoneNumber(mUser.PhoneNumber, new DataCallback<UserProfile>() {
+
 			@Override
-			public void onSuccess(List<UserProfile> object) {
-				// TODO Auto-generated method stub
-				if (object.size() == 1) {
-					String password = object.get(0).Password = mUser.Password;
-					if (password.equals(mUser.Password)) {
-						mIsLogin = true;
-						Log.d(TAG, "用户自动登陆成功。");
-						Toast.makeText(globalContext, "用户自动登陆成功。", Toast.LENGTH_SHORT).show();
-					} else {
-						Log.d(TAG, "用户自动登陆失败，请重新登陆。");
-						Toast.makeText(globalContext, "用户自动登陆失败，请重新登陆。", Toast.LENGTH_SHORT).show();
-					}
+			public void onSuccess(UserProfile object) {
+				if (object.Password.equals(mUser.Password)) {
+					mIsLogin = true;
+					Log.d(TAG, "用户自动登陆成功。");
+					ShowToast(globalContext, "用户自动登陆成功。", Toast.LENGTH_SHORT);
 				} else {
-					Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
-					Toast.makeText(globalContext, "用户自动登陆失败，用户未登陆过。", Toast.LENGTH_SHORT).show();
+					Log.d(TAG, "用户自动登陆失败，请重新登陆。");
+					ShowToast(globalContext, "用户自动登陆失败，请重新登陆。", Toast.LENGTH_SHORT);
 				}
 			}
 
 			@Override
-			public void onError(int code, String msg) {
+			public void onFailed(String msg) {
 				Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
+				ShowToast(globalContext, "用户自动登陆失败，用户未登陆过。", Toast.LENGTH_SHORT);
 			}
 		});
     }
     
     public void logout() {
     	mIsLogin = false; 
-    }
-    
-    private void SaveProfileRemote(UserProfile profile) {
-    	final UserProfile user = profile;
-    	//查询失败则保存
-		user.save(globalContext, new SaveListener() {
-
-			@Override
-			public void onSuccess() {
-				SaveProfileLocal(user);
-				mIsLogin = true;
-				Log.d(TAG, "用户密码远程保存成功。");
-				Toast.makeText(globalContext, "用户密码远程保存成功。", Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onFailure(int code, String arg0) {
-				Log.d(TAG, "用户密码远程保存失败。");
-			}
-		});
     }
     
     private void SaveProfileLocal(UserProfile user) {
@@ -162,7 +116,7 @@ public class LoginHelper {
 		sharedata.putString(mAliasPwd, user.Password);
 		sharedata.commit();
 		Log.d(TAG, "用户密码本地保存成功。");
-		Toast.makeText(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT).show();
+		ShowToast(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT);
     }
     
     public boolean getCurLoginStatus() {

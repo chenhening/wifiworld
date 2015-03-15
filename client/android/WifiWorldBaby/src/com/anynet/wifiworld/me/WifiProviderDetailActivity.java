@@ -10,6 +10,7 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 

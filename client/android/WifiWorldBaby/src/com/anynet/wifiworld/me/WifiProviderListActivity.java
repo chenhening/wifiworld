@@ -17,6 +17,7 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiProfile;
 
 
 public class WifiProviderListActivity extends BaseActivity {
@@ -55,7 +56,7 @@ public class WifiProviderListActivity extends BaseActivity {
 		LostAdapter = new QuickAdapter<WifiProfile>(this, R.layout.item_list) {
 			@Override
 			protected void convert(BaseAdapterHelper helper, WifiProfile wifiProfile) {
-				helper.setText(R.id.tv_ssid, wifiProfile.Wifiid)
+				helper.setText(R.id.tv_ssid, wifiProfile.Ssid)
 						.setText(R.id.tv_ctime, wifiProfile.ctime.toString())
 						.setText(R.id.tv_income, Float.toString(wifiProfile.Income));
 			}
@@ -77,7 +78,7 @@ public class WifiProviderListActivity extends BaseActivity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(getApplicationContext(),WifiProviderDetailActivity.class);
-				i.putExtra("mac", LostAdapter.getItem(position).Macid);
+				i.putExtra("mac", LostAdapter.getItem(position).MacAddr);
 				startActivity(i);
 			}
 		});

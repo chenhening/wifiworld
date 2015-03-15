@@ -17,7 +17,7 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.me.WifiProfile;
+import com.anynet.wifiworld.data.WifiProfile;
 
 import android.app.Activity;
 import android.content.Context;

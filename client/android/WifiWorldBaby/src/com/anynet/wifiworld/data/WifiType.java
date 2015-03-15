@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.me;
+package com.anynet.wifiworld.data;
 
 public enum WifiType {
 	WIFI_SUPPLY_BY_UNKNOWN, //未知wifi

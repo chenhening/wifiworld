@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.me;
+package com.anynet.wifiworld.data;
 
 import java.sql.Time;
 
