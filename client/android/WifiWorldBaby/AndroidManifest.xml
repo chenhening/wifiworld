@@ -63,6 +63,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.me.WifiProviderDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"

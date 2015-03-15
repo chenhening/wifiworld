@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import cn.bmob.v3.BmobQuery;
@@ -67,6 +70,17 @@ public class WifiProviderListActivity extends BaseActivity {
 			}
 		});
 		bingdingTitleUI();
+		providerList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(getApplicationContext(),WifiProviderDetailActivity.class);
+				i.putExtra("mac", LostAdapter.getItem(position).Macid);
+				startActivity(i);
+			}
+		});
 	}
 
 	private List<WifiProfile> getWifiProfileList(String Userid) {

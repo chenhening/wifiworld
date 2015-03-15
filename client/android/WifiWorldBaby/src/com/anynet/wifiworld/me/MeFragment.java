@@ -173,7 +173,16 @@ public class MeFragment extends MainFragment {
 									WifiProviderListActivity.class));
 						}
 					});
-			// WifiProviderListActivity
+			mPageRoot.findViewById(R.id.rl_wifi_user).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							startActivity(new Intent(getActivity(),
+									WifiProviderDetailActivity.class));
+						}
+					});
 		}
 	}
 
