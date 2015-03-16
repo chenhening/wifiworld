@@ -40,7 +40,7 @@ public class MeFragment extends MainFragment {
 	private LoginHelper mLoginHelper;
 
 	// for SMS verify
-	private String mPhone_code = "86"; //目前只支持中国区
+	private String mPhone_code = "86"; // 目前只支持中国区
 	private int mVerifyTime = 60;
 	private EventHandler mEventHandler;
 	private TimerTask mTask;
@@ -75,7 +75,8 @@ public class MeFragment extends MainFragment {
 							}
 						});
 						// 得到加密后的密码
-						String password = Base64Util.encode(mPhoneNumber + mSmsCode);
+						String password = Base64Util.encode(mPhoneNumber
+								+ mSmsCode);
 						// 通过bmob保存到服务器，以便于做数据验证
 						UserProfile user = new UserProfile();
 						user.PhoneNumber = mPhoneNumber;
@@ -110,8 +111,8 @@ public class MeFragment extends MainFragment {
 		};
 		// 注册回调监听接口
 		SMSSDK.registerEventHandler(mEventHandler);
-		
-		//initialize loginhelper
+
+		// initialize loginhelper
 		mLoginHelper = LoginHelper.getInstance();
 		mLoginHelper.init(getActivity());
 		mLoginHelper.AutoLogin();
@@ -133,18 +134,22 @@ public class MeFragment extends MainFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 		setLoginedUI(true);
-		if (!mLoginHelper.getCurLoginStatus()) {
-			mPageRoot.findViewById(
-				R.id.rl_setting_my_account).setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					DoLogin();
-				}
-			});
-		} else {
-
-		}
+//		if (!mLoginHelper.getCurLoginStatus()) {
+//			mPageRoot.findViewById(R.id.rl_setting_my_account)
+//					.setOnClickListener(new OnClickListener() {
+//
+//						@Override
+//						public void onClick(View v) {
+//							// TODO Auto-generated method stub
+//							DoLogin();
+//						}
+//					});
+//		} else {
+//			mPageRoot.findViewById(R.id.rl_setting_my_account)
+//					.setOnClickListener(null);
+//			mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
+//					View.INVISIBLE);
+//		}
 
 		return mPageRoot;
 	}
@@ -162,7 +167,8 @@ public class MeFragment extends MainFragment {
 	private void setLoginedUI(boolean isLogin) {
 		if (!isLogin) {
 			mTitlebar.tvTitle.setText(getString(R.string.login_login));
-			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(View.GONE);
+			mPageRoot.findViewById(R.id.ll_userprofile)
+					.setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -174,7 +180,8 @@ public class MeFragment extends MainFragment {
 			});
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
-			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(View.VISIBLE);
+			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(
+					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
@@ -198,6 +205,23 @@ public class MeFragment extends MainFragment {
 						}
 					});
 		}
+		if (!mLoginHelper.getCurLoginStatus()) {
+			mPageRoot.findViewById(R.id.rl_setting_my_account)
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							DoLogin();
+						}
+					});
+		} else {
+			mPageRoot.findViewById(R.id.rl_setting_my_account)
+					.setOnClickListener(null);
+			mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
+					View.INVISIBLE);
+		}
+
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -277,7 +301,7 @@ public class MeFragment extends MainFragment {
 		});
 		mLL_Login.setEnabled(false);
 	}
-	
+
 	@Override
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
@@ -289,7 +313,7 @@ public class MeFragment extends MainFragment {
 		}
 		return super.onBackPressed();
 	}
-	
+
 	private void ResetLoginUI() {
 		mET_SMS.setEnabled(true);
 		mLL_Login.setEnabled(true);
