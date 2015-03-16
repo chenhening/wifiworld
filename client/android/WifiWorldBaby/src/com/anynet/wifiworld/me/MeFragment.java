@@ -139,7 +139,6 @@ public class MeFragment extends MainFragment {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					DoLogin();
 				}
 			});

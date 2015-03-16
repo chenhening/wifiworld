@@ -28,28 +28,20 @@ public class WifiProfile extends BmobObject{
 	public Long ctime; //添加时间戳——使用Unix时间戳
 	
 	private String unique_key = "MacAddr";
-	
-    private Context globalContext = null;
-    private WifiProfile itself = this;
 
  // ------------------------------------------------------------------------------------------------
-    public void init(Context context) {
-    	this.globalContext = context;
-    }
-    
-	public void QueryByMacAddress(String Mac, DataCallback<WifiProfile> callback) {
+	public void QueryByMacAddress(
+		final Context context, String Mac, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		query.addWhereEqualTo(unique_key, Mac);
-		query.findObjects(globalContext, new FindListener<WifiProfile>() {
+		query.findObjects(context, new FindListener<WifiProfile>() {
 			@Override
 			public void onSuccess(List<WifiProfile> object) {
-				// TODO Auto-generated method stub
 				if (object.size() == 1) {
-					itself = object.get(0);
-					_callback.onSuccess(itself);
+					_callback.onSuccess(object.get(0));
 				} else {
-					_callback.onFailed("");
+					_callback.onFailed("数据库中没有数据。");
 				}
 			}
 
@@ -60,18 +52,19 @@ public class WifiProfile extends BmobObject{
 		});
 	}
 	
-	public void StoreRemote(DataCallback<WifiProfile> callback) {
+	public void StoreRemote(final Context context, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
+		final WifiProfile wifi = this;
 		//先查询，如果有数据就更新，否则增加一条新记录
-		QueryByMacAddress(itself.MacAddr, new DataCallback<WifiProfile>() {
+		QueryByMacAddress(context, MacAddr, new DataCallback<WifiProfile>() {
 
 			@Override
-			public void onSuccess(WifiProfile object) {
-				object.update(globalContext, new UpdateListener() {
+			public void onSuccess(final WifiProfile object) {
+				object.update(context, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(itself);
+						_callback.onSuccess(object);
 					}
 					
 					@Override
@@ -83,12 +76,11 @@ public class WifiProfile extends BmobObject{
 
 			@Override
 			public void onFailed(String msg) {
-				_callback.onFailed(msg);
-				itself.save(globalContext, new SaveListener() {
+				wifi.save(context, new SaveListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(itself);
+						_callback.onSuccess(wifi);
 					}
 
 					@Override
