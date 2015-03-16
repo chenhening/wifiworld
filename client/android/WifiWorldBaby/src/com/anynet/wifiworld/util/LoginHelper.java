@@ -50,7 +50,7 @@ public class LoginHelper {
     public void Login(UserProfile profile) {
     	mIsLogin = false;
     	mUser = profile;
-    	mUser.StoreRemote(new DataCallback<UserProfile>() {
+    	mUser.StoreRemote(globalContext, new DataCallback<UserProfile>() {
 
 			@Override
 			public void onSuccess(UserProfile object) {
@@ -82,7 +82,7 @@ public class LoginHelper {
 		}
 
 		final UserProfile remote_user = new UserProfile();
-		remote_user.QueryByPhoneNumber(mUser.PhoneNumber, new DataCallback<UserProfile>() {
+		remote_user.QueryByPhoneNumber(globalContext, mUser.PhoneNumber, new DataCallback<UserProfile>() {
 
 			@Override
 			public void onSuccess(UserProfile object) {

@@ -20,27 +20,21 @@ public class UserProfile extends BmobObject {
 	public float Wallet; //用户钱包
 	
 	private String unique_key = "PhoneNumber";
-    private Context globalContext = null;
-    private UserProfile itself = this;
 	
-	// ------------------------------------------------------------------------------------------------
-    public void init(Context context) {
-    	this.globalContext = context;
-    }
-    
-	public void QueryByPhoneNumber(String number, DataCallback<UserProfile> callback) {
+// ------------------------------------------------------------------------------------------------
+	public void QueryByPhoneNumber(
+		final Context context, String number, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
 		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
 		query.addWhereEqualTo(unique_key, number);
-		query.findObjects(globalContext, new FindListener<UserProfile>() {
+		query.findObjects(context, new FindListener<UserProfile>() {
 			@Override
 			public void onSuccess(List<UserProfile> object) {
 				// TODO Auto-generated method stub
 				if (object.size() == 1) {
-					itself = object.get(0);
-					_callback.onSuccess(itself);
+					_callback.onSuccess(object.get(0));
 				} else {
-					_callback.onFailed("");
+					_callback.onFailed("此用户不存在。");
 				}
 			}
 
@@ -51,18 +45,19 @@ public class UserProfile extends BmobObject {
 		});
 	}
 	
-	public void StoreRemote(DataCallback<UserProfile> callback) {
+	public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
+		final UserProfile user = this;
 		//先查询，如果有数据就更新，否则增加一条新记录
-		QueryByPhoneNumber(itself.PhoneNumber, new DataCallback<UserProfile>() {
+		QueryByPhoneNumber(context, PhoneNumber, new DataCallback<UserProfile>() {
 
 			@Override
-			public void onSuccess(UserProfile object) {
-				object.update(globalContext, new UpdateListener() {
+			public void onSuccess(final UserProfile object) {
+				object.update(context, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(itself);
+						_callback.onSuccess(object);
 					}
 					
 					@Override
@@ -74,12 +69,11 @@ public class UserProfile extends BmobObject {
 
 			@Override
 			public void onFailed(String msg) {
-				_callback.onFailed(msg);
-				itself.save(globalContext, new SaveListener() {
+				user.save(context, new SaveListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(itself);
+						_callback.onSuccess(user);
 					}
 
 					@Override
@@ -88,7 +82,6 @@ public class UserProfile extends BmobObject {
 					}
 				});
 			}
-			
 		});
 	}
 }
