@@ -36,7 +36,6 @@ import com.anynet.wifiworld.api.AppRestClient;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.WifiWorldApplication;
-import com.anynet.wifiworld.bean.AppConfigResp;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.constant.ErrCode;
@@ -824,39 +823,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				continue;
 			}
 		return result;
-	}
-
-	private int retryCnt = 0;
-
-	/**
-	 * 获取全局值
-	 */
-	private void updateConfig() {
-
-		AppRestClient.getAppConfig(new ResponseCallback<AppConfigResp>(
-				WifiWorldApplication.getInstance()) {
-
-			public void onSuccess(JSONObject paramJSONObject,
-					AppConfigResp appConfigResp) {
-				int retCode = appConfigResp.getReturnCode();
-
-				// 是白名单，具有交易资格
-				if (retCode == ErrCode.OK) {
-					GlobalConfig.getInstance().updateConfig(
-							appConfigResp.getConfig());
-
-				} else {
-					XLLog.e(TAG, appConfigResp.getReturnDesc());
-				}
-
-			}
-
-			public void onFailure(int paramInt, Throwable paramThrowable) {
-				XLLog.e(TAG, paramThrowable);
-			}
-
-		});
-
 	}
 
 	@Override

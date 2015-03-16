@@ -26,7 +26,6 @@ import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.app.WifiWorldApplication;
-import com.anynet.wifiworld.bean.DeviceTokenResp;
 import com.anynet.wifiworld.bean.Msg;
 import com.anynet.wifiworld.bean.SystemMsgResp;
 import com.anynet.wifiworld.constant.Const;
@@ -304,27 +303,27 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		Runnable reportDeviceTokenRunnable = new Runnable() {
 			@Override
 			public void run() {
-				AppRestClient.reportDeviceToken(version, type, appVersion,
-						deviceToken, new ResponseCallback<DeviceTokenResp>(
-								WifiWorldApplication.getInstance()) {
-							public void onSuccess(JSONObject paramJSONObject,
-									DeviceTokenResp deviceTokenResp) {
-								// 返回数据ok则更新
-								if (deviceTokenResp.isOK()) {
-
-								}
-							}
-
-							public void onFailure(int paramInt,
-									Throwable paramThrowable) {
-								/** 网络错误 */
-								// XLLog.e(TAG, paramThrowable.toString());
-								if (retryCnt < 5) {
-									retryCnt++;
-									run();
-								}
-							}
-						});
+//				AppRestClient.reportDeviceToken(version, type, appVersion,
+//						deviceToken, new ResponseCallback<DeviceTokenResp>(
+//								WifiWorldApplication.getInstance()) {
+//							public void onSuccess(JSONObject paramJSONObject,
+//									DeviceTokenResp deviceTokenResp) {
+//								// 返回数据ok则更新
+//								if (deviceTokenResp.isOK()) {
+//
+//								}
+//							}
+//
+//							public void onFailure(int paramInt,
+//									Throwable paramThrowable) {
+//								/** 网络错误 */
+//								// XLLog.e(TAG, paramThrowable.toString());
+//								if (retryCnt < 5) {
+//									retryCnt++;
+//									run();
+//								}
+//							}
+//						});
 			}
 		};
 		handler.post(reportDeviceTokenRunnable);

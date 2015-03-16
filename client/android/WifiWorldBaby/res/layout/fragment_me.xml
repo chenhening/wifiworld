@@ -172,6 +172,7 @@
                     android:layout_marginRight="12dp"
                     android:background="@drawable/wifi_diglist_selector"
                     android:contentDescription="@string/app_name"
+                    android:visibility="visible"
                     android:gravity="center_vertical" />
 
                 <ImageView

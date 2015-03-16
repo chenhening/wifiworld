@@ -8,7 +8,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.anynet.wifiworld.api.AppRestClient;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.WifiWorldApplication;
-import com.anynet.wifiworld.bean.ReportStatResp;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.util.PreferenceHelper;
 import com.anynet.wifiworld.util.XLLog;
@@ -46,20 +45,20 @@ public class ReportUtil {
 	}
 
 	public static void reportUserBehavior(int actionid) {
-
-		AppRestClient.reportStat(actionid,new  ResponseCallback<ReportStatResp>(){
-			@Override
-			public void onSuccess(JSONObject paramJSONObject,
-								  ReportStatResp paramT) {
-				// TODO Auto-generated method stub
-				super.onSuccess(paramJSONObject, paramT);
-			}
-
-			@Override
-			public void onFailure(int paramInt, Throwable paramThrowable) {
-				super.onFailure(paramInt, paramThrowable);
-			}
-		});
+//
+//		AppRestClient.reportStat(actionid,new  ResponseCallback<ReportStatResp>(){
+//			@Override
+//			public void onSuccess(JSONObject paramJSONObject,
+//								  ReportStatResp paramT) {
+//				// TODO Auto-generated method stub
+//				super.onSuccess(paramJSONObject, paramT);
+//			}
+//
+//			@Override
+//			public void onFailure(int paramInt, Throwable paramThrowable) {
+//				super.onFailure(paramInt, paramThrowable);
+//			}
+//		});
 	}
 	/***********挖水晶页面*************/
 	//点击“立即收取”button
@@ -76,19 +75,19 @@ public class ReportUtil {
 	//点击“宝箱”按钮
 	public static void reportDigClickBox(Context context){
 		MobclickAgent.onEvent(context, "clk_dig_box", getUserId());
-		AppRestClient.reportStat(ReportActionId.BOX_INDEX, new  ResponseCallback<ReportStatResp>(WifiWorldApplication.getInstance()){
-		    public void onSuccess(JSONObject paramJSONObject, ReportStatResp reportStatResp)
-            {
-                
-            }
-            
-            public void onFailure(int paramInt, Throwable paramThrowable)
-            {
-              
-              
-            }
-			
-		});
+//		AppRestClient.reportStat(ReportActionId.BOX_INDEX, new  ResponseCallback<ReportStatResp>(WifiWorldApplication.getInstance()){
+//		    public void onSuccess(JSONObject paramJSONObject, ReportStatResp reportStatResp)
+//            {
+//                
+//            }
+//            
+//            public void onFailure(int paramInt, Throwable paramThrowable)
+//            {
+//              
+//              
+//            }
+//			
+//		});
 
 	}
 	//点击“总速度”进入矿机详情

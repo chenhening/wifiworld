@@ -117,44 +117,6 @@ public class AppRestClient {
 		return null;
 	}
 
-	/**
-	 * 获取用户设备状态
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void getDeviceStat(
-			ResponseCallback<DeviceStatResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "mine/devices_stat");
-		params.put("total", "1");
-
-		AppRestClient.post("device_stat.json", params,
-				new AppHttpHandler<DeviceStatResp>(paramResponseCallback) {
-				});
-
-	}
-
-	/**
-	 * 获取用户设备状态(多设备)
-	 * 
-	 * @param paramResponseCallback
-	 * @paramparam statFlag 是否查询统计数据
-	 */
-	public static void getDevicesStat(
-			ResponseCallback<DevicesStatResp> paramResponseCallback,
-			boolean statFlag) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "mine/devices_stat");
-		if (statFlag) {
-			params.put("total", "1");
-		}
-		AppRestClient.post("devices_stat.json", params,
-				new AppHttpHandler<DevicesStatResp>(paramResponseCallback) {
-				});
-
-	}
 
 	/**
 	 * 获取系统消息
@@ -192,16 +154,6 @@ public class AppRestClient {
 				});
 	}
 
-	public static void getPkg(
-			ResponseCallback<GetPkgResp> paramResponseCallback, String v) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "usr/drawpkg");
-		params.put("v", v);
-		AppRestClient.post("drawpkg.json", params,
-				new AppHttpHandler<GetPkgResp>(paramResponseCallback) {
-				});
-	}
 
 	public static void getBroadCast(int id,
 			ResponseCallback<SystemMsgResp> callback) {
@@ -211,67 +163,6 @@ public class AppRestClient {
 		params.put("r", "sys/brc");
 		AppRestClient.post("brc.json", params,
 				new AppHttpHandler<SystemMsgResp>(callback) {
-				});
-	}
-
-	public static void reportStat(int actionid,
-			ResponseCallback<ReportStatResp> callback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("actid", actionid);
-		params.put("r", "usr/hand");
-		AppRestClient.get("hand.json", params,
-				new AppHttpHandler<ReportStatResp>(callback) {
-				});
-	}
-
-	/**
-	 * 获取全局配置数组
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void getAppConfig(
-			ResponseCallback<AppConfigResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("r", "sys/config");
-
-		AppRestClient.post("get_config.json", params,
-				new AppHttpHandler<AppConfigResp>(paramResponseCallback) {
-				});
-	}
-
-	/**
-	 * 上报device_token
-	 * 
-	 * @param paramResponseCallback
-	 */
-	public static void reportDeviceToken(int version, int type,
-			String appVersion, String deviceToken,
-			ResponseCallback<DeviceTokenResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("v", version);
-		params.put("c", type);
-		params.put("dtn", deviceToken);
-		params.put("appv", appVersion);
-		params.put("r", "usr/reportDevice");
-
-		AppRestClient.post("report_device_token.json", params,
-				new AppHttpHandler<DeviceTokenResp>(paramResponseCallback) {
-				});
-	}
-
-	public static void removeDeviceToken(int version, String userid,
-			ResponseCallback<DeviceTokenResp> paramResponseCallback) {
-		addPublic();
-		RequestParams params = new RequestParams();
-		params.put("v", version);
-		params.put("userid", userid);
-		params.put("r", "usr/removeToken");
-
-		AppRestClient.post("remove_device_token.json", params,
-				new AppHttpHandler<DeviceTokenResp>(paramResponseCallback) {
 				});
 	}
 
