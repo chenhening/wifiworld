@@ -12,14 +12,13 @@ import cn.bmob.v3.listener.UpdateListener;
 public class UserProfile extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
+	private static final String unique_key = "PhoneNumber";
 	
 	//public String Userid; //用户账号
 	public String PhoneNumber; //用户手机号，作为表的唯一建
 	public String Password; //密码
 	public UserType Type; //用户类型，
 	public float Wallet; //用户钱包
-	
-	private String unique_key = "PhoneNumber";
 	
 // ------------------------------------------------------------------------------------------------
 	public void QueryByPhoneNumber(

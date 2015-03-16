@@ -14,6 +14,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class WifiProfile extends BmobObject{
 
 	private static final long serialVersionUID = 1L;
+	private static final String unique_key = "MacAddr";
 
 	public String MacAddr; //mac地址, 唯一建
 	public String Ssid; //wifi的ssid
@@ -26,8 +27,6 @@ public class WifiProfile extends BmobObject{
 	public String Banner; //wifi的展示页内容(TODO(binfei)还需要定义更多)
 	public float Income; //wifi 收入
 	public Long ctime; //添加时间戳——使用Unix时间戳
-	
-	private String unique_key = "MacAddr";
 
  // ------------------------------------------------------------------------------------------------
 	public void QueryByMacAddress(

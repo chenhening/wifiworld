@@ -207,7 +207,7 @@ public class MapFragment extends MainFragment implements LocationSource,
 				TestForWifiData.AddData(getActivity(), 
 						new BmobGeoPoint(Longitude + 0.0002, Latitude + 0.0002),
 						"好用又便宜的wifi", "我的电话是多少？");
-				/*TestForWifiData.AddData(getActivity(), 
+				TestForWifiData.AddData(getActivity(), 
 						new BmobGeoPoint(Longitude + 0.0003, Latitude + 0.0003),
 						"wifi出租", "我的电话是多少？");
 				TestForWifiData.AddData(getActivity(), 
@@ -221,7 +221,7 @@ public class MapFragment extends MainFragment implements LocationSource,
 						"思聪的私人wifi", "我的电话是多少？");
 				TestForWifiData.AddData(getActivity(), 
 						new BmobGeoPoint(Longitude - 0.0002, Latitude + 0.0002),
-						"思聪的公共wifi", "我的电话是多少？");*/
+						"思聪的公共wifi", "我的电话是多少？");
 				
 				//query wifi nearby
 				BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();
