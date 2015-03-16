@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -14,10 +14,10 @@ import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 
-	private WifiProfile mWifiProfile=new WifiProfile();
+	private WifiProfile mWifiProfile = new WifiProfile();
 	private Bitmap mLogo;
 	private BmobGeoPoint mBmobGeoPoint;
-
+	private WifiProviderLineChartView mLineChart;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -38,11 +38,22 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		String mac = getIntent().getStringExtra("mac");
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
+		RelativeLayout chartLayout = (RelativeLayout)
+			this.findViewById(R.id.rl_wifi_provider_line_chart);
+		//图表显示范围在占屏幕大小的90%的区域内	   
+		int scrWidth = chartLayout.getLayoutParams().width; 	
+		int scrHeight = chartLayout.getLayoutParams().height; 			   		
+		RelativeLayout.LayoutParams layoutParams = 
+			new RelativeLayout.LayoutParams(scrWidth, scrHeight);	
+		//居中显示
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		mLineChart = new WifiProviderLineChartView(this);
+        chartLayout.addView(mLineChart, layoutParams);
 	}
 
 	@Override

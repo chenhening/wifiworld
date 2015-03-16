@@ -19,23 +19,25 @@
         android:textSize="20sp" >
     </TextView>
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fl_wifi_provider_line_chart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_gravity="bottom|right"
         android:background="@color/white"
         android:paddingBottom="14dp"
         android:paddingTop="16dp" >
 
-        <com.anynet.wifiworld.view.CurveGraphView
-            android:id="@+id/cgvDiggerHistory"
+        <RelativeLayout
+            android:id="@+id/rl_wifi_provider_line_chart"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:background="@color/white"
-            android:minHeight="169dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="11dp"
-            android:paddingRight="11dp" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center" >
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"
