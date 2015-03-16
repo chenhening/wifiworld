@@ -24,54 +24,50 @@ import android.view.MotionEvent;
 
 public class WifiProviderLineChartView extends ChartView {
 	
-	private String TAG = "LineChart01View";
-	private LineChart chart = new LineChart();
-	
+private String TAG = "LineChart01View";
+private LineChart chart = new LineChart();
+
 	//标签集合
 	private LinkedList<String> labels = new LinkedList<String>();
 	private LinkedList<LineData> chartData = new LinkedList<LineData>();
-
 	private Paint mPaintTooltips = new Paint(Paint.ANTI_ALIAS_FLAG);
-	
 	
 	public WifiProviderLineChartView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		initView();
 	}
 	
 	public WifiProviderLineChartView(Context context, AttributeSet attrs){   
-        super(context, attrs);   
-        initView();
-	 }
+	    super(context, attrs);   
+	    initView();
+	}
 	 
-	 public WifiProviderLineChartView(Context context, AttributeSet attrs, int defStyle) {
-			super(context, attrs, defStyle);
-			initView();
-	 }
+	public WifiProviderLineChartView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		initView();
+	}
 	 
-	 private void initView() {
-	 	chartLabels();
-		chartDataSet();	
-		chartRender();
-	 }
+	private void initView() {
+		setChartLabels();
+		setChartDataSet();	
+		setChartStyle();
+	}
 	 
-
 	@Override  
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {  
-        super.onSizeChanged(w, h, oldw, oldh);  
-       //图所占范围大小
-        chart.setChartRange(w,h);
-    }  
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {  
+	    super.onSizeChanged(w, h, oldw, oldh);  
+	   //图所占范围大小
+	    chart.setChartRange(w,h);
+	}  
 	
-	private void chartRender() {
+	private void setChartStyle() {
 		try {
 			chart.disableHighPrecision();
 			chart.disablePanMode(); //禁止平移
 			//设置绘图区默认缩进px值,留置空间显示Axis,Axistitle....		
 			int [] ltrb = new int[4];
 			ltrb[0] = DensityUtil.dip2px(getContext(), 20); //left	
-			ltrb[1] = DensityUtil.dip2px(getContext(), 40); //top	
+			ltrb[1] = DensityUtil.dip2px(getContext(), 35); //top	
 			ltrb[2] = DensityUtil.dip2px(getContext(), 20); //right		
 			ltrb[3] = DensityUtil.dip2px(getContext(), 20); //bottom	
 			chart.setPadding(ltrb[0], ltrb[1], ltrb[2], ltrb[3]);	
@@ -120,7 +116,7 @@ public class WifiProviderLineChartView extends ChartView {
 		}
 	}
 	
-	private void chartDataSet() {
+	private void setChartDataSet() {
 		LinkedList<Double> dataSeries1= new LinkedList<Double>();	
 		dataSeries1.add(20d); 
 		dataSeries1.add(10d); 
@@ -194,7 +190,7 @@ public class WifiProviderLineChartView extends ChartView {
 		
 	}
 	
-	private void chartLabels() {
+	private void setChartLabels() {
 		labels.add("周一");
 		labels.add("周二");
 		labels.add("周三");
@@ -202,6 +198,7 @@ public class WifiProviderLineChartView extends ChartView {
 		labels.add("周五");
 		labels.add("周六");
 		labels.add("周日");
+		labels.add("占位");
 	}
 	
 	@Override
