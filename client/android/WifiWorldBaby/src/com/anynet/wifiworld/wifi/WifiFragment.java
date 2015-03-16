@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -138,18 +139,20 @@ public class WifiFragment extends MainFragment {
 			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
 			// 创建一个PopuWidow对象
 			mPopupWindow = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			
+			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
+			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	private void showPopupWindow(View view) {
-		Log.i(TAG, "showPopupWindow");
+		Log.i(TAG, "show PopupWindow");
 		mPopupWindow.setFocusable(true);
-		mPopupWindow.setOutsideTouchable(true);
+		mPopupWindow.setOutsideTouchable(false);
 		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 		mPopupWindow.setAnimationStyle(R.style.PopupAnimation);
 		mPopupWindow.showAsDropDown(view);
-		Log.i(TAG, "showPopupWindow finish");
 	}
 	
 	private void setWifiTasteListener(LinearLayout wifiTasteLayout) {
