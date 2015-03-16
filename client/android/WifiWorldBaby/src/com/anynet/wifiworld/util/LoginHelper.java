@@ -2,7 +2,9 @@ package com.anynet.wifiworld.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.IntentSender.SendIntentException;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +15,8 @@ public class LoginHelper {
     
     private final String TAG = LoginHelper.class.getSimpleName();
     
+    public static String AUTO_LOGIN_SUCCESS = "com.anynet.wifiworld.autologin.success";
+    public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	private static String mUserprofileDataFile = "userprofile.conf";
 	private static String mAliasUser = "PhoneNumber";
 	private static String mAliasPwd = "Password";
@@ -88,9 +92,11 @@ public class LoginHelper {
 			public void onSuccess(UserProfile object) {
 				if (object.Password.equals(mUser.Password)) {
 					mIsLogin = true;
+					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 					Log.d(TAG, "用户自动登陆成功。");
 					ShowToast(globalContext, "用户自动登陆成功。", Toast.LENGTH_SHORT);
 				} else {
+					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
 					Log.d(TAG, "用户自动登陆失败，请重新登陆。");
 					ShowToast(globalContext, "用户自动登陆失败，请重新登陆。", Toast.LENGTH_SHORT);
 				}

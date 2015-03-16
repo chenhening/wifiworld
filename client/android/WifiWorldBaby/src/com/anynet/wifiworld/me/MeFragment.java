@@ -5,7 +5,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -52,6 +55,15 @@ public class MeFragment extends MainFragment {
 	private String mPhoneNumber;
 	private String mSmsCode;
 
+	BroadcastReceiver loginBR = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+				setLoginedUI(true);
+		}
+	};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -116,13 +128,20 @@ public class MeFragment extends MainFragment {
 		mLoginHelper = LoginHelper.getInstance();
 		mLoginHelper.init(getActivity());
 		mLoginHelper.AutoLogin();
+		IntentFilter filter = new IntentFilter();  
+		filter.addAction(LoginHelper.AUTO_LOGIN_SUCCESS);  
+		filter.addAction(LoginHelper.AUTO_LOGIN_FAIL);  
+		getActivity().registerReceiver(loginBR, filter);
 	}
 
+	
+	
 	@Override
 	public void onDestroy() {
 		mLoginHelper.logout();
 		// registerEventHandler必须和unregisterEventHandler配套使用，否则可能造成内存泄漏。
 		SMSSDK.unregisterEventHandler(mEventHandler);
+		getActivity().unregisterReceiver(loginBR);
 		super.onDestroy();
 	}
 
@@ -220,6 +239,8 @@ public class MeFragment extends MainFragment {
 					.setOnClickListener(null);
 			mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
 					View.INVISIBLE);
+			TextView tvid = (TextView) mPageRoot.findViewById(R.id.tv_ww_id);
+			tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
 		}
 
 	}
