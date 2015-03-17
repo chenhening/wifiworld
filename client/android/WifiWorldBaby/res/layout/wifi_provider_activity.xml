@@ -34,7 +34,7 @@
                     android:id="@+id/tv_wifi_ssid"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.45"
                     android:drawableLeft="@drawable/my_suggestion_logo"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -48,7 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.55"
                     android:background="#00000000"
                     android:gravity="left|center_vertical"
                     android:hint="@string/sms_check_num"
@@ -61,6 +61,12 @@
                     android:textColorHint="@color/darkkhaki"
                     android:textColorLink="@color/black"
                     android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/btn_get_mac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="获取SSID" />
             </LinearLayout>
 
             <ImageView

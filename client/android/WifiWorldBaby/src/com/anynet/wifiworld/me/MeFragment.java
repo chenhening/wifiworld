@@ -152,24 +152,12 @@ public class MeFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		setLoginedUI(true);
+		setLoginedUI(false);
 //		if (!mLoginHelper.getCurLoginStatus()) {
-//			mPageRoot.findViewById(R.id.rl_setting_my_account)
-//					.setOnClickListener(new OnClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							DoLogin();
-//						}
-//					});
-//		} else {
-//			mPageRoot.findViewById(R.id.rl_setting_my_account)
-//					.setOnClickListener(null);
-//			mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
-//					View.INVISIBLE);
+//			setLoginedUI(false);
+//		}else{
+//			setLoginedUI(true);
 //		}
-
 		return mPageRoot;
 	}
 
@@ -197,6 +185,7 @@ public class MeFragment extends MainFragment {
 					setLoginedUI(true);
 				}
 			});
+			RegistLogin();
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(
@@ -231,7 +220,7 @@ public class MeFragment extends MainFragment {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							DoLogin();
+							setLoginedUI(false);
 						}
 					});
 		} else {
@@ -247,10 +236,8 @@ public class MeFragment extends MainFragment {
 
 	// ---------------------------------------------------------------------------------------------
 	// UI event process functions
-	private void DoLogin() {
+	private void RegistLogin() {
 		// get verify code
-		setLoginedUI(false);
-
 		mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
 		mLL_Verify.setOnClickListener(new OnClickListener() {
 
