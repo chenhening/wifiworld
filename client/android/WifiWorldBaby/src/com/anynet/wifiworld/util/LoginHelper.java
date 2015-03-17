@@ -61,10 +61,12 @@ public class LoginHelper {
 				ShowToast(globalContext, "用户信息更新成功。", Toast.LENGTH_SHORT);
 				SaveProfileLocal(mUser);
 				mIsLogin = true;
+				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 			}
 
 			@Override
 			public void onFailed(String msg) {
+				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
 				ShowToast(globalContext, "用户信息更新失败，请重新更新。", Toast.LENGTH_SHORT);
 			}	
     	});
@@ -76,7 +78,6 @@ public class LoginHelper {
     	mUser = new UserProfile();
     	mUser.PhoneNumber = mPreferences.getString(mAliasUser, "").trim();
     	mUser.Password = mPreferences.getString(mAliasPwd, "").trim();
-		mIsLogin = false;
 		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
 		if (mUser.PhoneNumber == null || mUser.Password == null || mUser.PhoneNumber.isEmpty()
 				|| mUser.Password.isEmpty()) {
