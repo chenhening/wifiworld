@@ -61,12 +61,13 @@ public class WifiProviderActivity extends BaseActivity {
 	private WifiInfoScanned mSelectedWifi;
 
 	private boolean saveWifiProfile() {
-		String ssid = mSelectedWifi.getWifiName().toString();
+		WifiListHelper mWH = WifiListHelper
+				.getInstance(getApplicationContext());
+		String ssid = mWH.getWifiAdmin().getWifiNameConnection();//mSelectedWifi.getWifiName().toString();
 		String edssid = ((EditText) findViewById(R.id.et_wifi_ssid)).getText()
 				.toString();
 		mWifiProfile.Ssid = ssid.equals(edssid) ? ssid : edssid;// mSelectedWifi.getWifiName().toString();
-		mWifiProfile.MacAddr = ssid.equals(edssid) ? mSelectedWifi
-				.getmWifiMAC() : "";
+		mWifiProfile.MacAddr = ssid.equals(edssid) ? mWH.getWifiAdmin().getWifiConnection().getBSSID():"";//mSelectedWifi.getmWifiMAC() : "";
 		mWifiProfile.Password = ((EditText) findViewById(R.id.et_wifi_psw))
 				.getText().toString();
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia))
@@ -112,15 +113,15 @@ public class WifiProviderActivity extends BaseActivity {
 						finish();
 					}
 				});
-		findViewById(R.id.btn_get_mac).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						showPopupWindow();
-					}
-				});
+//		findViewById(R.id.btn_get_mac).setOnClickListener(
+//				new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						// TODO Auto-generated method stub
+//						showPopupWindow();
+//					}
+//				});
 
 		SsidAccount = (EditText) findViewById(R.id.et_wifi_ssid);
 		WifiListHelper mWH = WifiListHelper
