@@ -22,6 +22,7 @@ import com.umeng.update.UmengUpdateAgent;
 
 //import com.xunlei.common.member.XLLog;
 import com.anynet.wifiworld.api.AppRestClient;
+import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
@@ -62,7 +63,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private StaticHandler handler = new StaticHandler(this);
 	private PushAgent mPushAgent;
 	private boolean isFromWelcomeActivity;
-
+	
 	public static void startActivity(BaseActivity baseActivity,
 			boolean isFromWelcomeActivity) {
 		Intent i = new Intent(baseActivity, MainActivity.class);
