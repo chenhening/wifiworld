@@ -3,10 +3,8 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -23,7 +21,6 @@ public class WifiSpeedTester implements OnClickListener {
 	private final static String TAG = WifiSpeedTester.class.getSimpleName();
 	private final String TestURL = "http://bcscdn.baidu.com/netdisk/BaiduYunGuanjia_5.2.0.exe";
 	
-	private DownloadFile mDownloadFile;
 	private DownloadedFileParams mDownloadedFileParams;
 	private boolean mTestFlag;
 	private final int UPDATE_SPEED = 1;// 进行中
@@ -35,6 +32,7 @@ public class WifiSpeedTester implements OnClickListener {
 	private TextView mSpeedAvgView;
 	private TextView mSpeedCurView;
 	private Button mSpeedStart;
+	private NetworkTester mSpeedTester = null;
 	
 	private List<Long> mSpeedList = new ArrayList<Long>();
 	
@@ -53,39 +51,34 @@ public class WifiSpeedTester implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		mTestFlag = !mTestFlag;
+		mStartAngle = 0;
 		if (mTestFlag) {
-			mStartAngle = 0;
 			mSpeedList.clear();
 			mSpeedStart.setText("停止");
 			
-			mDownloadFile = new DownloadFile(mContext, mDownloadedFileParams);
-			mDownloadFile.execute(TestURL);
+			mSpeedTester = new NetworkTester(TestURL, mDownloadedFileParams);
+			mSpeedTester.start();
 			
 			//create another thread to update UI
-			new Thread() {
-				@Override
-				public void run() {
-					Log.i(TAG, "Start to update UI");
-					while (mDownloadedFileParams.downloadedBytes < mDownloadedFileParams.totalBytes) {
-						try {
-							sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						Log.i(TAG, "handle empty message");
-						handler.sendEmptyMessage(UPDATE_SPEED);
-					}
-					if (mDownloadedFileParams.downloadedBytes == mDownloadedFileParams.totalBytes) {
-						handler.sendEmptyMessage(UPDATE_DNOE);
-						mDownloadFile.cancel(false);
-					}
-
-				}
-			}.start();
+//			new Thread() {
+//				@Override
+//				public void run() {
+//					Log.i(TAG, "Start to update UI");
+//					while (mDownloadedFileParams.downloadedBytes < mDownloadedFileParams.totalBytes && ) {
+//						Log.i(TAG, "handle empty message");
+//						handler.sendEmptyMessage(UPDATE_SPEED);
+//					}
+//					if (mDownloadedFileParams.downloadedBytes == mDownloadedFileParams.totalBytes) {
+//						handler.sendEmptyMessage(UPDATE_DNOE);
+//					}
+//
+//				}
+//			}.start();
 		} else {
 			mSpeedStart.setText("测速");
-			if (mDownloadFile != null) {
-				mDownloadFile.cancel(false);
+			if (mSpeedTester != null) {
+				mSpeedTester.stopDownload();
+				mSpeedTester.interrupt();
 			}
 		}
 		
@@ -99,7 +92,7 @@ public class WifiSpeedTester implements OnClickListener {
 		int endAngle = getAngle(d);
 
 		RotateAnimation rotateAnimation = new RotateAnimation(mStartAngle, endAngle, Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF, 1f);
-		rotateAnimation.setDuration(1000);
+		rotateAnimation.setDuration(1);
 		animationSet.addAnimation(rotateAnimation);
 		mNeedleView.startAnimation(animationSet);
 		mStartAngle = endAngle;
@@ -123,24 +116,24 @@ public class WifiSpeedTester implements OnClickListener {
 		long curSpeed = 0;
 		long avgSpeed = 0;
 		long numberTotal = 0;
+		List<Long> speedList = new ArrayList<Long>();
 
 		@Override
 		public void handleMessage(Message msg) {
 			int value = msg.what;
 			switch (value) {
 			case UPDATE_SPEED:
-				Log.i(TAG, "Handle speed message");
 				curSpeed = mDownloadedFileParams.speed / 1024;
-				mSpeedList.add(curSpeed);
+				speedList.add(curSpeed);
 				Log.i(TAG, "Current Network Speed: " + curSpeed);
-				for (Long numberLong : mSpeedList) {
+				for (Long numberLong : speedList) {
 					numberTotal += numberLong;
 				}
-				avgSpeed = numberTotal / mSpeedList.size();
+				avgSpeed = numberTotal / speedList.size();
 				numberTotal = 0;
 				mSpeedCurView.setText(curSpeed + " kb/s");
 				mSpeedAvgView.setText(avgSpeed + " kb/s");
-				startAnimation(Double.parseDouble(String.valueOf(curSpeed)));
+				startAnimation(Double.parseDouble(curSpeed+""));
 				break;
 			default:
 				break;
@@ -148,12 +141,20 @@ public class WifiSpeedTester implements OnClickListener {
 		}
 	};
 	
-	public static class DownloadedFileParams {
+	public class DownloadedFileParams {
 		public long speed;
 		public long downloadedBytes;
-		public long totalBytes = 1024; //byte
+		public long totalBytes; //byte
 		public String netWorkType;
 		public float downloadedPercent;
+		
+		public DownloadedFileParams() {
+			speed = 0;
+			downloadedBytes = 0;
+			totalBytes = 1024;
+			netWorkType = null;
+			downloadedPercent = 0f;
+		}
 	}
 
 }

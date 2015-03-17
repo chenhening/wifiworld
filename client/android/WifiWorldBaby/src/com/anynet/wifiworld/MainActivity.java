@@ -216,7 +216,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			FragmentTransaction trx = getSupportFragmentManager()
 					.beginTransaction();
 			trx.hide(fragments[currentTabIndex]);
-			fragments[currentTabIndex].onPause();
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}

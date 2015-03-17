@@ -69,7 +69,7 @@ public class WifiListHelper {
 				String wifiPwd = wifiCfg.preSharedKey;
 				String wifiType = WifiAdmin.ConfigSec
 						.getWifiConfigurationSecurity(wifiCfg);
-				String wifiMAC = wifiCfg.BSSID;
+				String wifiMAC = hotspot.BSSID;
 				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC,
 						wifiPwd, wifiType,
 						WifiAdmin.getWifiStrength(hotspot.level), "本地已保存");
