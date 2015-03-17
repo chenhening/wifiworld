@@ -28,7 +28,7 @@ public class WifiProfile extends BmobObject{
 	public float Income; //wifi 收入
 	public Long ctime; //添加时间戳——使用Unix时间戳
 
- // ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 	public void QueryByMacAddress(
 		final Context context, String Mac, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
