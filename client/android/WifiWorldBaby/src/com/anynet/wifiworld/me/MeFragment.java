@@ -1,6 +1,5 @@
 package com.anynet.wifiworld.me;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -9,10 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,23 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.Base64Util;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class MeFragment extends MainFragment {
-	private String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
-	private String SMSSDK_KEY = "5ea9dee43eb2";
-	private String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
-
 	// for saved data
 	private LoginHelper mLoginHelper;
 
@@ -62,7 +52,7 @@ public class MeFragment extends MainFragment {
 			// TODO Auto-generated method stub
 			Toast.makeText(getApplicationContext(),
 					"Login broadcast receiver!", Toast.LENGTH_LONG).show();
-			setLoginedUI();
+			setLoginedUI(false);
 		}
 	};
 
@@ -71,9 +61,10 @@ public class MeFragment extends MainFragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// 初始化 Bmob SDK
-		Bmob.initialize(getActivity(), BMOB_KEY);
+		Bmob.initialize(getActivity(), GlobalConfig.BMOB_KEY);
 		// initialize sms
-		SMSSDK.initSDK(getActivity(), SMSSDK_KEY, SMSSDK_SECRECT);
+		SMSSDK.initSDK(getActivity(), GlobalConfig.SMSSDK_KEY,
+				GlobalConfig.SMSSDK_SECRECT);
 		mEventHandler = new EventHandler() {
 			public void afterEvent(int event, int result, Object data) {
 				if (result == SMSSDK.RESULT_COMPLETE) {
@@ -93,7 +84,7 @@ public class MeFragment extends MainFragment {
 							@Override
 							public void run() {
 								showToast("服务器验证成功，正在登陆......");
-								setLoginedUI();
+								setLoginedUI(false);
 							}
 						});
 					} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
@@ -153,7 +144,7 @@ public class MeFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		setLoginedUI();
+		setLoginedUI(false);
 		return mPageRoot;
 	}
 
@@ -167,12 +158,22 @@ public class MeFragment extends MainFragment {
 		mTitlebar.tvTitle.setText(getString(R.string.my));
 	}
 
-	private void setLoginedUI() {
-		if (!mLoginHelper.getCurLoginStatus()) {
+	private void setLoginedUI(boolean isLoginUI) {
+		if (isLoginUI) {
 			mTitlebar.tvTitle.setText(getString(R.string.login_login));
 			mPageRoot.findViewById(R.id.ll_userprofile)
 					.setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
+			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					setLoginedUI(false);
+				}
+			});
+			
 			mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
 			mLL_Verify.setOnClickListener(new OnClickListener() {
 
@@ -250,15 +251,18 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
-			// mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
 					new OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							startActivity(new Intent(getActivity(),
-									WifiProviderListActivity.class));
+							if (!mLoginHelper.getCurLoginStatus()) {
+								setLoginedUI(true);
+							} else
+								startActivity(new Intent(getActivity(),
+										WifiProviderListActivity.class));
 						}
 					});
 			mPageRoot.findViewById(R.id.rl_wifi_user).setOnClickListener(
@@ -267,40 +271,40 @@ public class MeFragment extends MainFragment {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							startActivity(new Intent(getActivity(),
-									WifiProviderDetailActivity.class));
+							if (!mLoginHelper.getCurLoginStatus()) {
+								setLoginedUI(true);
+							} else
+								startActivity(new Intent(getActivity(),
+										WifiProviderDetailActivity.class));
 						}
 					});
 			mPageRoot.findViewById(R.id.rl_setting_my_account)
 					.setOnClickListener(null);
-			mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
-					View.INVISIBLE);
-			TextView tvid = (TextView) mPageRoot.findViewById(R.id.tv_ww_id);
-			tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
+			mPageRoot.findViewById(R.id.rl_setting_my_account)
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							if (!mLoginHelper.getCurLoginStatus()) {
+								setLoginedUI(true);
+							} else {
+
+							}
+						}
+					});
+			if (mLoginHelper.getCurLoginStatus()) {
+				TextView tvid = (TextView) mPageRoot
+						.findViewById(R.id.tv_ww_id);
+				tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
+			}
 		}
-		// if (!mLoginHelper.getCurLoginStatus()) {
-		// mPageRoot.findViewById(R.id.rl_setting_my_account)
-		// .setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// setLoginedUI(false);
-		// }
-		// });
-		// } else {
-		// mPageRoot.findViewById(R.id.rl_setting_my_account)
-		// .setOnClickListener(null);
-		// mPageRoot.findViewById(R.id.iv_my_more).setVisibility(
-		// View.INVISIBLE);
-		// TextView tvid = (TextView) mPageRoot.findViewById(R.id.tv_ww_id);
-		// tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
-		// }
 
 	}
 
 	// ---------------------------------------------------------------------------------------------
 	// UI event process functions
+
 	private void RegistLogin() {
 		// get verify code
 		mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
@@ -375,24 +379,21 @@ public class MeFragment extends MainFragment {
 		mLL_Login.setEnabled(false);
 	}
 
-	//
-	// @Override
-	// public boolean onBackPressed() {
-	// // TODO Auto-generated method stub
-	// boolean isLogining = (mPageRoot.findViewById(R.id.ll_login)
-	// .getVisibility() == View.VISIBLE);
-	// if (isLogining) {
-	// setLoginedUI(true);
-	// return true;
-	// }
-	// return super.onBackPressed();
-	// }
+	@Override
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		boolean isLogining = (mPageRoot.findViewById(R.id.ll_login)
+				.getVisibility() == View.VISIBLE);
+		if (isLogining) {
+			setLoginedUI(false);
+			return true;
+		}
+		return super.onBackPressed();
+	}
 
 	private void ResetLoginUI() {
 		mET_SMS.setEnabled(true);
 		mLL_Login.setEnabled(true);
 	}
 
-	// ---------------------------------------------------------------------------------------------
-	// util functions
 }

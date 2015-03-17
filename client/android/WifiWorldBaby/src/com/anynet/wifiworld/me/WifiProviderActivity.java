@@ -123,20 +123,23 @@ public class WifiProviderActivity extends BaseActivity {
 				});
 
 		SsidAccount = (EditText) findViewById(R.id.et_wifi_ssid);
-
+		WifiListHelper mWH = WifiListHelper
+				.getInstance(getApplicationContext());
+		SsidAccount.setText(mWH.getWifiAdmin().getWifiNameConnection());
+		SsidAccount.setEnabled(false);
 		// 设置输入框的焦点改变事件
-		SsidAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-			public void onFocusChange(View v, boolean hasFocus) {
-				// 当输入框获取焦点时弹出选项窗，失去焦点时取消选项窗
-				if (hasFocus) {
-					showPopupWindow();
-				} else {
-					dismissPopupWindow();
-				}
-
-			}
-		});
+//		SsidAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
+//
+//			public void onFocusChange(View v, boolean hasFocus) {
+//				// 当输入框获取焦点时弹出选项窗，失去焦点时取消选项窗
+//				if (hasFocus) {
+//					showPopupWindow();
+//				} else {
+//					dismissPopupWindow();
+//				}
+//
+//			}
+//		});
 
 		WifiLogo = (ImageView) findViewById(R.id.et_wifi_logo);
 		WifiLogo.setOnClickListener(new OnClickListener() {

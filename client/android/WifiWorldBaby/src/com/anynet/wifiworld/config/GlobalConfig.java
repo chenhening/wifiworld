@@ -23,6 +23,10 @@ import com.anynet.wifiworld.util.PreferenceHelper;
  */
 public class GlobalConfig {
 
+	public static final String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
+	public static final String SMSSDK_KEY = "5ea9dee43eb2";
+	public static final String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
+
 	private static GlobalConfig instanceConfig = new GlobalConfig();
 
 	KeyValue configs[];
@@ -32,9 +36,9 @@ public class GlobalConfig {
 	private long updateDataDiv;
 
 	public long getLastUpdateTime() {
-		return PreferenceHelper.getInstance().getLong(
-				Const.LAST_UPDATE_TIME, 0);
-	//	return  0;
+		return PreferenceHelper.getInstance()
+				.getLong(Const.LAST_UPDATE_TIME, 0);
+		// return 0;
 
 	}
 
