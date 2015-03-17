@@ -18,6 +18,7 @@ import cn.bmob.v3.listener.FindListener;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -145,7 +146,7 @@ public class MapFragment extends MainFragment implements LocationSource,
 			// 其中如果间隔时间为-1，则定位只定一次
 			// 在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求
 			mAMapLocationManager.requestLocationData(
-					LocationProviderProxy.AMapNetwork, 60 * 1000, 10, this);
+					LocationProviderProxy.AMapNetwork, 300 * 1000, 10, this);
 		}
 	}
 
@@ -202,27 +203,9 @@ public class MapFragment extends MainFragment implements LocationSource,
 				
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
-				
-				//just for test, automatic generate wifi data
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude + 0.0002, Latitude + 0.0002),
-						"好用又便宜的wifi", "我的电话是多少？");
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude + 0.0003, Latitude + 0.0003),
-						"wifi出租", "我的电话是多少？");
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude - 0.0004, Latitude - 0.0004),
-						"我家的wifi免费", "我的电话是多少？");
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude - 0.0003, Latitude + 0.0003),
-						"想用wifi点我私聊", "我的电话是多少？");
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude + 0.0002, Latitude - 0.0002),
-						"思聪的私人wifi", "我的电话是多少？");
-				TestForWifiData.AddData(getActivity(), 
-						new BmobGeoPoint(Longitude - 0.0002, Latitude + 0.0002),
-						"思聪的公共wifi", "我的电话是多少？");
-				
+				LoginHelper.getInstance().Longitude = Longitude;
+				LoginHelper.getInstance().Latitude = Latitude;
+
 				//query wifi nearby
 				BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();
 				bmobQuery.addWhereNear("Geometry", new BmobGeoPoint(Longitude, Latitude));
