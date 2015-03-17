@@ -23,7 +23,8 @@ public class UserDynamic extends BmobObject {
 	//private static final String key_logout = "LogoutTime";
 	
 	//半周毫秒数
-	private static final long halfweekmillis = (long) (3.5*24*60*60*1000);
+	private static final long halfweekmillis = (long)(3.5*24*60*60*1000);
+	private static final long halfdaymillis = (long)(12*60*60*1000);
 
 	public String Userid; //用户的id即phone number
 	public String MacAddr; //所使用网络的mac地址
@@ -57,8 +58,8 @@ public class UserDynamic extends BmobObject {
 		final MultiDataCallback<UserDynamic> _callback = callback;
 		BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
 		query.addWhereEqualTo(key_wifi, MacAddr);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
-		query.addWhereLessThan(key_login, time + halfweekmillis);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - halfdaymillis);
+		query.addWhereLessThan(key_login, time + halfdaymillis);
 		query.findObjects(context, new FindListener<UserDynamic>() {
 			@Override
 			public void onSuccess(List<UserDynamic> objects) {
@@ -71,6 +72,26 @@ public class UserDynamic extends BmobObject {
 			}
 		});
 	}
+	
+	public void QueryWiFiInOneDay(
+			final Context context, long time, MultiDataCallback<UserDynamic> callback) {
+			final MultiDataCallback<UserDynamic> _callback = callback;
+			BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
+			query.addWhereEqualTo(key_wifi, MacAddr);
+			query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
+			query.addWhereLessThan(key_login, time + halfweekmillis);
+			query.findObjects(context, new FindListener<UserDynamic>() {
+				@Override
+				public void onSuccess(List<UserDynamic> objects) {
+					_callback.onSuccess(objects);
+				}
+		
+				@Override
+				public void onError(int code, String msg) {
+					_callback.onFailed(msg);
+				}
+			});
+		}
 	
 	public void StoreRemote(final Context context, DataCallback<UserDynamic> callback) {
 		final DataCallback<UserDynamic> _callback = callback;

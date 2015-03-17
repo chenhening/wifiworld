@@ -13,15 +13,20 @@ import org.xclcharts.renderer.XChart;
 import org.xclcharts.renderer.XEnum;
 import org.xclcharts.view.ChartView;
 
+import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.UserDynamic;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.text.format.Time;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class WifiProviderLineChartView extends ChartView {
 	
@@ -162,31 +167,53 @@ public class WifiProviderLineChartView extends ChartView {
 	}
 	
 	private void DisplayOneDay() {
-		chartData.clear();
-		labels.clear();
-		chart.setTitle("最近24小时WiFi使用情况");
-		chart.getAxisTitle().setLowerTitle("时段");
-		
-		LinkedList<Double> dataSeries1= new LinkedList<Double>();
-		Random rand = new Random();
-		for (int i = 0; i < 24; ++i) {
-			dataSeries1.add((double) rand.nextInt(100));
-		}
-		LineData lineData1 = new LineData("网络使用次数",dataSeries1, Color.rgb(234, 83, 71));
-		lineData1.setLabelVisible(true);		
-		lineData1.setDotStyle(XEnum.DotStyle.RECT);				
-		lineData1.getDotLabelPaint().setColor(Color.BLUE);
-		lineData1.getDotLabelPaint().setTextSize(22);
-		lineData1.getDotLabelPaint().setTextAlign(Align.LEFT);	
-		lineData1.setItemLabelRotateAngle(45.f);
-		lineData1.getLabelOptions().setLabelBoxStyle(XEnum.LabelBoxStyle.TEXT);
-		chartData.add(lineData1);
-		chart.setDataSource(chartData);	//设定数据源
-		
-		for (int i = 1; i <= 24; ++i) {
-			labels.add(i + "");
-		}
-		chart.setCategories(labels);
-		flag = false;
+		final UserDynamic data = new UserDynamic();
+		final long time = System.currentTimeMillis();
+		data.MacAddr = "12:34:56:78"; // just for test
+		data.QueryWiFiInOneDay(getContext(), time, new MultiDataCallback<UserDynamic>() {
+
+			@Override
+            public void onSuccess(List<UserDynamic> objects) {
+				int day_size = 24;
+				int array_count[] = new int[day_size];
+				//统计数据
+				for (UserDynamic object : objects) {
+					switch (object.LoginTime)
+				}
+				//展示数据
+				chartData.clear();
+				labels.clear();
+				chart.setTitle("最近24小时WiFi使用情况");
+				chart.getAxisTitle().setLowerTitle("时段");
+				
+				LinkedList<Double> dataSeries1= new LinkedList<Double>();
+				Random rand = new Random();
+				for (int i = 0; i < 24; ++i) {
+					dataSeries1.add((double) rand.nextInt(100));
+				}
+				LineData lineData1 = new LineData("网络使用次数",dataSeries1, Color.rgb(234, 83, 71));
+				lineData1.setLabelVisible(true);		
+				lineData1.setDotStyle(XEnum.DotStyle.RECT);				
+				lineData1.getDotLabelPaint().setColor(Color.BLUE);
+				lineData1.getDotLabelPaint().setTextSize(22);
+				lineData1.getDotLabelPaint().setTextAlign(Align.LEFT);	
+				lineData1.setItemLabelRotateAngle(45.f);
+				lineData1.getLabelOptions().setLabelBoxStyle(XEnum.LabelBoxStyle.TEXT);
+				chartData.add(lineData1);
+				chart.setDataSource(chartData);	//设定数据源
+				
+				for (int i = 1; i <= 24; ++i) {
+					labels.add(i + "");
+				}
+				chart.setCategories(labels);
+				flag = false;
+            }
+
+			@Override
+            public void onFailed(String msg) {
+                Toast.makeText(getContext(), "wifi使用数据失败。", 0).show();
+            }
+			
+		});
 	}
 }
