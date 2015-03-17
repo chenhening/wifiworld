@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,14 +42,15 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 public class WifiProviderActivity extends BaseActivity {
 
 	private WifiProfile mWifiProfile = new WifiProfile();
 	private Bitmap mLogo;
-	private BmobGeoPoint mBmobGeoPoint;
 	private String[] items = new String[] { "选择本地图片", "拍照" };
 	/** 头像名称 */
 	private static final String IMAGE_FILE_NAME = "image.jpg";
@@ -59,25 +63,37 @@ public class WifiProviderActivity extends BaseActivity {
 	private PopupWindow popupWindow;
 	private ListView lsvAccount;
 	private WifiInfoScanned mSelectedWifi;
+	private LoginHelper mLoginHelper = LoginHelper.getInstance();
 
 	private boolean saveWifiProfile() {
-		WifiListHelper mWH = WifiListHelper
-				.getInstance(getApplicationContext());
+		WifiListHelper mWH = WifiListHelper.getInstance(getApplicationContext());
 		String ssid = mWH.getWifiAdmin().getWifiNameConnection();//mSelectedWifi.getWifiName().toString();
-		String edssid = ((EditText) findViewById(R.id.et_wifi_ssid)).getText()
-				.toString();
+		String edssid = ((EditText) findViewById(R.id.et_wifi_ssid)).getText().toString();
+		//自动获取的数据
 		mWifiProfile.Ssid = ssid.equals(edssid) ? ssid : edssid;// mSelectedWifi.getWifiName().toString();
-		mWifiProfile.MacAddr = ssid.equals(edssid) ? mWH.getWifiAdmin().getWifiConnection().getBSSID():"";//mSelectedWifi.getmWifiMAC() : "";
-		mWifiProfile.Password = ((EditText) findViewById(R.id.et_wifi_psw))
-				.getText().toString();
-		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia))
-				.getText().toString();
-		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory
-				.decodeResource(getResources(), R.drawable.ic_launcher);
-		mWifiProfile.Banner = ((EditText) findViewById(R.id.et_wifi_info))
-				.getText().toString();
-		mWifiProfile.Geometry = mBmobGeoPoint;
-		mWifiProfile.save(getApplicationContext());
+		mWifiProfile.MacAddr = ssid.equals(edssid) ? mWH.getWifiAdmin().getWifiConnection().getBSSID():"";
+		mWifiProfile.Geometry = getLocation();
+		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+		//用户填写的数据
+		mWifiProfile.Password = ((EditText) findViewById(R.id.et_wifi_psw)).getText().toString();
+		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
+		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(
+			getResources(), R.drawable.ic_launcher);
+		mWifiProfile.Banner = ((EditText) findViewById(R.id.et_wifi_info)).getText().toString();
+		mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
+
+			@Override
+            public void onSuccess(WifiProfile object) {
+				showToast("上传wifi数据：" + object.Ssid + "成功。");
+				finish();
+            }
+
+			@Override
+            public void onFailed(String msg) {
+				showToast("上传wifi数据失败：" + msg);
+            }
+			
+		});
 		return false;
 	}
 
@@ -104,50 +120,26 @@ public class WifiProviderActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		findViewById(R.id.button_save).setOnClickListener(
-				new OnClickListener() {
+			new OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						saveWifiProfile();
-						finish();
-					}
-				});
-//		findViewById(R.id.btn_get_mac).setOnClickListener(
-//				new OnClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//						// TODO Auto-generated method stub
-//						showPopupWindow();
-//					}
-//				});
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					saveWifiProfile();
+				}
+			});
 
 		SsidAccount = (EditText) findViewById(R.id.et_wifi_ssid);
 		WifiListHelper mWH = WifiListHelper
 				.getInstance(getApplicationContext());
 		SsidAccount.setText(mWH.getWifiAdmin().getWifiNameConnection());
 		SsidAccount.setEnabled(false);
-		// 设置输入框的焦点改变事件
-//		SsidAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
-//
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				// 当输入框获取焦点时弹出选项窗，失去焦点时取消选项窗
-//				if (hasFocus) {
-//					showPopupWindow();
-//				} else {
-//					dismissPopupWindow();
-//				}
-//
-//			}
-//		});
 
 		WifiLogo = (ImageView) findViewById(R.id.et_wifi_logo);
 		WifiLogo.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				showDialog();
 			}
 
@@ -392,4 +384,8 @@ public class WifiProviderActivity extends BaseActivity {
 		super.onRestart();
 	}
 
+	// 获取Location通过LocationManger获取！
+	public BmobGeoPoint getLocation() {
+		return new BmobGeoPoint(mLoginHelper.Longitude, mLoginHelper.Latitude);
+	}
 }

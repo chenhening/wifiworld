@@ -1,17 +1,6 @@
-/*
- * 文件名称 : GlobalConfig.java
- * <p>
- * 作者信息 : liuzongyao
- * <p>
- * 创建时间 : 2014-10-10, 下午5:28:19
- * <p>
- * 版权声明 : Copyright (c) 2009-2012 Hydb Ltd. All rights reserved
- * <p>
- * 评审记录 :
- * <p>
- */
-
 package com.anynet.wifiworld.config;
+
+import android.location.Location;
 
 import com.anynet.wifiworld.bean.KeyValue;
 import com.anynet.wifiworld.constant.Const;

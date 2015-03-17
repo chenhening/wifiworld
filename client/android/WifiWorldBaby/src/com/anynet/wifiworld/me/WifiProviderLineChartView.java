@@ -178,11 +178,9 @@ public class WifiProviderLineChartView extends ChartView {
 				int array_count[] = new int[day_size];
 				//统计数据
 				for (UserDynamic object : objects) {
-					switch (Integer.getInteger((object.LoginTime/1000)+"")){
-					default :
-						
-					}
+					//switch (object.LoginTime)
 				}
+				
 				//展示数据
 				chartData.clear();
 				labels.clear();

@@ -74,24 +74,24 @@ public class UserDynamic extends BmobObject {
 	}
 	
 	public void QueryWiFiInOneDay(
-			final Context context, long time, MultiDataCallback<UserDynamic> callback) {
-			final MultiDataCallback<UserDynamic> _callback = callback;
-			BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
-			query.addWhereEqualTo(key_wifi, MacAddr);
-			query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
-			query.addWhereLessThan(key_login, time + halfweekmillis);
-			query.findObjects(context, new FindListener<UserDynamic>() {
-				@Override
-				public void onSuccess(List<UserDynamic> objects) {
-					_callback.onSuccess(objects);
-				}
-		
-				@Override
-				public void onError(int code, String msg) {
-					_callback.onFailed(msg);
-				}
-			});
-		}
+		final Context context, long time, MultiDataCallback<UserDynamic> callback) {
+		final MultiDataCallback<UserDynamic> _callback = callback;
+		BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
+		query.addWhereEqualTo(key_wifi, MacAddr);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
+		query.addWhereLessThan(key_login, time + halfweekmillis);
+		query.findObjects(context, new FindListener<UserDynamic>() {
+			@Override
+			public void onSuccess(List<UserDynamic> objects) {
+				_callback.onSuccess(objects);
+			}
+	
+			@Override
+			public void onError(int code, String msg) {
+				_callback.onFailed(msg);
+			}
+		});
+	}
 	
 	public void StoreRemote(final Context context, DataCallback<UserDynamic> callback) {
 		final DataCallback<UserDynamic> _callback = callback;

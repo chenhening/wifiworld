@@ -22,6 +22,8 @@ public class LoginHelper {
 	private static String mAliasPwd = "Password";
 	private UserProfile mUser = null;
 	private boolean mIsLogin = false;
+	public double Longitude = 0.0;
+	public double Latitude = 0.0;
 	
     private static LoginHelper mInstance = null;
     private SharedPreferences mPreferences = null;
@@ -67,7 +69,7 @@ public class LoginHelper {
 			@Override
 			public void onFailed(String msg) {
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
-				ShowToast(globalContext, "用户信息更新失败，请重新更新。", Toast.LENGTH_SHORT);
+				ShowToast(globalContext, "用户信息更新失败，请重新更新：" + msg, Toast.LENGTH_SHORT);
 			}	
     	});
     }

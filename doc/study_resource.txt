@@ -7,3 +7,9 @@ framework:
 	https://github.com/snowdream/awesome-android
 security:
 	https://github.com/ashishb/android-security-awesome
+	
+server
+	http://www.freeside.biz/freeside/
+	FreeRADIUS freeradius.org
+	https://github.com/talkincode/ToughRADIUS
+	https://github.com/killbill/killbill
