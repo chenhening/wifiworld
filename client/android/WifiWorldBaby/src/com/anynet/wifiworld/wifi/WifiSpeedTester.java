@@ -5,8 +5,11 @@ import java.util.List;
 
 import com.anynet.wifiworld.R;
 
+import android.R.string;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
+import android.renderscript.RenderScript.Priority;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +36,7 @@ public class WifiSpeedTester implements OnClickListener {
 	private TextView mSpeedCurView;
 	private Button mSpeedStart;
 	private NetworkTester mSpeedTester = null;
+	private UpdateMeter mUpdateMeter = null;
 	
 	private List<Long> mSpeedList = new ArrayList<Long>();
 	
@@ -44,8 +48,6 @@ public class WifiSpeedTester implements OnClickListener {
 		mSpeedAvgView = (TextView) mContext.findViewById(R.id.wifi_speed_avg_num);
 		mSpeedCurView = (TextView) mContext.findViewById(R.id.wifi_speed_cur_num);
 		mSpeedStart = (Button) mContext.findViewById(R.id.start_button);
-		
-		mDownloadedFileParams = new DownloadedFileParams();
 	}
 	
 	@Override
@@ -56,29 +58,23 @@ public class WifiSpeedTester implements OnClickListener {
 			mSpeedList.clear();
 			mSpeedStart.setText("停止");
 			
+			mDownloadedFileParams = new DownloadedFileParams();
 			mSpeedTester = new NetworkTester(TestURL, mDownloadedFileParams);
 			mSpeedTester.start();
-			
 			//create another thread to update UI
-//			new Thread() {
-//				@Override
-//				public void run() {
-//					Log.i(TAG, "Start to update UI");
-//					while (mDownloadedFileParams.downloadedBytes < mDownloadedFileParams.totalBytes && ) {
-//						Log.i(TAG, "handle empty message");
-//						handler.sendEmptyMessage(UPDATE_SPEED);
-//					}
-//					if (mDownloadedFileParams.downloadedBytes == mDownloadedFileParams.totalBytes) {
-//						handler.sendEmptyMessage(UPDATE_DNOE);
-//					}
-//
-//				}
-//			}.start();
+			mUpdateMeter = new UpdateMeter(mDownloadedFileParams);
+			mUpdateMeter.start();
 		} else {
 			mSpeedStart.setText("测速");
 			if (mSpeedTester != null) {
 				mSpeedTester.stopDownload();
 				mSpeedTester.interrupt();
+				mSpeedTester = null;
+			}
+			if (mUpdateMeter != null) {
+				mUpdateMeter.stopUpdateMeter();
+				mUpdateMeter.interrupt();
+				mUpdateMeter = null;
 			}
 		}
 		
@@ -92,7 +88,7 @@ public class WifiSpeedTester implements OnClickListener {
 		int endAngle = getAngle(d);
 
 		RotateAnimation rotateAnimation = new RotateAnimation(mStartAngle, endAngle, Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF, 1f);
-		rotateAnimation.setDuration(1);
+		rotateAnimation.setDuration(500);
 		animationSet.addAnimation(rotateAnimation);
 		mNeedleView.startAnimation(animationSet);
 		mStartAngle = endAngle;
@@ -111,7 +107,7 @@ public class WifiSpeedTester implements OnClickListener {
 		}
 		return (int) a;
 	}
-
+	
 	private Handler handler = new Handler() {
 		long curSpeed = 0;
 		long avgSpeed = 0;
@@ -135,11 +131,62 @@ public class WifiSpeedTester implements OnClickListener {
 				mSpeedAvgView.setText(avgSpeed + " kb/s");
 				startAnimation(Double.parseDouble(curSpeed+""));
 				break;
+			case UPDATE_DNOE:
+				mSpeedStart.setText("测速");
+				if (mSpeedTester != null) {
+					mSpeedTester.stopDownload();
+					mSpeedTester.interrupt();
+					mSpeedTester = null;
+				}
+				if (mUpdateMeter != null) {
+					mUpdateMeter.stopUpdateMeter();
+					mUpdateMeter.interrupt();
+					mUpdateMeter = null;
+				}
+				curSpeed = 0;
+				avgSpeed = 0;
+				numberTotal = 0;
+				speedList.clear();
 			default:
 				break;
 			}
 		}
 	};
+	
+	public class UpdateMeter extends Thread {
+		public boolean stopFlag = false;
+		private DownloadedFileParams mParams;
+		
+		public UpdateMeter(DownloadedFileParams params) {
+			mParams = params;
+			stopFlag = false;
+		}
+		
+		@Override
+		public void run() {
+			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND-11);
+			Log.i(TAG, "Start to update UI");
+			while (mParams.downloadedBytes < mParams.totalBytes && !stopFlag) {
+				Log.i(TAG, "Downloaded bytes feedback: " + mParams.downloadedBytes);
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				handler.sendEmptyMessage(UPDATE_SPEED);
+			}
+			if (mParams.downloadedBytes == mParams.totalBytes) {
+				handler.sendEmptyMessage(UPDATE_DNOE);
+			}
+			super.run();
+		}
+		
+		public void stopUpdateMeter() {
+			stopFlag = true;
+		}
+		
+	}
 	
 	public class DownloadedFileParams {
 		public long speed;
