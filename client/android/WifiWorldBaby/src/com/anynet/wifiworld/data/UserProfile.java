@@ -52,11 +52,12 @@ public class UserProfile extends BmobObject {
 
 			@Override
 			public void onSuccess(final UserProfile object) {
-				object.update(context, new UpdateListener() {
+				user.setObjectId(object.getObjectId());
+				user.update(context, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(object);
+						_callback.onSuccess(user);
 					}
 					
 					@Override

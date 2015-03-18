@@ -61,7 +61,7 @@ public class LoginHelper {
 			@Override
 			public void onSuccess(UserProfile object) {
 				ShowToast(globalContext, "用户信息更新成功。", Toast.LENGTH_SHORT);
-				SaveProfileLocal(mUser);
+				SaveProfileLocal(object);
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 			}

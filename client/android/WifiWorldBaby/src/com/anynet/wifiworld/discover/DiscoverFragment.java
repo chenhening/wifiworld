@@ -36,7 +36,7 @@ public class DiscoverFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_find, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		//bingdingTitleUI();
-		OffersManager.getInstance(getActivity()).showOffersWall();
+		/*OffersManager.getInstance(getActivity()).showOffersWall();
 		// 自 Youmi Android OfferWall SDK v5.0.0 起, 支持全屏积分墙退出监听回调
 		OffersManager.getInstance(getActivity()).showOffersWall(
 			new Interface_ActivityListener() {
@@ -46,15 +46,15 @@ public class DiscoverFragment extends MainFragment {
 	            showToast("广告平台积分墙展示成功。");
             }
 			
-		});
+		});*/
 		
 		return mPageRoot;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		AdManager.getInstance(getActivity()).init(ADKey, ADSecret, false);
-		OffersManager.getInstance(getActivity()).onAppLaunch();
+		//AdManager.getInstance(getActivity()).init(ADKey, ADSecret, false);
+		//OffersManager.getInstance(getActivity()).onAppLaunch();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -90,7 +90,7 @@ public class DiscoverFragment extends MainFragment {
 
 	@Override
 	public void onDestroy() {
-		OffersManager.getInstance(getActivity()).onAppExit();
+		//OffersManager.getInstance(getActivity()).onAppExit();
 		super.onDestroy();
 	}
 

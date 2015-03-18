@@ -70,15 +70,15 @@ public class WifiProviderActivity extends BaseActivity {
 		String ssid = mWH.getWifiAdmin().getWifiNameConnection();//mSelectedWifi.getWifiName().toString();
 		String edssid = ((EditText) findViewById(R.id.et_wifi_ssid)).getText().toString();
 		//自动获取的数据
-		mWifiProfile.Ssid = ssid.equals(edssid) ? ssid : edssid;// mSelectedWifi.getWifiName().toString();
+		mWifiProfile.Ssid = ssid; //ssid.equals(edssid) ? ssid : edssid;// mSelectedWifi.getWifiName().toString();
 		mWifiProfile.MacAddr = ssid.equals(edssid) ? mWH.getWifiAdmin().getWifiConnection().getBSSID():"";
 		mWifiProfile.Geometry = getLocation();
 		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		//用户填写的数据
 		mWifiProfile.Password = ((EditText) findViewById(R.id.et_wifi_psw)).getText().toString();
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
-		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(
-			getResources(), R.drawable.ic_launcher);
+		//mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(
+		//	getResources(), R.drawable.ic_launcher);
 		mWifiProfile.Banner = ((EditText) findViewById(R.id.et_wifi_info)).getText().toString();
 		mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
 
@@ -131,8 +131,7 @@ public class WifiProviderActivity extends BaseActivity {
 			});
 
 		SsidAccount = (EditText) findViewById(R.id.et_wifi_ssid);
-		WifiListHelper mWH = WifiListHelper
-				.getInstance(getApplicationContext());
+		WifiListHelper mWH = WifiListHelper.getInstance(getApplicationContext());
 		SsidAccount.setText(mWH.getWifiAdmin().getWifiNameConnection());
 		SsidAccount.setEnabled(false);
 
