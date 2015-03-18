@@ -6,6 +6,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.cordova.LOG;
+
+import cn.bmob.v3.datatype.BmobGeoPoint;
+
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R.id;
 import com.anynet.wifiworld.R.layout;
@@ -14,6 +18,9 @@ import com.anynet.wifiworld.R.style;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.api.WifiListHelper;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiType;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
@@ -85,6 +92,43 @@ public class WifiFragment extends MainFragment {
 				}
 			}
 		}
+		
+	}
+	
+	private void addOneRow(WifiProfile wifiProfile, WifiInfoScanned infoScanned) {
+		wifiProfile.Ssid = infoScanned.getWifiName();
+		wifiProfile.MacAddr = infoScanned.getWifiMAC();
+		wifiProfile.Alias = "alias";
+		wifiProfile.Password = "12345678";
+		wifiProfile.Banner = "Banner";
+		wifiProfile.Type = WifiType.WIFI_SUPPLY_BY_PUBLIC;
+		wifiProfile.Sponser = "buffer";
+		wifiProfile.Geometry = new BmobGeoPoint(1.0, 1.0);
+		wifiProfile.Income = 10.0f;
+		wifiProfile.StoreRemote(getActivity(), new DataCallback<WifiProfile>() {
+
+			@Override
+            public void onSuccess(WifiProfile object) {
+				LOG.d(TAG, "添加数据成功，返回objectId为："+ object.getObjectId());
+            }
+
+			@Override
+            public void onFailed( String msg) {
+				LOG.d(TAG, "添加数据失败：" + msg);
+            }
+		});
+	}
+	
+	private boolean updateRemoteDB() {
+		WifiProfile wifiProfile = new WifiProfile();
+		for (WifiInfoScanned wifiFree : mWifiFree) {
+			addOneRow(wifiProfile, wifiFree);
+		}
+		for (WifiInfoScanned wifiEncrypt : mWifiEncrypt) {
+			addOneRow(wifiProfile, wifiEncrypt);
+		}
+		
+		return true;
 	}
 
 	private void bingdingTitleUI() {
@@ -175,6 +219,7 @@ public class WifiFragment extends MainFragment {
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		mWifiFree = mWifiListHelper.getWifiFrees();//new ArrayList<WifiInfoScanned>();
 		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();//new ArrayList<WifiInfoScanned>();
+		updateRemoteDB();
 	}
 
 	@Override
@@ -240,27 +285,26 @@ public class WifiFragment extends MainFragment {
 		
 		bingdingTitleUI();
 		
-		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-		getActivity().registerReceiver(mReceiver, filter);
 		//mWifiListHelper.refreshWifiList();
 		return mPageRoot;
 	}
 
 	@Override
 	public void onDestroyView() {
-		// TODO Auto-generated method stub
-		getActivity().unregisterReceiver(mReceiver);
-		
+		// TODO Auto-generated method stub		
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onPause() {
-		super.onPause();		
+		getActivity().unregisterReceiver(mReceiver);
+		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
+		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		getActivity().registerReceiver(mReceiver, filter);
 		super.onResume();
 	}
 

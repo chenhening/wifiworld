@@ -3,11 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiType;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 
 
 public class WifiListAdapter extends BaseAdapter {
+	private final static String TAG = WifiListAdapter.class.getSimpleName();
 
 	private List<WifiInfoScanned> mWifiList = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiTags = new ArrayList<WifiInfoScanned>();
@@ -82,6 +87,32 @@ public class WifiListAdapter extends BaseAdapter {
 		}
 		
 		notifyDataSetChanged();
+	}
+	
+	public void getDataFromDB(WifiInfoScanned infoScanned) {
+		WifiProfile wifiPro = new WifiProfile();
+		wifiPro.QueryByMacAddress(this.context, infoScanned.getWifiMAC(), new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(WifiProfile object) {
+				Log.i(TAG, "SSID: " + object.Ssid);
+				Log.i(TAG, "Mac: " + object.MacAddr);
+				Log.i(TAG, "Alias: " + object.Alias);
+				Log.i(TAG, "Password: " + object.Password);
+				Log.i(TAG, "Banner: " + object.Banner);
+				Log.i(TAG, "Type: " + object.Type);
+				Log.i(TAG, "Sponser: " + object.Sponser);
+				Log.i(TAG, "Geometry: " + object.Geometry);
+				Log.i(TAG, "Income: " + object.Income);
+				
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.i(TAG, "Query database failed");
+				
+			}
+		});
 	}
 	
 	@Override
@@ -172,6 +203,7 @@ public class WifiListAdapter extends BaseAdapter {
 						Bundle wifiData = new Bundle();
 						wifiData.putSerializable("WifiSelected", ((WifiInfoScanned)getItem(position)));
 						intent.putExtras(wifiData);
+						getDataFromDB((WifiInfoScanned)getItem(position));
 						context.startActivity(intent);
 					}
 				});

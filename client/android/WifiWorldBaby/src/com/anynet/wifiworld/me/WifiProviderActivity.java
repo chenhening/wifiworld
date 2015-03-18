@@ -91,6 +91,7 @@ public class WifiProviderActivity extends BaseActivity {
 			@Override
             public void onFailed(String msg) {
 				showToast("上传wifi数据失败：" + msg);
+				findViewById(R.id.button_save).setEnabled(true);
             }
 			
 		});
@@ -107,7 +108,6 @@ public class WifiProviderActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
@@ -124,7 +124,8 @@ public class WifiProviderActivity extends BaseActivity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
+					showToast("正在上传数据请稍等");
+					findViewById(R.id.button_save).setEnabled(false);
 					saveWifiProfile();
 				}
 			});

@@ -24,12 +24,12 @@ public class WifiInfoScanned implements Serializable {
 		mRemark = remark;
 	}
 
-	public String getmWifiMAC() {
+	public String getWifiMAC() {
 		return mWifiMAC;
 	}
 
-	public void setmWifiMAC(String mWifiMAC) {
-		this.mWifiMAC = mWifiMAC;
+	public void setWifiMAC(String wifiMAC) {
+		this.mWifiMAC = wifiMAC;
 	}
 
 	public String getRemark() {
