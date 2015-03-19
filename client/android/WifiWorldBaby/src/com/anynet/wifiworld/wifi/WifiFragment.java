@@ -220,13 +220,11 @@ public class WifiFragment extends MainFragment {
 		mWifiFree = mWifiListHelper.getWifiFrees();//new ArrayList<WifiInfoScanned>();
 		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();//new ArrayList<WifiInfoScanned>();
 		//多线程去存储
-		new Thread(new Runnable() {
-
+		new Thread() {
 			@Override
 			public void run() {
 				updateRemoteDB();
-			}
-		});
+			}}.start();
 	}
 
 	@Override

@@ -164,17 +164,18 @@ public class WifiSpeedTester implements OnClickListener {
 		
 		@Override
 		public void run() {
-			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND-11);
+			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 			Log.i(TAG, "Start to update UI");
 			while (mParams.downloadedBytes < mParams.totalBytes && !stopFlag) {
 				Log.i(TAG, "Downloaded bytes feedback: " + mParams.downloadedBytes);
 				try {
-					Thread.sleep(500);
+					sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				handler.sendEmptyMessage(UPDATE_SPEED);
+				yield();
 			}
 			if (mParams.downloadedBytes == mParams.totalBytes) {
 				handler.sendEmptyMessage(UPDATE_DNOE);

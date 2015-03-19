@@ -1,14 +1,9 @@
-package com.anynet.wifiworld.wifi;
+package com.anynet.wifiworld.util;
 
 import java.lang.reflect.Field;
 
 import android.os.Build.VERSION;;
 
-/**
- * Get Android version in different Android versions. :)
- * @author yuanxiaohui
- *
- */
 public class Version {
 	
 	public final static int SDK = get();

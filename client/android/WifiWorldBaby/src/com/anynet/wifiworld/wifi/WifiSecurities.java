@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.wifi;
 
+import com.anynet.wifiworld.util.Version;
+
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 
