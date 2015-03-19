@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -156,8 +155,7 @@ public class WifiAdmin {
 		java.util.Collections.sort(configurations, new Comparator<WifiConfiguration>() {
 
 			@Override
-			public int compare(WifiConfiguration object1,
-					WifiConfiguration object2) {
+			public int compare(WifiConfiguration object1, WifiConfiguration object2) {
 				return object1.priority - object2.priority;
 			}
 		});
@@ -176,7 +174,7 @@ public class WifiAdmin {
 		return size;
 	}
     
-  //connect WiFi which configurated
+    //connect WiFi which is configurated
     public void connectToConfiguredNetwork(int index) {
     	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
         if (index > wifiCfg.size()) {
@@ -473,6 +471,19 @@ public class WifiAdmin {
         }
         
         return "\"" + string + "\"";
+    }
+    
+    public static String convertToNonQuotedString(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return "";
+        }
+        
+        final int lastPos = string.length() - 1;
+        if(lastPos > 0 && (string.charAt(0) == '"' && string.charAt(lastPos) == '"')) {
+            return string.substring(1, lastPos);
+        }
+        
+        return string;
     }
     
 }

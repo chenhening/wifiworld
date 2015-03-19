@@ -298,7 +298,7 @@ public class WifiProviderActivity extends BaseActivity {
 		List<WifiInfoScanned> list = new ArrayList<WifiInfoScanned>();
 		WifiListHelper mWH = WifiListHelper
 				.getInstance(getApplicationContext());
-		mWH.openAndInitList();
+		mWH.fillWifiList();
 		list.addAll(mWH.getWifiFrees());
 		list.addAll(mWH.getWifiEncrypts());
 		LostAdapter.addAll(list);

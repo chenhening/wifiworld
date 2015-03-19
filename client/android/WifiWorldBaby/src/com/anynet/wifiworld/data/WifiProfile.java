@@ -16,7 +16,7 @@ public class WifiProfile extends BmobObject{
 	private static final long serialVersionUID = 1L;
 	private static final String unique_key = "MacAddr";
 
-	public String MacAddr; //mac地址, 唯一建
+	public String MacAddr; //mac地址, 唯一键
 	public String Ssid; //wifi的ssid
 	public String Password; //wifi的密码，经过base64后保存
 	public String Sponser; //绑定的用户账号，wifi提供者
