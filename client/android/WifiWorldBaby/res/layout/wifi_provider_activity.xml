@@ -316,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/login_bottom_btn_selector"
+                android:background="@drawable/btn_abandon"
                 android:gravity="center"
                 android:minHeight="39dp" >
 
