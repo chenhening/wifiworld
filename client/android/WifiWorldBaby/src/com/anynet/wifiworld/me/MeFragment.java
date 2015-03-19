@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.Bmob;
@@ -44,6 +45,8 @@ public class MeFragment extends MainFragment {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
+	
+	private ProviderIncomeChartView mLineChart = null;
 
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
 
@@ -155,6 +158,8 @@ public class MeFragment extends MainFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 		setLoginedUI(false);
+		DisplayIncomeChart();
+		
 		return mPageRoot;
 	}
 
@@ -262,7 +267,7 @@ public class MeFragment extends MainFragment {
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
-			mPageRoot.findViewById(R.id.rl_top_provider).setOnClickListener(
+			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
 					new OnClickListener() {
 
 						@Override
@@ -275,7 +280,7 @@ public class MeFragment extends MainFragment {
 										WifiProviderListActivity.class));
 						}
 					});
-			mPageRoot.findViewById(R.id.rl_top_wifiuser).setOnClickListener(
+			mPageRoot.findViewById(R.id.rl_wifi_user).setOnClickListener(
 					new OnClickListener() {
 
 						@Override
@@ -309,7 +314,19 @@ public class MeFragment extends MainFragment {
 				tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
 			}
 		}
-
+	}
+	
+	private void DisplayIncomeChart() {
+		LinearLayout chartLayout = (LinearLayout)this.findViewById(R.id.ll_money_get);
+		//图表显示范围在占屏幕大小的90%的区域内	   
+		int scrWidth = chartLayout.getLayoutParams().width; 	
+		int scrHeight = chartLayout.getLayoutParams().height; 			   		
+		RelativeLayout.LayoutParams layoutParams = 
+			new RelativeLayout.LayoutParams(scrWidth, scrHeight);	
+		//居中显示
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		mLineChart = new ProviderIncomeChartView(getActivity());
+        chartLayout.addView(mLineChart, layoutParams);
 	}
 
 	// ---------------------------------------------------------------------------------------------

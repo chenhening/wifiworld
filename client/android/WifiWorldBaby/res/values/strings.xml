@@ -18,11 +18,12 @@
     <string name="night_mode">夜间</string>
     <string name="wifi_provider">我是WIFI提供者</string>
     <string name="wifi_user">我是WIFI使用者</string>
+    <string name="wifi_user_total_income">累积总收入</string>
     <string name="share_friends">邀请好友（奖励）</string>
     <string name="my_settting">设置</string>
     <string name="aboutus">关于我们</string>
     <string name="userid">用户名</string>
-    <string name="cashin">收入</string>
+    <string name="cashin">收益(最近一周)</string>
     <string name="cashout">支出</string>
     
     <string name="wifissid">Wifi SSID:</string>
