@@ -333,7 +333,7 @@
                     android:background="@color/common_div_line" />
 
                 <RelativeLayout
-                    android:id="@+id/ll_setting_about"
+                    android:id="@+id/ll_invite_friends"
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:background="@drawable/settings_item_bottom_radius_bg_selector"
