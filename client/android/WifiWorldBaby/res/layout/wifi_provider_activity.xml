@@ -66,8 +66,8 @@
                     android:id="@+id/btn_get_mac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="获取SSID" />
+                    android:text="获取SSID"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <ImageView
@@ -265,7 +265,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -285,23 +285,43 @@
                     android:textColor="@color/setting_txt"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/et_wifi_geo"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.6"
-                    android:background="#00000000"
-                    android:gravity="left|center_vertical"
-                    android:hint="获取地理位置"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/darkkhaki"
-                    android:textColorLink="@color/black"
-                    android:textSize="17sp" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tv_wifi_geo_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:background="#00000000"
+                        android:gravity="left|center_vertical"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textColorLink="@color/black"
+                        android:textSize="17sp" />
+                    <EditText
+                        android:id="@+id/et_wifi_geo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="#00000000"
+                        android:gravity="left|center_vertical"
+                        android:hint="获取地理位置"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/darkkhaki"
+                        android:textColorLink="@color/black"
+                        android:textSize="17sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView

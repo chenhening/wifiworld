@@ -6,6 +6,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
 
+import com.amap.api.maps.AMap.OnMyLocationChangeListener;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 
@@ -130,4 +131,5 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
 	public String getLocalDescription() {
 		return mAMapLocation.getExtras().getString("desc");
 	}
+
 }
