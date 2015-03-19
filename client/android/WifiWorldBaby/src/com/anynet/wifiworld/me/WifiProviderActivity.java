@@ -45,6 +45,7 @@ import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 public class WifiProviderActivity extends BaseActivity {
@@ -63,7 +64,7 @@ public class WifiProviderActivity extends BaseActivity {
 	private PopupWindow popupWindow;
 	private ListView lsvAccount;
 	private WifiInfoScanned mSelectedWifi;
-	private LoginHelper mLoginHelper = LoginHelper.getInstance();
+	private LoginHelper mLoginHelper;
 
 	private boolean saveWifiProfile() {
 		WifiListHelper mWH = WifiListHelper.getInstance(getApplicationContext());
@@ -145,6 +146,7 @@ public class WifiProviderActivity extends BaseActivity {
 			}
 
 		});
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}
 
 	private void showDialog() {
@@ -240,8 +242,8 @@ public class WifiProviderActivity extends BaseActivity {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 340);
-		intent.putExtra("outputY", 340);
+		intent.putExtra("outputX", 64);
+		intent.putExtra("outputY", 64);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, RESULT_REQUEST_CODE);
 	}
@@ -255,6 +257,7 @@ public class WifiProviderActivity extends BaseActivity {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			mLogo = extras.getParcelable("data");
+			XLLog.e(TAG, "mLogo W:"+mLogo.getWidth()+" H:"+mLogo.getHeight());
 			Drawable drawable = new BitmapDrawable(this.getResources(), mLogo);
 			WifiLogo.setImageDrawable(drawable);
 		}
@@ -387,6 +390,6 @@ public class WifiProviderActivity extends BaseActivity {
 
 	// 获取Location通过LocationManger获取！
 	public BmobGeoPoint getLocation() {
-		return new BmobGeoPoint(mLoginHelper.Longitude, mLoginHelper.Latitude);
+		return new BmobGeoPoint(mLoginHelper.getLongitude(), mLoginHelper.getLatitude());
 	}
 }

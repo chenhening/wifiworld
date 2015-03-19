@@ -203,8 +203,9 @@ public class MapFragment extends MainFragment implements LocationSource,
 				
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
-				LoginHelper.getInstance().Longitude = Longitude;
-				LoginHelper.getInstance().Latitude = Latitude;
+				LoginHelper loginHelper = LoginHelper.getInstance(getApplicationContext());
+				loginHelper.setLongitude(Longitude);
+				loginHelper.setLatitude(Latitude);
 
 				//query wifi nearby
 				BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();

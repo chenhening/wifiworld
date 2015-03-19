@@ -50,9 +50,20 @@ public class MeFragment extends MainFragment {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			Toast.makeText(getApplicationContext(),
-					"Login broadcast receiver!", Toast.LENGTH_LONG).show();
-			setLoginedUI(false);
+			
+			String action = intent.getAction();
+			if(action.equals(LoginHelper.AUTO_LOGIN_FAIL)){
+				Toast.makeText(getApplicationContext(),
+						"登录失败!", Toast.LENGTH_LONG).show();
+			}else if(action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)){
+				setLoginedUI(false);
+				Toast.makeText(getApplicationContext(),
+						"登录成功!", Toast.LENGTH_LONG).show();
+			}else if(action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)){
+				Toast.makeText(getApplicationContext(),
+						"自动登录失败!", Toast.LENGTH_LONG).show();
+			}
+			
 		}
 	};
 
@@ -118,8 +129,7 @@ public class MeFragment extends MainFragment {
 		SMSSDK.registerEventHandler(mEventHandler);
 
 		// initialize loginhelper
-		mLoginHelper = LoginHelper.getInstance();
-		mLoginHelper.init(getActivity());
+		mLoginHelper = LoginHelper.getInstance(getActivity());
 		mLoginHelper.AutoLogin();
 		// 监听登录
 		IntentFilter filter = new IntentFilter();

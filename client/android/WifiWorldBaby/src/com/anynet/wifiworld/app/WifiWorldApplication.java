@@ -63,7 +63,7 @@ public class WifiWorldApplication extends Application
         initImageLoader(getApplicationContext());
         
         //登录初始化
-        LoginHelper.getInstance().init(this);
+        LoginHelper.getInstance(this);
         
         // 初始化友盟消息推送
         initUmengPushMessage(isRelease);
