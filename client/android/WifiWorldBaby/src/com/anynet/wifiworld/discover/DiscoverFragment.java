@@ -3,6 +3,7 @@ package com.anynet.wifiworld.discover;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.listener.Interface_ActivityListener;
+import net.youmi.android.offers.OffersManager;
+
 public class DiscoverFragment extends MainFragment {
-	
+	private static String ADKey = "f5dca10991ec3c4e";
+	private static String ADSecret = "04b094304eef23f6";
 	
 	private void bingdingTitleUI() {
 
@@ -30,12 +36,25 @@ public class DiscoverFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_find, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		//bingdingTitleUI();
+		/*OffersManager.getInstance(getActivity()).showOffersWall();
+		// 自 Youmi Android OfferWall SDK v5.0.0 起, 支持全屏积分墙退出监听回调
+		OffersManager.getInstance(getActivity()).showOffersWall(
+			new Interface_ActivityListener() {
+
+			@Override
+            public void onActivityDestroy(Context arg0) {
+	            showToast("广告平台积分墙展示成功。");
+            }
+			
+		});*/
+		
 		return mPageRoot;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		//AdManager.getInstance(getActivity()).init(ADKey, ADSecret, false);
+		//OffersManager.getInstance(getActivity()).onAppLaunch();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -71,7 +90,7 @@ public class DiscoverFragment extends MainFragment {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
+		//OffersManager.getInstance(getActivity()).onAppExit();
 		super.onDestroy();
 	}
 
@@ -89,7 +108,6 @@ public class DiscoverFragment extends MainFragment {
 
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 	}
 	

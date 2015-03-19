@@ -174,12 +174,6 @@
             </intent-filter>
         </activity>
 
-        <!-- 友盟统计配置开始，为了区分测试环境和正式环境， 这里需要通过代码配置 -->
-
-
-        <!-- 友盟统计配置结束 -->
-
-
         <!-- 友盟自动更新 -->
         <service
             android:name="com.umeng.update.net.DownloadingService"
@@ -250,6 +244,29 @@
             android:name="UMENG_APPKEY"
             android:value="54572823fd98c547e1002e49" >
         </meta-data>
+        
+        <!--有米广告平台 -->
+        <activity
+		    android:name="net.youmi.android.AdBrowser"
+		    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+		    android:theme="@android:style/Theme.Light.NoTitleBar" >
+		</activity>
+		<service
+		    android:name="net.youmi.android.AdService"
+		    android:exported="false" >
+		</service>
+		<service
+		    android:name="net.youmi.android.ExpService"
+		    android:exported="false" >
+		</service>
+		<receiver
+		    android:name="net.youmi.android.AdReceiver" >
+		    <intent-filter>
+		        <action android:name="android.intent.action.PACKAGE_ADDED" />
+		        <data android:scheme="package" />
+		    </intent-filter>
+		</receiver>
+        
     </application>
 
 </manifest>

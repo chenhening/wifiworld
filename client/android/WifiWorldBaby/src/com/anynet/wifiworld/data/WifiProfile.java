@@ -59,11 +59,12 @@ public class WifiProfile extends BmobObject{
 
 			@Override
 			public void onSuccess(final WifiProfile object) {
-				object.update(context, new UpdateListener() {
+				wifi.setObjectId(object.getObjectId());
+				wifi.update(context, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
-						_callback.onSuccess(object);
+						_callback.onSuccess(wifi);
 					}
 					
 					@Override

@@ -165,7 +165,7 @@ public class LoginHelper {
 			public void onSuccess(UserProfile object) {
 				Log.i(TAG, "用户信息更新成功。");
 				//ShowToast(globalContext, "用户信息更新成功。", Toast.LENGTH_SHORT);
-				SaveProfileLocal(mUser);
+				SaveProfileLocal(object);
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 			}

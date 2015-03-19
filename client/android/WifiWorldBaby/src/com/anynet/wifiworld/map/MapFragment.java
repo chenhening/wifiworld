@@ -52,8 +52,6 @@ public class MapFragment extends MainFragment implements LocationSource,
 		AMapLocationListener, OnMarkerClickListener, OnInfoWindowClickListener,
 		InfoWindowAdapter {
 
-	private String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
-	
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -86,8 +84,6 @@ public class MapFragment extends MainFragment implements LocationSource,
 			aMap = mapView.getMap();
 			setUpMap();
 		}
-		// 初始化 Bmob SDK
-		Bmob.initialize(getActivity(), BMOB_KEY);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 		return mPageRoot;

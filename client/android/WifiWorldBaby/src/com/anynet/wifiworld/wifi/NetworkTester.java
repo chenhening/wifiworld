@@ -6,6 +6,8 @@ import java.net.URLConnection;
 
 import android.util.Log;
 
+import android.os.Process;
+
 public class NetworkTester extends Thread {
 	private final static String TAG = NetworkTester.class.getSimpleName();
 	
@@ -19,7 +21,7 @@ public class NetworkTester extends Thread {
 		mStopFlag = false;
 	}
 	
-	protected byte[] downloadFile(String fileUrl, WifiSpeedTester.DownloadedFileParams params) {
+	protected boolean downloadFile(String fileUrl, WifiSpeedTester.DownloadedFileParams params) {
 		int currentByte = 0;
 		int fileSize = 0;
 		long startTime = 0;
@@ -40,9 +42,9 @@ public class NetworkTester extends Thread {
 			fileSize = con.getContentLength();
 			stream = con.getInputStream();
 			params.totalBytes = fileSize;
-			b = new byte[4096];
+			b = new byte[fileSize];
 			startTime = System.currentTimeMillis();
-			while ((currentByte = stream.read(b, 0, 4096)) != -1 && !mStopFlag) {
+			while ((currentByte = stream.read(b, 0, fileSize)) != -1 && !mStopFlag) {
 				intervalTime = System.currentTimeMillis() - startTime;
 				params.downloadedBytes += currentByte;
 				if (intervalTime == 0) {
@@ -50,7 +52,7 @@ public class NetworkTester extends Thread {
 				} else {
 					params.speed = (params.downloadedBytes / intervalTime) * 1000;
 				}
-				Log.i(TAG, "Wifi speed is: " + params.speed);
+				Log.i(TAG, "Downloaded bytes: " + currentByte);
 			}
 		} catch (Exception e) {
 			Log.e("exception : ", e.getMessage() + "");
@@ -65,7 +67,7 @@ public class NetworkTester extends Thread {
 
 		}
 		
-		return b;
+		return true;
 	}
 
 	public void stopDownload() {
@@ -75,8 +77,10 @@ public class NetworkTester extends Thread {
 	
 	@Override
 	public void run() {
-		super.run();
+		Log.i(TAG, "Start Running...............");
+		Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 		downloadFile(mFileUrl, mParams);
+		super.run();
 	}
 
 	@Override
