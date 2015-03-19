@@ -402,8 +402,10 @@ public class MeFragment extends MainFragment {
 	}
 
 	private void ResetLoginUI() {
-		mET_SMS.setEnabled(true);
-		mLL_Login.setEnabled(true);
+		if (mET_SMS != null)
+			mET_SMS.setEnabled(true);
+		if (mLL_Login != null)
+			mLL_Login.setEnabled(true);
 	}
 
 }

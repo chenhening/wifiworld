@@ -1,16 +1,9 @@
 package com.anynet.wifiworld.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.IntentSender.SendIntentException;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.UserProfile;
@@ -40,14 +33,6 @@ public class LoginHelper {
 	}
 
 	public void setLongitude(double longitude) {
-		if (globalContext == null)
-			try {
-				throw new Exception(
-						"LoginHelper instance is not call init function!!!");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		Longitude = longitude;
 	}
 
@@ -70,62 +55,7 @@ public class LoginHelper {
 	public LoginHelper(Context context) {
 		this.globalContext = context;
 		mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile,
-				Context.MODE_PRIVATE);
-
-		LocationManager locationManager = (LocationManager) context
-				.getSystemService(Context.LOCATION_SERVICE);
-		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			Location location = locationManager
-					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (location != null) {
-				Latitude = location.getLatitude();
-				Longitude = location.getLongitude();
-			}
-		} else {
-			LocationListener locationListener = new LocationListener() {
-
-				// Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-				// Provider被enable时触发此函数，比如GPS被打开
-				@Override
-				public void onProviderEnabled(String provider) {
-
-				}
-
-				// Provider被disable时触发此函数，比如GPS被关闭
-				@Override
-				public void onProviderDisabled(String provider) {
-
-				}
-
-				// 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-				@Override
-				public void onLocationChanged(Location location) {
-					if (location != null) {
-						Log.e("Map",
-								"Location changed : Lat: "
-										+ location.getLatitude() + " Lng: "
-										+ location.getLongitude());
-					}
-				}
-
-				@Override
-				public void onStatusChanged(String provider, int status,
-						Bundle extras) {
-					// TODO Auto-generated method stub
-
-				}
-			};
-			locationManager
-					.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-							1000, 0, locationListener);
-			Location location = locationManager
-					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if (location != null) {
-				Latitude = location.getLatitude(); // 经度
-				Longitude = location.getLongitude(); // 纬度
-			}
-		}
-
+			Context.MODE_PRIVATE);
 	}
 
 //	public void ShowToast(final Context context, final CharSequence text,
@@ -151,14 +81,6 @@ public class LoginHelper {
 	public void Login(UserProfile profile) {
 		mIsLogin = false;
 		mUser = profile;
-		if (globalContext == null)
-			try {
-				throw new Exception(
-						"LoginHelper instance is not call init function!!!");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		mUser.StoreRemote(globalContext, new DataCallback<UserProfile>() {
 
 			@Override
@@ -180,14 +102,6 @@ public class LoginHelper {
 	}
 
 	public void AutoLogin() {
-		if (globalContext == null)
-			try {
-				throw new Exception(
-						"LoginHelper instance is not call init function!!!");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		mIsLogin = false;
 		// 读取本地保存的账号密码文件
 		mUser = new UserProfile();
@@ -204,30 +118,30 @@ public class LoginHelper {
 
 		final UserProfile remote_user = new UserProfile();
 		remote_user.QueryByPhoneNumber(globalContext, mUser.PhoneNumber,
-				new DataCallback<UserProfile>() {
+			new DataCallback<UserProfile>() {
 
-					@Override
-					public void onSuccess(UserProfile object) {
-						if (object.Password.equals(mUser.Password)) {
-							mIsLogin = true;
-							globalContext.sendBroadcast(new Intent(
-									AUTO_LOGIN_SUCCESS));
-							Log.d(TAG, "用户自动登陆成功。");
-							//ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
-						} else {
-							globalContext.sendBroadcast(new Intent(
-									AUTO_LOGIN_FAIL));
-							Log.d(TAG, "用户自动登陆失败，请重新登陆。");
-							//ShowToast(globalContext, "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
-						}
+				@Override
+				public void onSuccess(UserProfile object) {
+					if (object.Password.equals(mUser.Password)) {
+						mIsLogin = true;
+						globalContext.sendBroadcast(new Intent(
+								AUTO_LOGIN_SUCCESS));
+						Log.d(TAG, "用户自动登陆成功。");
+						//ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
+					} else {
+						globalContext.sendBroadcast(new Intent(
+								AUTO_LOGIN_FAIL));
+						Log.d(TAG, "用户自动登陆失败，请重新登陆。");
+						//ShowToast(globalContext, "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
 					}
+				}
 
-					@Override
-					public void onFailed(String msg) {
-						Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
-						//ShowToast(globalContext, "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
-					}
-				});
+				@Override
+				public void onFailed(String msg) {
+					Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
+					//ShowToast(globalContext, "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
+				}
+			});
 	}
 
 	public void logout() {
@@ -237,14 +151,6 @@ public class LoginHelper {
 	private void SaveProfileLocal(UserProfile user) {
 		// 保存账号密码到本地用于下次登陆
 		// TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
-		if (globalContext == null)
-			try {
-				throw new Exception(
-						"LoginHelper instance is not call init function!!!");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		SharedPreferences.Editor sharedata = mPreferences.edit();
 		sharedata.putString(mAliasUser, user.PhoneNumber);
 		sharedata.putString(mAliasPwd, user.Password);

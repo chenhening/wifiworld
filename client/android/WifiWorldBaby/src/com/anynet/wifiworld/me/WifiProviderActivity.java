@@ -35,6 +35,7 @@ import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
@@ -384,6 +385,8 @@ public class WifiProviderActivity extends BaseActivity {
 
 	// 获取Location通过LocationManger获取！
 	public BmobGeoPoint getLocation() {
-		return new BmobGeoPoint(mLoginHelper.getLongitude(), mLoginHelper.getLatitude());
+		LocationHelper location = LocationHelper.getInstance(this);
+		location.refreshLocation();
+		return new BmobGeoPoint(location.getLongitude(), location.getLatitude());
 	}
 }

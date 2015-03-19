@@ -223,7 +223,7 @@ public class WifiFragment extends MainFragment {
 		new Thread() {
 			@Override
 			public void run() {
-				updateRemoteDB();
+				//updateRemoteDB();
 			}}.start();
 	}
 
@@ -265,18 +265,13 @@ public class WifiFragment extends MainFragment {
 								false);
 
 						mWifiFree.remove(position - 1);
-						mWifiListAdapter.refreshWifiList(mWifiFree,
-								mWifiEncrypt);
-						TextView wifi_connected = (TextView) mPageRoot
-								.findViewById(R.id.wifi_name);
-						String wifiConnected = mWifiAdmin
-								.getWifiNameConnection();
+						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+						TextView wifi_connected = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+						String wifiConnected = mWifiAdmin.getWifiNameConnection();
 						while (wifiConnected == "") {
 							wifiConnected = mWifiAdmin.getWifiNameConnection();
 						}
-						wifi_connected.setText("已连接"
-								+ wifiConnected.substring(1,
-										wifiConnected.length() - 1));
+						wifi_connected.setText("已连接" + wifiConnected.substring(1,wifiConnected.length() - 1));
 						wifi_connected.setTextColor(Color.BLACK);
 						wifi_connected.refreshDrawableState();
 					}

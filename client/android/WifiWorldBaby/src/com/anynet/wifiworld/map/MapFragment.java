@@ -65,7 +65,6 @@ public class MapFragment extends MainFragment implements LocationSource,
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		// mTitlebar.llFinish.setOnClickListener(this);
 		mTitlebar.tvTitle.setText(getString(R.string.nearby));
 	}
 
@@ -77,7 +76,7 @@ public class MapFragment extends MainFragment implements LocationSource,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mPageRoot = inflater.inflate(R.layout.activity_multy_location, null);
+		mPageRoot = inflater.inflate(R.layout.fregment_map, null);
 		mapView = (MapView) mPageRoot.findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);
 		if (aMap == null) {
@@ -126,15 +125,11 @@ public class MapFragment extends MainFragment implements LocationSource,
 
 	// ---------------------------------------------------------------------------------------------
 	// for LocationSource
-	/**
-	 * 激活定位
-	 */
 	@Override
 	public void activate(OnLocationChangedListener listener) {
 		mListener = listener;
 		if (mAMapLocationManager == null) {
-			mAMapLocationManager = LocationManagerProxy.getInstance(this
-					.getActivity());
+			mAMapLocationManager = LocationManagerProxy.getInstance(this.getActivity());
 			// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
 			// 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），
 			// 并且在合适时间调用removeUpdates()方法来取消定位请求
@@ -142,7 +137,8 @@ public class MapFragment extends MainFragment implements LocationSource,
 			// 其中如果间隔时间为-1，则定位只定一次
 			// 在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求
 			mAMapLocationManager.requestLocationData(
-					LocationProviderProxy.AMapNetwork, 300 * 1000, 10, this);
+				LocationProviderProxy.AMapNetwork, -1, 3, this);
+			mAMapLocationManager.setGpsEnable(false);
 		}
 	}
 
@@ -185,9 +181,6 @@ public class MapFragment extends MainFragment implements LocationSource,
 
 	}
 
-	/**
-	 * 定位成功后回调函数
-	 */
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
 		if (mListener != null && amapLocation != null) {
@@ -264,9 +257,6 @@ public class MapFragment extends MainFragment implements LocationSource,
 
 	// ---------------------------------------------------------------------------------------------
 	// for self-define functions
-	/**
-	 * 设置一些amap的属性
-	 */
 	private void setUpMap() {
 		MyLocationStyle myLocationStyle = new MyLocationStyle();
 		// myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.gps));

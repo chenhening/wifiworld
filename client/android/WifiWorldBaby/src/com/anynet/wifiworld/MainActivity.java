@@ -8,11 +8,9 @@ import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
@@ -22,7 +20,6 @@ import com.umeng.update.UmengUpdateAgent;
 
 //import com.xunlei.common.member.XLLog;
 import com.anynet.wifiworld.api.AppRestClient;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.api.callback.ResponseCallback;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
@@ -38,6 +35,8 @@ import com.anynet.wifiworld.report.ReportUtil;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.util.AppInfoUtil;
+import com.anynet.wifiworld.util.LocationHelper;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.PreferenceHelper;
 import com.anynet.wifiworld.wifi.WifiFragment;
@@ -48,7 +47,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	public FragmentTabHost mTabHost;
-	private int currentTabId = 0;
 	private Button[] mTabs;
 	private WifiFragment wifiFragment;
 	private MapFragment mapFragment;
@@ -59,10 +57,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	// 当前fragment的index
 	private int currentTabIndex;
 	private DBHelper dbHelper;
-	private ImageView ivMyNew, ivFindNew;
+	private ImageView ivMyNew;
 	private StaticHandler handler = new StaticHandler(this);
 	private PushAgent mPushAgent;
-	private boolean isFromWelcomeActivity;
+	//global instance
+	private LoginHelper mLoginHelper;
+	private LocationHelper mLocationHelper;
 	
 	public static void startActivity(BaseActivity baseActivity,
 			boolean isFromWelcomeActivity) {
@@ -78,9 +78,15 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		mLoginHelper = LoginHelper.getInstance(this);
+		mLoginHelper.getClass();
+		mLocationHelper = LocationHelper.getInstance(this);
+		mLocationHelper.getClass();
+		dbHelper = DBHelper.getInstance(this);
+		
 		Intent i = getIntent();
-		isFromWelcomeActivity = i.getBooleanExtra("isFromWelcomeActivity",
-				false);
+		i.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
 		initView();
 
@@ -100,9 +106,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				.hide(discoverFragment).hide(meFragment).show(wifiFragment)
 				.commit();
 
-		dbHelper = DBHelper.getInstance(this);
-
-		// 友盟自动更新
+		/*// 友盟自动更新
 		UmengUpdateAgent.update(this);
 
 		// 打开友盟推送
@@ -113,15 +117,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		String appVersion = AppInfoUtil.getVersionName(this);
 		if (null != device_token && !device_token.equals("")) {
 			reportDeviceToken(appVersion, device_token);
-		}
+		}*/
 
 		changeToConnect();
 
 		updateData();
-		// if (isFromWelcomeActivity) {
-		// MineActivity.startActivity(this, 0, 0, 0, 0, 0, true);
-		// }
-
 	}
 
 	@Override
@@ -157,8 +157,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mTabs[2] = (Button) findViewById(R.id.btn_find);
 		mTabs[3] = (Button) findViewById(R.id.btn_my);
 		ivMyNew = (ImageView) findViewById(R.id.iv_my_new);
-		ivFindNew = (ImageView) findViewById(R.id.iv_find_new);
-
 	}
 
 	/**
