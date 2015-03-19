@@ -5,36 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -76,10 +67,14 @@ public class WifiProviderActivity extends BaseActivity {
 		mWifiProfile.Geometry = getLocation();
 		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		//用户填写的数据
-		mWifiProfile.Password = ((EditText) findViewById(R.id.et_wifi_psw)).getText().toString();
+		String Password = ((EditText) findViewById(R.id.et_wifi_psw)).getText().toString();
+		if(Password==null){
+			Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_LONG).show();
+			return false;
+		}else
+		mWifiProfile.Password = Password;
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
-		//mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(
-		//	getResources(), R.drawable.ic_launcher);
+		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 		mWifiProfile.Banner = ((EditText) findViewById(R.id.et_wifi_info)).getText().toString();
 		mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
 
@@ -96,7 +91,7 @@ public class WifiProviderActivity extends BaseActivity {
             }
 			
 		});
-		return false;
+		return true;
 	}
 
 	private void bingdingTitleUI() {
