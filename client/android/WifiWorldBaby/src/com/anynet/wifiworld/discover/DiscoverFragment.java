@@ -1,19 +1,19 @@
 package com.anynet.wifiworld.discover;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import net.youmi.android.AdManager;
-import net.youmi.android.listener.Interface_ActivityListener;
-import net.youmi.android.offers.OffersManager;
+import android.widget.FrameLayout;
 
 public class DiscoverFragment extends MainFragment {
 	private static String ADKey = "f5dca10991ec3c4e";
@@ -26,34 +26,29 @@ public class DiscoverFragment extends MainFragment {
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my));
-
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		mPageRoot = inflater.inflate(R.layout.fragment_find, null);
+		mPageRoot = inflater.inflate(R.layout.fragment_discover, null);
 		super.onCreateView(inflater, container, savedInstanceState);
-		//bingdingTitleUI();
-		/*OffersManager.getInstance(getActivity()).showOffersWall();
-		// 自 Youmi Android OfferWall SDK v5.0.0 起, 支持全屏积分墙退出监听回调
-		OffersManager.getInstance(getActivity()).showOffersWall(
-			new Interface_ActivityListener() {
-
-			@Override
-            public void onActivityDestroy(Context arg0) {
-	            showToast("广告平台积分墙展示成功。");
-            }
-			
-		});*/
+		bingdingTitleUI();
+		
+		AdManager.getInstance(getActivity()).init(ADKey, ADSecret, false);
+		AdView adView = new AdView(getActivity(), AdSize.FIT_SCREEN); // 实例化广告条
+		FrameLayout adLayout = (FrameLayout)findViewById(R.id.fl_ads_banner); // 获取要嵌入广告条的布局
+		adLayout.addView(adView);// 将广告条加入到布局中
+		
+		//OffersManager.getInstance(getActivity()).showOffersWall();
 		
 		return mPageRoot;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//AdManager.getInstance(getActivity()).init(ADKey, ADSecret, false);
+		
 		//OffersManager.getInstance(getActivity()).onAppLaunch();
 		super.onCreate(savedInstanceState);
 	}

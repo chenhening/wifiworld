@@ -141,7 +141,7 @@
                     android:paddingRight="15dp" >
 
                     <ImageView
-                        android:id="@+id/iv_my_message_logo"
+                        android:id="@+id/iv_top_provider"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -155,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/iv_my_message_logo"
+                        android:layout_toRightOf="@id/iv_top_provider"
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:text="@string/wifi_provider"
