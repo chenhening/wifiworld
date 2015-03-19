@@ -252,7 +252,7 @@ public class MeFragment extends MainFragment {
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
-			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
+			mPageRoot.findViewById(R.id.rl_top_provider).setOnClickListener(
 					new OnClickListener() {
 
 						@Override
@@ -265,7 +265,7 @@ public class MeFragment extends MainFragment {
 										WifiProviderListActivity.class));
 						}
 					});
-			mPageRoot.findViewById(R.id.rl_wifi_user).setOnClickListener(
+			mPageRoot.findViewById(R.id.rl_top_wifiuser).setOnClickListener(
 					new OnClickListener() {
 
 						@Override
