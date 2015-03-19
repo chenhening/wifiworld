@@ -101,11 +101,33 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
 			mAMapLocationManager.setGpsEnable(false);
 	}
 	
+	//经度
 	public double getLongitude() {
 		return mAMapLocation.getLongitude();
 	}
 	
+	//纬度
 	public double getLatitude() {
 		return mAMapLocation.getLatitude();
+	}
+	
+	//省份
+	public String getProvince() {
+		return mAMapLocation.getProvince();
+	}
+	
+	//城市
+	public String getCity() {
+		return mAMapLocation.getCity();
+	}
+	
+	//街道
+	public String getDistrict() {
+		return mAMapLocation.getDistrict();
+	}
+	
+	//地理位置的相关描述
+	public String getLocalDescription() {
+		return mAMapLocation.getExtras().getString("desc");
 	}
 }
