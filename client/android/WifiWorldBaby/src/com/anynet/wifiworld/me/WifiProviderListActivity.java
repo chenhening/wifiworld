@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -18,12 +19,12 @@ import cn.bmob.v3.listener.FindListener;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 
 
 public class WifiProviderListActivity extends BaseActivity {
 
 	private ListView providerList;
-	private List<WifiProfile> lWifiProfile = new ArrayList<WifiProfile>();
 	private QuickAdapter<WifiProfile> LostAdapter;
 	
 	private void bingdingTitleUI() {
@@ -48,19 +49,20 @@ public class WifiProviderListActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		setContentView(R.layout.provider_list);
 		super.onCreate(savedInstanceState);
-
-		lWifiProfile = getWifiProfileList("");
+		LoginHelper mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		setWifiProfileList(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
 
 		providerList = (ListView) findViewById(R.id.listview);
 		
 		LostAdapter = new QuickAdapter<WifiProfile>(this, R.layout.item_list) {
 			@Override
 			protected void convert(BaseAdapterHelper helper, WifiProfile wifiProfile) {
-				helper.setText(R.id.tv_ssid, wifiProfile.Ssid)
-						.setText(R.id.tv_ctime, wifiProfile.ctime.toString())
-						.setText(R.id.tv_income, Float.toString(wifiProfile.Income));
+				helper.setText(R.id.tv_ssid, "SSID:"+wifiProfile.Ssid)
+						.setText(R.id.tv_ctime, "WIFI加入时间:"+wifiProfile.getCreatedAt())
+						.setText(R.id.tv_income, "收入:"+Float.toString(wifiProfile.Income));
 			}
 		};
+		
 		providerList.setAdapter(LostAdapter);
 		findViewById(R.id.tv_add_wifi).setOnClickListener(new OnClickListener() {
 			
@@ -84,26 +86,27 @@ public class WifiProviderListActivity extends BaseActivity {
 		});
 	}
 
-	private List<WifiProfile> getWifiProfileList(String Userid) {
+	private void setWifiProfileList(String Sponser) {
 		// TODO Auto-generated method stub
 		BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();
-		bmobQuery.addWhereContains(Userid, "Userid");
+		bmobQuery.addWhereEqualTo("Sponser", Sponser);
 		bmobQuery.findObjects(this, new FindListener<WifiProfile>() {
 			
 			@Override
 			public void onSuccess(List<WifiProfile> elem) {
 				// TODO Auto-generated method stub
+				Toast.makeText(getApplicationContext(), "返回数据："+elem.size()+"条", Toast.LENGTH_LONG).show();
 				LostAdapter.addAll(elem);
+				LostAdapter.notifyDataSetChanged();
 			}
 			
 			@Override
 			public void onError(int arg0, String arg1) {
 				// TODO Auto-generated method stub
+				Toast.makeText(getApplicationContext(), "获取数据错误 arg0:"+arg0+" arg1:"+arg1, Toast.LENGTH_LONG).show();
 				//startActivity(new Intent(getApplicationContext(),WifiProviderActivity.class));
 			}
 		});
-		
-		return null;
 	}
 
 	

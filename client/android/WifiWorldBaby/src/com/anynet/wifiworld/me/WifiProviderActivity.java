@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -66,14 +67,17 @@ public class WifiProviderActivity extends BaseActivity {
 		mWifiProfile.Ssid = ssid; //ssid.equals(edssid) ? ssid : edssid;// mSelectedWifi.getWifiName().toString();
 		mWifiProfile.MacAddr = ssid.equals(edssid) ? mWH.getWifiAdmin().getWifiConnection().getBSSID():"";
 		mWifiProfile.Geometry = getLocation();
+		String ExtAddress = ((EditText) findViewById(R.id.et_wifi_geo)).getText().toString();
+		mWifiProfile.ExtAddress = ExtAddress;
 		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		//用户填写的数据
 		String Password = ((EditText) findViewById(R.id.et_wifi_psw)).getText().toString();
-		if(Password==null){
+		if(Password==null || Password.equals("")){
 			Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_LONG).show();
 			return false;
-		}else
-		mWifiProfile.Password = Password;
+		}else {
+			mWifiProfile.Password = Password;
+		}
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
 		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 		mWifiProfile.Banner = ((EditText) findViewById(R.id.et_wifi_info)).getText().toString();
@@ -126,7 +130,14 @@ public class WifiProviderActivity extends BaseActivity {
 					saveWifiProfile();
 				}
 			});
-
+		EditText Geo =  (EditText) findViewById(R.id.et_wifi_geo);
+		TextView Geo_add =  (TextView) findViewById(R.id.tv_wifi_geo_add);
+		LocationHelper mLocationHelper = LocationHelper.getInstance(this);
+		String Geo_str = mLocationHelper.getProvince()+" "+mLocationHelper.getCity()+" "+mLocationHelper.getDistrict();
+		Geo_add.setText(Geo_str);
+		Geo_str = Geo_str+"  LocalDescription:"+mLocationHelper.getLocalDescription();
+		Toast.makeText(this, Geo_str, Toast.LENGTH_LONG).show();
+		Geo.setText(mLocationHelper.getLocalDescription());
 		SsidAccount = (EditText) findViewById(R.id.et_wifi_ssid);
 		WifiListHelper mWH = WifiListHelper.getInstance(getApplicationContext());
 		SsidAccount.setText(mWH.getWifiAdmin().getWifiNameConnection());
