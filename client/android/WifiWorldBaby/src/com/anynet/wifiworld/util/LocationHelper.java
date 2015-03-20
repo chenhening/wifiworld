@@ -67,9 +67,9 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
     }
 
 	@Override
-    public void onLocationChanged(Location arg0) {
+    public void onLocationChanged(Location mLocation) {
 	    // TODO Auto-generated method stub
-	    
+		if(mAMapLocation == null || mAMapLocation.getCity() == null )mAMapLocation = (AMapLocation) mLocation;
     }
 
 	@Override
