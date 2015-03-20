@@ -6,8 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cordova.LOG;
+
+import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
+
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiType;
+import com.anynet.wifiworld.data.WifiUnregistered;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
@@ -68,9 +76,12 @@ public class WifiListHelper {
 		String wifiType;
 		String wifiMAC;
 		Integer wifiStrength;
+		WifiInfoScanned wifiInfoScanned;
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult hotspot = wifiList.get(i);
-//			WifiInfoScanned queriedWifi = queryWifiProfile(hotspot.BSSID);
+			
+//			WifiInfoScanned queriedWifi = new WifiInfoScanned();
+//			queryWifiProfile(hotspot.BSSID, queriedWifi);
 //			if (queriedWifi != null) {
 //				mWifiFree.add(queriedWifi);
 //				continue;
@@ -83,7 +94,7 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
 				wifiMAC = hotspot.BSSID;
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType, wifiStrength, "本地已保存");
+				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType, wifiStrength, "本地已保存");
 				mWifiFree.add(wifiInfoScanned);
 			} else {
 				wifiName = hotspot.SSID;
@@ -91,24 +102,117 @@ public class WifiListHelper {
 				wifiMAC = hotspot.BSSID;
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-					mWifiFree.add(new WifiInfoScanned(wifiName,wifiMAC, null, wifiType,	wifiStrength, "无密码"));
+					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType,	wifiStrength, "无密码");
+					mWifiFree.add(wifiInfoScanned);
 				} else {
-					mWifiEncrypt.add(new WifiInfoScanned(wifiName,wifiMAC, null, wifiType,
-							WifiAdmin.getWifiStrength(hotspot.level), null));
+					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength, null);
+					mWifiEncrypt.add(wifiInfoScanned);
 				}
 			}
+			
 			String hotspotKey = hotspot.SSID + " " + hotspot.capabilities;
 			if (!mWifiListUnique.contains(hotspotKey)) {
 				mWifiListUnique.add(hotspotKey);
 				//upload WIFI info to WIFI Unregistered
-				
+				updateHotspot(wifiInfoScanned);
 			}
 		}
 	}
 	
-	private WifiInfoScanned queryWifiProfile(final String macAddress) {
+	private void updateOneRow(WifiInfoScanned wifiInfoScanned) {
 		WifiProfile wifiProfile = new WifiProfile();
-		final WifiInfoScanned result = new WifiInfoScanned();
+		wifiProfile.Ssid = wifiInfoScanned.getWifiName();
+		wifiProfile.MacAddr = wifiInfoScanned.getWifiMAC();
+		wifiProfile.Alias = null;
+		wifiProfile.Password = wifiInfoScanned.getWifiPwd();
+		wifiProfile.Banner = null;
+		wifiProfile.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+		wifiProfile.encryptType = wifiInfoScanned.getEncryptType();
+		wifiProfile.Sponser = null;
+		wifiProfile.Geometry = new BmobGeoPoint(1.0, 1.0);
+		wifiProfile.Income = 0.0f;
+		wifiProfile.StoreRemote(mContext, new DataCallback<WifiProfile>() {
+
+			@Override
+            public void onSuccess(WifiProfile object) {
+				LOG.d(TAG, "添加数据成功，返回objectId为："+ object.getObjectId());
+            }
+
+			@Override
+            public void onFailed( String msg) {
+				LOG.d(TAG, "添加数据失败：" + msg);
+            }
+		});
+	}
+	
+	private void updateHotspot(final WifiInfoScanned infoScanned) {
+		WifiProfile wifiProfile = new WifiProfile();
+		final String macAddress = infoScanned.getWifiMAC();
+		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(final WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + macAddress);
+				final WifiProfile wifi = new WifiProfile();
+				wifi.Ssid = infoScanned.getWifiName();
+				wifi.MacAddr = infoScanned.getWifiMAC();
+				wifi.Alias = null;
+				wifi.Password = infoScanned.getWifiPwd();
+				wifi.Banner = null;
+				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
+				wifi.encryptType = infoScanned.getEncryptType();
+				wifi.Sponser = null;
+				wifi.Geometry = new BmobGeoPoint(1.0, 1.0);
+				wifi.Income = 0.0f;
+				wifi.setObjectId(object.getObjectId());
+				wifi.update(mContext, new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						Log.i(TAG, "Update WifiProfile table success");
+					}
+					
+					@Override
+					public void onFailure(int arg0, String msg) {
+						Log.i(TAG, "Update WifiProfile table failed");
+					}
+				});
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi profile from server" + macAddress);
+				final WifiUnregistered wifi = new WifiUnregistered();
+				wifi.Ssid = infoScanned.getWifiName();
+				wifi.MacAddr = infoScanned.getWifiMAC();
+				wifi.Alias = null;
+				wifi.Password = infoScanned.getWifiPwd();
+				wifi.Banner = null;
+				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+				wifi.encryptType = infoScanned.getEncryptType();
+				wifi.Sponser = null;
+				wifi.Geometry = new BmobGeoPoint(1.0, 1.0);
+				wifi.Income = 0.0f;
+				wifi.StoreData(mContext, new DataCallback<WifiUnregistered>() {
+
+					@Override
+					public void onSuccess(WifiUnregistered object) {
+						Log.i(TAG, "Add Data to WifiUnregister table success");
+						
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						Log.i(TAG, "Add Data to WifiUnregister table failed");
+						
+					}
+				});
+			}
+		});
+	}
+	
+	private void queryWifiProfile(final String macAddress, final WifiInfoScanned result) {
+		WifiProfile wifiProfile = new WifiProfile();
 		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
 			
 			@Override
@@ -117,7 +221,7 @@ public class WifiListHelper {
 				result.setWifiName(object.Ssid);
 				result.setWifiPwd(object.Password);
 				result.setWifiMAC(object.MacAddr);
-				result.setWifiType(object.encryptType);
+				result.setEncryptType(object.encryptType);
 				result.setRemark("已认证WiFi");
 				
 			}
@@ -128,11 +232,6 @@ public class WifiListHelper {
 				
 			}
 		});
-		if (result.getWifiMAC() == null) {
-			return null;
-		} else {
-			return result;
-		}
 	}
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list

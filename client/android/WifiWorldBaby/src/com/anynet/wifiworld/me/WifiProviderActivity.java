@@ -287,7 +287,7 @@ public class WifiProviderActivity extends BaseActivity {
 			protected void convert(BaseAdapterHelper helper,
 					WifiInfoScanned wifiScanned) {
 				helper.setText(R.id.tv_ssid, wifiScanned.getWifiName())
-						.setText(R.id.tv_ctime, wifiScanned.getWifiType())
+						.setText(R.id.tv_ctime, wifiScanned.getEncryptType())
 						.setText(R.id.tv_income,
 								Integer.toString(wifiScanned.getWifiStrength()));
 			}

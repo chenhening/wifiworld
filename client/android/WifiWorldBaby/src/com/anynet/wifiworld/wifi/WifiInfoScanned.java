@@ -64,11 +64,11 @@ public class WifiInfoScanned implements Serializable {
 		this.mWifiPwd = wifiPwd;
 	}
 
-	public String getWifiType() {
+	public String getEncryptType() {
 		return mWifiEncryptType;
 	}
 
-	public void setWifiType(String wifiType) {
+	public void setEncryptType(String wifiType) {
 		this.mWifiEncryptType = wifiType;
 	}
 

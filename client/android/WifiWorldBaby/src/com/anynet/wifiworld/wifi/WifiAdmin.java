@@ -376,7 +376,7 @@ public class WifiAdmin {
 			return null;
 		}
 		
-		String hotspotSecurity = hotspot.getWifiType();
+		String hotspotSecurity = hotspot.getEncryptType();
 		if(hotspotSecurity == null) {
 			return null;
 		}
