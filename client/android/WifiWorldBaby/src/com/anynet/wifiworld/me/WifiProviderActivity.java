@@ -38,6 +38,7 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
@@ -59,7 +60,8 @@ public class WifiProviderActivity extends BaseActivity {
 	private WifiInfoScanned mSelectedWifi;
 	private LoginHelper mLoginHelper;
 
-	private boolean saveWifiProfile() {
+	private boolean saveWifiProfile() throws Exception {
+		showToast("开始保存数据！");
 		WifiListHelper mWH = WifiListHelper.getInstance(getApplicationContext());
 		String ssid = mWH.getWifiAdmin().getWifiNameConnection();//mSelectedWifi.getWifiName().toString();
 		String edssid = ((EditText) findViewById(R.id.et_wifi_ssid)).getText().toString();
@@ -76,7 +78,7 @@ public class WifiProviderActivity extends BaseActivity {
 			Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_LONG).show();
 			return false;
 		}else {
-			mWifiProfile.Password = Password;
+			mWifiProfile.Password = StringCrypto.encryptDES(Password, WifiProfile.CryptoKey);//Password;
 		}
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
 		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
@@ -96,6 +98,7 @@ public class WifiProviderActivity extends BaseActivity {
             }
 			
 		});
+		showToast("等待远程服务器反馈！");
 		return true;
 	}
 
@@ -127,7 +130,12 @@ public class WifiProviderActivity extends BaseActivity {
 				public void onClick(View v) {
 					showToast("正在上传数据请稍等");
 					findViewById(R.id.button_save).setEnabled(false);
-					saveWifiProfile();
+					try {
+						saveWifiProfile();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
 		EditText Geo =  (EditText) findViewById(R.id.et_wifi_geo);

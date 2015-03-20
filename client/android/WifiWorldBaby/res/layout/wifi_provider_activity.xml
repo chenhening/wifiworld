@@ -337,6 +337,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_abandon"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:minHeight="39dp" >
 
@@ -344,7 +346,7 @@
                     android:id="@+id/tv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
+                    android:clickable="false"
                     android:focusable="false"
                     android:text="确认提交"
                     android:textColor="#E22B2B"
