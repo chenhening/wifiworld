@@ -2,6 +2,8 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.List;
 
+import cn.smssdk.app.NewAppReceiver;
+
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.api.WifiListHelper;
@@ -16,6 +18,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,8 @@ import android.widget.ListView;
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 
+	private final int UPDATE_VIEW = 0;
+	
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
@@ -142,15 +148,39 @@ public class WifiFragment extends MainFragment {
 		public void onReceive(Context context, Intent intent) {
 			final String action = intent.getAction();
 			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-				mWifiListHelper.fillWifiList();
-				mWifiFree = mWifiListHelper.getWifiFrees();
-				mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-				displayWifiConnected(mWifiNameView);
-				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							sleep(5000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						mWifiListHelper.fillWifiList();
+						mWifiFree = mWifiListHelper.getWifiFrees();
+						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+						handler.sendEmptyMessage(UPDATE_VIEW);
+					}
+				}.start();
 			}
 		}
 	};
 
+	private Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			int value = msg.what;
+			if (value == UPDATE_VIEW) {
+				displayWifiConnected(mWifiNameView);
+				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+			}
+			super.handleMessage(msg);
+		}
+		
+	};
+	
 	private void displayWifiConnected(TextView wifiNameView) {
 		String wifiConnected = mWifiAdmin.getWifiNameConnection();
 		if (!wifiConnected.equals("")) {

@@ -21,6 +21,7 @@ public class WifiProfile extends BmobObject{
 	public String Password; //wifi的密码，经过base64后保存
 	public String Sponser; //绑定的用户账号，wifi提供者
 	public WifiType Type; //wifi的类型
+	public String encryptType; //wifi加密类型
 	public Bitmap Logo; //用户自定义的logo信息
 	public String Alias; //用户自定义的wifi别名
 	public BmobGeoPoint Geometry; //WiFi的地理位置
