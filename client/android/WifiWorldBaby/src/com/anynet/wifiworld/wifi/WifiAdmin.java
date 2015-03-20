@@ -6,6 +6,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.bmob.v3.datatype.BmobGeoPoint;
+
+import com.anynet.wifiworld.util.LocationHelper;
+
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -174,6 +178,77 @@ public class WifiAdmin {
 		return size;
 	}
     
+    /**
+	 * Ensure no more than numOpenNetworksKept open networks in configuration list.
+	 * @param wifiMgr
+	 * @param numOpenNetworksKept
+	 * @return Operation succeed or not.
+	 */
+	private boolean checkForExcessOpenNetworkAndSave(final WifiManager wifiMgr, final int numOpenNetworksKept) {
+		final List<WifiConfiguration> configurations = wifiMgr.getConfiguredNetworks();
+		sortByPriority(configurations);
+		
+		boolean modified = false;
+		int tempCount = 0;
+		for(int i = configurations.size() - 1; i >= 0; i--) {
+			final WifiConfiguration config = configurations.get(i);
+			if(ConfigSec.isOpenNetwork(ConfigSec.getWifiConfigurationSecurity(config))) {
+				tempCount++;
+				if(tempCount >= numOpenNetworksKept) {
+					modified = true;
+					wifiMgr.removeNetwork(config.networkId);
+				}
+			}
+		}
+		if(modified) {
+			return wifiMgr.saveConfiguration();
+		}
+		
+		return true;
+	}
+    
+    /**
+	 * Configure a network, and connect to it.
+	 * @param scanResult
+	 * @param password Password for secure network or is ignored.
+	 * @return
+	 */
+	public boolean connectToNewNetwork(final Context ctx, final ScanResult scanResult, final String password, final int numOpenNetworksKept) {
+		final String security = ConfigSec.getScanResultSecurity(scanResult);
+		
+		if(ConfigSec.isOpenNetwork(security)) {
+			checkForExcessOpenNetworkAndSave(mWifiManager, numOpenNetworksKept);
+		}
+		
+		WifiConfiguration config = new WifiConfiguration();
+		config.SSID = convertToQuotedString(scanResult.SSID);
+		config.BSSID = scanResult.BSSID;
+		ConfigSec.setupSecurity(config, security, password);
+		
+		int id = -1;
+		try {
+			id = mWifiManager.addNetwork(config);
+		} catch(NullPointerException e) {
+			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
+			// Weird!! Really!!
+			// This exception is reported by user to Android Developer Console(https://market.android.com/publish/Home)
+		}
+		if(id == -1) {
+			return false;
+		}
+		
+		if(!mWifiManager.saveConfiguration()) {
+			return false;
+		}
+		
+		config = getWifiConfiguration(config, security);
+		if(config == null) {
+			return false;
+		}
+		
+		return connectToConfiguredNetwork(ctx, config, true);
+	}
+    
     //connect WiFi which is configurated
     public void connectToConfiguredNetwork(int index) {
     	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
@@ -260,6 +335,12 @@ public class WifiAdmin {
         	return 100;
         else
         	return 2 * (dBm + 100);
+    }
+    
+    public static BmobGeoPoint getWifiGeometry(Context ctx, int dBm) {
+    	LocationHelper locationHelper = LocationHelper.getInstance(ctx);
+    	locationHelper.refreshLocation();
+    	return new BmobGeoPoint(/*locationHelper.getLongitude() + */dBm*0.001, /*locationHelper.getLatitude() + */dBm*0.001);
     }
     
     //open WIFI

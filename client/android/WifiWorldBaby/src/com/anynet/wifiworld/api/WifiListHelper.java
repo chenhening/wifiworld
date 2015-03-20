@@ -76,6 +76,7 @@ public class WifiListHelper {
 		String wifiType;
 		String wifiMAC;
 		Integer wifiStrength;
+		BmobGeoPoint wifiGeometry;
 		WifiInfoScanned wifiInfoScanned;
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult hotspot = wifiList.get(i);
@@ -94,18 +95,23 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
 				wifiMAC = hotspot.BSSID;
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType, wifiStrength, "本地已保存");
+				wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
+				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
+						wifiStrength, wifiGeometry, "本地已保存");
 				mWifiFree.add(wifiInfoScanned);
 			} else {
 				wifiName = hotspot.SSID;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiMAC = hotspot.BSSID;
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+				wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
 				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType,	wifiStrength, "无密码");
+					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
+							wifiGeometry, "无密码");
 					mWifiFree.add(wifiInfoScanned);
 				} else {
-					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength, null);
+					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
+							wifiGeometry, null);
 					mWifiEncrypt.add(wifiInfoScanned);
 				}
 			}

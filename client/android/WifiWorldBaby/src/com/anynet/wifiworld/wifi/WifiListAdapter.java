@@ -34,24 +34,24 @@ public class WifiListAdapter extends BaseAdapter {
 		super();
 		this.context = context;
 		
-		WifiInfoScanned freeTag = new WifiInfoScanned("Free",null, null, null, 0, null);
+		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
 		wifiFreeCnt = wifiFree.size();
 		if (wifiFree.isEmpty()) {
-			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare", null,null, null, 0, null);
+			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare");
 			wifiFree.add(freeDeclare);
 		}
 		for (int i = 0; i < wifiFree.size(); i++) {
 			mWifiList.add(wifiFree.get(i));
 		}
 		
-		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", null,null, null, 0, null);
+		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt");
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
 		wifiEncryptCnt = wifiEncrypt.size();
 		if (wifiEncrypt.isEmpty()) {
-			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare", null,null, null, 0, null);
+			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare");
 			wifiEncrypt.add(encryptDeclare);
 		}
 		for (int i = 0; i < wifiEncrypt.size(); i++) {
@@ -62,24 +62,24 @@ public class WifiListAdapter extends BaseAdapter {
 	public void refreshWifiList(List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		mWifiList.clear();
 		
-		WifiInfoScanned freeTag = new WifiInfoScanned("Free",null, null, null, 0, null);
+		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
 		wifiFreeCnt = wifiFree.size();
 		if (wifiFree.isEmpty()) {
-			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare", null,null, null, 0, null);
+			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare");
 			wifiFree.add(freeDeclare);
 		}
 		for (int i = 0; i < wifiFree.size(); i++) {
 			mWifiList.add(wifiFree.get(i));
 		}
 		
-		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt", null,null, null, 0, null);
+		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt");
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
 		wifiEncryptCnt = wifiEncrypt.size();
 		if (wifiEncrypt.isEmpty()) {
-			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare", null,null, null, 0, null);
+			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare");
 			wifiEncrypt.add(encryptDeclare);
 		}
 		for (int i = 0; i < wifiEncrypt.size(); i++) {

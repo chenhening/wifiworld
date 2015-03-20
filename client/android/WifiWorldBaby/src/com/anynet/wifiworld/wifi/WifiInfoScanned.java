@@ -2,6 +2,8 @@ package com.anynet.wifiworld.wifi;
 
 import java.io.Serializable;
 
+import cn.bmob.v3.datatype.BmobGeoPoint;
+
 public class WifiInfoScanned implements Serializable {
 	/**
 	 * 
@@ -13,6 +15,7 @@ public class WifiInfoScanned implements Serializable {
 	private String mWifiEncryptType;
 	private Integer mWifiStrength;
 	private String mRemark;
+	private BmobGeoPoint mGeometry;
 	
 	public WifiInfoScanned() {
 		mWifiName = null;
@@ -21,14 +24,27 @@ public class WifiInfoScanned implements Serializable {
 		mWifiEncryptType = null;
 		mWifiStrength = 0;
 		mRemark = null;
+		mGeometry = null;
 	}
 	
-	public WifiInfoScanned(String name, String mac, String pwd, String type, Integer strenghth, String remark) {
+	public WifiInfoScanned(String name) {
+		mWifiName = name;
+		mWifiMAC = null;
+		mWifiPwd = null;
+		mWifiEncryptType = null;
+		mWifiStrength = 0;
+		mRemark = null;
+		mGeometry = null;
+	}
+	
+	public WifiInfoScanned(String name, String mac, String pwd, String type, Integer strenghth,
+			BmobGeoPoint geometry, String remark) {
 		mWifiName = name;
 		mWifiMAC = mac;
 		mWifiPwd = pwd;
 		mWifiEncryptType = type;
 		mWifiStrength = strenghth;
+		mGeometry = geometry;
 		mRemark = remark;
 	}
 
@@ -78,6 +94,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setWifiStrength(Integer wifiStrength) {
 		this.mWifiStrength = wifiStrength;
+	}
+
+	public BmobGeoPoint getGeometry() {
+		return mGeometry;
+	}
+
+	public void setGeometry(BmobGeoPoint mGeometry) {
+		this.mGeometry = mGeometry;
 	}
 	
 }
