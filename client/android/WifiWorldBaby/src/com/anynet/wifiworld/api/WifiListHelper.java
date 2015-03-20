@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
@@ -13,8 +15,11 @@ import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.util.Log;
 
 public class WifiListHelper {
+	private final static String TAG = WifiListHelper.class.getSimpleName();
+	
 	public static WifiListHelper mInstance;
 	
 	private Context mContext;
@@ -65,6 +70,12 @@ public class WifiListHelper {
 		Integer wifiStrength;
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult hotspot = wifiList.get(i);
+//			WifiInfoScanned queriedWifi = queryWifiProfile(hotspot.BSSID);
+//			if (queriedWifi != null) {
+//				mWifiFree.add(queriedWifi);
+//				continue;
+//			}
+			
 			WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
 			if (wifiCfg != null) {
 				wifiName = hotspot.SSID;
@@ -92,6 +103,35 @@ public class WifiListHelper {
 				//upload WIFI info to WIFI Unregistered
 				
 			}
+		}
+	}
+	
+	private WifiInfoScanned queryWifiProfile(final String macAddress) {
+		WifiProfile wifiProfile = new WifiProfile();
+		final WifiInfoScanned result = new WifiInfoScanned();
+		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(final WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + macAddress);
+				result.setWifiName(object.Ssid);
+				result.setWifiPwd(object.Password);
+				result.setWifiMAC(object.MacAddr);
+				result.setWifiType(object.encryptType);
+				result.setRemark("已认证WiFi");
+				
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi profile from server" + macAddress);
+				
+			}
+		});
+		if (result.getWifiMAC() == null) {
+			return null;
+		} else {
+			return result;
 		}
 	}
 	

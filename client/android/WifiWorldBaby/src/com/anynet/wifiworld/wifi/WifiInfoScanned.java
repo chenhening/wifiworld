@@ -9,17 +9,25 @@ public class WifiInfoScanned implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String mWifiName;
 	private String mWifiMAC;
-
 	private String mWifiPwd;
-	private String mWifiType;
+	private String mWifiEncryptType;
 	private Integer mWifiStrength;
 	private String mRemark;
+	
+	public WifiInfoScanned() {
+		mWifiName = null;
+		mWifiMAC = null;
+		mWifiPwd = null;
+		mWifiEncryptType = null;
+		mWifiStrength = 0;
+		mRemark = null;
+	}
 	
 	public WifiInfoScanned(String name, String mac, String pwd, String type, Integer strenghth, String remark) {
 		mWifiName = name;
 		mWifiMAC = mac;
 		mWifiPwd = pwd;
-		mWifiType = type;
+		mWifiEncryptType = type;
 		mWifiStrength = strenghth;
 		mRemark = remark;
 	}
@@ -57,11 +65,11 @@ public class WifiInfoScanned implements Serializable {
 	}
 
 	public String getWifiType() {
-		return mWifiType;
+		return mWifiEncryptType;
 	}
 
 	public void setWifiType(String wifiType) {
-		this.mWifiType = wifiType;
+		this.mWifiEncryptType = wifiType;
 	}
 
 	public Integer getWifiStrength() {
