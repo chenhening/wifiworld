@@ -340,7 +340,7 @@ public class WifiAdmin {
     public static BmobGeoPoint getWifiGeometry(Context ctx, int dBm) {
     	LocationHelper locationHelper = LocationHelper.getInstance(ctx);
     	locationHelper.refreshLocation();
-    	return new BmobGeoPoint(/*locationHelper.getLongitude() + */dBm*0.001, /*locationHelper.getLatitude() + */dBm*0.001);
+    	return new BmobGeoPoint(locationHelper.getLongitude() + dBm*0.000001, locationHelper.getLatitude() + dBm*0.000001);
     }
     
     //open WIFI

@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -90,6 +91,7 @@ public class WifiProviderListActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();
 		bmobQuery.addWhereEqualTo("Sponser", Sponser);
+		Log.d("findObjects", "开始查询setWifiProfileList");
 		bmobQuery.findObjects(this, new FindListener<WifiProfile>() {
 			
 			@Override
@@ -107,6 +109,7 @@ public class WifiProviderListActivity extends BaseActivity {
 				//startActivity(new Intent(getApplicationContext(),WifiProviderActivity.class));
 			}
 		});
+		Log.d("findObjects", "结束查询setWifiProfileList");
 	}
 
 	

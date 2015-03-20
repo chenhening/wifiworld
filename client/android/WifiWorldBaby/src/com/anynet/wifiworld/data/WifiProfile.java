@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -20,7 +21,7 @@ public class WifiProfile extends BmobObject{
 	public String Ssid; //wifi的ssid
 	public String Password; //wifi的密码，经过base64后保存
 	public String Sponser; //绑定的用户账号，wifi提供者
-	public WifiType Type; //wifi的类型
+	public int Type; //wifi的类型
 	public String encryptType; //wifi加密类型
 	public Bitmap Logo; //用户自定义的logo信息
 	public String Alias; //用户自定义的wifi别名
@@ -28,7 +29,6 @@ public class WifiProfile extends BmobObject{
 	public String ExtAddress;
 	public String Banner; //wifi的展示页内容(TODO(binfei)还需要定义更多)
 	public float Income; //wifi 收入
-	public Long ctime; //添加时间戳——使用Unix时间戳
 
 	public static final String CryptoKey = "Wifi2Key";//8bits
 // ------------------------------------------------------------------------------------------------
@@ -37,6 +37,7 @@ public class WifiProfile extends BmobObject{
 		final DataCallback<WifiProfile> _callback = callback;
 		BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		query.addWhereEqualTo(unique_key, Mac);
+		Log.d("findObjects", "开始查询QueryByMacAddress");
 		query.findObjects(context, new FindListener<WifiProfile>() {
 			@Override
 			public void onSuccess(List<WifiProfile> object) {
@@ -52,6 +53,7 @@ public class WifiProfile extends BmobObject{
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryByMacAddress");
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<WifiProfile> callback) {

@@ -168,7 +168,7 @@ public class WifiListHelper {
 				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
 				wifi.encryptType = infoScanned.getEncryptType();
 				wifi.Sponser = null;
-				wifi.Geometry = new BmobGeoPoint(1.0, 1.0);
+				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
 				wifi.setObjectId(object.getObjectId());
 				wifi.update(mContext, new UpdateListener() {
@@ -197,7 +197,7 @@ public class WifiListHelper {
 				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
 				wifi.encryptType = infoScanned.getEncryptType();
 				wifi.Sponser = null;
-				wifi.Geometry = new BmobGeoPoint(1.0, 1.0);
+				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
 				wifi.StoreData(mContext, new DataCallback<WifiUnregistered>() {
 

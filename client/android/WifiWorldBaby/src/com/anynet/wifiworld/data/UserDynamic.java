@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
@@ -40,6 +41,7 @@ public class UserDynamic extends BmobObject {
 		query.addWhereEqualTo(key_user, Userid);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
 		query.addWhereLessThan(key_login, time + halfweekmillis);
+		Log.d("findObjects", "开始查询QueryUserInOneWeek");
 		query.findObjects(context, new FindListener<UserDynamic>() {
 			@Override
 			public void onSuccess(List<UserDynamic> objects) {
@@ -51,6 +53,7 @@ public class UserDynamic extends BmobObject {
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryUserInOneWeek");
 	}
 	
 	public void QueryWiFiInOneWeek(
@@ -60,6 +63,7 @@ public class UserDynamic extends BmobObject {
 		query.addWhereEqualTo(key_wifi, MacAddr);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfdaymillis);
 		query.addWhereLessThan(key_login, time + halfdaymillis);
+		Log.d("findObjects", "开始查询QueryWiFiInOneWeek");
 		query.findObjects(context, new FindListener<UserDynamic>() {
 			@Override
 			public void onSuccess(List<UserDynamic> objects) {
@@ -71,6 +75,7 @@ public class UserDynamic extends BmobObject {
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryWiFiInOneWeek");
 	}
 	
 	public void QueryWiFiInOneDay(
@@ -80,6 +85,7 @@ public class UserDynamic extends BmobObject {
 		query.addWhereEqualTo(key_wifi, MacAddr);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
 		query.addWhereLessThan(key_login, time + halfweekmillis);
+		Log.d("findObjects", "开始查询QueryWiFiInOneDay");
 		query.findObjects(context, new FindListener<UserDynamic>() {
 			@Override
 			public void onSuccess(List<UserDynamic> objects) {
@@ -91,6 +97,7 @@ public class UserDynamic extends BmobObject {
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryWiFiInOneDay");
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<UserDynamic> callback) {

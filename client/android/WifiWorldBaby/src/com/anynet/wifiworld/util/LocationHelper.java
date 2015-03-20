@@ -5,8 +5,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
-
-import com.amap.api.maps.AMap.OnMyLocationChangeListener;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 
@@ -15,8 +13,6 @@ import android.location.Location;
 import android.os.Bundle;
 
 public class LocationHelper implements LocationSource, AMapLocationListener {
-	private MapView mapView;
-	private AMap aMap;
 	private LocationManagerProxy mAMapLocationManager;
 	private AMapLocation mAMapLocation;
 	
@@ -33,28 +29,13 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
 	
 	public LocationHelper(Context context) {
 		globalContext = context;
-		mapView = new MapView(context);
-		aMap = mapView.getMap();
-		aMap.setLocationSource(this);
-		aMap.setMyLocationEnabled(true);
-		aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);
+		mAMapLocationManager = LocationManagerProxy.getInstance(globalContext);
+		mAMapLocationManager.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 3, this);
 	}
 
 	@Override
     public void activate(OnLocationChangedListener listener) {
-		if (mAMapLocationManager == null) {
-			mAMapLocationManager = 
-					LocationManagerProxy.getInstance(globalContext);
-			// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-			// 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），
-			// 并且在合适时间调用removeUpdates()方法来取消定位请求
-			// 在定位结束后，在合适的生命周期调用destroy()方法
-			// 其中如果间隔时间为-1，则定位只定一次
-			// 在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求
-			mAMapLocationManager.requestLocationData(
-				LocationProviderProxy.AMapNetwork, -1, 3, this);
-			mAMapLocationManager.setGpsEnable(false);
-		}
+		
     }
 
 	@Override
@@ -97,9 +78,8 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
 	
 // ------------------------------------------------------------------------------------------------
 	public void refreshLocation() {
-		mAMapLocationManager.requestLocationData(
-				LocationProviderProxy.AMapNetwork, -1, 3, this);
-			mAMapLocationManager.setGpsEnable(false);
+		mAMapLocationManager.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 3, this);
+		mAMapLocation = mAMapLocationManager.getLastKnownLocation(LocationProviderProxy.AMapNetwork);
 	}
 	
 	//经度

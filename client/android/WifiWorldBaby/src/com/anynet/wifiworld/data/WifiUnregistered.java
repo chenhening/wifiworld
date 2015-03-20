@@ -3,6 +3,7 @@ package com.anynet.wifiworld.data;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -21,6 +22,7 @@ public class WifiUnregistered extends WifiProfile {
 		final DataCallback<WifiUnregistered> _callback = callback;
 		BmobQuery<WifiUnregistered> query = new BmobQuery<WifiUnregistered>();
 		query.addWhereEqualTo(unique_key, Mac);
+		Log.d("findObjects", "开始查询QueryData");
 		query.findObjects(context, new FindListener<WifiUnregistered>() {
 			@Override
 			public void onSuccess(List<WifiUnregistered> object) {
@@ -36,6 +38,7 @@ public class WifiUnregistered extends WifiProfile {
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryData");
 	}
 	
 	public void StoreData(final Context context, DataCallback<WifiUnregistered> callback) {

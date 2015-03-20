@@ -3,6 +3,7 @@ package com.anynet.wifiworld.data;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -17,7 +18,7 @@ public class UserProfile extends BmobObject {
 	//public String Userid; //用户账号
 	public String PhoneNumber; //用户手机号，作为表的唯一建
 	public String Password; //密码
-	public UserType Type; //用户类型，
+	public int Type; //用户类型，
 	public float Wallet; //用户钱包
 	
 // ------------------------------------------------------------------------------------------------
@@ -26,6 +27,7 @@ public class UserProfile extends BmobObject {
 		final DataCallback<UserProfile> _callback = callback;
 		BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
 		query.addWhereEqualTo(unique_key, number);
+		Log.d("findObjects", "开始查询QueryByPhoneNumber");
 		query.findObjects(context, new FindListener<UserProfile>() {
 			@Override
 			public void onSuccess(List<UserProfile> object) {
@@ -42,6 +44,7 @@ public class UserProfile extends BmobObject {
 				_callback.onFailed(msg);
 			}
 		});
+		Log.d("findObjects", "结束查询QueryByPhoneNumber");
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
