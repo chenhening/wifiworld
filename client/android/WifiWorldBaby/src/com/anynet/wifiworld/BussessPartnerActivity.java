@@ -24,11 +24,28 @@ import com.anynet.wifiworld.app.BaseActivity;
 
 public class BussessPartnerActivity extends BaseActivity {
 
+	
+	private void bingdingTitleUI() {
+		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+		mTitlebar.llFinish.setVisibility(View.VISIBLE);
+		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
+		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
+		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	}
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bussess_partner_open);
+		setContentView(R.layout.bussess_partner_certify_introduce);
+		super.onCreate(savedInstanceState);		
 		//WebView mWebView = (WebView) findViewById(R.id.sv_open);
 //		mWebView.loadUrl("file:///android_asset/www/pages/bussessopen.html");
 //		WebSettings webSettings= mWebView.getSettings();
@@ -50,8 +67,8 @@ public class BussessPartnerActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-		Button mAcceptBtn = (Button) findViewById(R.id.btn_accept);
-		mAcceptBtn.setOnClickListener(new OnClickListener() {
+		TextView mAcceptTv = (TextView) findViewById(R.id.certify_button);
+		mAcceptTv.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -61,16 +78,9 @@ public class BussessPartnerActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
+		bingdingTitleUI();
 	}
 
-	  private class MxgsaSpan extends ClickableSpan implements OnClickListener{
-	        @Override
-	        public void onClick(View widget) {
-	            // TODO Auto-generated method stub
-	            //具体代码，可以是跳转页面，可以是弹出对话框，下面是跳转页面
-	        	getApplicationContext().startActivity(new Intent(BussessPartnerActivity.this,BussessPartnerLicenseActivity.class));
-	        }
-	    }
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub

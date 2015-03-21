@@ -4,7 +4,7 @@
     <!-- 通用 -->
     <color name="low_white">#26ffffff</color>
     <color name="header_bg">#CA2525</color>
- 	<color name="transparent">#00000000</color>
+    <color name="transparent">#00000000</color>
     <!-- 主框架 -->
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="common_bottom_bar_normal_bg">#00FFFFFF</color>
@@ -26,7 +26,9 @@
     <color name="color_line">#ffd9dee6</color>
     <color name="color_main_text">#ff111111</color>
     <color name="color_gray">#ffa0aab3</color>
-     <color name="color_high_light_blue">#ff00aaaf</color>
+    <color name="color_high_light_blue">#ff00aaaf</color>
+    <color name="certify_button_bg_normal">#ff03a3a6</color>
+    <color name="certify_button_bg_press">#ff039295</color>
     <!-- 登录 -->
     <color name="login_tv_txt">#FFFFFF</color>
     <color name="login_error_txt">#F7E0E0</color>

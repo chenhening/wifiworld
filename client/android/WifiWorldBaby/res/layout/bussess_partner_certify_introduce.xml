@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_bar_replacement"
+        layout="@layout/header_setting"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/bottom_content"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_50_dip"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/certify_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/toolbar_bg"
+            android:paddingLeft="@dimen/dimen_15_dip"
+            android:paddingRight="@dimen/dimen_15_dip" >
+
+            <TextView
+                android:id="@+id/tv_link_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:gravity="left|center_vertical" />
+
+            <TextView
+                android:id="@+id/certify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/sl_bg_edit_hotpoit"
+                android:paddingBottom="@dimen/dimen_5_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:paddingTop="@dimen/dimen_5_dip"
+                android:text="立即认证"
+                android:textColor="@color/white"
+                android:textSize="14.0sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_content"
+        android:layout_below="@+id/title_bar_replacement" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_merchant_certify_introduce_repeat"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_20_dip"
+                    android:text="如何与WifiWorld合作?"
+                    android:textColor="#ff2e2e2e"
+                    android:textSize="16.0sp" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_20_dip"
+                    android:layout_marginTop="@dimen/dimen_20_dip"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/certify_introduce_step" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:text="商家与WifiWorld合作能获得什么？"
+                android:textColor="#ff2e2e2e"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:scaleType="fitStart"
+                android:src="@drawable/certify_introduce_first" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:text="通过“号外”广告推送，商家可以吸引路过或本无意消费的用户进店或消费。WifiWorld用户在经过商家Wi-Fi信号覆盖区域时，会收到商家自主编辑的有营销目的的信息。当用户感兴趣时即可进店挑选商品或消费。当用户使用商家Wi-Fi连网时，则可以看到商家的主页，信息更加全面，更有利于用户了解商家信息。"
+                android:textColor="#ff666666"
+                android:textSize="13.0sp" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_merchant_certify_introduce_1" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:scaleType="fitStart"
+                android:src="@drawable/certify_introduce_second" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:text="用户连接商家Wi-Fi后，会进入到商家的聊天室，用户可以在聊天室和店主、店员以及其他同店人员进行聊天互动。商家可以利用店主优势，进行有目的性的私信和群发私信，针对性地发送促销信息，带动销售，及更好地服务消费者。"
+                android:textColor="#ff666666"
+                android:textSize="13.0sp" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_merchant_certify_introduce_2" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:scaleType="fitStart"
+                android:src="@drawable/certify_introduce_third" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:text="用户离开商家店铺后，可以对商家的服务、产品进行分享和评论，对商家信息进行扩散，也可以通过商家的网页直接电话预订或网上预订服务。"
+                android:textColor="#ff666666"
+                android:textSize="13.0sp" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_20_dip"
+                android:layout_marginTop="@dimen/dimen_20_dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_merchant_certify_introduce_3" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
