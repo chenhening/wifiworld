@@ -31,6 +31,8 @@
     <string name="wifilogo">Wifi Logo:</string>
     <string name="wifiinfo">展示信息:</string>
     <string name="wifigeo">地理位置:</string>
+    <string name="next_step">下一步</string>
+    <string name="push_btn">提交</string>
     <string name="str_top_provider">WiFi提供者排行榜</string>
     <string name="str_top_wifiuser">WiFi使用者排行榜</string>
     <string name="str_everybody_more">更多>></string>
