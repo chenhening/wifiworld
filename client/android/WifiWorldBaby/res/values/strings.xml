@@ -25,22 +25,32 @@
     <string name="userid">用户名</string>
     <string name="cashin">收益(最近一周)</string>
     <string name="cashout">支出</string>
-    
     <string name="wifissid">Wifi SSID:</string>
     <string name="wifipsw">Wifi 密码:</string>
     <string name="wifiasia">Wifi 别名:</string>
     <string name="wifilogo">Wifi Logo:</string>
     <string name="wifiinfo">展示信息:</string>
     <string name="wifigeo">地理位置:</string>
-    
     <string name="str_top_provider">WiFi提供者排行榜</string>
     <string name="str_top_wifiuser">WiFi使用者排行榜</string>
     <string name="str_everybody_more">更多>></string>
-	<string name="str_everybody_using">大家都在用的</string>
-	<string name="str_everybody_play">大家都在玩的</string>
-	<string name="str_everybody_watch">大家都在看的</string>
-	<string name="str_everybody_buy">大家都会买的</string>
-    
+    <string name="str_everybody_using">大家都在用的</string>
+    <string name="str_everybody_play">大家都在玩的</string>
+    <string name="str_everybody_watch">大家都在看的</string>
+    <string name="str_everybody_buy">大家都会买的</string>
+    <string name="str_openbussess">商家入驻</string>
+    <string name="merchant_certify_name">请输入商家名称</string>
+    <string name="merchant_certify_address">请选择商家地址</string>
+    <string name="merchant_certify_detail_address">请输入商家详细地址</string>
+    <string name="merchant_certify_tel">请输入商家电话</string>
+    <string name="merchant_certify_image">请提交商家照片</string>
+    <string name="merchant_certify_contact_name">请输入联系人</string>
+    <string name="merchant_certify_contact_phone">请输入手机号码</string>
+    <string name="merchant_certify_license">请输入营业执照注册号</string>
+    <string name="merchant_certify_license_photo">请提交营业执照</string>
+    <string name="merchant_certify_type">请选择商家类型</string>
+    <string name="merchant_certify_produce">请填写商家介绍</string>
+    <string name="merchant_promotion"><Data>&lt;font color=#acacac>每月只能修改&lt;/font> &lt;font color=#03a3a6>1&lt;/font> &lt;font color=#acacac>次&lt;/font> </Data></string>
     <!-- testin崩溃测试key -->
     <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>
     <!-- testin 崩溃正式key -->

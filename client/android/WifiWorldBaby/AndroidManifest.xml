@@ -68,6 +68,29 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.BussessPartnerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.BussessPartnerFirstActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.BussessPartnerLicenseActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="activity.special.scheme" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -244,29 +267,30 @@
             android:name="UMENG_APPKEY"
             android:value="54572823fd98c547e1002e49" >
         </meta-data>
-        
-        <!--有米广告平台 -->
+
+        <!-- 有米广告平台 -->
         <activity
-		    android:name="net.youmi.android.AdBrowser"
-		    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-		    android:theme="@android:style/Theme.Light.NoTitleBar" >
-		</activity>
-		<service
-		    android:name="net.youmi.android.AdService"
-		    android:exported="false" >
-		</service>
-		<service
-		    android:name="net.youmi.android.ExpService"
-		    android:exported="false" >
-		</service>
-		<receiver
-		    android:name="net.youmi.android.AdReceiver" >
-		    <intent-filter>
-		        <action android:name="android.intent.action.PACKAGE_ADDED" />
-		        <data android:scheme="package" />
-		    </intent-filter>
-		</receiver>
-        
+            android:name="net.youmi.android.AdBrowser"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+
+        <service
+            android:name="net.youmi.android.AdService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name="net.youmi.android.ExpService"
+            android:exported="false" >
+        </service>
+
+        <receiver android:name="net.youmi.android.AdReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

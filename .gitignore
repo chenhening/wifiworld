@@ -18,4 +18,5 @@
 /client/android/WifiWorld/.idea
 /client/android/WifiWorld/.gradle
 /client/android/WifiWorld/out
+/client/android/WifiWorldBaby/assets/www/.idea
 *.DS_Store

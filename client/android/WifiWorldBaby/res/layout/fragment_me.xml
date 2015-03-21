@@ -9,7 +9,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="0dp"
         android:layout_gravity="top"
         android:layout_weight="0.87"
         android:background="@color/common_div_line" >
@@ -314,7 +314,6 @@
                         android:tag="ivSettingInAccount"
                         android:visibility="visible" />
                 </RelativeLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -384,7 +383,6 @@
                         android:layout_alignTop="@+id/tv_user_total_income"
                         android:background="@color/coral"
                         android:text="提现" />
-
                 </RelativeLayout>
             </LinearLayout>
 
@@ -422,7 +420,6 @@
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
-
         </LinearLayout>
     </FrameLayout>
 
@@ -430,13 +427,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
+        android:layout_marginTop="1dp"
         android:background="@drawable/settings_group_bg"
         android:gravity="bottom"
         android:orientation="vertical"
         android:visibility="visible" >
 
         <RelativeLayout
-            android:id="@+id/ll_setting_about"
+            android:id="@+id/ll_invite_friend"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="top"
@@ -467,7 +465,41 @@
                 android:text="@string/share_friends"
                 android:textColor="@color/setting_txt"
                 android:textSize="16sp" />
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/ll_open_bussess"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/settings_item_bottom_radius_bg_selector"
+            android:gravity="top"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/app_name"
+                android:gravity="center_vertical"
+                android:src="@drawable/crystal_right_rocket" />
+
+            <TextView
+                android:id="@+id/iv_open_bussess"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:drawableLeft="@drawable/my_about_logo"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/str_openbussess"
+                android:textColor="@color/setting_txt"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <LinearLayout

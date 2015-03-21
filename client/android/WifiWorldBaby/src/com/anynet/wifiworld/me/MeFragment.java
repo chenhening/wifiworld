@@ -23,6 +23,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.BussessPartnerActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
@@ -45,7 +46,7 @@ public class MeFragment extends MainFragment {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
-	
+
 	private ProviderIncomeChartView mLineChart = null;
 
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
@@ -53,20 +54,20 @@ public class MeFragment extends MainFragment {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			
+
 			String action = intent.getAction();
-			if(action.equals(LoginHelper.AUTO_LOGIN_FAIL)){
-				Toast.makeText(getApplicationContext(),
-						"登录失败!", Toast.LENGTH_LONG).show();
-			}else if(action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)){
+			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
+				Toast.makeText(getApplicationContext(), "登录失败!",
+						Toast.LENGTH_LONG).show();
+			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				setLoginedUI(false);
-				Toast.makeText(getApplicationContext(),
-						"登录成功!", Toast.LENGTH_LONG).show();
-			}else if(action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)){
-				Toast.makeText(getApplicationContext(),
-						"自动登录失败!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "登录成功!",
+						Toast.LENGTH_LONG).show();
+			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
+				Toast.makeText(getApplicationContext(), "自动登录失败!",
+						Toast.LENGTH_LONG).show();
 			}
-			
+
 		}
 	};
 
@@ -159,7 +160,17 @@ public class MeFragment extends MainFragment {
 		bingdingTitleUI();
 		setLoginedUI(false);
 		DisplayIncomeChart();
-		
+		findViewById(R.id.ll_open_bussess).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i = new Intent(getApplicationContext(),
+								BussessPartnerActivity.class);
+						startActivity(i);
+					}
+				});
 		return mPageRoot;
 	}
 
@@ -181,14 +192,14 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					setLoginedUI(false);
 				}
 			});
-			
+
 			mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
 			mLL_Verify.setOnClickListener(new OnClickListener() {
 
@@ -315,18 +326,19 @@ public class MeFragment extends MainFragment {
 			}
 		}
 	}
-	
+
 	private void DisplayIncomeChart() {
-		LinearLayout chartLayout = (LinearLayout)this.findViewById(R.id.ll_money_get);
-		//图表显示范围在占屏幕大小的90%的区域内	   
-		int scrWidth = chartLayout.getLayoutParams().width; 	
-		int scrHeight = chartLayout.getLayoutParams().height; 			   		
-		RelativeLayout.LayoutParams layoutParams = 
-			new RelativeLayout.LayoutParams(scrWidth, scrHeight);	
-		//居中显示
+		LinearLayout chartLayout = (LinearLayout) this
+				.findViewById(R.id.ll_money_get);
+		// 图表显示范围在占屏幕大小的90%的区域内
+		int scrWidth = chartLayout.getLayoutParams().width;
+		int scrHeight = chartLayout.getLayoutParams().height;
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				scrWidth, scrHeight);
+		// 居中显示
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		mLineChart = new ProviderIncomeChartView(getActivity());
-        chartLayout.addView(mLineChart, layoutParams);
+		chartLayout.addView(mLineChart, layoutParams);
 	}
 
 	// ---------------------------------------------------------------------------------------------
