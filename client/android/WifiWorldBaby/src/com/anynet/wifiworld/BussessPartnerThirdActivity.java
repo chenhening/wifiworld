@@ -14,7 +14,7 @@ public class BussessPartnerThirdActivity extends BaseActivity {
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.push_btn);
+		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -25,7 +25,7 @@ public class BussessPartnerThirdActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override

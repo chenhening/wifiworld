@@ -41,6 +41,7 @@
     <string name="str_everybody_watch">大家都在看的</string>
     <string name="str_everybody_buy">大家都会买的</string>
     <string name="str_openbussess">商家入驻</string>
+    <string name="merchant_certify">商户认证</string>
     <string name="merchant_certify_name">请输入商家名称</string>
     <string name="merchant_certify_address">请选择商家地址</string>
     <string name="merchant_certify_detail_address">请输入商家详细地址</string>

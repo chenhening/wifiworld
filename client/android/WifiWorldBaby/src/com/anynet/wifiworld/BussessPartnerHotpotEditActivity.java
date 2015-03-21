@@ -25,7 +25,7 @@ public class BussessPartnerHotpotEditActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
