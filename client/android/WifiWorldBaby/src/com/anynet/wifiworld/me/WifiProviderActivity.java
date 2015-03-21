@@ -78,7 +78,7 @@ public class WifiProviderActivity extends BaseActivity {
 			Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_LONG).show();
 			return false;
 		}else {
-			mWifiProfile.Password = StringCrypto.encryptDES(Password, WifiProfile.CryptoKey);//Password;
+			mWifiProfile.Password = Password; //加密部分放到底层去做
 		}
 		mWifiProfile.Alias = ((EditText) findViewById(R.id.et_wifi_asia)).getText().toString();
 		mWifiProfile.Logo = mLogo != null ? mLogo : BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);

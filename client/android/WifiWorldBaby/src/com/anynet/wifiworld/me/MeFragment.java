@@ -27,8 +27,9 @@ import com.anynet.wifiworld.BussessPartnerActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
-import com.anynet.wifiworld.util.Base64Util;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.StringCrypto;
 
 public class MeFragment extends MainFragment {
 	// for saved data
@@ -87,13 +88,10 @@ public class MeFragment extends MainFragment {
 					if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
 						// 提交验证码成功
 						// TODO(binfei): 将类似的函数整理成一个公共函数
-						// 得到加密后的密码
-						String password = Base64Util.encode(mPhoneNumber
-								+ mSmsCode);
 						// 通过bmob保存到服务器，以便于做数据验证
 						UserProfile user = new UserProfile();
 						user.PhoneNumber = mPhoneNumber;
-						user.Password = password.trim();
+						user.Password = mSmsCode;
 						mLoginHelper.Login(user);
 						getActivity().runOnUiThread(new Runnable() {
 							@Override
@@ -166,8 +164,7 @@ public class MeFragment extends MainFragment {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						Intent i = new Intent(getApplicationContext(),
-								BussessPartnerActivity.class);
+						Intent i = new Intent(getApplicationContext(), BussessPartnerActivity.class);
 						startActivity(i);
 					}
 				});

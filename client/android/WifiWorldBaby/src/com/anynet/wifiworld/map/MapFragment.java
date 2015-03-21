@@ -10,19 +10,15 @@ package com.anynet.wifiworld.map;
 
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import cn.bmob.v3.listener.FindListener;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiUnregistered;
 import com.anynet.wifiworld.util.LoginHelper;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -198,39 +194,45 @@ public class MapFragment extends MainFragment implements LocationSource,
 				loginHelper.setLatitude(Latitude);
 
 				//query wifi nearby
-				/*BmobQuery<WifiProfile> bmobQuery = new BmobQuery<WifiProfile>();
-				bmobQuery.addWhereWithinRadians("Geometry", new BmobGeoPoint(Longitude, Latitude), 1);
-				bmobQuery.findObjects(getActivity().getApplicationContext(), new FindListener<WifiProfile>() {
-				    @Override
-				    public void onSuccess(List<WifiProfile> object) {
-				    	Log.d("map", "查询周围未登记wifi成功：共" + object.size() + "条数据。");
-				    	showToast("查询周围wifi成功：共" + object.size() + "条数据。");
-				    	// add wifi label
-				    	DisplayNearbyWifi(object);
-				    }
-				    @Override
-				    public void onError(int code, String msg) {
-				    	Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
-				    	showToast("您附近还没有可用wifi信号，请更换位置。");
-				    }
+				WifiProfile wifis = new WifiProfile();
+				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1, 
+					new MultiDataCallback<WifiProfile>() {
+
+						@Override
+						public void onSuccess(List<WifiProfile> objects) {
+							Log.d("map", "查询周围未登记wifi成功：共" + objects.size() + "条数据。");
+					    	showToast("查询周围wifi成功：共" + objects.size() + "条数据。");
+					    	// add wifi label
+					    	DisplayNearbyWifi(objects);
+						}
+
+						@Override
+						public void onFailed(String msg) {
+							Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
+					    	showToast("您附近还没有可用wifi信号，请更换位置。");
+						}
+					
 				});
 				
-				BmobQuery<WifiUnregistered> bmobQuery2 = new BmobQuery<WifiUnregistered>();
-				bmobQuery2.addWhereWithinRadians("Geometry", new BmobGeoPoint(Longitude, Latitude), 1);
-				bmobQuery2.findObjects(getActivity().getApplicationContext(), new FindListener<WifiUnregistered>() {
-				    @Override
-				    public void onSuccess(List<WifiUnregistered> object) {
-				        Log.d("map", "查询周围未登记wifi成功：共" + object.size() + "条数据。");
-				    	showToast("查询周围未登记wifi成功：共" + object.size() + "条数据。");
-				    	// add wifi label
-				    	DisplayNearbyWifiUnregistered(object);
-				    }
-				    @Override
-				    public void onError(int code, String msg) {
-				    	Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
-				    	showToast("您附近还没有可用wifi信号，请更换位置再试一次。");
-				    }
-				});*/
+				WifiProfile wifisu = new WifiProfile(WifiProfile.table_name_wifiunregistered);
+				wifisu.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1, 
+					new MultiDataCallback<WifiProfile>() {
+
+						@Override
+						public void onSuccess(List<WifiProfile> objects) {
+							Log.d("map", "查询周围未登记wifi成功：共" + objects.size() + "条数据。");
+					    	showToast("查询周围wifi成功：共" + objects.size() + "条数据。");
+					    	// add wifi label
+					    	DisplayNearbyWifi(objects);
+						}
+
+						@Override
+						public void onFailed(String msg) {
+							Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
+					    	showToast("您附近还没有可用wifi信号，请更换位置。");
+						}
+					
+				});
 
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);
@@ -289,28 +291,20 @@ public class MapFragment extends MainFragment implements LocationSource,
 		aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);
 	}
 
-	private void DisplayNearbyWifi(List<WifiProfile> wifilist) {
-		for(int i = 0; i < wifilist.size(); ++i) {
-			WifiProfile wifi = wifilist.get(i);
-			LatLng llwifi1 = 
-				new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
-			aMap.addMarker(
-				new MarkerOptions().position(llwifi1).title(wifi.Alias)
-					.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
-						.draggable(true)).showInfoWindow();
-		}
-	}
-	
-	//ugly code. fuck
-	private void DisplayNearbyWifiUnregistered(List<WifiUnregistered> wifilist) {
-		for(int i = 0; i < wifilist.size(); ++i) {
-			WifiUnregistered wifi = wifilist.get(i);
-			LatLng llwifi1 = 
-				new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
-			aMap.addMarker(
-				new MarkerOptions().position(llwifi1).title(wifi.Alias)
-					.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
-						.draggable(true)).showInfoWindow();
-		}
+	private void DisplayNearbyWifi(final List<WifiProfile> wifilist) {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				for(int i = 0; i < wifilist.size(); ++i) {
+					WifiProfile wifi = wifilist.get(i);
+					LatLng llwifi1 = 
+						new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
+					aMap.addMarker(
+						new MarkerOptions().position(llwifi1).title(wifi.Alias)
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+								.draggable(true)).showInfoWindow();
+				}
+			}
+		});
 	}
 }

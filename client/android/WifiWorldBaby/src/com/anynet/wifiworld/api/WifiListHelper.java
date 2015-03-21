@@ -15,7 +15,6 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiType;
-import com.anynet.wifiworld.data.WifiUnregistered;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
@@ -81,13 +80,6 @@ public class WifiListHelper {
 		for (int i = 0; i < wifiList.size(); i++) {
 			ScanResult hotspot = wifiList.get(i);
 			
-//			WifiInfoScanned queriedWifi = new WifiInfoScanned();
-//			queryWifiProfile(hotspot.BSSID, queriedWifi);
-//			if (queriedWifi != null) {
-//				mWifiFree.add(queriedWifi);
-//				continue;
-//			}
-			
 			WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
 			if (wifiCfg != null) {
 				wifiName = hotspot.SSID;
@@ -125,32 +117,6 @@ public class WifiListHelper {
 		}
 	}
 	
-	private void updateOneRow(WifiInfoScanned wifiInfoScanned) {
-		WifiProfile wifiProfile = new WifiProfile();
-		wifiProfile.Ssid = wifiInfoScanned.getWifiName();
-		wifiProfile.MacAddr = wifiInfoScanned.getWifiMAC();
-		wifiProfile.Alias = null;
-		wifiProfile.Password = wifiInfoScanned.getWifiPwd();
-		wifiProfile.Banner = null;
-		wifiProfile.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
-		wifiProfile.encryptType = wifiInfoScanned.getEncryptType();
-		wifiProfile.Sponser = null;
-		wifiProfile.Geometry = new BmobGeoPoint(1.0, 1.0);
-		wifiProfile.Income = 0.0f;
-		wifiProfile.StoreRemote(mContext, new DataCallback<WifiProfile>() {
-
-			@Override
-            public void onSuccess(WifiProfile object) {
-				LOG.d(TAG, "添加数据成功，返回objectId为："+ object.getObjectId());
-            }
-
-			@Override
-            public void onFailed( String msg) {
-				LOG.d(TAG, "添加数据失败：" + msg);
-            }
-		});
-	}
-	
 	private void updateHotspot(final WifiInfoScanned infoScanned) {
 		WifiProfile wifiProfile = new WifiProfile();
 		final String macAddress = infoScanned.getWifiMAC();
@@ -180,7 +146,7 @@ public class WifiListHelper {
 					
 					@Override
 					public void onFailure(int arg0, String msg) {
-						Log.i(TAG, "Update WifiProfile table failed");
+						Log.i(TAG, "Update WifiProfile table failed：" + msg);
 					}
 				});
 			}
@@ -188,7 +154,7 @@ public class WifiListHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.e(TAG, "Failed to query wifi profile from server" + macAddress);
-				final WifiUnregistered wifi = new WifiUnregistered();
+				final WifiProfile wifi = new WifiProfile(WifiProfile.table_name_wifiunregistered);
 				wifi.Ssid = infoScanned.getWifiName();
 				wifi.MacAddr = infoScanned.getWifiMAC();
 				wifi.Alias = null;
@@ -199,17 +165,16 @@ public class WifiListHelper {
 				wifi.Sponser = null;
 				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
-				wifi.StoreData(mContext, new DataCallback<WifiUnregistered>() {
+				wifi.StoreRemote(mContext, new DataCallback<WifiProfile>() {
 
 					@Override
-					public void onSuccess(WifiUnregistered object) {
+					public void onSuccess(WifiProfile object) {
 						Log.i(TAG, "Add Data to WifiUnregister table success");
-						
 					}
 
 					@Override
 					public void onFailed(String msg) {
-						Log.i(TAG, "Add Data to WifiUnregister table failed");
+						Log.i(TAG, "Add Data to WifiUnregister table failed: " + msg);
 						
 					}
 				});

@@ -316,9 +316,15 @@ public class BaseFragment extends Fragment
         }
     }
     
-    public void showToast(String str)
+    public void showToast(final String str)
     {
-        mActivity.showToast(str);
+    	getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				mActivity.showToast(str);
+			}
+    	});
     }
     
     public void showToast(int resId)
