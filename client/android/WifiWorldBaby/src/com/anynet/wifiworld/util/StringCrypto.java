@@ -29,7 +29,7 @@ public class StringCrypto {
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		SecretKeySpec key = new SecretKeySpec(encryptKey.getBytes(), "DES");
-		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding", "BC");
 		cipher.init(Cipher.ENCRYPT_MODE, key, zeroIv);
 		byte[] encryptedData = cipher.doFinal(encryptString.getBytes());
 
@@ -42,7 +42,7 @@ public class StringCrypto {
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
 		SecretKeySpec key = new SecretKeySpec(decryptKey.getBytes(), "DES");
-		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding", "BC");
 		cipher.init(Cipher.DECRYPT_MODE, key, zeroIv);
 		byte decryptedData[] = cipher.doFinal(byteMi);
 

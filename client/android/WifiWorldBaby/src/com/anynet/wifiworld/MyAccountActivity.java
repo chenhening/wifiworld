@@ -7,7 +7,9 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.view.SettingItemView;
 
 public class MyAccountActivity extends BaseActivity {
@@ -43,8 +45,15 @@ public class MyAccountActivity extends BaseActivity {
 				.getCurLoginUserInfo().PhoneNumber);
 
 		si = (SettingItemView) findViewById(R.id.siv_psw);
-		si.setContent(LoginHelper.getInstance(getApplicationContext())
-				.getCurLoginUserInfo().Password);
+		String psw = (LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo()).Password;
+		try {
+			if (psw != null && !psw.equals(""))
+				si.setContent(StringCrypto.decryptDES(psw,
+						WifiProfile.CryptoKey));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		si = (SettingItemView) findViewById(R.id.siv_alias);
 		si.setContent("Steven");

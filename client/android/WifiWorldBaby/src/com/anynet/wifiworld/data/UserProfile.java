@@ -63,16 +63,17 @@ public class UserProfile extends BmobObject {
 	public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
 		final UserProfile user = this;
+		final String encryptPassword;
 		//对密码进行加密
 		try {
-			user.Password = StringCrypto.encryptDES(user.Password, CryptoKey);
+			encryptPassword = StringCrypto.encryptDES(Password, CryptoKey);
 		} catch (Exception e) {
 			_callback.onFailed("无法保存数据: " + e.getMessage());
 			return;
 		}
 		
 		//先查询，如果有数据就更新，否则增加一条新记录
-		QueryByPhoneNumber(context, PhoneNumber, new DataCallback<UserProfile>() {
+		QueryByPhoneNumber(context, encryptPassword, new DataCallback<UserProfile>() {
 
 			@Override
 			public void onSuccess(final UserProfile object) {
