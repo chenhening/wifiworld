@@ -42,7 +42,7 @@ public class WifiProviderRigisterSecondHomeActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.wifi_provider_certify_second_business);
+		setContentView(R.layout.wifi_provider_certify_second_home);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}
