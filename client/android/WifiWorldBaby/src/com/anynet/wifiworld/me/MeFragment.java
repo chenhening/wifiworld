@@ -128,7 +128,7 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(
-					View.VISIBLE);
+					View.GONE);
 		}
 	}
 
