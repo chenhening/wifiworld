@@ -8,6 +8,7 @@ import android.util.Log;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -15,7 +16,7 @@ import cn.bmob.v3.listener.UpdateListener;
 
 //TODO(binfei)：目前将用户使用wifi信息和wifi被使用信息合并成一个文档便于实现
 //由于插入删除频率比较高所以，计划以后将表根据不同类型的用户或者wifi类型来拆分表
-public class UserDynamic extends BmobObject {
+public class WifiDynamic extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
 	private static final String key_user = "Userid";
@@ -35,74 +36,98 @@ public class UserDynamic extends BmobObject {
 	
 // ------------------------------------------------------------------------------------------------
 	public void QueryUserInOneWeek(
-		final Context context, long time, MultiDataCallback<UserDynamic> callback) {
-		final MultiDataCallback<UserDynamic> _callback = callback;
-		BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
+		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		final MultiDataCallback<WifiDynamic> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_user, Userid);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
 		query.addWhereLessThan(key_login, time + halfweekmillis);
 		Log.d("findObjects", "开始查询QueryUserInOneWeek");
-		query.findObjects(context, new FindListener<UserDynamic>() {
+		new Thread(new Runnable() {
+
 			@Override
-			public void onSuccess(List<UserDynamic> objects) {
-				_callback.onSuccess(objects);
+			public void run() {
+				query.findObjects(context, new FindListener<WifiDynamic>() {
+					@Override
+					public void onSuccess(List<WifiDynamic> objects) {
+						_callback.onSuccess(objects);
+					}
+			
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryUserInOneWeek");
 			}
-	
-			@Override
-			public void onError(int code, String msg) {
-				_callback.onFailed(msg);
-			}
-		});
-		Log.d("findObjects", "结束查询QueryUserInOneWeek");
+			
+		}).start();
 	}
 	
 	public void QueryWiFiInOneWeek(
-		final Context context, long time, MultiDataCallback<UserDynamic> callback) {
-		final MultiDataCallback<UserDynamic> _callback = callback;
-		BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
+		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		final MultiDataCallback<WifiDynamic> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_wifi, MacAddr);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfdaymillis);
 		query.addWhereLessThan(key_login, time + halfdaymillis);
 		Log.d("findObjects", "开始查询QueryWiFiInOneWeek");
-		query.findObjects(context, new FindListener<UserDynamic>() {
+		new Thread(new Runnable() {
+
 			@Override
-			public void onSuccess(List<UserDynamic> objects) {
-				_callback.onSuccess(objects);
+			public void run() {
+				query.findObjects(context, new FindListener<WifiDynamic>() {
+					@Override
+					public void onSuccess(List<WifiDynamic> objects) {
+						_callback.onSuccess(objects);
+					}
+			
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryWiFiInOneWeek");
 			}
-	
-			@Override
-			public void onError(int code, String msg) {
-				_callback.onFailed(msg);
-			}
-		});
-		Log.d("findObjects", "结束查询QueryWiFiInOneWeek");
+			
+		}).start();
 	}
 	
 	public void QueryWiFiInOneDay(
-		final Context context, long time, MultiDataCallback<UserDynamic> callback) {
-		final MultiDataCallback<UserDynamic> _callback = callback;
-		BmobQuery<UserDynamic> query = new BmobQuery<UserDynamic>();
+		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		final MultiDataCallback<WifiDynamic> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_wifi, MacAddr);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
 		query.addWhereLessThan(key_login, time + halfweekmillis);
 		Log.d("findObjects", "开始查询QueryWiFiInOneDay");
-		query.findObjects(context, new FindListener<UserDynamic>() {
+		new Thread(new Runnable() {
+
 			@Override
-			public void onSuccess(List<UserDynamic> objects) {
-				_callback.onSuccess(objects);
+			public void run() {
+				query.findObjects(context, new FindListener<WifiDynamic>() {
+					@Override
+					public void onSuccess(List<WifiDynamic> objects) {
+						_callback.onSuccess(objects);
+					}
+			
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryWiFiInOneDay");
 			}
-	
-			@Override
-			public void onError(int code, String msg) {
-				_callback.onFailed(msg);
-			}
-		});
-		Log.d("findObjects", "结束查询QueryWiFiInOneDay");
+			
+		}).start();
 	}
 	
-	public void StoreRemote(final Context context, DataCallback<UserDynamic> callback) {
-		final DataCallback<UserDynamic> _callback = callback;
-		final UserDynamic user = this;
+	public void StoreRemote(final Context context, DataCallback<WifiDynamic> callback) {
+		final DataCallback<WifiDynamic> _callback = callback;
+		final WifiDynamic user = this;
 		user.save(context, new SaveListener() {
 			
 			@Override

@@ -105,8 +105,8 @@ public class LoginHelper {
 		mIsLogin = false;
 		// 读取本地保存的账号密码文件
 		mUser = new UserProfile();
-		mUser.PhoneNumber = mPreferences.getString(mAliasUser, "").trim();
-		mUser.Password = mPreferences.getString(mAliasPwd, "").trim();
+		mUser.PhoneNumber = mPreferences.getString(mAliasUser, "");
+		mUser.Password = mPreferences.getString(mAliasPwd, "");
 		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
 		if (mUser.PhoneNumber == null || mUser.Password == null
 				|| mUser.PhoneNumber.isEmpty() || mUser.Password.isEmpty()) {

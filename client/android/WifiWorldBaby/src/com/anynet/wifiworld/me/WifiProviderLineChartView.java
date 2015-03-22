@@ -14,7 +14,7 @@ import org.xclcharts.renderer.XEnum;
 import org.xclcharts.view.ChartView;
 
 import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.UserDynamic;
+import com.anynet.wifiworld.data.WifiDynamic;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -167,17 +167,17 @@ public class WifiProviderLineChartView extends ChartView {
 	}
 	
 	private void DisplayOneDay() {
-		final UserDynamic data = new UserDynamic();
+		final WifiDynamic data = new WifiDynamic();
 		final long time = System.currentTimeMillis();
 		data.MacAddr = "12:34:56:78"; // just for test
-		data.QueryWiFiInOneDay(getContext(), time, new MultiDataCallback<UserDynamic>() {
+		data.QueryWiFiInOneDay(getContext(), time, new MultiDataCallback<WifiDynamic>() {
 
 			@Override
-            public void onSuccess(List<UserDynamic> objects) {
+            public void onSuccess(List<WifiDynamic> objects) {
 				int day_size = 24;
 				int array_count[] = new int[day_size];
 				//统计数据
-				for (UserDynamic object : objects) {
+				for (WifiDynamic object : objects) {
 					//switch (object.LoginTime)
 				}
 				
@@ -212,7 +212,7 @@ public class WifiProviderLineChartView extends ChartView {
 
 			@Override
             public void onFailed(String msg) {
-                Toast.makeText(getContext(), "wifi使用数据失败。", 0).show();
+                //showToast(getContext(), "wifi使用数据失败。", 0).show();
             }
 			
 		});

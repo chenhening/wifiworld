@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.UserDynamic;
+import com.anynet.wifiworld.data.WifiDynamic;
 
 public class ProviderIncomeChartView extends ChartView {
 
