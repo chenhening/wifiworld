@@ -5,8 +5,10 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
 import cn.smssdk.EventHandler;
@@ -66,6 +69,30 @@ public class UserLoginActivity extends BaseActivity {
 		});
 	}
 	
+	
+	BroadcastReceiver loginBR = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+
+			String action = intent.getAction();
+			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
+				Toast.makeText(getApplicationContext(), "登录失败!",
+						Toast.LENGTH_LONG).show();
+			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
+				Toast.makeText(getApplicationContext(), "登录成功!",
+						Toast.LENGTH_LONG).show();
+				UserLoginActivity.this.finish();				
+			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
+				Toast.makeText(getApplicationContext(), "自动登录失败!",
+						Toast.LENGTH_LONG).show();
+			}
+
+		}
+	};
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -95,6 +122,7 @@ public class UserLoginActivity extends BaseActivity {
 							@Override
 							public void run() {
 								showToast("服务器验证成功，正在登陆......");
+								
 								//setLoginedUI(false);
 							}
 						});
@@ -129,6 +157,10 @@ public class UserLoginActivity extends BaseActivity {
 		SMSSDK.registerEventHandler(mEventHandler);
 		setUIEvent();
 		ResetLoginUI();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LoginHelper.AUTO_LOGIN_SUCCESS);
+		filter.addAction(LoginHelper.AUTO_LOGIN_FAIL);
+		getActivity().registerReceiver(loginBR, filter);
 	}
 
 	private void setUIEvent(){
@@ -231,6 +263,7 @@ public class UserLoginActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		SMSSDK.unregisterEventHandler(mEventHandler);
+		unregisterReceiver(loginBR);
 		super.onDestroy();
 	}
 
