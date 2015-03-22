@@ -17,6 +17,7 @@ import cn.bmob.v3.Bmob;
 import cn.smssdk.EventHandler;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
@@ -96,6 +97,17 @@ public class MeFragment extends MainFragment {
 						// TODO Auto-generated method stub
 						Intent i = new Intent(getApplicationContext(),
 								BussessPartnerActivity.class);
+						startActivity(i);
+					}
+				});
+		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i = new Intent(getApplicationContext(),
+								MyAccountActivity.class);
 						startActivity(i);
 					}
 				});

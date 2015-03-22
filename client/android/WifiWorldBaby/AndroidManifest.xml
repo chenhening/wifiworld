@@ -93,6 +93,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.MyAccountActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.UserLoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
@@ -172,11 +177,6 @@
         </activity>
         <activity
             android:name="com.anynet.wifiworld.DevicesStatActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.anynet.wifiworld.MyAccountActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>

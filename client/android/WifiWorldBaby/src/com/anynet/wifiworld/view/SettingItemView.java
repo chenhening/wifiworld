@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,8 +55,12 @@ public class SettingItemView extends RelativeLayout {
 			}
 				break;
 			case R.styleable.SettingItemView_showBottomDivider: {
-				int showb = array.getInt(attr, 0);
-				findViewById(R.id.setting_item_top_line).setVisibility(showb);
+				boolean showt = array.getBoolean(attr, false);
+				if(showt){
+					findViewById(R.id.setting_item_bottom_line).setVisibility(View.VISIBLE);
+				}else{
+					findViewById(R.id.setting_item_bottom_line).setVisibility(View.GONE);
+				}
 			}
 				break;
 			case R.styleable.SettingItemView_showRedPoint: {
@@ -70,8 +75,12 @@ public class SettingItemView extends RelativeLayout {
 			}
 				break;
 			case R.styleable.SettingItemView_showTopDivider: {
-				int showt = array.getInt(attr, VISIBLE);
-				findViewById(R.id.setting_item_top_line).setVisibility(showt);
+				boolean showt = array.getBoolean(attr, false);
+				if(showt){
+					findViewById(R.id.setting_item_top_line).setVisibility(View.VISIBLE);
+				}else{
+					findViewById(R.id.setting_item_top_line).setVisibility(View.GONE);
+				}
 			}
 				break;
 			case R.styleable.SettingItemView_subLabel: {

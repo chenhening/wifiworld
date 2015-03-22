@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include layout="@layout/header_setting" />
+    <include layout="@layout/header_setting" android:visibility="gone" />
 
     <com.amap.api.maps.MapView
         android:id="@+id/map"

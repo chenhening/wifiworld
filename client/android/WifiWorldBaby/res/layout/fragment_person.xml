@@ -8,7 +8,7 @@
     <include
         android:id="@+id/title_bar_replacement"
         layout="@layout/header_setting"
-        android:visibility="visible" />
+       android:visibility="gone"  />
 
     <ScrollView
         android:layout_width="fill_parent"

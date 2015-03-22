@@ -145,10 +145,12 @@
     <string name="zero">0</string>
     <!-- my account -->
     <string name="my_account_phone">手机号</string>
-    <string name="my_account_thunder_id">帐号</string>
+    <string name="my_account_password">密码</string>
+    <string name="my_account">帐号</string>
     <string name="my_account_nikename">昵称</string>
     <string name="my_account_head">头像</string>
     <string name="my_account_id">账户ID</string>
+    <string name="my_account_sex">性别</string>
     <!-- my asset -->
 
     <string name="asset_can_use">可用</string>

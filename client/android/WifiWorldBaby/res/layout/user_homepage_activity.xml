@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res/com.anynet.wifiworld"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <include
+        android:id="@+id/title_bar_replacement"
+        layout="@layout/header_setting" />
+
+    <RelativeLayout
+        android:id="@+id/person_content_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_120_dip"
+        android:layout_below="@id/title_bar_replacement" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/bg_person_center" />
+
+        <ImageView
+            android:id="@+id/person_icon"
+            android:layout_width="60.0dip"
+            android:layout_height="60.0dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/global_layout_margin"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_def_header" />
+
+        <ImageView
+            android:id="@+id/shopper_icon_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/person_icon"
+            android:layout_alignRight="@+id/person_icon"
+            android:src="@drawable/icon_merchant_sign"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:layout_toRightOf="@+id/person_icon"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="小屁孩"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_main_title" />
+
+            <TextView
+                android:id="@+id/person_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_2_dip"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="联币 0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_main_meduim"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/person_signin_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg_qiandao"
+            android:gravity="fill_vertical|center"
+            android:paddingBottom="5.0dip"
+            android:paddingLeft="5.0dip"
+            android:paddingTop="5.0dip"
+            android:text="上传新头像"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/person_content_layout"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="帐号" />
+
+    <com.anynet.wifiworld.view.SettingItemView
+        android:id="@+id/siv_account"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_45_dip"
+        android:layout_below="@id/tv_account"
+        item:icon="@drawable/icon_person_center_attention_shopper"
+        item:label="@string/my_account"
+        item:showTopDivider="true" />
+
+    <com.anynet.wifiworld.view.SettingItemView
+        android:id="@+id/siv_psw"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_45_dip"
+        android:layout_below="@+id/siv_account"
+        item:icon="@drawable/icon_person_center_attention_shopper"
+        item:label="@string/my_account_password"
+        item:showTopDivider="true" />
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/siv_psw"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="资料" />
+
+    <com.anynet.wifiworld.view.SettingItemView
+        android:id="@+id/siv_alias"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_45_dip"
+        android:layout_below="@id/tv_detail"
+        item:icon="@drawable/icon_person_center_attention_shopper"
+        item:label="@string/my_account_nikename"
+        item:showTopDivider="true" />
+
+    <com.anynet.wifiworld.view.SettingItemView
+        android:id="@+id/siv_sex"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_45_dip"
+        android:layout_below="@+id/siv_alias"
+        item:icon="@drawable/icon_person_center_attention_shopper"
+        item:label="@string/my_account_sex"
+        item:showTopDivider="true" />
+
+    <Button
+        android:id="@+id/button_login"
+        style="@style/Button.Default.Green"
+        android:layout_below="@+id/siv_sex"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_marginRight="@dimen/dimen_9_dip"
+        android:layout_marginTop="@dimen/dimen_18_dip"
+        android:text="@string/setting_exit"
+        android:textSize="@dimen/font_main_title" />
+
+</RelativeLayout>
