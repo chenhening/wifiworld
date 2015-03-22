@@ -95,5 +95,6 @@ public class SettingItemView extends RelativeLayout {
 
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
+		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
 	}
 }

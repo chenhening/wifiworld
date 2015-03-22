@@ -24,7 +24,8 @@
                 android:id="@+id/login_content_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/dimen_100_dip"
-                android:background="@drawable/bg_person_center" >
+                android:background="@drawable/bg_person_center" 
+                android:visibility="visible">
 
                 <View
                     android:layout_width="fill_parent"
@@ -55,7 +56,8 @@
             <RelativeLayout
                 android:id="@+id/person_content_layout"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/dimen_120_dip" >
+                android:layout_height="@dimen/dimen_120_dip" 
+                android:visibility="gone">
 
                 <View
                     android:layout_width="fill_parent"
