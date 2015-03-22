@@ -10,7 +10,7 @@ import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class WifiProviderRigisterSecondActivity extends BaseActivity {
+public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
 
 	
 	private void bingdingTitleUI() {
@@ -24,7 +24,7 @@ public class WifiProviderRigisterSecondActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(WifiProviderRigisterSecondActivity.this,
+				Intent i = new Intent(WifiProviderRigisterSecondBusinessActivity.this,
 						WifiProviderRigisterThirdActivity.class);
 				startActivity(i);
 			}
@@ -42,7 +42,7 @@ public class WifiProviderRigisterSecondActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.bussess_partner_certify_second);
+		setContentView(R.layout.wifi_provider_certify_second_home);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}

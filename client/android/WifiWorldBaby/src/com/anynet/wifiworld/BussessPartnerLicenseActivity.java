@@ -12,7 +12,7 @@ public class BussessPartnerLicenseActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 
-		setContentView(R.layout.bussess_partner_license);
+		setContentView(R.layout.wifi_provider_license);
 		super.onCreate(savedInstanceState);
 	}
 

@@ -24,7 +24,19 @@
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
                 android:scaleType="center"
-                android:src="@drawable/img_merchant_certify_second" />
+                android:src="@drawable/img_merchant_certify_third" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_14_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:paddingTop="@dimen/dimen_5_dip"
+                android:text="@string/str_wifi_provider_person_warning"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/font_main_small" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -154,7 +166,7 @@
                         android:layout_centerVertical="true"
                         android:drawableLeft="@drawable/img_merchant_certify_mark"
                         android:drawablePadding="@dimen/dimen_5_dip"
-                        android:text="商家座机"
+                        android:text="应急座机"
                         android:textColor="@color/color_main_text"
                         android:textSize="@dimen/font_main_big" />
 

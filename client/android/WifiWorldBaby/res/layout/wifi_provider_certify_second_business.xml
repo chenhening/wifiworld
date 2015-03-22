@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/certify_second_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_main_bg" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/dimen_65_dip"
+                android:background="@drawable/bg_merchant_certify_introduce_repeat"
+                android:paddingLeft="@dimen/dimen_15_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:scaleType="center"
+                android:src="@drawable/img_merchant_certify_second" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_14_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:paddingTop="@dimen/dimen_5_dip"
+                android:text="@string/str_wifi_provider_business_warning"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/font_main_small" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/person_cener_item_bg"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/merchant_license_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_50_dip"
+                    android:background="@drawable/sl_bg_person_center_item"
+                    android:drawableLeft="@drawable/img_merchant_certify_mark"
+                    android:drawablePadding="@dimen/dimen_5_dip"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingLeft="@dimen/dimen_15_dip"
+                    android:paddingRight="@dimen/dimen_15_dip"
+                    android:visibility="visible" >
+
+                    <TextView
+                        android:id="@+id/merchant_license_key_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@drawable/img_merchant_certify_mark"
+                        android:drawablePadding="@dimen/dimen_5_dip"
+                        android:text="营业执照注册号"
+                        android:textColor="@color/color_main_text"
+                        android:textSize="@dimen/font_main_big" />
+
+                    <EditText
+                        android:id="@+id/merchant_license_value_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="@dimen/dimen_15_dip"
+                        android:layout_toRightOf="@+id/merchant_license_key_text"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/merchant_certify_license"
+                        android:singleLine="true"
+                        android:textColor="@color/color_main_text"
+                        android:textSize="@dimen/font_main_big" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5_dip"
+                android:background="@drawable/person_cener_item_bg"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dimen_12_dip" >
+
+                <TextView
+                    android:id="@+id/merchant_license_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40_dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/dimen_14_dip"
+                    android:drawableLeft="@drawable/img_merchant_certify_mark"
+                    android:drawablePadding="@dimen/dimen_5_dip"
+                    android:gravity="center_vertical"
+                    android:text="营业执照副本照片"
+                    android:textColor="@color/color_main_text"
+                    android:textSize="@dimen/font_main_big" />
+
+                <ImageView
+                    android:id="@+id/merchant_license"
+                    android:layout_width="@dimen/dimen_130_dip"
+                    android:layout_height="@dimen/dimen_105_dip"
+                    android:layout_alignLeft="@+id/merchant_license_name"
+                    android:layout_below="@+id/merchant_license_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sl_btn_merchant_photo" />
+
+                <TextView
+                    android:id="@+id/merchant_license_name_example"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40_dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/dimen_30_dip"
+                    android:layout_toRightOf="@+id/merchant_license"
+                    android:gravity="center_vertical"
+                    android:text="图例"
+                    android:textColor="@color/color_main_text"
+                    android:textSize="@dimen/font_main_big" />
+
+                <ImageView
+                    android:id="@+id/merchant_license_example"
+                    android:layout_width="@dimen/dimen_130_dip"
+                    android:layout_height="@dimen/dimen_105_dip"
+                    android:layout_alignLeft="@+id/merchant_license_name_example"
+                    android:layout_below="@+id/merchant_license_name_example"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_merchant_license_example" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_14_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:paddingTop="@dimen/dimen_5_dip"
+                android:text="必须是有最新年检的营业执照。\n证件上的商家名称应与填写的商户名称相符。\n如果您上传的是证照的复印件，复印件上必须盖有清晰的红章。"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/font_main_small" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5_dip"
+                android:background="@drawable/person_cener_item_bg"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dimen_12_dip" >
+
+                <TextView
+                    android:id="@+id/merchant_qualification_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40_dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/dimen_14_dip"
+                    android:gravity="center_vertical"
+                    android:text="资质照片"
+                    android:textColor="@color/color_main_text"
+                    android:textSize="@dimen/font_main_big" />
+
+                <ImageView
+                    android:id="@+id/merchant_qualification"
+                    android:layout_width="@dimen/dimen_130_dip"
+                    android:layout_height="@dimen/dimen_105_dip"
+                    android:layout_alignLeft="@+id/merchant_qualification_name"
+                    android:layout_below="@+id/merchant_qualification_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sl_btn_merchant_photo" />
+
+                <TextView
+                    android:id="@+id/merchant_qualification_name_example"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40_dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/dimen_30_dip"
+                    android:layout_toRightOf="@+id/merchant_qualification"
+                    android:gravity="center_vertical"
+                    android:text="图例"
+                    android:textColor="@color/color_main_text"
+                    android:textSize="@dimen/font_main_big" />
+
+                <ImageView
+                    android:id="@+id/merchant_qualification_example"
+                    android:layout_width="@dimen/dimen_130_dip"
+                    android:layout_height="@dimen/dimen_105_dip"
+                    android:layout_alignLeft="@+id/merchant_qualification_name_example"
+                    android:layout_below="@+id/merchant_qualification_name_example"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_merchant_qualification_example" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_14_dip"
+                android:paddingRight="@dimen/dimen_15_dip"
+                android:paddingTop="@dimen/dimen_5_dip"
+                android:text="如商家名称和营业执照名称不一致（如品牌加盟等情况），需提交相关文件（品牌加盟协议或授权使用书等） 。\n如果您上传的是证照的复印件，复印件上必须盖有清晰的红章。"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/font_main_small" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

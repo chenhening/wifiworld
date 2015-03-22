@@ -48,7 +48,7 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.bussess_partner_certify_introduce);
+		setContentView(R.layout.wifi_provider_certify_introduce);
 		super.onCreate(savedInstanceState);		
 		//WebView mWebView = (WebView) findViewById(R.id.sv_open);
 //		mWebView.loadUrl("file:///android_asset/www/pages/bussessopen.html");

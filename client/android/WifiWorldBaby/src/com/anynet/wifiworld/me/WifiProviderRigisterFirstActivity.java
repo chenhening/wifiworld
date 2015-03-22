@@ -66,9 +66,14 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(WifiProviderRigisterFirstActivity.this,
-						WifiProviderRigisterSecondActivity.class);
+				Intent i = null;
+				if (msp_typelist.getSelectedItem().toString() == "商家网络") {
+					i = new Intent(WifiProviderRigisterFirstActivity.this, 
+							WifiProviderRigisterSecondBusinessActivity.class);
+				} else {
+					i = new Intent(WifiProviderRigisterFirstActivity.this, 
+						WifiProviderRigisterSecondHomeActivity.class);
+				}
 				startActivity(i);
 			}
 		});
@@ -85,7 +90,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	// ---------------------------------------------------------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.bussess_partner_certify_first);
+		setContentView(R.layout.wifi_provider_certify_first);
 		super.onCreate(savedInstanceState);		
 		bingdingTitleUI();
 		

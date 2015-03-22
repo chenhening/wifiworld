@@ -13,7 +13,7 @@ public class WifiProviderRigisterLicenseActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bussess_partner_license);
+		setContentView(R.layout.wifi_provider_license);
 	}
 
 	@Override

@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="如何与WifiWorld合作？"
+                    android:text="如何与网络宝合作？"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="商家与WifiWorld合作能得到什么？"
+                    android:text="商家与网络宝合作能得到什么？"
                     android:textSize="16sp" />
 
                 <ImageView

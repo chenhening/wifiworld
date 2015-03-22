@@ -41,7 +41,7 @@ public class WifiProviderRigisterHotpotEditActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.bussess_partner_certify_hotpot_edit);
+		setContentView(R.layout.wifi_provider_certify_hotpot_edit);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}

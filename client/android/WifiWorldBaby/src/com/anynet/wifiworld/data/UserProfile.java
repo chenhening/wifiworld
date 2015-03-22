@@ -41,7 +41,6 @@ public class UserProfile extends BmobObject {
 				query.findObjects(context, new FindListener<UserProfile>() {
 					@Override
 					public void onSuccess(List<UserProfile> object) {
-						// TODO Auto-generated method stub
 						if (object.size() == 1) {
 							_callback.onSuccess(object.get(0));
 						} else {

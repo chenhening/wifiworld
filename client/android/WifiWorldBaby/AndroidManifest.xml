@@ -78,7 +78,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.WifiProviderRigisterSecondActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterSecondHomeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterSecondBusinessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
