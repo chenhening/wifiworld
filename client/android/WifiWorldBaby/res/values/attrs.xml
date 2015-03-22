@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SettingItemView">
+        <attr name="icon" format="reference" />
+        <attr name="label" format="string" />
+        <attr name="subLabel" format="string" />
+        <attr name="subLabelSize" format="dimension" />
+        <attr name="subLabelColor" format="reference|color" />
+        <attr name="subLabelVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="Switch_Type">
+            <flag name="emotion" value="0x00000000" />
+            <flag name="plus" value="0x00000001" />
+            <flag name="voice" value="0x00000002" />
+            <flag name="keyboard" value="0x00000064" />
+        </attr>
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="isCheckable" format="boolean" />
+        <attr name="isChecked" format="boolean" />
+        <attr name="showTopDivider" format="boolean" />
+        <attr name="showBottomDivider" format="boolean" />
+        <attr name="showRedPoint" format="boolean" />
+    </declare-styleable>
+
+</resources>

@@ -123,7 +123,7 @@ public class MeFragment extends MainFragment {
 						@Override
 						public void run() {
 							showToast("验证失败，请重新操作.");
-							ResetLoginUI();
+//							ResetLoginUI();
 						}
 					});
 				}
@@ -155,12 +155,12 @@ public class MeFragment extends MainFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO(binfei): need to be removed into functions onAttach for better
-		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
+		mPageRoot = inflater.inflate(R.layout.fragment_person, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 		setLoginedUI(false);
-		DisplayIncomeChart();
-		findViewById(R.id.ll_open_bussess).setOnClickListener(
+		//DisplayIncomeChart();
+		findViewById(R.id.seller_layout).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
@@ -199,7 +199,7 @@ public class MeFragment extends MainFragment {
 					setLoginedUI(false);
 				}
 			});
-
+/*
 			mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
 			mLL_Verify.setOnClickListener(new OnClickListener() {
 
@@ -271,13 +271,14 @@ public class MeFragment extends MainFragment {
 							mSmsCode);
 				}
 			});
-			mLL_Login.setEnabled(false);
+			mLL_Login.setEnabled(false);*/
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
+			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+			/*
 			mPageRoot.findViewById(R.id.ll_userprofile).setVisibility(
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.GONE);
-			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.rl_wifi_provider).setOnClickListener(
 					new OnClickListener() {
 
@@ -323,10 +324,11 @@ public class MeFragment extends MainFragment {
 				TextView tvid = (TextView) mPageRoot
 						.findViewById(R.id.tv_ww_id);
 				tvid.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
-			}
+			}*/
 		}
 	}
 
+	/*
 	private void DisplayIncomeChart() {
 		LinearLayout chartLayout = (LinearLayout) this
 				.findViewById(R.id.ll_money_get);
@@ -340,10 +342,11 @@ public class MeFragment extends MainFragment {
 		mLineChart = new ProviderIncomeChartView(getActivity());
 		chartLayout.addView(mLineChart, layoutParams);
 	}
-
+*/
 	// ---------------------------------------------------------------------------------------------
 	// UI event process functions
 
+	/*
 	private void RegistLogin() {
 		// get verify code
 		mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
@@ -436,5 +439,5 @@ public class MeFragment extends MainFragment {
 		if (mLL_Login != null)
 			mLL_Login.setEnabled(true);
 	}
-
+*/
 }

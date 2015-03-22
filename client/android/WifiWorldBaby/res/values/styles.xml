@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -85,6 +85,15 @@
 
     <style name="Smile.TextView._Black">
         <item name="android:textColor">@color/base_color_text_black</item>
+    </style>
+
+    <style name="setting_list_icon_size">
+        <item name="android:layout_width">@dimen/dimen_25_dip</item>
+        <item name="android:layout_height">@dimen/dimen_25_dip</item>
+    </style>
+
+    <style name="setting_list_divider_line_left_margin">
+        <item name="android:layout_marginLeft">@dimen/dimen_55_dip</item>
     </style>
 
 </resources>

@@ -29,6 +29,25 @@
     <color name="color_high_light_blue">#ff00aaaf</color>
     <color name="certify_button_bg_normal">#ff03a3a6</color>
     <color name="certify_button_bg_press">#ff039295</color>
+    <color name="color_gray_dark">#ffa0aab4</color>
+    <color name="color_title">#ff111111</color>
+    <color name="color_username">#ff5574ae</color>
+    <color name="color_wifiname">#ff5574ae</color>
+    <color name="color_light_gray">#ffe4e3e3</color>
+    <color name="color_gray_white">#fff0f0f0</color>
+    <color name="color_yellow">#ffffd200</color>
+    <color name="color_chat_bg">#ffe8e9ed</color>
+    <color name="color_blue_line">#ff00aaaf</color>
+    <color name="color_toolbar">#ff242c33</color>
+    <color name="color_toolbar_line">#ff171c20</color>
+    <color name="color_gray_line">#ffd6dbe1</color>
+    <color name="color_blue">#ff00aaaf</color>
+    <color name="color_light_green">#ff1ecc84</color>
+    <color name="color_light_blue">#ff2eadf4</color>
+    <color name="color_red">#ffff7f66</color>
+    <color name="color_gray_light">#ffd6dae1</color>
+    <color name="color_black">#ff111111</color>
+
     <!-- 登录 -->
     <color name="login_tv_txt">#FFFFFF</color>
     <color name="login_error_txt">#F7E0E0</color>
