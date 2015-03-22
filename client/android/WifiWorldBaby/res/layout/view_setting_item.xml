@@ -62,7 +62,7 @@
             android:layout_marginLeft="@dimen/dimen_8_dip"
             android:layout_marginRight="@dimen/dimen_8_dip"
             android:src="@drawable/circle_point"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/setting_item_content"

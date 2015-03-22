@@ -7,7 +7,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class BussessPartnerLicenseActivity extends BaseActivity {
+public class WifiProviderRigisterLicenseActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

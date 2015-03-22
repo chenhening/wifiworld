@@ -83,20 +83,19 @@ public class MeFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(getApplicationContext(),
-						UserLoginActivity.class);
+				Intent i = new Intent(getApplicationContext(),UserLoginActivity.class);
 				startActivity(i);
 			}
 		});
 		
-		mPageRoot.findViewById(R.id.cl_iam_wifi_user).setOnClickListener(
+		mPageRoot.findViewById(R.id.cl_iam_wifi_provider).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						Intent i = new Intent(getApplicationContext(),
-								BussessPartnerActivity.class);
+						Intent i = 
+							new Intent(getApplicationContext(),WifiProviderRigisterActivity.class);
 						startActivity(i);
 					}
 				});
@@ -106,8 +105,7 @@ public class MeFragment extends MainFragment {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						Intent i = new Intent(getApplicationContext(),
-								MyAccountActivity.class);
+						Intent i = new Intent(getApplicationContext(),MyAccountActivity.class);
 						startActivity(i);
 					}
 				});
@@ -138,7 +136,7 @@ public class MeFragment extends MainFragment {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(
-					View.GONE);
+					View.VISIBLE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(
 					View.GONE);
 		}

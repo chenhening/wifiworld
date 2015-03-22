@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <include layout="@layout/header_setting"
-        android:visibility="gone" />
+    <include layout="@layout/header_setting" android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/ll_discover_root"

@@ -26,7 +26,7 @@ import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class BussessPartnerActivity extends BaseActivity {
+public class WifiProviderRigisterActivity extends BaseActivity {
 
 	
 	private void bingdingTitleUI() {
@@ -66,8 +66,8 @@ public class BussessPartnerActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(BussessPartnerActivity.this,
-						BussessPartnerLicenseActivity.class);
+				Intent i = new Intent(WifiProviderRigisterActivity.this,
+						WifiProviderRigisterLicenseActivity.class);
 				startActivity(i);
 			}
 		});
@@ -77,8 +77,8 @@ public class BussessPartnerActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(BussessPartnerActivity.this,
-						BussessPartnerFirstActivity.class);
+				Intent i = new Intent(WifiProviderRigisterActivity.this,
+						WifiProviderRigisterFirstActivity.class);
 				startActivity(i);
 			}
 		});

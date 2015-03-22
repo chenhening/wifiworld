@@ -68,27 +68,27 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerFirstActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerSecondActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterSecondActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerThirdActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterThirdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerHotpotEditActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterHotpotEditActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
@@ -103,7 +103,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerLicenseActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
             <intent-filter>

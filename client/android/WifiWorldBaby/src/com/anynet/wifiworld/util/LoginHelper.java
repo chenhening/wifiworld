@@ -95,7 +95,7 @@ public class LoginHelper {
 			@Override
 			public void onFailed(String msg) {
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
-				Log.i(TAG, "用户信息更新失败，请重新更新：");
+				Log.i(TAG, "用户信息更新失败，请重新更新：" + msg);
 				//ShowToast(globalContext, "用户信息更新失败，请重新更新：" + msg,Toast.LENGTH_SHORT);
 			}
 		});
@@ -124,13 +124,11 @@ public class LoginHelper {
 				public void onSuccess(UserProfile object) {
 					if (object.Password.equals(mUser.Password)) {
 						mIsLogin = true;
-						globalContext.sendBroadcast(new Intent(
-								AUTO_LOGIN_SUCCESS));
+						globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 						Log.d(TAG, "用户自动登陆成功。");
 						//ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
 					} else {
-						globalContext.sendBroadcast(new Intent(
-								AUTO_LOGIN_FAIL));
+						globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
 						Log.d(TAG, "用户自动登陆失败，请重新登陆。");
 						//ShowToast(globalContext, "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
 					}

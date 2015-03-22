@@ -8,7 +8,7 @@
     <include
         android:id="@+id/title_bar_replacement"
         layout="@layout/header_setting"
-       android:visibility="gone"  />
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -231,7 +231,7 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_provider"
-                    item:subLabel="审核中"
+                    item:subLabel="内测中"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -241,7 +241,7 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_user"
-                    item:subLabel="审核中"
+                    item:subLabel="开放中"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>

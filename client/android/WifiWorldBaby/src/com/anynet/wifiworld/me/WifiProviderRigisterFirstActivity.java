@@ -37,7 +37,7 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.XLLog;
 
-public class BussessPartnerFirstActivity extends BaseActivity {
+public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	
 	private WifiListHelper mWifiHelper = null;
 	private WifiProfile mWifiProfile = new WifiProfile();
@@ -67,8 +67,8 @@ public class BussessPartnerFirstActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(BussessPartnerFirstActivity.this,
-						BussessPartnerSecondActivity.class);
+				Intent i = new Intent(WifiProviderRigisterFirstActivity.this,
+						WifiProviderRigisterSecondActivity.class);
 				startActivity(i);
 			}
 		});
