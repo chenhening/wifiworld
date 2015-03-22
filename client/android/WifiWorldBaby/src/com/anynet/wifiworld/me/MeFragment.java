@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 import cn.smssdk.EventHandler;
+
 import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.BussessPartnerActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
@@ -77,7 +77,7 @@ public class MeFragment extends MainFragment {
 		bingdingTitleUI();
 		setLoginedUI(false);
 		// DisplayIncomeChart();
-		findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -87,8 +87,8 @@ public class MeFragment extends MainFragment {
 				startActivity(i);
 			}
 		});
-
-		findViewById(R.id.seller_layout).setOnClickListener(
+		
+		mPageRoot.findViewById(R.id.cl_iam_wifi_user).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
@@ -114,7 +114,6 @@ public class MeFragment extends MainFragment {
 
 	private void setLoginedUI(boolean isLogined) {
 		if (isLogined && mLoginHelper.isLogined()) {
-			mTitlebar.tvTitle.setText(getString(R.string.login_login));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(
 					View.GONE);
@@ -129,8 +128,22 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(
 					View.VISIBLE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(
-					View.GONE);
+					View.VISIBLE);
 		}
 	}
 
+	/*
+	private void DisplayIncomeChart() {
+		LinearLayout chartLayout = (LinearLayout)findViewById(R.id.ll_money_get);
+		// 图表显示范围在占屏幕大小的90%的区域内
+		int scrWidth = chartLayout.getLayoutParams().width;
+		int scrHeight = chartLayout.getLayoutParams().height;
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				scrWidth, scrHeight);
+		// 居中显示
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		mLineChart = new ProviderIncomeChartView(getActivity());
+		chartLayout.addView(mLineChart, layoutParams);
+	}
+*/
 }

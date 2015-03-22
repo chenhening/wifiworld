@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_20_dip"
-                    android:text="如何与WifiWorld合作?"
+                    android:text="如何与网络宝合作?"
                     android:textColor="#ff2e2e2e"
                     android:textSize="16.0sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_marginTop="@dimen/dimen_20_dip"
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
-                android:text="商家与WifiWorld合作能获得什么？"
+                android:text="在网络宝认证WIFI能获得什么？"
                 android:textColor="#ff2e2e2e"
                 android:textSize="16.0sp" />
 
@@ -114,7 +114,7 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
-                android:text="通过“号外”广告推送，商家可以吸引路过或本无意消费的用户进店或消费。WifiWorld用户在经过商家Wi-Fi信号覆盖区域时，会收到商家自主编辑的有营销目的的信息。当用户感兴趣时即可进店挑选商品或消费。当用户使用商家Wi-Fi连网时，则可以看到商家的主页，信息更加全面，更有利于用户了解商家信息。"
+                android:text="通过“号外”广告推送，商家可以吸引路过或本无意消费的用户进店或消费。网络宝用户在经过商家Wi-Fi信号覆盖区域时，会收到商家自主编辑的有营销目的的信息。当用户感兴趣时即可进店挑选商品或消费。当用户使用商家Wi-Fi连网时，则可以看到商家的主页，信息更加全面，更有利于用户了解商家信息。"
                 android:textColor="#ff666666"
                 android:textSize="13.0sp" />
 

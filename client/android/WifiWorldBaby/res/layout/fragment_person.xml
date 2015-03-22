@@ -220,6 +220,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
+                android:orientation="vertical"
+                android:visibility="visible" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/cl_iam_wifi_user"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_shopper"
+                    item:label="@string/str_iam_wifi_user"
+                    item:subLabel="审核中"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/cl_iam_wifi_provider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_shopper"
+                    item:label="@string/str_iam_wifi_provider"
+                    item:subLabel="审核中"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:background="@drawable/bg_person_cener_item"
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
@@ -309,24 +338,6 @@
                     item:icon="@drawable/ic_person_blacklist"
                     item:label="@string/person_center_blacklist"
                     item:showTopDivider="true" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_15_dip"
-                android:background="@drawable/bg_person_cener_item"
-                android:orientation="vertical"
-                android:visibility="visible" >
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/seller_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_shopper"
-                    item:label="@string/person_center_seller"
-                    item:subLabel="审核中"
-                    item:subLabelColor="@color/red" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

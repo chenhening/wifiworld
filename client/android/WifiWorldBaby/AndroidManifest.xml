@@ -44,7 +44,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="26c4d1b29815fd60ed83ff6095da2714" />
+            android:value="39192cd2a95f37f072fa829b8349e753" />
 
         <activity
             android:name="com.anynet.wifiworld.NewVersionActivity"
@@ -68,27 +68,27 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerFirstActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerFirstActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerSecondActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerSecondActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerThirdActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerThirdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerHotpotEditActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerHotpotEditActivityEditActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
