@@ -120,7 +120,7 @@ public class BaseFragment extends Fragment
      * @param id
      * @return
      */
-    protected View mPageRoot.(int id)
+    protected View findViewById(int id)
     {
         View v = null;
         if (null != mPageRoot)

@@ -88,7 +88,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.BussessPartnerHotpotEditActivityEditActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerHotpotEditActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
