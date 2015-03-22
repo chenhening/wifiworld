@@ -98,7 +98,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.BussessPartnerLicenseActivity"
+            android:name="com.anynet.wifiworld.me.BussessPartnerLicenseActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
             <intent-filter>
