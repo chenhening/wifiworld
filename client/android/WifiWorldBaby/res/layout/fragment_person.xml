@@ -226,21 +226,21 @@
                 android:visibility="visible" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/cl_iam_wifi_user"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_shopper"
-                    item:label="@string/str_iam_wifi_user"
-                    item:subLabel="审核中"
-                    item:subLabelColor="@color/red" >
-                </com.anynet.wifiworld.view.SettingItemView>
-
-                <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/cl_iam_wifi_provider"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_provider"
+                    item:subLabel="审核中"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/cl_iam_wifi_user"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_shopper"
+                    item:label="@string/str_iam_wifi_user"
                     item:subLabel="审核中"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>

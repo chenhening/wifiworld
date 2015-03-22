@@ -126,7 +126,7 @@ public class MeFragment extends MainFragment {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(
-					View.VISIBLE);
+					View.GONE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(
 					View.GONE);
 		}
