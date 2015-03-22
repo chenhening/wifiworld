@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import cn.bmob.v3.Bmob;
+
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -26,6 +28,7 @@ import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.app.WifiWorldApplication;
 import com.anynet.wifiworld.bean.Msg;
 import com.anynet.wifiworld.bean.SystemMsgResp;
+import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.dao.DBHelper;
 import com.anynet.wifiworld.discover.DiscoverFragment;
@@ -81,9 +84,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		
 		mLoginHelper = LoginHelper.getInstance(this);
 		mLoginHelper.getClass();
+		mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
 		mLocationHelper.getClass();
 		dbHelper = DBHelper.getInstance(this);
+		
+		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
 		
 		Intent i = getIntent();
 		i.getBooleanExtra("isFromWelcomeActivity", false);

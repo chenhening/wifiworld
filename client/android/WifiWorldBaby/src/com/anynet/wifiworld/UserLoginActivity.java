@@ -102,9 +102,9 @@ public class UserLoginActivity extends BaseActivity {
 		
 		mLoginHelper = LoginHelper.getInstance(getActivity());
 		// 初始化 Bmob SDK
-		Bmob.initialize(getActivity(), GlobalConfig.BMOB_KEY);
+		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
 		// initialize sms
-		SMSSDK.initSDK(getActivity(), GlobalConfig.SMSSDK_KEY,
+		SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY,
 				GlobalConfig.SMSSDK_SECRECT);
 		mEventHandler = new EventHandler() {
 			public void afterEvent(int event, int result, Object data) {
@@ -133,8 +133,8 @@ public class UserLoginActivity extends BaseActivity {
 							@Override
 							public void run() {
 								showToast("获取验证码成功，请输入验证码点击登陆.");
-							//	mET_Account.setEnabled(false);
-							//	mLL_Login.setEnabled(true);
+								mET_Account.setEnabled(false);
+								mLL_Login.setEnabled(true);
 							}
 						});
 					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
@@ -147,7 +147,7 @@ public class UserLoginActivity extends BaseActivity {
 						@Override
 						public void run() {
 							showToast("验证失败，请重新操作.");
-//							ResetLoginUI();
+							ResetLoginUI();
 						}
 					});
 				}

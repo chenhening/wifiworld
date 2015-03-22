@@ -163,6 +163,10 @@ public class LoginHelper {
 		return mIsLogin;
 	}
 
+	public boolean isLogined(){
+		return mIsLogin;
+	}
+	
 	public UserProfile getCurLoginUserInfo() {
 		return mUser;
 	}
