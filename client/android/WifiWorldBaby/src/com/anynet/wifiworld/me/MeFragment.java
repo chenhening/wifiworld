@@ -23,7 +23,6 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.BussessPartnerActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
@@ -102,29 +101,10 @@ public class MeFragment extends MainFragment {
 							}
 						});
 					} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-						// 获取验证码成功
-						// TODO(binfei): 将类似的函数整理成一个公共函数
-						getActivity().runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								showToast("获取验证码成功，请输入验证码点击登陆.");
-							//	mET_Account.setEnabled(false);
-							//	mLL_Login.setEnabled(true);
-							}
-						});
 					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
 						// 返回支持发送验证码的国家列表
 					}
 				} else {
-					((Throwable) data).printStackTrace();
-					// TODO(binfei): 将类似的函数整理成一个公共函数
-					getActivity().runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							showToast("验证失败，请重新操作.");
-//							ResetLoginUI();
-						}
-					});
 				}
 			}
 		};
@@ -170,7 +150,7 @@ public class MeFragment extends MainFragment {
 					}
 				});
 		
-		findViewById(R.id.seller_layout).setOnClickListener(
+		findViewById(R.id.cl_iam_wifi_user).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
@@ -339,8 +319,7 @@ public class MeFragment extends MainFragment {
 
 	/*
 	private void DisplayIncomeChart() {
-		LinearLayout chartLayout = (LinearLayout) this
-				.findViewById(R.id.ll_money_get);
+		LinearLayout chartLayout = (LinearLayout)findViewById(R.id.ll_money_get);
 		// 图表显示范围在占屏幕大小的90%的区域内
 		int scrWidth = chartLayout.getLayoutParams().width;
 		int scrHeight = chartLayout.getLayoutParams().height;
@@ -351,85 +330,9 @@ public class MeFragment extends MainFragment {
 		mLineChart = new ProviderIncomeChartView(getActivity());
 		chartLayout.addView(mLineChart, layoutParams);
 	}
-*/
+
 	// ---------------------------------------------------------------------------------------------
 	// UI event process functions
-
-	/*
-	private void RegistLogin() {
-		// get verify code
-		mLL_Verify = (LinearLayout) mPageRoot.findViewById(R.id.button_sms);
-		mLL_Verify.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mET_Account = (EditText) mPageRoot
-						.findViewById(R.id.tv_login_account);
-				mPhoneNumber = mET_Account.getText().toString().trim();
-				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
-				if (!pattern.matcher(mPhoneNumber).find()) {
-					showToast("请输入11位手机正确号码.");
-					return;
-				}
-
-				// 发送验证码
-				SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
-
-				// 按钮进入60秒倒计时
-				mTV_Verify = (TextView) mPageRoot
-						.findViewById(R.id.tv_button_sms);
-				mLL_Verify.setEnabled(false);
-				final Timer timer = new Timer();
-				mTask = new TimerTask() {
-
-					@Override
-					public void run() {
-						getActivity().runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								if (mVerifyTime <= 0) {
-									mET_Account.setEnabled(true);
-									mLL_Verify.setEnabled(true);
-									mTV_Verify.setText("点击再次发送");
-									mLL_Login.setEnabled(true);
-									mTask.cancel();
-								} else {
-									mTV_Verify.setText("验证码" + "("
-											+ mVerifyTime + ")");
-								}
-								--mVerifyTime;
-							}
-						});
-					}
-				};
-				mVerifyTime = 60;
-				timer.schedule(mTask, 0, 1000);
-			}
-		});
-
-		// login
-		mLL_Login = (LinearLayout) mPageRoot.findViewById(R.id.button_login);
-		mLL_Login.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mLL_Login.setEnabled(false);
-				mET_SMS = ((EditText) mPageRoot.findViewById(R.id.tv_login_sms));
-				mSmsCode = mET_SMS.getText().toString().trim();
-				Pattern pattern = Pattern.compile("^[0-9]{4}$");
-				if (!pattern.matcher(mSmsCode).find()) {
-					showToast("请输入正确的4位验证码.");
-					return;
-				}
-
-				SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
-						mSmsCode);
-			}
-		});
-		mLL_Login.setEnabled(false);
-	}
-
 	@Override
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub

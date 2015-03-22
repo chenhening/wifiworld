@@ -1,4 +1,4 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import org.xml.sax.XMLReader;
 
@@ -20,6 +20,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
 public class BussessPartnerActivity extends BaseActivity {

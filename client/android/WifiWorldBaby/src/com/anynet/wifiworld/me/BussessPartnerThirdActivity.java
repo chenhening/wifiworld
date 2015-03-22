@@ -1,27 +1,30 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class BussessPartnerHotpotEditActivity extends BaseActivity {
+public class BussessPartnerThirdActivity extends BaseActivity {
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.push_btn);
+		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(BussessPartnerHotpotEditActivity.this,
-						MainActivity.class);
+				Intent i = new Intent(BussessPartnerThirdActivity.this,
+						BussessPartnerHotpotEditActivity.class);
 				startActivity(i);
 			}
 		});
@@ -37,7 +40,7 @@ public class BussessPartnerHotpotEditActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.bussess_partner_certify_hotpot_edit);
+		setContentView(R.layout.bussess_partner_certify_third);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}

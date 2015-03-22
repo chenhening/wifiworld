@@ -1,14 +1,18 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class BussessPartnerThirdActivity extends BaseActivity {
+public class BussessPartnerSecondActivity extends BaseActivity {
 
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -20,8 +24,8 @@ public class BussessPartnerThirdActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(BussessPartnerThirdActivity.this,
-						BussessPartnerHotpotEditActivity.class);
+				Intent i = new Intent(BussessPartnerSecondActivity.this,
+						BussessPartnerThirdActivity.class);
 				startActivity(i);
 			}
 		});
@@ -34,10 +38,11 @@ public class BussessPartnerThirdActivity extends BaseActivity {
 			}
 		});
 	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.bussess_partner_certify_third);
+		setContentView(R.layout.bussess_partner_certify_second);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}
