@@ -5,8 +5,11 @@
         <attr name="icon" format="reference" />
         <attr name="label" format="string" />
         <attr name="subLabel" format="string" />
+        <attr name="content" format="string" />
         <attr name="subLabelSize" format="dimension" />
+        <attr name="contentSize" format="dimension" />
         <attr name="subLabelColor" format="reference|color" />
+        <attr name="contentColor" format="reference|color" />
         <attr name="subLabelVisibility">
             <enum name="visible" value="0" />
             <enum name="invisible" value="4" />
@@ -24,6 +27,7 @@
         <attr name="showTopDivider" format="boolean" />
         <attr name="showBottomDivider" format="boolean" />
         <attr name="showRedPoint" format="boolean" />
+        <attr name="showContent" format="boolean" />
     </declare-styleable>
 
 </resources>

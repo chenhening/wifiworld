@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +37,9 @@ public class SettingItemView extends RelativeLayout {
 		 * setting_item_checkbox setting_item_text setting_item_red_point
 		 * setting_item_sub_text setting_item_top_line setting_item_bottom_line
 		 */
+		ImageView img;
+		TextView tv;
+		EditText et;
 		TypedArray array = context.obtainStyledAttributes(attrs,
 				R.styleable.SettingItemView);
 		int n = array.getIndexCount();
@@ -44,25 +48,30 @@ public class SettingItemView extends RelativeLayout {
 			switch (attr) {
 			case R.styleable.SettingItemView_icon: {
 				Drawable icon = array.getDrawable(attr);
-				ImageView ivicon = (ImageView) findViewById(R.id.setting_item_icon);
-				ivicon.setImageDrawable(icon);
-			}
+				img = (ImageView) findViewById(R.id.setting_item_icon);
+				img.setImageDrawable(icon);
 				break;
+			}
+
 			case R.styleable.SettingItemView_label: {
 				String libel = array.getString(attr);
-				TextView tvlibel = (TextView) findViewById(R.id.setting_item_text);
-				tvlibel.setText(libel);
-			}
+				tv = (TextView) findViewById(R.id.setting_item_text);
+				tv.setText(libel);
 				break;
+			}
+
 			case R.styleable.SettingItemView_showBottomDivider: {
 				boolean showt = array.getBoolean(attr, false);
-				if(showt){
-					findViewById(R.id.setting_item_bottom_line).setVisibility(View.VISIBLE);
-				}else{
-					findViewById(R.id.setting_item_bottom_line).setVisibility(View.GONE);
+				if (showt) {
+					findViewById(R.id.setting_item_bottom_line).setVisibility(
+							View.VISIBLE);
+				} else {
+					findViewById(R.id.setting_item_bottom_line).setVisibility(
+							View.GONE);
 				}
-			}
 				break;
+			}
+
 			case R.styleable.SettingItemView_showRedPoint: {
 				boolean showP = array.getBoolean(attr, false);
 				if (showP) {
@@ -72,38 +81,98 @@ public class SettingItemView extends RelativeLayout {
 					findViewById(R.id.setting_item_red_point).setVisibility(
 							INVISIBLE);
 				}
-			}
 				break;
+			}
+
 			case R.styleable.SettingItemView_showTopDivider: {
 				boolean showt = array.getBoolean(attr, false);
-				if(showt){
-					findViewById(R.id.setting_item_top_line).setVisibility(View.VISIBLE);
-				}else{
-					findViewById(R.id.setting_item_top_line).setVisibility(View.GONE);
+				if (showt) {
+					findViewById(R.id.setting_item_top_line).setVisibility(
+							View.VISIBLE);
+				} else {
+					findViewById(R.id.setting_item_top_line).setVisibility(
+							View.GONE);
 				}
-			}
 				break;
+			}
+
 			case R.styleable.SettingItemView_subLabel: {
 				String sublibel = array.getString(attr);
-				TextView tvsublibel = (TextView) findViewById(R.id.setting_item_sub_text);
-				tvsublibel.setText(sublibel);
-			}
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setText(sublibel);
 				break;
+			}
+
 			case R.styleable.SettingItemView_subLabelColor: {
 				int sublibelcolor = array.getColor(attr, Color.RED);
-				TextView tvsublibel = (TextView) findViewById(R.id.setting_item_sub_text);
-				tvsublibel.setTextColor(sublibelcolor);
-			}
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setTextColor(sublibelcolor);
 				break;
+			}
+
 			case R.styleable.SettingItemView_subLabelVisibility: {
 				int showt = array.getInt(attr, VISIBLE);
 				findViewById(R.id.setting_item_sub_text).setVisibility(showt);
-			}
 				break;
+			}
+
+			case R.styleable.SettingItemView_subLabelSize: {
+				float shows = array.getFloat(attr, 16.0f);
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setTextSize(shows);
+				break;
+			}
+
+			case R.styleable.SettingItemView_showContent: {
+				boolean showP = array.getBoolean(attr, false);
+				if (showP) {
+					findViewById(R.id.setting_item_content).setVisibility(
+							VISIBLE);
+				} else {
+					findViewById(R.id.setting_item_content).setVisibility(
+							INVISIBLE);
+				}
+				break;
+			}
+
+			case R.styleable.SettingItemView_contentColor: {
+				int contentcolor = array.getColor(attr, Color.GRAY);
+				tv = (TextView) findViewById(R.id.setting_item_content);
+				tv.setTextColor(contentcolor);
+				break;
+			}
+			case R.styleable.SettingItemView_contentSize: {
+				float shows = array.getFloat(attr, 16.0f);
+				tv = (TextView) findViewById(R.id.setting_item_content);
+				tv.setTextSize(shows);
+				break;
+			}
+			case R.styleable.SettingItemView_content: {
+				String content = array.getString(attr);
+				tv = (TextView) findViewById(R.id.setting_item_content);
+				tv.setText(content);
+				break;
+			}
 			}
 
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
 		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
+	}
+
+	public void setContent(String content) {
+		TextView tv = (TextView) findViewById(R.id.setting_item_content);
+		tv.setText(content);
+	}
+	
+	
+	public void setLabel(String content) {
+		TextView tv = (TextView) findViewById(R.id.setting_item_text);
+		tv.setText(content);
+	}
+	
+	public void setSubLabel(String content) {
+		TextView tv = (TextView) findViewById(R.id.setting_item_sub_text);
+		tv.setText(content);
 	}
 }

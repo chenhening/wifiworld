@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.view.SettingItemView;
 
 public class MyAccountActivity extends BaseActivity {
 
@@ -25,6 +26,7 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -32,7 +34,23 @@ public class MyAccountActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		TextView tvName = (TextView) findViewById(R.id.person_name);
-		tvName.setText(LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber);
+		tvName.setText(LoginHelper.getInstance(getApplicationContext())
+				.getCurLoginUserInfo().PhoneNumber);
+		SettingItemView si = (SettingItemView) findViewById(R.id.siv_account);
+		TextView tvContent = (TextView) si
+				.findViewById(R.id.setting_item_content);
+		tvContent.setText(LoginHelper.getInstance(getApplicationContext())
+				.getCurLoginUserInfo().PhoneNumber);
+
+		si = (SettingItemView) findViewById(R.id.siv_psw);
+		si.setContent(LoginHelper.getInstance(getApplicationContext())
+				.getCurLoginUserInfo().Password);
+
+		si = (SettingItemView) findViewById(R.id.siv_alias);
+		si.setContent("Steven");
+
+		si = (SettingItemView) findViewById(R.id.siv_sex);
+		si.setContent("男");
 	}
 
 	@Override

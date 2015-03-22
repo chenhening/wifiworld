@@ -101,7 +101,11 @@
         android:layout_below="@id/tv_account"
         item:icon="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account"
-        item:showTopDivider="true" />
+        item:showContent="true"
+        item:showRedPoint="false"
+        item:showTopDivider="true"
+        item:subLabelColor="@color/gray"
+        item:subLabelVisibility="invisible" />
 
     <com.anynet.wifiworld.view.SettingItemView
         android:id="@+id/siv_psw"
@@ -110,7 +114,11 @@
         android:layout_below="@+id/siv_account"
         item:icon="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account_password"
-        item:showTopDivider="true" />
+        item:showContent="true"
+        item:showRedPoint="false"
+        item:showTopDivider="true"
+        item:subLabel="@string/account_edit"
+        item:subLabelColor="@color/gray" />
 
     <TextView
         android:id="@+id/tv_detail"
@@ -128,7 +136,11 @@
         android:layout_below="@id/tv_detail"
         item:icon="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account_nikename"
-        item:showTopDivider="true" />
+        item:showContent="true"
+        item:showRedPoint="false"
+        item:showTopDivider="true"
+        item:subLabel="@string/account_edit"
+        item:subLabelColor="@color/gray" />
 
     <com.anynet.wifiworld.view.SettingItemView
         android:id="@+id/siv_sex"
@@ -137,7 +149,11 @@
         android:layout_below="@+id/siv_alias"
         item:icon="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account_sex"
-        item:showTopDivider="true" />
+        item:showContent="true"
+        item:showRedPoint="false"
+        item:showTopDivider="true"
+        item:subLabel="@string/account_edit"
+        item:subLabelColor="@color/gray" />
 
     <Button
         android:id="@+id/button_login"

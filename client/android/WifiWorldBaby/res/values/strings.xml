@@ -70,7 +70,7 @@
     
     
     
-    
+    <string name="account_edit">修改</string>
     <string name="user_login_title_name">登录</string>
     <string name="user_register_title_name">注册</string>
     <string name="user_find_password_title_name">找回密码</string>
