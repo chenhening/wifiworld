@@ -40,11 +40,11 @@ public class MeFragment extends MainFragment {
 	private int mVerifyTime = 60;
 	private EventHandler mEventHandler;
 	private TimerTask mTask;
-	private EditText mET_Account; // account input
-	private EditText mET_SMS; // sms input
-	private LinearLayout mLL_Login;
-	private LinearLayout mLL_Verify;
-	private TextView mTV_Verify;
+//	private EditText mET_Account; // account input
+//	private EditText mET_SMS; // sms input
+//	private LinearLayout mLL_Login;
+//	private LinearLayout mLL_Verify;
+//	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
 
@@ -107,8 +107,8 @@ public class MeFragment extends MainFragment {
 							@Override
 							public void run() {
 								showToast("获取验证码成功，请输入验证码点击登陆.");
-								mET_Account.setEnabled(false);
-								mLL_Login.setEnabled(true);
+							//	mET_Account.setEnabled(false);
+							//	mLL_Login.setEnabled(true);
 							}
 						});
 					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
@@ -184,9 +184,9 @@ public class MeFragment extends MainFragment {
 	private void setLoginedUI(boolean isLoginUI) {
 		if (isLoginUI) {
 			mTitlebar.tvTitle.setText(getString(R.string.login_login));
-			mPageRoot.findViewById(R.id.ll_userprofile)
-					.setVisibility(View.GONE);
-			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
+//			mPageRoot.findViewById(R.id.ll_userprofile)
+//					.setVisibility(View.GONE);
+//			mPageRoot.findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
