@@ -65,6 +65,56 @@
     <string name="merchant_certify_license_photo">请提交营业执照</string>
     <string name="merchant_certify_type">请选择商家类型</string>
     <string name="merchant_certify_produce">请填写商家介绍</string>
+    
+    
+    
+    
+    
+    
+    <string name="user_login_title_name">登录</string>
+    <string name="user_register_title_name">注册</string>
+    <string name="user_find_password_title_name">找回密码</string>
+    <string name="login_username_edit_hint">请输入手机号码</string>
+    <string name="finding_password_verifiction_code_hint">请输入6位验证码</string>
+    <string name="login_password_edit_hint">请输入密码</string>
+    <string name="setting_password_title">密码设置</string>
+    <string name="person_black_list_title">我的黑名单</string>
+    <string name="setting_new_password_edit_hint">请输入新密码</string>
+    <string name="setting_old_password_edit_hint">请输入旧密码</string>
+    <string name="setting_repeate_new_password_edit_hint">请再次输入密码</string>
+    <string name="setting_password_tip_text">登录密码是由6-16位数字、字母组成</string>
+    <string name="setting_password_btn">提交</string>
+    <string name="user_login_btn_title">登录</string>
+    <string name="user_login_forget_password_title">忘记密码?</string>
+    <string name="user_forget_password_next">下一步</string>
+    <string name="find_password_invalid_phone_prompt">无效手机号码</string>
+    <string name="find_password_submit_phone_fail">提交号码失败</string>
+    <string name="find_password_verifying_code_sent_prompt">已下发验证码</string>
+    <string name="find_password_not_input_number_prompt">未填写号码</string>
+    <string name="verifying_code_sent_prompt_prefix">您的手机</string>
+    <string name="verifying_code_sent_prompt">已向 %1$s 发送6位数字短信验证码</string>
+    <string name="verifying_code_resend_prompt">重发验证码</string>
+    <string name="verifying_code_resend_verification_code_prompt"><Data>%1$s秒后&lt;BR />重新发验证码</Data></string>
+    <string name="user_login_invalid_password">密码输入不正确</string>
+    <string name="user_login_timeout_prompt">您的账户信息已过期，请重新登录。</string>
+    <string name="user_account_already_login_prompt">"您的联连账号已在其他设备登录，
+请注意账号安全。"</string>
+    <string name="input_verification_code_error">验证码不正确</string>
+    <string name="input_verification_code_overdue">验证码失效</string>
+    <string name="input_verification_code_outdate">验证码失效,请重新获取验证码</string>
+    <string name="input_verification_code_check_failed">验证码检测失败</string>
+    <string name="user_reset_password_prompt">设置密码</string>
+    <string name="user_input_password_hint">请输入新密码</string>
+    <string name="user_display_input_password_prompt">显示密码</string>
+    <string name="correct_password_format_prompt">6–16位字母或数字</string>
+    <string name="password_input_done_text">开启联连</string>
+    <string name="password_input_empty_prompt">请输入密码</string>
+    <string name="password_input_format_error_prompt">密码不符合要求</string>
+    <string name="password_return_login_prompt">返回登录页面</string>
+    <string name="password_reset_success_prompt">新密码设置成功</string>
+    
+    
+    
     <string name="merchant_promotion"><Data>&lt;font color=#acacac>每月只能修改&lt;/font> &lt;font color=#03a3a6>1&lt;/font> &lt;font color=#acacac>次&lt;/font> </Data></string>
     <!-- testin崩溃测试key -->
     <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>

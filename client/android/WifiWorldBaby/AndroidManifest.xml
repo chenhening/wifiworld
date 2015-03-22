@@ -93,6 +93,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.UserLoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.BussessPartnerLicenseActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >

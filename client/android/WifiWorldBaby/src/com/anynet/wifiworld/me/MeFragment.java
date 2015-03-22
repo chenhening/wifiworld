@@ -25,6 +25,7 @@ import cn.smssdk.SMSSDK;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.BussessPartnerActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiProfile;
@@ -158,6 +159,17 @@ public class MeFragment extends MainFragment {
 		bingdingTitleUI();
 		setLoginedUI(false);
 		//DisplayIncomeChart();
+		findViewById(R.id.login_text).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i = new Intent(getApplicationContext(), UserLoginActivity.class);
+						startActivity(i);
+					}
+				});
+		
 		findViewById(R.id.seller_layout).setOnClickListener(
 				new OnClickListener() {
 

@@ -47,13 +47,32 @@
     <color name="color_red">#ffff7f66</color>
     <color name="color_gray_light">#ffd6dae1</color>
     <color name="color_black">#ff111111</color>
-
+    <color name="font_color_write">#ffffffff</color>
+    <color name="font_color_black">#ff434d57</color>
+    <color name="font_color_black_light">#ff646464</color>
+    <color name="font_color_gray_light">#ffcbcbcb</color>
+    <color name="font_color_gray_dark">#ffa4a4a4</color>
+    <color name="font_color_gray_2_dark">#ffadadad</color>
+    <color name="font_color_green">#ff16a1a4</color>
+    <color name="font_color_green_dark">#ff03a2a6</color>
+    <color name="font_color_red">#ffff3333</color>
+    <color name="font_color_blue">#ff80c2fc</color>
+    <color name="font_color_blue_1">#ff7fc4fe</color>
+    <color name="font_color_gray_3_dark">#ff7e8994</color>
+    <color name="edt_hint_color">#ffadadad</color>
     <!-- 登录 -->
     <color name="login_tv_txt">#FFFFFF</color>
     <color name="login_error_txt">#F7E0E0</color>
     <color name="login_bg">#F9FAFB</color>
     <color name="login_fail_highlight">#2097F6</color>
     <color name="color_main_bg">#fff5f6f8</color>
+    <color name="green_button_pressed_color">@color/color_button_blue_press</color>
+    <color name="green_button_default_color">@color/color_button_blue_default</color>
+    <color name="green_button_disable_color">#ffdceef2</color>
+    <color name="color_button_blue_default">@color/color_blue</color>
+    <color name="color_button_blue_press">#ff00969b</color>
+    <color name="color_button_red_default">@color/color_red</color>
+    <color name="color_button_red_press">#ffec6f56</color>
     <!-- 设置 -->
     <color name="setting_item_div_line">#DADADA</color>
     <color name="setting_group_bg">#FFFFFF</color>
