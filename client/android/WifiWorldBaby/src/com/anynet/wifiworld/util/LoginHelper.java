@@ -130,6 +130,10 @@ public class LoginHelper {
 		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
 		mIsLogin = false;
 		mUser = null;
+		SharedPreferences.Editor sharedata = mPreferences.edit();
+		sharedata.clear();
+		sharedata.commit();
+		Log.d(TAG, "用户退出成功");
 	}
 
 	private void SaveProfileLocal(UserProfile user) {

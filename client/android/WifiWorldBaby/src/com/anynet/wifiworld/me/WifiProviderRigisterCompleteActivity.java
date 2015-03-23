@@ -10,25 +10,31 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
 
-public class WifiProviderRigisterHotpotEditActivity extends BaseActivity {
-
+public class WifiProviderRigisterCompleteActivity extends BaseActivity {
+	//IPC
+	private Intent mIntent = null;
+	private WifiProfile mWifiProfile = null;
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
+		/*mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setText(R.string.push_btn);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(WifiProviderRigisterHotpotEditActivity.this,
+				//Intent i = new Intent(WifiProviderRigisterCompleteActivity.this,
+				//		MainActivity.class);
+				mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
 						MainActivity.class);
-				startActivity(i);
+				startActivity(mIntent);
 			}
-		});
+		});*/
 		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
@@ -38,12 +44,40 @@ public class WifiProviderRigisterHotpotEditActivity extends BaseActivity {
 			}
 		});
 	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		setContentView(R.layout.wifi_provider_certify_hotpot_edit);
+		mIntent = getIntent();
+		setContentView(R.layout.wifi_provider_certify_complete);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
+		this.findViewById(R.id.btn_wifi_provider_register).setOnClickListener(
+			new OnClickListener() {
+
+				@Override
+                public void onClick(View arg0) {
+					mWifiProfile = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
+					mWifiProfile.StoreRemote(getApplicationContext(), 
+						new DataCallback<WifiProfile>() {
+
+							@Override
+                            public void onSuccess(WifiProfile object) {
+								showToast("WiFi信息登记成功。");
+								mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
+										MainActivity.class);
+								startActivity(mIntent);
+                            }
+
+							@Override
+                            public void onFailed(String msg) {
+								showToast("WiFi信息登记失败： " + msg);
+                            }
+						
+					});
+				}
+				
+			});
 	}
 
 	@Override

@@ -93,7 +93,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.anynet.wifiworld.me.WifiProviderRigisterHotpotEditActivity"
+            android:name="com.anynet.wifiworld.me.WifiProviderRigisterCompleteActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>

@@ -262,7 +262,7 @@
                         android:textSize="@dimen/font_main_big" />
 
                     <EditText
-                        android:id="@+id/merchant_detail_address_value_text"
+                        android:id="@+id/et_wifi_provider_detail_address"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginLeft="@dimen/dimen_15_dip"
@@ -433,7 +433,7 @@
                         android:background="@color/color_line" />
 
                     <EditText
-                        android:id="@+id/merchant_produce_content"
+                        android:id="@+id/et_wifi_provider_desc_content"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/merchant_produce_divice"

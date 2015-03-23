@@ -24,54 +24,36 @@
             android:src="@drawable/img_merchant_certify_end" />
 
         <LinearLayout
-            android:id="@+id/merchant_wifi_content"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_40_dip"
             android:layout_marginLeft="@dimen/dimen_15_dip"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="@dimen/dimen_85_dip"
                 android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/img_merchant_certify_mark"
                 android:drawablePadding="@dimen/dimen_5_dip"
                 android:gravity="center_vertical"
-                android:text="Wi-Fi名称"
+                android:text="@string/str_wifi_provider_router"
                 android:textColor="@color/color_main_text"
                 android:textSize="@dimen/font_main_big" />
 
-            <TextView
-                android:id="@+id/edt_ssid"
+            <EditText
+                android:id="@+id/EditText01"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="1.0dip"
+                android:layout_marginBottom="1.0dip"
                 android:layout_weight="1.0"
                 android:background="#ffffffff"
+                android:editable="false"
                 android:gravity="center_vertical"
-                android:hint="请选择热点"
-                android:text=""
+                android:inputType="text"
                 android:textColor="@color/color_main_text"
-                android:textSize="@dimen/font_main_big" />
+                android:textSize="@dimen/font_main_big" >
 
-            <TextView
-                android:id="@+id/txt_select"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:background="#ff03a5a7"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dimen_15_dip"
-                android:paddingRight="@dimen/dimen_15_dip"
-                android:text="选择热点"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/font_main_big" />
+                <requestFocus />
+            </EditText>
         </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="0.5dip"
-            android:layout_marginLeft="@dimen/dimen_15_dip"
-            android:background="#ffe4e4e7" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -82,10 +64,9 @@
             <TextView
                 android:layout_width="@dimen/dimen_85_dip"
                 android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/img_merchant_certify_mark"
                 android:drawablePadding="@dimen/dimen_5_dip"
                 android:gravity="center_vertical"
-                android:text="密码"
+                android:text="@string/str_wifi_provider_bandwidth"
                 android:textColor="@color/color_main_text"
                 android:textSize="@dimen/font_main_big" />
 
@@ -98,12 +79,41 @@
                 android:background="#ffffffff"
                 android:editable="false"
                 android:gravity="center_vertical"
-                android:hint="请输入密码"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:text=""
                 android:textColor="@color/color_main_text"
                 android:textSize="@dimen/font_main_big" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="@dimen/dimen_85_dip"
+                android:layout_height="fill_parent"
+                android:drawablePadding="@dimen/dimen_5_dip"
+                android:gravity="center_vertical"
+                android:text="@string/str_wifi_provider_cover"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+
+            <EditText
+                android:id="@+id/EditText02"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1.0dip"
+                android:layout_weight="1.0"
+                android:background="#ffffffff"
+                android:editable="false"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -113,8 +123,17 @@
         android:paddingLeft="@dimen/dimen_14_dip"
         android:paddingRight="@dimen/dimen_15_dip"
         android:paddingTop="@dimen/dimen_5_dip"
-        android:text="请先选择你的门店Wi-Fi热点，准确填写密码，并在热点覆盖范围内提交"
+        android:text="网络带宽是由程序自动测试得到的预估值，如果不符合您实际情况，请更改。请不要随便填写，系统会根据自动测速，人工核实和用户反馈综合得到数据，一旦不符合会影响您的网络评价值"
         android:textColor="@color/color_gray"
         android:textSize="@dimen/font_main_small" />
+
+    <Button
+        android:id="@+id/btn_wifi_provider_register"
+        style="@style/Button.Default.Green"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_marginRight="@dimen/dimen_9_dip"
+        android:layout_marginTop="@dimen/dimen_18_dip"
+        android:text="@string/str_wifi_provider_register"
+        android:textSize="@dimen/font_main_title" />
 
 </LinearLayout>
