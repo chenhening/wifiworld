@@ -31,6 +31,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
@@ -47,6 +48,8 @@ public class WifiFragment extends MainFragment {
 	private TextView mWifiNameView;
 	private LinearLayout mWifiSquareLayout;
 	private PopupWindow mPopupWindow;
+	
+	private boolean mBroadcastRegistered;
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -62,9 +65,6 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity());
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		mWifiListHelper.fillWifiList();
-		mWifiFree = mWifiListHelper.getWifiFrees();
-		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 	}
 
 	@Override
@@ -80,6 +80,9 @@ public class WifiFragment extends MainFragment {
 		setWifiSquareListener(mWifiSquareLayout);
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+		mWifiListHelper.fillWifiList();
+		mWifiFree = mWifiListHelper.getWifiFrees();
+		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 		displayWifiConnected(mWifiNameView);
 		
 		//WIFI list view display and operation
@@ -98,20 +101,18 @@ public class WifiFragment extends MainFragment {
 //							wifiSelected.getWifiType());
 					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
 					if (cfgSelected != null) {
-						mWifiAdmin.connectToConfiguredNetwork(getActivity(),
+						boolean success = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
 								mWifiAdmin.getWifiConfiguration(wifiSelected),
-								false);
-
-						mWifiFree.remove(position - 1);
-						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-						TextView wifi_connected = (TextView) mPageRoot.findViewById(R.id.wifi_name);
-						String wifiConnected = mWifiAdmin.getWifiNameConnection();
-						while (wifiConnected == "") {
-							wifiConnected = mWifiAdmin.getWifiNameConnection();
+								true);
+						if (success) {
+							mWifiListHelper.fillWifiList();
+							mWifiFree = mWifiListHelper.getWifiFrees();
+							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+							displayWifiConnected(mWifiNameView);
+							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+						} else {
+							Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG);
 						}
-						wifi_connected.setText("已连接" + wifiConnected.substring(1,wifiConnected.length() - 1));
-						wifi_connected.setTextColor(Color.BLACK);
-						wifi_connected.refreshDrawableState();
 					}
 				}
 			}
@@ -131,55 +132,65 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onPause() {
-		getActivity().unregisterReceiver(mReceiver);
+//		if (mBroadcastRegistered) {
+//			getActivity().unregisterReceiver(mReceiver);
+//		}
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-		getActivity().registerReceiver(mReceiver, filter);
+		if (mWifiListAdapter != null) {
+			mWifiListHelper.fillWifiList();
+			mWifiFree = mWifiListHelper.getWifiFrees();
+			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+			displayWifiConnected(mWifiNameView);
+			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+		}
+//		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+//		getActivity().registerReceiver(mReceiver, filter);
+//		mBroadcastRegistered = true;
 		super.onResume();
 	}
 
-	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-		
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			final String action = intent.getAction();
-			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-							sleep(5000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						mWifiListHelper.fillWifiList();
-						mWifiFree = mWifiListHelper.getWifiFrees();
-						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-						handler.sendEmptyMessage(UPDATE_VIEW);
-					}
-				}.start();
-			}
-		}
-	};
-
-	private Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			int value = msg.what;
-			if (value == UPDATE_VIEW) {
-				displayWifiConnected(mWifiNameView);
-				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-			}
-			super.handleMessage(msg);
-		}
-		
-	};
+//	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+//		
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			final String action = intent.getAction();
+//			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+//				new Thread() {
+//					@Override
+//					public void run() {
+//						try {
+//							sleep(5000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						mWifiListHelper.fillWifiList();
+//						mWifiFree = mWifiListHelper.getWifiFrees();
+//						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//						handler.sendEmptyMessage(UPDATE_VIEW);
+//					}
+//				}.start();
+//			}
+//		}
+//	};
+//
+//	private Handler handler = new Handler() {
+//
+//		@Override
+//		public void handleMessage(Message msg) {
+//			int value = msg.what;
+//			if (value == UPDATE_VIEW) {
+//				displayWifiConnected(mWifiNameView);
+//				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+//			}
+//			super.handleMessage(msg);
+//		}
+//		
+//	};
 	
 	private void displayWifiConnected(TextView wifiNameView) {
 		String wifiConnected = mWifiAdmin.getWifiNameConnection();
