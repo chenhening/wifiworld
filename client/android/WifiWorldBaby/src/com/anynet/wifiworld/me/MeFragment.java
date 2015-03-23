@@ -115,7 +115,7 @@ public class MeFragment extends MainFragment {
 
 						@Override
                         public void onFailed(String msg) {
-							Intent i = new Intent(getApplicationContext(), WifiProviderListActivity.class);
+							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
 							startActivity(i);
                         }
 					
