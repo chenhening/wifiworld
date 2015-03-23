@@ -1,6 +1,8 @@
 package com.anynet.wifiworld.me;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,16 +10,30 @@ import android.widget.RelativeLayout;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 
+	//IPC
+	private Intent mIntent = null;
+	
 	private WifiProfile mWifiProfile = new WifiProfile();
 	private Bitmap mLogo;
 	private BmobGeoPoint mBmobGeoPoint;
 	private WifiProviderLineChartView mLineChart;
+	
+	private MapView mapView = null;
+	private AMap aMap = null;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -29,7 +45,6 @@ public class WifiProviderDetailActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
@@ -38,10 +53,13 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		String mac = getIntent().getStringExtra("mac");
+		mIntent = getIntent();
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
+		//当前在线用户展示图
+		displayUserOnlineMap(savedInstanceState);
 		
 		RelativeLayout chartLayout = (RelativeLayout)
 			this.findViewById(R.id.rl_wifi_provider_line_chart);
@@ -98,5 +116,30 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
-
+	
+	// ---------------------------------------------------------------------------------------------
+	private void displayUserOnlineMap(Bundle savedInstanceState) {
+		mapView = (MapView) this.findViewById(R.id.user_online_map);
+		mapView.onCreate(savedInstanceState);
+		aMap = mapView.getMap();
+		MyLocationStyle myLocationStyle = new MyLocationStyle();
+		myLocationStyle.strokeColor(Color.BLACK);
+		myLocationStyle.strokeWidth(5);
+		aMap.setMyLocationStyle(myLocationStyle);
+		//获取到注册wifi的地理位置
+		WifiProfile wifi = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
+		LatLng point = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
+		CameraUpdate update = CameraUpdateFactory.newLatLngZoom(point, (float) 20);
+		aMap.moveCamera(update);
+		aMap.addMarker(
+			new MarkerOptions().position(point).title(wifi.Alias)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
+				.draggable(true)).showInfoWindow();
+		updateUserOnline();
+	}
+	
+	//查询正在使用wifi的用户
+	private void updateUserOnline() {
+		
+	}
 }

@@ -110,6 +110,7 @@ public class MeFragment extends MainFragment {
 						@Override
                         public void onSuccess(List<WifiProfile> objects) {
 							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+							i.putExtra(WifiProfile.class.getName(), objects.get(0));
 							startActivity(i);
                         }
 

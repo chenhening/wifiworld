@@ -276,7 +276,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/wifi_layout"
@@ -300,14 +301,6 @@
                     item:icon="@drawable/icon_person_wifi_master"
                     item:label="@string/person_center_wifi_master"
                     item:showTopDivider="true" />
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/attention_shopper_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_attention_shopper"
-                    item:label="@string/person_center_attention_shopper"
-                    item:showTopDivider="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -316,6 +309,15 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
                 android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/attention_shopper_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_attention_shopper"
+                    item:label="@string/person_center_attention_shopper"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/attention_layout"

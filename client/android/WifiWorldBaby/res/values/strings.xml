@@ -52,7 +52,7 @@
     <string name="person_center_wifi">Wi-Fi云备份</string>
     <string name="person_center_credit">我的联币</string>
     <string name="person_center_seller">我是商家</string>
-    <string name="person_center_attention_shopper">收藏的商家</string>
+    <string name="person_center_attention_shopper">收藏的WiFi</string>
     <string name="merchant_certify">商户认证</string>
     <string name="merchant_certify_name">请输入商家名称</string>
     <string name="merchant_certify_address">请选择商家地址</string>
@@ -65,11 +65,7 @@
     <string name="merchant_certify_license_photo">请提交营业执照</string>
     <string name="merchant_certify_type">请选择商家类型</string>
     <string name="merchant_certify_produce">请填写商家介绍</string>
-    
-    
-    
-    
-    
+
     <string name="account_edit">修改</string>
     <string name="user_login_title_name">登录</string>
     <string name="user_register_title_name">注册</string>
