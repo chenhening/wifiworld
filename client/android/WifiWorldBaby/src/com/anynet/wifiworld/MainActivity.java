@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import cn.bmob.v3.Bmob;
 
+import com.dlnetwork.Data;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -124,6 +125,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		if (null != device_token && !device_token.equals("")) {
 			reportDeviceToken(appVersion, device_token);
 		}*/
+
+        // Dianle SDK provision
+        Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
+        Data.setCurrentUserID(this,"123456789");
 
 		changeToConnect();
 

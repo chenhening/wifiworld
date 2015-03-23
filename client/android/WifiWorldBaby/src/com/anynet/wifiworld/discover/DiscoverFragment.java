@@ -14,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+
+import com.dlnetwork.Data;
 
 public class DiscoverFragment extends MainFragment {
 	private static String ADKey = "f5dca10991ec3c4e";
@@ -42,7 +46,51 @@ public class DiscoverFragment extends MainFragment {
 		adLayout.addView(adView);// 将广告条加入到布局中
 		
 		//OffersManager.getInstance(getActivity()).showOffersWall();
-		
+
+        // People using
+        final RelativeLayout peopleUsingLayout = (RelativeLayout) findViewById(R.id.people_using);
+        peopleUsingLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Data.showOffers(v.getContext());
+            }
+        });
+
+        // People using
+        final RelativeLayout peoplePlayingLayout = (RelativeLayout) findViewById(R.id.people_playing);
+        peoplePlayingLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Data.showOffers(v.getContext());
+            }
+        });
+
+        // People using
+        final RelativeLayout peopleWatchingLayout = (RelativeLayout) findViewById(R.id.people_watching);
+        peopleWatchingLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Data.showOffers(v.getContext());
+            }
+        });
+
+        // People using
+        final RelativeLayout peopleBuyingLayout = (RelativeLayout) findViewById(R.id.people_buying);
+        peopleBuyingLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Data.showOffers(v.getContext());
+            }
+        });
+
 		return mPageRoot;
 	}
 

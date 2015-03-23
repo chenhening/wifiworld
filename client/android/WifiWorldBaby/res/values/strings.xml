@@ -241,4 +241,10 @@
     <string name="str_wifi_provider_register">注册登记</string>
     <string name="str_wifi_provider_cover">网络覆盖</string>
 
+    <!-- Discover Page -->
+    <string name="str_people_using">大家都在用的</string>
+    <string name="str_people_playing">大家都在玩的</string>
+    <string name="str_people_watching">大家都在看的</string>
+    <string name="str_people_buying">大家都会买的</string>
+
 </resources>

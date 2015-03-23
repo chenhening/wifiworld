@@ -222,6 +222,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Dianle provision -->
+        <activity android:name="com.dlnetwork.DataNativeActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"/>
+        <service android:name="com.dlnetwork.DataNativeService" />
+
         <!-- 友盟自动更新 -->
         <service
             android:name="com.umeng.update.net.DownloadingService"
