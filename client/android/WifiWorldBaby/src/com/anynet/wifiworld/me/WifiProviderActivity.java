@@ -161,6 +161,10 @@ public class WifiProviderActivity extends BaseActivity {
 
 		});
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		if(!mLoginHelper.isLogined()){
+			Toast.makeText(this, "未登录！", Toast.LENGTH_LONG).show();
+			finish();
+		}
 	}
 
 	private void showDialog() {

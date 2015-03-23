@@ -1,20 +1,21 @@
 package com.anynet.wifiworld;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
-import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.view.SettingItemView;
 
 public class MyAccountActivity extends BaseActivity {
 
+	UserProfile mUserProfile;
+	LoginHelper mLoginHelper;
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -36,14 +37,18 @@ public class MyAccountActivity extends BaseActivity {
 		setContentView(R.layout.user_homepage_activity);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		mUserProfile = mLoginHelper.getCurLoginUserInfo();
+		if(mUserProfile==null){
+			Toast.makeText(this, "未登录，请重新登录！", Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
 		TextView tvName = (TextView) findViewById(R.id.person_name);
-		tvName.setText(LoginHelper.getInstance(getApplicationContext())
-				.getCurLoginUserInfo().PhoneNumber);
+		tvName.setText(LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber);
 		SettingItemView si = (SettingItemView) findViewById(R.id.siv_account);
-		TextView tvContent = (TextView) si
-				.findViewById(R.id.setting_item_content);
-		tvContent.setText(LoginHelper.getInstance(getApplicationContext())
-				.getCurLoginUserInfo().PhoneNumber);
+		TextView tvContent = (TextView) si.findViewById(R.id.setting_item_content);
+		tvContent.setText(LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber);
 
 		si = (SettingItemView) findViewById(R.id.siv_psw);
 		String psw = (LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo()).Password;
@@ -60,6 +65,16 @@ public class MyAccountActivity extends BaseActivity {
 
 		si = (SettingItemView) findViewById(R.id.siv_sex);
 		si.setContent("男");
+		
+		findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				LoginHelper.getInstance(getApplicationContext()).logout();
+				finish();
+			}
+		});
 	}
 
 	@Override

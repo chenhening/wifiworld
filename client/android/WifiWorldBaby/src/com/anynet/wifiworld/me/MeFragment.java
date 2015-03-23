@@ -46,6 +46,10 @@ public class MeFragment extends MainFragment {
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
 				Toast.makeText(getApplicationContext(), "自动登录失败!",
 						Toast.LENGTH_LONG).show();
+			}else if (action.equals(LoginHelper.LOGIN_OUT)) {
+				Toast.makeText(getApplicationContext(), "退出登录!",
+						Toast.LENGTH_LONG).show();
+				isLogined = false;
 			}
 			setLoginedUI(isLogined);
 		}
@@ -58,8 +62,9 @@ public class MeFragment extends MainFragment {
 		mLoginHelper = LoginHelper.getInstance(getActivity());
 		// 监听登录
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(LoginHelper.AUTO_LOGIN_SUCCESS);
-		filter.addAction(LoginHelper.AUTO_LOGIN_FAIL);
+		filter.addAction(LoginHelper.LOGIN_SUCCESS);
+		filter.addAction(LoginHelper.LOGIN_FAIL);
+		filter.addAction(LoginHelper.LOGIN_OUT);
 		getActivity().registerReceiver(loginBR, filter);
 	}
 

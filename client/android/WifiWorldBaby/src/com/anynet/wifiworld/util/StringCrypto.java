@@ -24,8 +24,7 @@ public class StringCrypto {
 
 	private static byte[] iv = { 1, 2, 3, 4, 5, 6, 7, 8 };
 
-	public static String encryptDES(String encryptString, String encryptKey)
-			throws Exception {
+	public static String encryptDES(String encryptString, String encryptKey) throws Exception {
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		SecretKeySpec key = new SecretKeySpec(encryptKey.getBytes(), "DES");
@@ -33,12 +32,11 @@ public class StringCrypto {
 		cipher.init(Cipher.ENCRYPT_MODE, key, zeroIv);
 		byte[] encryptedData = cipher.doFinal(encryptString.getBytes());
 
-		return Base64.encodeToString(encryptedData,Base64.DEFAULT);
+		return Base64.encodeToString(encryptedData, Base64.DEFAULT).trim();
 	}
 
-	public static String decryptDES(String decryptString, String decryptKey)
-			throws Exception {
-		byte[] byteMi = Base64.decode(decryptString,Base64.DEFAULT);
+	public static String decryptDES(String decryptString, String decryptKey) throws Exception {
+		byte[] byteMi = Base64.decode(decryptString, Base64.DEFAULT);
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
 		SecretKeySpec key = new SecretKeySpec(decryptKey.getBytes(), "DES");
@@ -49,15 +47,13 @@ public class StringCrypto {
 		return new String(decryptedData);
 	}
 
-	public static String encrypt(String seed, String cleartext)
-			throws Exception {
+	public static String encrypt(String seed, String cleartext) throws Exception {
 		byte[] rawKey = getRawKey(seed.getBytes());
 		byte[] result = encrypt(rawKey, cleartext.getBytes());
 		return toHex(result);
 	}
 
-	public static String decrypt(String seed, String encrypted)
-			throws Exception {
+	public static String decrypt(String seed, String encrypted) throws Exception {
 		byte[] rawKey = getRawKey(seed.getBytes());
 		byte[] enc = toByte(encrypted);
 		byte[] result = decrypt(rawKey, enc);
@@ -82,8 +78,7 @@ public class StringCrypto {
 		return encrypted;
 	}
 
-	private static byte[] decrypt(byte[] raw, byte[] encrypted)
-			throws Exception {
+	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
 		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
@@ -103,8 +98,7 @@ public class StringCrypto {
 		int len = hexString.length() / 2;
 		byte[] result = new byte[len];
 		for (int i = 0; i < len; i++)
-			result[i] = Integer.valueOf(hexString.substring(2 * i, 2 * i + 2),
-					16).byteValue();
+			result[i] = Integer.valueOf(hexString.substring(2 * i, 2 * i + 2), 16).byteValue();
 		return result;
 	}
 

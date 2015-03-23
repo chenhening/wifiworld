@@ -40,8 +40,7 @@ public class SettingItemView extends RelativeLayout {
 		ImageView img;
 		TextView tv;
 		EditText et;
-		TypedArray array = context.obtainStyledAttributes(attrs,
-				R.styleable.SettingItemView);
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
 		int n = array.getIndexCount();
 		for (int i = 0; i < n; i++) {
 			int attr = array.getIndex(i);
@@ -63,11 +62,9 @@ public class SettingItemView extends RelativeLayout {
 			case R.styleable.SettingItemView_showBottomDivider: {
 				boolean showt = array.getBoolean(attr, false);
 				if (showt) {
-					findViewById(R.id.setting_item_bottom_line).setVisibility(
-							View.VISIBLE);
+					findViewById(R.id.setting_item_bottom_line).setVisibility(View.VISIBLE);
 				} else {
-					findViewById(R.id.setting_item_bottom_line).setVisibility(
-							View.GONE);
+					findViewById(R.id.setting_item_bottom_line).setVisibility(View.GONE);
 				}
 				break;
 			}
@@ -75,11 +72,9 @@ public class SettingItemView extends RelativeLayout {
 			case R.styleable.SettingItemView_showRedPoint: {
 				boolean showP = array.getBoolean(attr, false);
 				if (showP) {
-					findViewById(R.id.setting_item_red_point).setVisibility(
-							VISIBLE);
+					findViewById(R.id.setting_item_red_point).setVisibility(VISIBLE);
 				} else {
-					findViewById(R.id.setting_item_red_point).setVisibility(
-							INVISIBLE);
+					findViewById(R.id.setting_item_red_point).setVisibility(INVISIBLE);
 				}
 				break;
 			}
@@ -87,11 +82,9 @@ public class SettingItemView extends RelativeLayout {
 			case R.styleable.SettingItemView_showTopDivider: {
 				boolean showt = array.getBoolean(attr, false);
 				if (showt) {
-					findViewById(R.id.setting_item_top_line).setVisibility(
-							View.VISIBLE);
+					findViewById(R.id.setting_item_top_line).setVisibility(View.VISIBLE);
 				} else {
-					findViewById(R.id.setting_item_top_line).setVisibility(
-							View.GONE);
+					findViewById(R.id.setting_item_top_line).setVisibility(View.GONE);
 				}
 				break;
 			}
@@ -126,11 +119,9 @@ public class SettingItemView extends RelativeLayout {
 			case R.styleable.SettingItemView_showContent: {
 				boolean showP = array.getBoolean(attr, false);
 				if (showP) {
-					findViewById(R.id.setting_item_content).setVisibility(
-							VISIBLE);
+					findViewById(R.id.setting_item_content).setVisibility(VISIBLE);
 				} else {
-					findViewById(R.id.setting_item_content).setVisibility(
-							INVISIBLE);
+					findViewById(R.id.setting_item_content).setVisibility(INVISIBLE);
 				}
 				break;
 			}
@@ -164,13 +155,12 @@ public class SettingItemView extends RelativeLayout {
 		TextView tv = (TextView) findViewById(R.id.setting_item_content);
 		tv.setText(content);
 	}
-	
-	
+
 	public void setLabel(String content) {
 		TextView tv = (TextView) findViewById(R.id.setting_item_text);
 		tv.setText(content);
 	}
-	
+
 	public void setSubLabel(String content) {
 		TextView tv = (TextView) findViewById(R.id.setting_item_sub_text);
 		tv.setText(content);

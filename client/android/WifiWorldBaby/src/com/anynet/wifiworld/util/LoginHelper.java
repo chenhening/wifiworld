@@ -15,6 +15,11 @@ public class LoginHelper {
 	public static String AUTO_LOGIN_SUCCESS = "com.anynet.wifiworld.autologin.success";
 	public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	public static String AUTO_LOGIN_NEVERLOGIN = "com.anynet.wifiworld.autologin.neverlogin";
+	public static String LOGIN_OUT = "com.anynet.wifiworld.login.out";
+	public static String LOGIN_SUCCESS = AUTO_LOGIN_SUCCESS;
+	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
+	public static String LOGIN_NEVERLOGIN = AUTO_LOGIN_NEVERLOGIN;
+	
 	private static String mUserprofileDataFile = "userprofile.conf";
 	private static String mAliasUser = "PhoneNumber";
 	private static String mAliasPwd = "Password";
@@ -58,25 +63,6 @@ public class LoginHelper {
 			Context.MODE_PRIVATE);
 	}
 
-//	public void ShowToast(final Context context, final CharSequence text,
-//			final int duration) {
-//		if (globalContext == null)
-//			try {
-//				throw new Exception(
-//						"LoginHelper instance is not call init function!!!");
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		Activity activity = (Activity) globalContext;
-//		globalContext.runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				Toast.makeText(context, text, duration).show();
-//			}
-//		});
-//	}
-
 	// ------------------------------------------------------------------------------------------------
 	public void Login(UserProfile profile) {
 		mIsLogin = false;
@@ -86,7 +72,6 @@ public class LoginHelper {
 			@Override
 			public void onSuccess(UserProfile object) {
 				Log.i(TAG, "用户信息更新成功。");
-				//ShowToast(globalContext, "用户信息更新成功。", Toast.LENGTH_SHORT);
 				SaveProfileLocal(object);
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
@@ -96,7 +81,6 @@ public class LoginHelper {
 			public void onFailed(String msg) {
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
 				Log.i(TAG, "用户信息更新失败，请重新更新：" + msg);
-				//ShowToast(globalContext, "用户信息更新失败，请重新更新：" + msg,Toast.LENGTH_SHORT);
 			}
 		});
 	}
@@ -143,7 +127,9 @@ public class LoginHelper {
 	}
 
 	public void logout() {
+		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
 		mIsLogin = false;
+		mUser = null;
 	}
 
 	private void SaveProfileLocal(UserProfile user) {
@@ -158,15 +144,18 @@ public class LoginHelper {
 	}
 
 	public boolean getCurLoginStatus() {
-		return mIsLogin;
+		return mIsLogin &&  mUser!=null;
 	}
 
 	public boolean isLogined(){
-		return mIsLogin;
+		return mIsLogin &&  mUser!=null;
 	}
 	
 	public UserProfile getCurLoginUserInfo() {
-		return mUser;
+		if(mIsLogin){
+			return mUser;
+		}
+		return null;
 	}
 
 }
