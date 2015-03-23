@@ -17,6 +17,43 @@ public class WifiInfoScanned implements Serializable {
 	private String mRemark;
 	private BmobGeoPoint mGeometry;
 	
+	private float mRating;
+	private int mRanking;
+	private int ConnectedTimes;
+	private int ConnectedDuration;
+	
+	public float getRating() {
+		return mRating;
+	}
+
+	public void setRating(float rating) {
+		mRating = rating;
+	}
+
+	public int getRanking() {
+		return mRanking;
+	}
+
+	public void setRanking(int ranking) {
+		mRanking = ranking;
+	}
+
+	public int getConnectedTimes() {
+		return ConnectedTimes;
+	}
+
+	public void setConnectedTimes(int connectedTimes) {
+		ConnectedTimes = connectedTimes;
+	}
+
+	public int getConnectedDuration() {
+		return ConnectedDuration;
+	}
+
+	public void setConnectedDuration(int connectedDuration) {
+		ConnectedDuration = connectedDuration;
+	}
+	
 	public WifiInfoScanned() {
 		mWifiName = null;
 		mWifiMAC = null;

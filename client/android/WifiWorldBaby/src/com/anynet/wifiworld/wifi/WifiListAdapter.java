@@ -89,7 +89,7 @@ public class WifiListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public void getDataFromDB(WifiInfoScanned infoScanned) {
+	public void getDataFromDB(final WifiInfoScanned infoScanned) {
 		WifiProfile wifiPro = new WifiProfile();
 		wifiPro.QueryByMacAddress(this.context, infoScanned.getWifiMAC(), new DataCallback<WifiProfile>() {
 			
@@ -104,12 +104,15 @@ public class WifiListAdapter extends BaseAdapter {
 				Log.i(TAG, "Sponser: " + object.Sponser);
 				Log.i(TAG, "Geometry: " + object.Geometry);
 				Log.i(TAG, "Income: " + object.Income);
-				
+				infoScanned.setConnectedDuration(object.ConnectedDuration);
+				infoScanned.setConnectedTimes(object.ConnectedTimes);
+				infoScanned.setRanking(object.Ranking);
+				infoScanned.setRating(object.Rating);
 			}
 			
 			@Override
 			public void onFailed(String msg) {
-				Log.i(TAG, "Query database failed");
+				Log.i(TAG, "Query database failed:" + infoScanned.getWifiMAC());
 				
 			}
 		});
@@ -144,21 +147,22 @@ public class WifiListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		TextView textView = null;
-        if(mWifiTags.contains(getItem(position))){
+		final WifiInfoScanned infoScanned = (WifiInfoScanned)getItem(position);
+        if(mWifiTags.contains(infoScanned)){
             view = LayoutInflater.from(this.context).inflate(R.layout.wifi_tag, null);
             textView = (TextView) view.findViewById(R.id.wifi_tag_text);
-            if (((WifiInfoScanned)getItem(position)).getWifiName().equals("Free")) {
+            if ((infoScanned).getWifiName().equals("Free")) {
             	textView.setText("挖掘到" + wifiFreeCnt + "个免费WiFi");
-			} else if (((WifiInfoScanned)getItem(position)).getWifiName().equals("Encrypt")) {
+			} else if ((infoScanned).getWifiName().equals("Encrypt")) {
 				textView.setText("扫描到" + wifiEncryptCnt + "个需要密码的WiFi");
 			}
         } else {
-            if (((WifiInfoScanned)getItem(position)).getWifiName() == "FreeDeclare") {
+            if ((infoScanned).getWifiName() == "FreeDeclare") {
             	view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("免费WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
-			} else if (((WifiInfoScanned)getItem(position)).getWifiName() == "EncryptDeclare") {
+			} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
 				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("需要密码的WiFi出现在这里");
@@ -166,11 +170,11 @@ public class WifiListAdapter extends BaseAdapter {
 			} else {
 				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
 	            textView = (TextView) view.findViewById(R.id.wifi_name);
-				textView.setText(((WifiInfoScanned)getItem(position)).getWifiName());
+				textView.setText((infoScanned).getWifiName());
 				
 				TextView remarkText = (TextView) view.findViewById(R.id.wifi_remark);
-				if (((WifiInfoScanned)getItem(position)).getRemark() != null) {
-					remarkText.setText(((WifiInfoScanned)getItem(position)).getRemark());
+				if ((infoScanned).getRemark() != null) {
+					remarkText.setText((infoScanned).getRemark());
 				} else {
 					remarkText.setVisibility(View.GONE);
 				}
@@ -182,7 +186,7 @@ public class WifiListAdapter extends BaseAdapter {
 					imageView.setImageResource(R.drawable.id_default);
 				}
 	            
-	            int signalStrength = ((WifiInfoScanned)getItem(position)).getWifiStrength();
+	            int signalStrength = (infoScanned).getWifiStrength();
 	            TextView signalLevelView = (TextView) view.findViewById(R.id.wifi_status_digit);
 	            signalLevelView.setText(signalStrength + "%");
 	            ImageView signalImage = (ImageView) view.findViewById(R.id.wifi_status_icon);
@@ -201,9 +205,9 @@ public class WifiListAdapter extends BaseAdapter {
 					public void onClick(View arg0) {
 						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 						Bundle wifiData = new Bundle();
-						wifiData.putSerializable("WifiSelected", ((WifiInfoScanned)getItem(position)));
+						getDataFromDB(infoScanned);
+						wifiData.putSerializable("WifiSelected", infoScanned);
 						intent.putExtras(wifiData);
-						getDataFromDB((WifiInfoScanned)getItem(position));
 						context.startActivity(intent);
 					}
 				});

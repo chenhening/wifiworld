@@ -28,8 +28,18 @@ public class WifiDetailsActivity extends Activity {
 		WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
 		detailsTitle.setText(wifiSelected.getWifiName());
+		
 		TextView strength = (TextView)findViewById(R.id.wifi_connect_strength_num);
 		strength.setText(String.valueOf(wifiSelected.getWifiStrength()) + "%");
+		
+		TextView rating = (TextView)findViewById(R.id.wifi_account_rank);
+		rating.setText("排名：" + String.valueOf(wifiSelected.getRanking()));
+		TextView ranking = (TextView)findViewById(R.id.wifi_account_star_num);
+		ranking.setText(String.valueOf(wifiSelected.getRating()));
+		TextView connectedTimes = (TextView)findViewById(R.id.wifi_connect_times_num);
+		connectedTimes.setText(String.valueOf(wifiSelected.getConnectedTimes()) + "次");
+		TextView connectedDuration = (TextView)findViewById(R.id.wifi_connect_time_num);
+		connectedDuration.setText(String.valueOf(wifiSelected.getConnectedDuration()) + "小时");
 		
 		ImageView backView = (ImageView)findViewById(R.id.iv_setting_header_left);
 		backView.setOnClickListener(new OnClickListener() {

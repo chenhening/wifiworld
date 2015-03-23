@@ -1,12 +1,9 @@
 package com.anynet.wifiworld.wifi;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.cordova.LOG;
 
-import A.which;
 import android.content.Context;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -14,57 +11,40 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiType;
 
-public class WifiHandleDB implements Runnable {
+public class WifiHandleDB {
 	private final static String TAG = WifiHandleDB.class.getSimpleName();
 	
 	private Context mContext;
-	private Map<String, WifiInfoScanned> mWifiListScanned;
+	private WifiProfile mWifiProfile;
+	private static WifiHandleDB wifiHandleDB = null;
 	
-	public WifiHandleDB(Context context, Map<String, WifiInfoScanned> wifiListScanned) {
-		mContext = context;
-		mWifiListScanned = wifiListScanned;
-	}
-	
-	@Override
-	public void run() {
-		WifiProfile wifiProfile = new WifiProfile();
-		Iterator<String> iterator = mWifiListScanned.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
-			WifiInfoScanned wifiInfoScanned = mWifiListScanned.get(key);
-			wifiProfile.QueryByMacAddress(mContext, wifiInfoScanned.getWifiMAC(),
-					new DataCallback<WifiProfile>() {
-
-						@Override
-						public void onSuccess(WifiProfile object) {
-							// TODO Auto-generated method stub
-							
-						}
-
-						@Override
-						public void onFailed(String msg) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
+	public static WifiHandleDB getInstance(Context context) {
+		if (wifiHandleDB == null) {
+			wifiHandleDB = new WifiHandleDB(context);
 		}
-		//check whether exist in WifiProfile table
-		
-		
-
+		return wifiHandleDB;
 	}
 	
-	private void updateOneRow(WifiProfile wifiProfile, WifiInfoScanned infoScanned) {
-		wifiProfile.Ssid = infoScanned.getWifiName();
-		wifiProfile.MacAddr = infoScanned.getWifiMAC();
-		wifiProfile.Alias = null;
-		wifiProfile.Password = infoScanned.getWifiPwd();
-		wifiProfile.Banner = null;
-		wifiProfile.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
-		wifiProfile.Sponser = null;
-		wifiProfile.Geometry = new BmobGeoPoint(1.0, 1.0);
-		wifiProfile.Income = 0.0f;
-		wifiProfile.StoreRemote(mContext, new DataCallback<WifiProfile>() {
+	private WifiHandleDB(Context context) {
+		mContext = context;
+		mWifiProfile = new WifiProfile();
+	}
+	
+	public void updateOneRow(WifiInfoScanned infoScanned) {
+		mWifiProfile.Ssid = infoScanned.getWifiName();
+		mWifiProfile.MacAddr = infoScanned.getWifiMAC();
+		mWifiProfile.Alias = "逗比";
+		mWifiProfile.Password = infoScanned.getWifiPwd();
+		mWifiProfile.Banner = null;
+		mWifiProfile.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+		mWifiProfile.Sponser = "无名氏";
+		mWifiProfile.Geometry = infoScanned.getGeometry();
+		mWifiProfile.Income = 0.0f;
+		mWifiProfile.ConnectedDuration = 998;
+		mWifiProfile.ConnectedTimes = 123;
+		mWifiProfile.Ranking = 278;
+		mWifiProfile.Rating = 4.7f;
+		mWifiProfile.StoreRemote(mContext, new DataCallback<WifiProfile>() {
 
 			@Override
             public void onSuccess(WifiProfile object) {

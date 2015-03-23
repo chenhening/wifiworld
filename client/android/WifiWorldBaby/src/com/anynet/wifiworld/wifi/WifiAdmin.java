@@ -31,9 +31,8 @@ public class WifiAdmin {
     public static WifiAdmin getInstance(Context context) {
         if(wifiAdmin == null) {
             wifiAdmin = new WifiAdmin(context);
-            return wifiAdmin;
         }
-        return null;
+        return wifiAdmin;
     }
     
     private WifiAdmin(Context context) {

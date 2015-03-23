@@ -35,6 +35,11 @@ public class WifiProfile extends BmobObject{
 	public String ExtAddress;
 	public String Banner; //wifi的展示页内容(TODO(binfei)还需要定义更多)
 	public float Income; //wifi 收入
+	
+	public float Rating;
+	public int Ranking;
+	public int ConnectedTimes;
+	public int ConnectedDuration;
 // ------------------------------------------------------------------------------------------------
 	public WifiProfile() {
 	}
@@ -146,11 +151,13 @@ public class WifiProfile extends BmobObject{
 		final DataCallback<WifiProfile> _callback = callback;
 		final WifiProfile wifi = this;
 		//对密码进行加密
-		try {
-			wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
-		} catch (Exception e) {
-			_callback.onFailed("无法保存数据: " + e.getMessage());
-			return;
+		if (wifi.Password != null) {
+			try {
+				wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
+			} catch (Exception e) {
+				_callback.onFailed("无法保存数据: " + e.getMessage());
+				return;
+			}
 		}
 		
 		//先查询，如果有数据就更新，否则增加一条新记录

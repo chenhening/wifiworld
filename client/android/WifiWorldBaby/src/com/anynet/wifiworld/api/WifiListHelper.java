@@ -107,13 +107,14 @@ public class WifiListHelper {
 					mWifiEncrypt.add(wifiInfoScanned);
 				}
 			}
+			WifiHandleDB.getInstance(mContext).updateOneRow(wifiInfoScanned);
 			
-			String hotspotKey = hotspot.SSID + " " + hotspot.capabilities;
-			if (!mWifiListUnique.contains(hotspotKey)) {
-				mWifiListUnique.add(hotspotKey);
-				//upload WIFI info to WIFI Unregistered
-				updateHotspot(wifiInfoScanned);
-			}
+//			String hotspotKey = hotspot.SSID + " " + hotspot.capabilities;
+//			if (!mWifiListUnique.contains(hotspotKey)) {
+//				mWifiListUnique.add(hotspotKey);
+//				//upload WIFI info to WIFI Unregistered
+//				updateHotspot(wifiInfoScanned);
+//			}
 		}
 	}
 	
@@ -153,7 +154,7 @@ public class WifiListHelper {
 			
 			@Override
 			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi profile from server" + macAddress);
+				Log.i(TAG, "Failed to query wifi profile from server:" + macAddress);
 				final WifiProfile wifi = new WifiProfile(WifiProfile.table_name_wifiunregistered);
 				wifi.Ssid = infoScanned.getWifiName();
 				wifi.MacAddr = infoScanned.getWifiMAC();
