@@ -9,9 +9,11 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
-
+	//IPC
+	private Intent mIntent = null;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -23,10 +25,11 @@ public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(WifiProviderRigisterSecondBusinessActivity.this,
+				//Intent i = new Intent(WifiProviderRigisterSecondBusinessActivity.this,
+				//		WifiProviderRigisterThirdActivity.class);
+				mIntent.setClass(WifiProviderRigisterSecondBusinessActivity.this,
 						WifiProviderRigisterThirdActivity.class);
-				startActivity(i);
+				startActivity(mIntent);
 			}
 		});
 		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
@@ -41,7 +44,7 @@ public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		mIntent = getIntent();
 		setContentView(R.layout.wifi_provider_certify_second_home);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();

@@ -144,6 +144,10 @@ public class LoginHelper {
 
 	public void logout() {
 		mIsLogin = false;
+		SharedPreferences.Editor sharedata = mPreferences.edit();
+		sharedata.clear();
+		sharedata.commit();
+		Log.d(TAG, "用户退出成功");
 	}
 
 	private void SaveProfileLocal(UserProfile user) {

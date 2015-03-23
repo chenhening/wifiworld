@@ -28,18 +28,18 @@ import android.widget.Toast;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	
 	private WifiListHelper mWifiHelper = null;
+	private LoginHelper mLoginHelper = null;
 	private WifiProfile mWifiProfile = new WifiProfile();
 	private LocationHelper mLocationHelper = null;
 	
@@ -49,6 +49,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private Spinner msp_typelist = null;
 	private Bitmap mLogo = null;
 	private ImageView mWifiLogo = null;
+	
+	private boolean mWifiVerfied = false;
 	
 	private String[] items = new String[] { "选择本地图片", "拍照" };
 	private static final String IMAGE_FILE_NAME = "image.jpg";/** 头像名称 */
@@ -66,6 +68,11 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
+				//如果第一页有未填写字段，则提示填写
+				if (!checkRequiredFields()) {
+					return;
+				}
+				
 				Intent i = null;
 				if (msp_typelist.getSelectedItem().toString() == "商家网络") {
 					i = new Intent(WifiProviderRigisterFirstActivity.this, 
@@ -74,6 +81,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 					i = new Intent(WifiProviderRigisterFirstActivity.this, 
 						WifiProviderRigisterSecondHomeActivity.class);
 				}
+				i.putExtra(WifiProfile.class.getName(), mWifiProfile);
 				startActivity(i);
 			}
 		});
@@ -93,6 +101,10 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		setContentView(R.layout.wifi_provider_certify_first);
 		super.onCreate(savedInstanceState);		
 		bingdingTitleUI();
+		
+		//获得sponser
+		mLoginHelper= LoginHelper.getInstance(getApplicationContext());
+		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		
 		//自动获取网络ssid
 		setSSIDUI();
@@ -187,6 +199,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 										public void run() {
 											showToast("WiFi验证成功，请继续填写其他项目。");
 											met_password.setEnabled(false);
+											mWifiVerfied = true;
+											mWifiProfile.Password = met_password.getText().toString();
 										}
 									});
 								}
@@ -355,5 +369,33 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			mWifiLogo = (ImageView)this.findViewById(R.id.img_wifi_provider_logo_preview);
 			mWifiLogo.setImageDrawable(drawable);
 		}
+	}
+
+	private boolean checkRequiredFields() {
+		if (!mWifiVerfied) {
+			showToast("验证路由器密码失败，请检查是否输入密码正确。");
+			return false;
+		}
+		
+		EditText et_alias = (EditText) this.findViewById(R.id.et_wifi_provider_alias);
+		mWifiProfile.Alias = et_alias.getText().toString();
+		if(mWifiProfile.Alias == "") {
+			showToast("请务必填写WiFi别名。");
+			return false;
+		}
+		
+		mWifiProfile.ExtAddress = mtv_location.getText().toString();
+		if(mWifiProfile.Alias == "") {
+			showToast("获取地理位置失败，请重新点击获取地理位置");
+			return false;
+		}
+		
+		EditText et_detail_addr = (EditText) this.findViewById(R.id.et_wifi_provider_detail_address);
+		mWifiProfile.ExtAddress += " " + et_detail_addr.getText().toString();
+		
+		EditText et_desc = (EditText) this.findViewById(R.id.et_wifi_provider_desc_content);
+		mWifiProfile.Banner = et_desc.getText().toString();
+		
+		return true;
 	}
 }
