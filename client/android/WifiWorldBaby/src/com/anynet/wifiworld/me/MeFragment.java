@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.me;
 
+import java.util.List;
 import java.util.TimerTask;
 
 import android.content.BroadcastReceiver;
@@ -21,6 +22,8 @@ import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
+import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class MeFragment extends MainFragment {
@@ -82,7 +85,6 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent i = new Intent(getApplicationContext(), UserLoginActivity.class);
 				startActivity(i);
 			}
@@ -92,9 +94,32 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(getApplicationContext(), WifiProviderListActivity.class);
-				startActivity(i);
+				//查询是否登录
+				if (!mLoginHelper.getCurLoginStatus()) {
+					Intent i = new Intent(getApplicationContext(),UserLoginActivity.class);
+					startActivity(i);
+					return;
+				}
+				
+				//去服务器上查询是否已经登记了自己的wifi
+				WifiProfile wifi = new WifiProfile();
+				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
+					new MultiDataCallback<WifiProfile>() {
+
+						@Override
+                        public void onSuccess(List<WifiProfile> objects) {
+							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+							startActivity(i);
+                        }
+
+						@Override
+                        public void onFailed(String msg) {
+							Intent i = new Intent(getApplicationContext(), WifiProviderListActivity.class);
+							startActivity(i);
+                        }
+					
+				});
 			}
 		});
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
@@ -106,6 +131,7 @@ public class MeFragment extends MainFragment {
 				startActivity(i);
 			}
 		});
+
 		return mPageRoot;
 	}
 
