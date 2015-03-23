@@ -109,6 +109,39 @@ public class WifiProfile extends BmobObject{
 		}).start();
 	}
 	
+	//以提供者key来查找
+	public void QueryBySponser(final Context context, String sponser, 
+		MultiDataCallback<WifiProfile> callback) {
+		final MultiDataCallback<WifiProfile> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereEqualTo("Sponser", sponser);
+		Log.d("findObjects", "开始查询QueryBySponser");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() >= 1) {
+							_callback.onSuccess(object);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryBySponser");
+			}
+			
+		}).start();
+	}
+	
 	public void StoreRemote(final Context context, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final WifiProfile wifi = this;
