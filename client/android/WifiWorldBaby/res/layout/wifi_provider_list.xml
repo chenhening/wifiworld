@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   <include layout="@layout/header_setting" />
+    <include layout="@layout/header_setting" />
 
     <TextView
         android:id="@+id/tv_add_wifi"
@@ -16,6 +16,16 @@
         android:gravity="center"
         android:text="Add" />
 
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/wifi_provider_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fafafa"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:listSelector="@android:color/transparent" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
@@ -23,7 +33,8 @@
         android:background="#fafafa"
         android:divider="@null"
         android:dividerHeight="0px"
-        android:listSelector="@android:color/transparent" >
+        android:listSelector="@android:color/transparent"
+        android:visibility="gone" >
     </ListView>
 
 </LinearLayout>

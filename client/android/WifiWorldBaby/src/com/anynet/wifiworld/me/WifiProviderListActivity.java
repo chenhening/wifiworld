@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -21,12 +22,17 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class WifiProviderListActivity extends BaseActivity {
+public class WifiProviderListActivity extends BaseActivity implements OnRefreshListener<ListView> {
 
 	private ListView providerList;
 	private QuickAdapter<WifiProfile> LostAdapter;
-
+	PullToRefreshListView lvRecordList;
+	LoginHelper mLoginHelper;
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -46,18 +52,14 @@ public class WifiProviderListActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.provider_list);
+		setContentView(R.layout.wifi_provider_list);
 		super.onCreate(savedInstanceState);
-		LoginHelper mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 		if (!mLoginHelper.isLogined()) {
 			Toast.makeText(this, "未登录！", Toast.LENGTH_LONG).show();
 			finish();
 		}
-
-		setWifiProfileList(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
-
-		providerList = (ListView) findViewById(R.id.listview);
-
+		
 		LostAdapter = new QuickAdapter<WifiProfile>(this, R.layout.item_list) {
 			@Override
 			protected void convert(BaseAdapterHelper helper, WifiProfile wifiProfile) {
@@ -67,17 +69,13 @@ public class WifiProviderListActivity extends BaseActivity {
 			}
 		};
 
-		providerList.setAdapter(LostAdapter);
-		findViewById(R.id.tv_add_wifi).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(getApplicationContext(), WifiProviderActivity.class));
-			}
-		});
-		bingdingTitleUI();
-		providerList.setOnItemClickListener(new OnItemClickListener() {
+		
+		lvRecordList = (PullToRefreshListView) findViewById(R.id.wifi_provider_list);
+        lvRecordList.setMode(Mode.BOTH);
+        lvRecordList.setEmptyView(LayoutInflater.from(this).inflate(R.layout.list_empty_view, null));
+        lvRecordList.setAdapter(LostAdapter);
+        lvRecordList.setOnRefreshListener(this);
+        lvRecordList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,6 +85,34 @@ public class WifiProviderListActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
+		setWifiProfileList(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
+
+//		providerList = (ListView) findViewById(R.id.listview);
+//		providerList.setAdapter(LostAdapter);
+//		providerList.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				// TODO Auto-generated method stub
+//				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+//				i.putExtra("mac", LostAdapter.getItem(position).MacAddr);
+//				startActivity(i);
+//			}
+//		});
+//		
+		findViewById(R.id.tv_add_wifi).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(WifiProviderListActivity.this, WifiProviderRigisterActivity.class);
+				startActivity(i);
+				// startActivity(new Intent(getApplicationContext(),
+				// WifiProviderActivity.class));
+			}
+		});
+		bingdingTitleUI();
+
 	}
 
 	private void setWifiProfileList(String Sponser) {
@@ -99,7 +125,13 @@ public class WifiProviderListActivity extends BaseActivity {
 			@Override
 			public void onSuccess(List<WifiProfile> elem) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), "返回数据：" + elem.size() + "条", Toast.LENGTH_LONG).show();
+				if(elem.size()<1){
+					Toast.makeText(getApplicationContext(), "还未添加Wifi，请添加Wifi数据", Toast.LENGTH_LONG).show();
+//					Intent i = new Intent(WifiProviderListActivity.this, WifiProviderRigisterActivity.class);
+//					startActivity(i);
+//					return;
+				}
+				LostAdapter.clear();
 				LostAdapter.addAll(elem);
 				LostAdapter.notifyDataSetChanged();
 			}
@@ -150,6 +182,12 @@ public class WifiProviderListActivity extends BaseActivity {
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
+	}
+
+	@Override
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+		// TODO Auto-generated method stub
+		setWifiProfileList(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
 	}
 
 }
