@@ -4,7 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.cordova.Config;
+import org.apache.cordova.ConfigXmlParser;
 import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaInterfaceImpl;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CordovaWebViewImpl;
@@ -34,7 +36,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 
-public class WifiProviderDetailActivity extends BaseActivity implements CordovaInterface {
+public class WifiProviderDetailActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
@@ -65,6 +67,13 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 	}
 
 	
+    protected CordovaInterfaceImpl cordovaInterface = new CordovaInterfaceImpl(this) {
+        @Override
+        public Object onMessage(String id, Object data) {
+            return super.onMessage(id, data);
+        }
+    };
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
@@ -72,15 +81,11 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 					
-		//SystemWebView webView = (SystemWebView)findViewById(R.id.cwv_provider_detail_view);
-		//cordView = new CordovaWebViewImpl(this, new SystemWebViewEngine(webView));
-		//Config.init(this);
-		//cordView.init(this, Config.getPluginEntries(), Config.getPreferences());
-		//cordView.loadUrl("file:///android_asset/www/index.html");
-		cordView = (CordovaWebView)findViewById(R.id.cwv_provider_detail_view);
-		Config.init(this);
-		cordView.init(this, Config.getPluginEntries(), Config.getPreferences());
-		cordView.loadUrl("file:///android_asset/www/index.html");
+		SystemWebView webView = (SystemWebView)findViewById(R.id.cwv_provider_detail_view);
+		cordView = new CordovaWebViewImpl(this, new SystemWebViewEngine(webView));
+		ConfigXmlParser parser = new ConfigXmlParser();
+		cordView.init(cordovaInterface, parser.getPluginEntries(), parser.getPreferences());
+		cordView.loadUrl("file:///android_asset/www/pages/index.html");
 		
 		//当前在线用户展示图
 		/*displayUserOnlineMap(savedInstanceState);
@@ -140,40 +145,6 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
-
-
-	@Override
-    public Activity getActivity() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-
-	@Override
-    public ExecutorService getThreadPool() {
-		return Executors.newSingleThreadExecutor();
-    }
-
-
-	@Override
-    public Object onMessage(String arg0, Object arg1) {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-
-	@Override
-    public void setActivityResultCallback(CordovaPlugin arg0) {
-	    // TODO Auto-generated method stub
-	    
-    }
-
-
-	@Override
-    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-	    // TODO Auto-generated method stub
-	    
-    }
 	
 	// ---------------------------------------------------------------------------------------------
 	/*private void displayUserOnlineMap(Bundle savedInstanceState) {
