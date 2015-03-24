@@ -1,13 +1,15 @@
 package com.anynet.wifiworld.wifi;
 
-import java.util.Map;
-
 import org.apache.cordova.LOG;
 
 import android.content.Context;
-import cn.bmob.v3.datatype.BmobGeoPoint;
+import android.net.wifi.WifiInfo;
+import android.util.Log;
+
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiType;
 
@@ -30,7 +32,7 @@ public class WifiHandleDB {
 		mWifiProfile = new WifiProfile();
 	}
 	
-	public void updateOneRow(WifiInfoScanned infoScanned) {
+	public void updateWifiProfile(WifiInfoScanned infoScanned) {
 		mWifiProfile.Ssid = infoScanned.getWifiName();
 		mWifiProfile.MacAddr = infoScanned.getWifiMAC();
 		mWifiProfile.Alias = "逗比";
@@ -55,6 +57,115 @@ public class WifiHandleDB {
             public void onFailed( String msg) {
 				LOG.d(TAG, "添加数据失败：" + msg);
             }
+		});
+	}
+	
+	public void updateWifiUnregistered(final WifiInfoScanned infoScanned) {
+		WifiProfile wifiProfile = new WifiProfile();
+		final String macAddress = infoScanned.getWifiMAC();
+		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(final WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + macAddress);
+				final WifiProfile wifi = new WifiProfile();
+				wifi.Ssid = infoScanned.getWifiName();
+				wifi.MacAddr = infoScanned.getWifiMAC();
+				wifi.Alias = null;
+				wifi.Password = infoScanned.getWifiPwd();
+				wifi.Banner = null;
+				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
+				wifi.encryptType = infoScanned.getEncryptType();
+				wifi.Sponser = null;
+				wifi.Geometry = infoScanned.getGeometry();
+				wifi.Income = 0.0f;
+				wifi.setObjectId(object.getObjectId());
+				wifi.update(mContext, new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						Log.i(TAG, "Update WifiProfile table success");
+					}
+					
+					@Override
+					public void onFailure(int arg0, String msg) {
+						Log.i(TAG, "Update WifiProfile table failed：" + msg);
+					}
+				});
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.i(TAG, "Failed to query wifi profile from server:" + macAddress);
+				final WifiProfile wifi = new WifiProfile(WifiProfile.table_name_wifiunregistered);
+				wifi.Ssid = infoScanned.getWifiName();
+				wifi.MacAddr = infoScanned.getWifiMAC();
+				wifi.Alias = null;
+				wifi.Password = infoScanned.getWifiPwd();
+				wifi.Banner = null;
+				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+				wifi.encryptType = infoScanned.getEncryptType();
+				wifi.Sponser = null;
+				wifi.Geometry = infoScanned.getGeometry();
+				wifi.Income = 0.0f;
+				wifi.StoreRemote(mContext, new DataCallback<WifiProfile>() {
+
+					@Override
+					public void onSuccess(WifiProfile object) {
+						Log.i(TAG, "Add Data to WifiUnregister table success");
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						Log.i(TAG, "Add Data to WifiUnregister table failed: " + msg);
+						
+					}
+				});
+			}
+		});
+	}
+	
+	public void queryWifiProfile(final WifiInfoScanned infoScanned) {
+		WifiProfile wifiProfile = new WifiProfile();
+		wifiProfile.QueryByMacAddress(mContext, infoScanned.getWifiMAC(), new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(final WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + infoScanned.getWifiMAC());
+				infoScanned.setConnectedDuration(object.ConnectedDuration);
+				infoScanned.setConnectedTimes(object.ConnectedTimes);
+				infoScanned.setRanking(object.Ranking);
+				infoScanned.setRating(object.Rating);
+				
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi profile from server" + infoScanned.getWifiMAC());
+				
+			}
+		});
+	}
+	
+	public void updateWifiDynamic(WifiInfo wifiInfo) {
+		WifiDynamic wifiDynamic = new WifiDynamic();
+		wifiDynamic.Userid = wifiInfo.getSSID();
+		wifiDynamic.MacAddr = wifiInfo.getBSSID();
+		wifiDynamic.Geometry = WifiAdmin.getWifiGeometry(mContext, wifiInfo.getRssi());
+		wifiDynamic.MarkLoginTime();
+		wifiDynamic.StoreRemote(mContext, new DataCallback<WifiDynamic>() {
+
+			@Override
+			public void onSuccess(WifiDynamic object) {
+				Log.i(TAG, "Success to store wifi dynamic info to server");
+				
+			}
+
+			@Override
+			public void onFailed(String msg) {
+				Log.i(TAG, "Failed to store wifi dynamic info to server:" + msg);
+				
+			}
 		});
 	}
 }

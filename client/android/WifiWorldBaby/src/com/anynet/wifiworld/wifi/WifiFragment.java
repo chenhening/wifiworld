@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -111,7 +112,7 @@ public class WifiFragment extends MainFragment {
 							displayWifiConnected(mWifiNameView);
 							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 						} else {
-							Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG);
+							Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
 						}
 					}
 				}
@@ -199,6 +200,7 @@ public class WifiFragment extends MainFragment {
 			wifiNameView.setTextColor(Color.BLACK);
 			mWifiListHelper.rmWifiConnected(WifiAdmin.convertToNonQuotedString(wifiConnected));
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
+			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnection());
 		} else {
 			wifiNameView.setText("未连接任何Wifi");
 			mWifiSquareLayout.setVisibility(View.GONE);

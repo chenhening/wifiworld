@@ -1,28 +1,20 @@
 package com.anynet.wifiworld.api;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.cordova.LOG;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
-
-import com.anynet.wifiworld.data.DataCallback;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiType;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
-import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class WifiListHelper {
 	private final static String TAG = WifiListHelper.class.getSimpleName();
@@ -107,7 +99,7 @@ public class WifiListHelper {
 					mWifiEncrypt.add(wifiInfoScanned);
 				}
 			}
-			WifiHandleDB.getInstance(mContext).updateOneRow(wifiInfoScanned);
+			//WifiHandleDB.getInstance(mContext).updateOneRow(wifiInfoScanned);
 			
 //			String hotspotKey = hotspot.SSID + " " + hotspot.capabilities;
 //			if (!mWifiListUnique.contains(hotspotKey)) {
@@ -116,94 +108,6 @@ public class WifiListHelper {
 //				updateHotspot(wifiInfoScanned);
 //			}
 		}
-	}
-	
-	private void updateHotspot(final WifiInfoScanned infoScanned) {
-		WifiProfile wifiProfile = new WifiProfile();
-		final String macAddress = infoScanned.getWifiMAC();
-		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
-			
-			@Override
-			public void onSuccess(final WifiProfile object) {
-				Log.i(TAG, "Success to query wifi profile from server:" + macAddress);
-				final WifiProfile wifi = new WifiProfile();
-				wifi.Ssid = infoScanned.getWifiName();
-				wifi.MacAddr = infoScanned.getWifiMAC();
-				wifi.Alias = null;
-				wifi.Password = infoScanned.getWifiPwd();
-				wifi.Banner = null;
-				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
-				wifi.encryptType = infoScanned.getEncryptType();
-				wifi.Sponser = null;
-				wifi.Geometry = infoScanned.getGeometry();
-				wifi.Income = 0.0f;
-				wifi.setObjectId(object.getObjectId());
-				wifi.update(mContext, new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						Log.i(TAG, "Update WifiProfile table success");
-					}
-					
-					@Override
-					public void onFailure(int arg0, String msg) {
-						Log.i(TAG, "Update WifiProfile table failed：" + msg);
-					}
-				});
-			}
-			
-			@Override
-			public void onFailed(String msg) {
-				Log.i(TAG, "Failed to query wifi profile from server:" + macAddress);
-				final WifiProfile wifi = new WifiProfile(WifiProfile.table_name_wifiunregistered);
-				wifi.Ssid = infoScanned.getWifiName();
-				wifi.MacAddr = infoScanned.getWifiMAC();
-				wifi.Alias = null;
-				wifi.Password = infoScanned.getWifiPwd();
-				wifi.Banner = null;
-				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
-				wifi.encryptType = infoScanned.getEncryptType();
-				wifi.Sponser = null;
-				wifi.Geometry = infoScanned.getGeometry();
-				wifi.Income = 0.0f;
-				wifi.StoreRemote(mContext, new DataCallback<WifiProfile>() {
-
-					@Override
-					public void onSuccess(WifiProfile object) {
-						Log.i(TAG, "Add Data to WifiUnregister table success");
-					}
-
-					@Override
-					public void onFailed(String msg) {
-						Log.i(TAG, "Add Data to WifiUnregister table failed: " + msg);
-						
-					}
-				});
-			}
-		});
-	}
-	
-	private void queryWifiProfile(final String macAddress, final WifiInfoScanned result) {
-		WifiProfile wifiProfile = new WifiProfile();
-		wifiProfile.QueryByMacAddress(mContext, macAddress, new DataCallback<WifiProfile>() {
-			
-			@Override
-			public void onSuccess(final WifiProfile object) {
-				Log.i(TAG, "Success to query wifi profile from server:" + macAddress);
-				result.setWifiName(object.Ssid);
-				result.setWifiPwd(object.Password);
-				result.setWifiMAC(object.MacAddr);
-				result.setEncryptType(object.encryptType);
-				result.setRemark("已认证WiFi");
-				
-			}
-			
-			@Override
-			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi profile from server" + macAddress);
-				
-			}
-		});
 	}
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list

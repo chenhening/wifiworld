@@ -273,6 +273,7 @@ public class WifiAdmin {
 			newPri = shiftPriorityAndSave(mWifiManager);
 			config = getWifiConfiguration(config, security);
 			if(config == null) {
+				Log.e(TAG, "Failed to find configed wifi under local wificonfiguration list");
 				return false;
 			}
 		}
@@ -281,23 +282,27 @@ public class WifiAdmin {
 		config.priority = newPri;
 		int networkId = mWifiManager.updateNetwork(config);
 		if(networkId == -1) {
+			Log.e(TAG, "Unable to update new priority info to network");
 			return false;
 		}
 		
 		// Do not disable others
 		if(!mWifiManager.enableNetwork(networkId, false)) {
 			config.priority = oldPri;
+			Log.e(TAG, "Failed to enable current select network");
 			return false;
 		}
 		
 		if(!mWifiManager.saveConfiguration()) {
 			config.priority = oldPri;
+			Log.e(TAG, "Failed to save current configuration to local");
 			return false;
 		}
 		
 		// We have to retrieve the WifiConfiguration after save.
 		config = getWifiConfiguration(config, security);
 		if(config == null) {
+			Log.e(TAG, "Failed to retrieve current wifi configuration");
 			return false;
 		}
 		
@@ -306,11 +311,13 @@ public class WifiAdmin {
 		// Disable others, but do not save.
 		// Just to force the WifiManager to connect to it.
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
+			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
 		}
 		
 		final boolean connect = reassociate ? mWifiManager.reassociate() : mWifiManager.reconnect();
 		if(!connect) {
+			Log.e(TAG, "Failed to reassociate or reconnect");
 			return false;
 		}
 		

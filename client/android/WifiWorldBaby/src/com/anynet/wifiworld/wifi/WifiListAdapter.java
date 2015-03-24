@@ -89,35 +89,6 @@ public class WifiListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public void getDataFromDB(final WifiInfoScanned infoScanned) {
-		WifiProfile wifiPro = new WifiProfile();
-		wifiPro.QueryByMacAddress(this.context, infoScanned.getWifiMAC(), new DataCallback<WifiProfile>() {
-			
-			@Override
-			public void onSuccess(WifiProfile object) {
-				Log.i(TAG, "SSID: " + object.Ssid);
-				Log.i(TAG, "Mac: " + object.MacAddr);
-				Log.i(TAG, "Alias: " + object.Alias);
-				Log.i(TAG, "Password: " + object.Password);
-				Log.i(TAG, "Banner: " + object.Banner);
-				Log.i(TAG, "Type: " + object.Type);
-				Log.i(TAG, "Sponser: " + object.Sponser);
-				Log.i(TAG, "Geometry: " + object.Geometry);
-				Log.i(TAG, "Income: " + object.Income);
-				infoScanned.setConnectedDuration(object.ConnectedDuration);
-				infoScanned.setConnectedTimes(object.ConnectedTimes);
-				infoScanned.setRanking(object.Ranking);
-				infoScanned.setRating(object.Rating);
-			}
-			
-			@Override
-			public void onFailed(String msg) {
-				Log.i(TAG, "Query database failed:" + infoScanned.getWifiMAC());
-				
-			}
-		});
-	}
-	
 	@Override
 	public int getCount() {
 		return mWifiList.size();
@@ -205,7 +176,7 @@ public class WifiListAdapter extends BaseAdapter {
 					public void onClick(View arg0) {
 						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 						Bundle wifiData = new Bundle();
-						getDataFromDB(infoScanned);
+						WifiHandleDB.getInstance(context).queryWifiProfile(infoScanned);
 						wifiData.putSerializable("WifiSelected", infoScanned);
 						intent.putExtras(wifiData);
 						context.startActivity(intent);
