@@ -21,6 +21,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ public class WifiFragment extends MainFragment {
 	private PopupWindow mPopupWindow;
 	
 	private boolean mBroadcastRegistered;
+	private int mNumOpenNetworksKept;
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -66,6 +68,8 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity());
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
+		mNumOpenNetworksKept =  Settings.Secure.getInt(getActivity().getContentResolver(),
+	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
 	}
 
 	@Override
@@ -100,20 +104,23 @@ public class WifiFragment extends MainFragment {
 //					mWifiAdmin.Connect(wifiSelected.getWifiName(),
 //							wifiSelected.getWifiPwd(),
 //							wifiSelected.getWifiType());
+					boolean connResult = false;
 					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
 					if (cfgSelected != null) {
-						boolean success = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
-								mWifiAdmin.getWifiConfiguration(wifiSelected),
+						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiSelected),
 								true);
-						if (success) {
-							mWifiListHelper.fillWifiList();
-							mWifiFree = mWifiListHelper.getWifiFrees();
-							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-							displayWifiConnected(mWifiNameView);
-							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-						} else {
-							Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
-						}
+						
+					} else {
+						connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiSelected, mNumOpenNetworksKept);
+					}
+					if (connResult) {
+						mWifiListHelper.fillWifiList();
+						mWifiFree = mWifiListHelper.getWifiFrees();
+						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+						displayWifiConnected(mWifiNameView);
+						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+					} else {
+						Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
 					}
 				}
 			}

@@ -212,17 +212,16 @@ public class WifiAdmin {
 	 * @param password Password for secure network or is ignored.
 	 * @return
 	 */
-	public boolean connectToNewNetwork(final Context ctx, final ScanResult scanResult, final String password, final int numOpenNetworksKept) {
-		final String security = ConfigSec.getScanResultSecurity(scanResult);
+	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned, final int numOpenNetworksKept) {
 		
-		if(ConfigSec.isOpenNetwork(security)) {
+		if(ConfigSec.isOpenNetwork(wifiInfoScanned.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, numOpenNetworksKept);
 		}
 		
 		WifiConfiguration config = new WifiConfiguration();
-		config.SSID = convertToQuotedString(scanResult.SSID);
-		config.BSSID = scanResult.BSSID;
-		ConfigSec.setupSecurity(config, security, password);
+		config.SSID = convertToQuotedString(wifiInfoScanned.getWifiName());
+		config.BSSID = wifiInfoScanned.getWifiMAC();
+		ConfigSec.setupSecurity(config, wifiInfoScanned.getEncryptType(), wifiInfoScanned.getWifiPwd());
 		
 		int id = -1;
 		try {
@@ -240,7 +239,7 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		config = getWifiConfiguration(config, security);
+		config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
 		if(config == null) {
 			return false;
 		}
