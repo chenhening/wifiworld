@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.anynet.wifiworld"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <include layout="@layout/header_setting" />
 
+    <org.apache.cordova.CordovaWebView
+    	android:id="@+id/cwv_provider_detail_view"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent" />
+    
+    <!--
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
@@ -159,7 +164,7 @@
                         android:layout_marginRight="4dp"
                         android:background="@color/white"
                         android:tag="tvDiggerSpeed"
-                        android:text="--"
+                        android:text=""
                         android:textColor="#636363"
                         android:textSize="22sp" />
                 </LinearLayout>
@@ -188,7 +193,7 @@
                         android:layout_marginRight="4dp"
                         android:background="@color/white"
                         android:tag="tvDiggerSpeed"
-                        android:text="--"
+                        android:text=""
                         android:textColor="#636363"
                         android:textSize="22sp" />
                 </LinearLayout>
@@ -230,7 +235,7 @@
                         android:layout_marginRight="4dp"
                         android:background="@color/white"
                         android:tag="tvDiggerSpeed"
-                        android:text="--"
+                        android:text=""
                         android:textColor="#636363"
                         android:textSize="22sp" />
                 </LinearLayout>
@@ -259,7 +264,7 @@
                         android:layout_marginRight="4dp"
                         android:background="@color/white"
                         android:tag="tvDiggerSpeed"
-                        android:text="--"
+                        android:text=""
                         android:textColor="#636363"
                         android:textSize="22sp" />
                 </LinearLayout>
@@ -281,5 +286,6 @@
             </ListView>
         </LinearLayout>
     </ScrollView>
+    -->
 
 </LinearLayout>

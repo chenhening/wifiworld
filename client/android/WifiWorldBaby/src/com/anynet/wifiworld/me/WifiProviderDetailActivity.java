@@ -1,5 +1,17 @@
 package com.anynet.wifiworld.me;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaWebViewImpl;
+import org.apache.cordova.engine.SystemWebView;
+import org.apache.cordova.engine.SystemWebViewEngine;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -22,7 +34,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 
-public class WifiProviderDetailActivity extends BaseActivity {
+public class WifiProviderDetailActivity extends BaseActivity implements CordovaInterface {
 
 	//IPC
 	private Intent mIntent = null;
@@ -31,6 +43,8 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private Bitmap mLogo;
 	private BmobGeoPoint mBmobGeoPoint;
 	private WifiProviderLineChartView mLineChart;
+	
+	private CordovaWebView cordView = null;
 	
 	private MapView mapView = null;
 	private AMap aMap = null;
@@ -57,9 +71,19 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+					
+		//SystemWebView webView = (SystemWebView)findViewById(R.id.cwv_provider_detail_view);
+		//cordView = new CordovaWebViewImpl(this, new SystemWebViewEngine(webView));
+		//Config.init(this);
+		//cordView.init(this, Config.getPluginEntries(), Config.getPreferences());
+		//cordView.loadUrl("file:///android_asset/www/index.html");
+		cordView = (CordovaWebView)findViewById(R.id.cwv_provider_detail_view);
+		Config.init(this);
+		cordView.init(this, Config.getPluginEntries(), Config.getPreferences());
+		cordView.loadUrl("file:///android_asset/www/index.html");
 		
 		//当前在线用户展示图
-		displayUserOnlineMap(savedInstanceState);
+		/*displayUserOnlineMap(savedInstanceState);
 		
 		RelativeLayout chartLayout = (RelativeLayout)
 			this.findViewById(R.id.rl_wifi_provider_line_chart);
@@ -71,7 +95,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		//居中显示
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		mLineChart = new WifiProviderLineChartView(this);
-        chartLayout.addView(mLineChart, layoutParams);
+        chartLayout.addView(mLineChart, layoutParams);*/
 	}
 
 	@Override
@@ -116,9 +140,43 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
+
+
+	@Override
+    public Activity getActivity() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+
+	@Override
+    public ExecutorService getThreadPool() {
+		return Executors.newSingleThreadExecutor();
+    }
+
+
+	@Override
+    public Object onMessage(String arg0, Object arg1) {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+
+	@Override
+    public void setActivityResultCallback(CordovaPlugin arg0) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+
+	@Override
+    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+	    // TODO Auto-generated method stub
+	    
+    }
 	
 	// ---------------------------------------------------------------------------------------------
-	private void displayUserOnlineMap(Bundle savedInstanceState) {
+	/*private void displayUserOnlineMap(Bundle savedInstanceState) {
 		mapView = (MapView) this.findViewById(R.id.user_online_map);
 		mapView.onCreate(savedInstanceState);
 		aMap = mapView.getMap();
@@ -141,5 +199,5 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	//查询正在使用wifi的用户
 	private void updateUserOnline() {
 		
-	}
+	}*/
 }
