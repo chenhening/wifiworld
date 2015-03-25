@@ -35,7 +35,7 @@
     <preference name="useBrowserHistory" value="true" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="showTitle" value="true" />
-    <feature name="Activity">
-        <param name="android-package" value="com.anynet.wifiworld.me.ActivityPlugin" />
+    <feature name="WifiProviderWebPlugin">
+        <param name="android-package" value="com.anynet.wifiworld.me.WifiProviderWebPlugin" />
     </feature>
 </widget>

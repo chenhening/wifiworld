@@ -4,39 +4,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.cordova.Config;
-import org.apache.cordova.ConfigXmlParser;
+import org.apache.cordova.CordovaChromeClient;
 import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaInterfaceImpl;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.CordovaWebViewImpl;
-import org.apache.cordova.engine.SystemWebView;
-import org.apache.cordova.engine.SystemWebViewEngine;
+import org.apache.cordova.CordovaWebViewClient;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
-
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
-import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 
-public class WifiProviderDetailActivity extends BaseActivity {
+public class WifiProviderDetailActivity extends BaseActivity implements CordovaInterface {
 
 	//IPC
 	private Intent mIntent = null;
@@ -47,6 +35,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private WifiProviderLineChartView mLineChart;
 	
 	private CordovaWebView cordView = null;
+	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 	
 	private MapView mapView = null;
 	private AMap aMap = null;
@@ -65,14 +54,6 @@ public class WifiProviderDetailActivity extends BaseActivity {
 			}
 		});
 	}
-
-	
-    protected CordovaInterfaceImpl cordovaInterface = new CordovaInterfaceImpl(this) {
-        @Override
-        public Object onMessage(String id, Object data) {
-            return super.onMessage(id, data);
-        }
-    };
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +62,12 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 					
-		SystemWebView webView = (SystemWebView)findViewById(R.id.cwv_provider_detail_view);
-		cordView = new CordovaWebViewImpl(this, new SystemWebViewEngine(webView));
-		ConfigXmlParser parser = new ConfigXmlParser();
-		cordView.init(cordovaInterface, parser.getPluginEntries(), parser.getPreferences());
-		cordView.loadUrl("file:///android_asset/www/pages/index.html");
+		Config.init(this);
+        
+		cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
+		cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
+                Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
+        cordView.loadUrl("file:///android_asset/www/pages/index.html");
 		
 		//当前在线用户展示图
 		/*displayUserOnlineMap(savedInstanceState);
@@ -145,6 +127,34 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
+
+	@Override
+    public Activity getActivity() {
+	    return this;
+    }
+
+	@Override
+    public ExecutorService getThreadPool() {
+	    return threadPool;
+    }
+
+	@Override
+    public Object onMessage(String arg0, Object arg1) {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+	@Override
+    public void setActivityResultCallback(CordovaPlugin arg0) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+	    // TODO Auto-generated method stub
+	    
+    }
 	
 	// ---------------------------------------------------------------------------------------------
 	/*private void displayUserOnlineMap(Bundle savedInstanceState) {
