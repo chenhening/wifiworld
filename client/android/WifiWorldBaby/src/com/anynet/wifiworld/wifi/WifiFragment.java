@@ -53,6 +53,8 @@ public class WifiFragment extends MainFragment {
 	
 	private boolean mBroadcastRegistered;
 	private int mNumOpenNetworksKept;
+	
+	private WifiInfo mWifiInfo = null;
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -201,17 +203,21 @@ public class WifiFragment extends MainFragment {
 //	};
 	
 	private void displayWifiConnected(TextView wifiNameView) {
-		String wifiConnected = mWifiAdmin.getWifiNameConnection();
-		if (!wifiConnected.equals("")) {
-			wifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(wifiConnected));
+		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
+		if (!wifiConnected.getSSID().equals("")) {
+			wifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(wifiConnected.getSSID()));
 			wifiNameView.setTextColor(Color.BLACK);
-			mWifiListHelper.rmWifiConnected(WifiAdmin.convertToNonQuotedString(wifiConnected));
+			mWifiListHelper.rmWifiConnected(WifiAdmin.convertToNonQuotedString(wifiConnected.getSSID()));
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
-			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnection());
+			if (mWifiInfo == null || !mWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
+				WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiConnected);
+			}
 		} else {
 			wifiNameView.setText("未连接任何Wifi");
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
+		
+		mWifiInfo = wifiConnected;
 	}
 	
 	private void initWifiSquarePopupView() {

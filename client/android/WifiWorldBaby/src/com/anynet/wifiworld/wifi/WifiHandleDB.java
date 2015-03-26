@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.wifi;
 
+import java.net.NetworkInterface;
+
 import org.apache.cordova.LOG;
 
 import android.content.Context;
@@ -9,9 +11,11 @@ import android.util.Log;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiType;
+import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiHandleDB {
 	private final static String TAG = WifiHandleDB.class.getSimpleName();
@@ -149,10 +153,15 @@ public class WifiHandleDB {
 	
 	public void updateWifiDynamic(WifiInfo wifiInfo) {
 		WifiDynamic wifiDynamic = new WifiDynamic();
-		wifiDynamic.Userid = wifiInfo.getSSID();
 		wifiDynamic.MacAddr = wifiInfo.getBSSID();
 		wifiDynamic.Geometry = WifiAdmin.getWifiGeometry(mContext, wifiInfo.getRssi());
 		wifiDynamic.MarkLoginTime();
+		UserProfile user;
+		if ((user = LoginHelper.getInstance(mContext).getCurLoginUserInfo()) != null) {
+			wifiDynamic.Userid = user.PhoneNumber;
+		} else {
+			wifiDynamic.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(mContext);
+		}
 		wifiDynamic.StoreRemote(mContext, new DataCallback<WifiDynamic>() {
 
 			@Override
