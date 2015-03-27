@@ -37,8 +37,6 @@ import android.widget.Toast;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
-
-	private final int UPDATE_VIEW = 0;
 	
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
@@ -72,6 +70,7 @@ public class WifiFragment extends MainFragment {
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		mNumOpenNetworksKept =  Settings.Secure.getInt(getActivity().getContentResolver(),
 	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
+		//WifiStatusReceiver.schedule(getActivity());
 	}
 
 	@Override
@@ -109,9 +108,8 @@ public class WifiFragment extends MainFragment {
 					boolean connResult = false;
 					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
 					if (cfgSelected != null) {
-						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiSelected),
-								true);
-						
+						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
+								mWifiAdmin.getWifiConfiguration(wifiSelected), true);
 					} else {
 						connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiSelected, mNumOpenNetworksKept);
 					}

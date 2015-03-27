@@ -221,7 +221,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        
+        <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService"/>
+        <service android:name="com.anynet.wifiworld.wifi.WifiStatusReceiver$WifiMonitorService"/>
+        
         <!-- Dianle provision -->
         <activity android:name="com.dlnetwork.DataNativeActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
