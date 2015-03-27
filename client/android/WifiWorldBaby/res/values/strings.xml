@@ -247,4 +247,6 @@
     <string name="str_people_watching">大家都在看的</string>
     <string name="str_people_buying">大家都会买的</string>
 
+    
+    <string name="receive_rewards">恭喜你得到%s个金币！</string>
 </resources>

@@ -86,7 +86,7 @@
             android:name="com.anynet.wifiworld.me.WifiProviderRigisterSecondBusinessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
-        </activity>
+        </activity>ShareActivity
         <activity
             android:name="com.anynet.wifiworld.me.WifiProviderRigisterThirdActivity"
             android:launchMode="singleTop"
@@ -94,6 +94,11 @@
         </activity>
         <activity
             android:name="com.anynet.wifiworld.me.WifiProviderRigisterCompleteActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.me.ShareActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
