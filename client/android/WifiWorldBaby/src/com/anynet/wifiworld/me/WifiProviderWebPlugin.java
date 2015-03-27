@@ -12,7 +12,7 @@ public class WifiProviderWebPlugin extends CordovaPlugin {
 	//TODO(binfei), context == null will be a bug
 	private LoginHelper mLoginHelper = LoginHelper.getInstance(null);
 
-    public boolean execute(String action, CordovaArgs args, final CallbackContext callbackContext) {  
+	public boolean execute(String action, CordovaArgs args, final CallbackContext callbackContext) {  
         JSONObject jsonObj = new JSONObject();//可以返回给JS的JSON数据  
         if(TAG.equals(action)){  
             try {   
@@ -26,7 +26,7 @@ public class WifiProviderWebPlugin extends CordovaPlugin {
                 return false;  
             }    
               
-        }  
+        }
         return true;
     }
 

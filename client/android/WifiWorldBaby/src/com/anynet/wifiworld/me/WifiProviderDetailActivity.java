@@ -9,6 +9,7 @@ import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CordovaWebViewClient;
+import org.apache.cordova.Whitelist;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,8 +63,8 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 					
-		Config.init(this);
-        
+	//Config.init(this);
+		Whitelist mWhitelist = new Whitelist();
 		cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
 		cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
                 Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
