@@ -1,0 +1,13 @@
+#radar {
+	font-size: 12px;
+	color: #f4f4f4;
+	cursor: default;
+}
+
+#radar canvas {
+	background: deepskyblue;
+	border: 1px solid red;
+	border-radius: 2px;
+	
+	box-shadow: 0px 0px 20px red;
+}

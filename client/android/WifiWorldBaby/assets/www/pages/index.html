@@ -36,18 +36,10 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- cordova hybrid-->
-    <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+
     <script>
         function init() {
-            cordova.exec(function(message) {
-                        document.getElementById("userid").innerText = message.userid;
-                    },
-                    function(e) {
-                        console.log("Error: " + e);
-                        document.getElementById("userid").innerText = "账号出错"
-                    },
-                    "WifiProviderWebPlugin", "WifiProviderWebPlugin",
-                    []);
+            document.getElementById("userid").innerText = window.localStorage.getItem("userid");
         }
     </script>
 

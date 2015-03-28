@@ -67,7 +67,7 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
 		cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
                 Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
-        cordView.loadUrl("file:///android_asset/www/pages/index.html");
+        cordView.loadUrl("file:///android_asset/www/index.html");
 		
 		//当前在线用户展示图
 		/*displayUserOnlineMap(savedInstanceState);
