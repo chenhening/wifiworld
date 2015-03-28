@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="0;url=pages/index.html">
-<title>网络宝 Admin</title>
-<script language="javascript">
-    window.location.href = "pages/login.html"
-</script>
-</head><input id="Text1" type="text" />
+    <meta charset="utf-8"/>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="cordova.js"></script>
+</head>
 <body>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <h4 class="modal-title" align="center">
+            正在加载页面请稍等......
+        </h4>
+    </div>
+</div><!-- /.modal -->
+
+<script>
+    $(function () {
+        $('#myModal').modal({
+            keyboard: false
+        });
+
+        var timer = window.setInterval(function () {
+            //TODO(binfei):这里需要加动态切换图片的效果，在网络慢的时候使用
+            cordova.exec(function (message) {
+                        window.localStorage.setItem("userid", message.userid);
+                        window.clearInterval(timer);
+                        window.location.href = "pages/index.html";
+                    },
+                    function (e) {
+                        console.log("Error: " + e);
+                        window.localStorage.setItem("userid", "未知用户");
+                    },
+                    "WifiProviderWebPlugin", "WifiProviderWebPlugin",
+                    []);
+        }, 1000);
+    })
+</script>
 </body>
 </html>
