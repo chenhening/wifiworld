@@ -1,8 +1,5 @@
 package com.anynet.wifiworld.me;
 
-import java.util.List;
-import java.util.TimerTask;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,17 +11,19 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.bmob.v3.Bmob;
-import cn.smssdk.EventHandler;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
-import com.anynet.wifiworld.config.GlobalConfig;
-import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 
 public class MeFragment extends MainFragment {
 	// for saved data
@@ -94,35 +93,34 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				/*//查询是否登录
-				if (!mLoginHelper.getCurLoginStatus()) {
-					Intent i = new Intent(getApplicationContext(),UserLoginActivity.class);
-					startActivity(i);
-					return;
-				}*/
-				
+				/*
+				 * //查询是否登录 if (!mLoginHelper.getCurLoginStatus()) { Intent i =
+				 * new Intent(getApplicationContext(),UserLoginActivity.class);
+				 * startActivity(i); return; }
+				 */
+
 				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 				startActivity(i);
-				//去服务器上查询是否已经登记了自己的wifi
-				/*WifiProfile wifi = new WifiProfile();
-				wifi.Sponser = "18688339822";//mLoginHelper.getCurLoginUserInfo().PhoneNumber;
-				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
-					new MultiDataCallback<WifiProfile>() {
-
-						@Override
-                        public void onSuccess(List<WifiProfile> objects) {
-							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-							i.putExtra(WifiProfile.class.getName(), objects.get(0));
-							startActivity(i);
-                        }
-
-						@Override
-                        public void onFailed(String msg) {
-							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
-							startActivity(i);
-                        }
-					
-				});*/
+				// 去服务器上查询是否已经登记了自己的wifi
+				/*
+				 * WifiProfile wifi = new WifiProfile(); wifi.Sponser =
+				 * "18688339822"
+				 * ;//mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+				 * wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
+				 * new MultiDataCallback<WifiProfile>() {
+				 * 
+				 * @Override public void onSuccess(List<WifiProfile> objects) {
+				 * Intent i = new Intent(getApplicationContext(),
+				 * WifiProviderDetailActivity.class);
+				 * i.putExtra(WifiProfile.class.getName(), objects.get(0));
+				 * startActivity(i); }
+				 * 
+				 * @Override public void onFailed(String msg) { Intent i = new
+				 * Intent(getApplicationContext(),
+				 * WifiProviderRigisterActivity.class); startActivity(i); }
+				 * 
+				 * });
+				 */
 			}
 		});
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
@@ -140,11 +138,36 @@ public class MeFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(getApplicationContext(), ShareActivity.class);
-				startActivity(i);
+				/*
+				 * Intent i = new Intent(getApplicationContext(),
+				 * ShareActivity.class); startActivity(i);
+				 */
+				if (!mLoginHelper.isLogined()) {
+					UserLoginActivity.start((BaseActivity) getActivity());
+					return;
+				}
+				UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
+				UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+				mController.setShareContent(mUP.PhoneNumber + "邀请你使用：" + getString(R.string.app_name)
+						+ "。闲置WIFI是不是很浪费？" + getString(R.string.app_name) + "可以利用闲置的WIFI给自己赚钱啦！");
+				mController.openShare(getActivity(), new SnsPostListener() {
+
+					@Override
+					public void onStart() {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "开始分享", Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onComplete(SHARE_MEDIA arg0, int arg1, SocializeEntity arg2) {
+						// TODO Auto-generated method stub
+						if(arg1 == 200){
+							Toast.makeText(getActivity(), "分享完成", Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}
 		});
-
 		return mPageRoot;
 	}
 

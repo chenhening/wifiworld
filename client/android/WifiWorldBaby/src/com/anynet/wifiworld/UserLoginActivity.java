@@ -29,7 +29,7 @@ import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class UserLoginActivity extends BaseActivity {
-
+	public static final String FILTER_NAME = "f";
 	// for SMS verify
 	private String mPhone_code = "86"; // 目前只支持中国区
 	private int mVerifyTime = 60;
@@ -43,6 +43,13 @@ public class UserLoginActivity extends BaseActivity {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
+	
+    public static void start(BaseActivity ctx)
+    {
+        Intent intent = new Intent(ctx, UserLoginActivity.class);
+        ctx.startActivity(intent);
+    }
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
