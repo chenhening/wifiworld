@@ -10,6 +10,7 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -123,6 +124,26 @@ public class WifiDynamic extends BmobObject {
 			}
 			
 		}).start();
+	}
+	
+	public void GetConnectedTime(final Context context, String macaddr,
+		DataCallback<Long> callback) {
+		final DataCallback<Long> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.addWhereEqualTo("MacAddr", macaddr);
+		query.count(context, WifiDynamic.class, new CountListener() {
+
+			@Override
+            public void onFailure(int arg0, String msg) {
+				_callback.onFailed("查询失败： " + msg);
+            }
+
+			@Override
+            public void onSuccess(int arg0) {
+				_callback.onSuccess((long) arg0);
+            }
+			
+		});
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<WifiDynamic> callback) {

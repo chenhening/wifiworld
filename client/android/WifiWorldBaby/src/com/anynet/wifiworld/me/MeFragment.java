@@ -105,14 +105,13 @@ public class MeFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
+				//查询是否登录 
+				if (!mLoginHelper.getCurLoginStatus()) { 
+					Intent i = new Intent(getApplicationContext(),UserLoginActivity.class);
+					startActivity(i); 
+					return; 
 				}
 
-				// Intent i = new Intent(getApplicationContext(),
-				// WifiProviderDetailActivity.class);
-				// startActivity(i);
 				// 去服务器上查询是否已经登记了自己的wifi
 				WifiProfile wifi = new WifiProfile();
 				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;

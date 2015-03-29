@@ -35,7 +35,7 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 	private BmobGeoPoint mBmobGeoPoint;
 	private WifiProviderLineChartView mLineChart;
 	
-	private CordovaWebView cordView = null;
+	private static CordovaWebView cordView = null;
 	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 	
 	private MapView mapView = null;
@@ -63,13 +63,16 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-					
-		Config.init(this);
-		Whitelist mWhitelist = new Whitelist();
-		cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
-		cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
-                Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
-        cordView.loadUrl("file:///android_asset/www/index.html");
+			
+		if (cordView == null) {
+			Config.init(this);
+			Whitelist mWhitelist = new Whitelist();
+			cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
+			cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
+		            Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
+		}
+		cordView.loadUrl("file:///android_asset/www/index.html");
+		cordView.removeAllViews();
 		
 		//当前在线用户展示图
 		/*displayUserOnlineMap(savedInstanceState);
