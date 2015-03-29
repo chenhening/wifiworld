@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.me;
 
+import java.util.List;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,9 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
@@ -90,8 +94,9 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), UserLoginActivity.class);
-				startActivity(i);
+				if (!checkIsLogined()) {
+					return;
+				}
 			}
 		});
 
@@ -100,33 +105,33 @@ public class MeFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 				/*
-				 * //查询是否登录 if (!mLoginHelper.getCurLoginStatus()) { Intent i =
-				 * new Intent(getApplicationContext(),UserLoginActivity.class);
-				 * startActivity(i); return; }
+				 * 查询是否登录
 				 */
-
-				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-				startActivity(i);
+				if (!checkIsLogined()) {
+					return;
+				}
+//				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+//				startActivity(i);
 				// 去服务器上查询是否已经登记了自己的wifi
-				/*
-				 * WifiProfile wifi = new WifiProfile(); wifi.Sponser =
-				 * "18688339822"
-				 * ;//mLoginHelper.getCurLoginUserInfo().PhoneNumber;
-				 * wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
-				 * new MultiDataCallback<WifiProfile>() {
-				 * 
-				 * @Override public void onSuccess(List<WifiProfile> objects) {
-				 * Intent i = new Intent(getApplicationContext(),
-				 * WifiProviderDetailActivity.class);
-				 * i.putExtra(WifiProfile.class.getName(), objects.get(0));
-				 * startActivity(i); }
-				 * 
-				 * @Override public void onFailed(String msg) { Intent i = new
-				 * Intent(getApplicationContext(),
-				 * WifiProviderRigisterActivity.class); startActivity(i); }
-				 * 
-				 * });
-				 */
+				WifiProfile wifi = new WifiProfile();
+				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;// "18688339822";
+				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser, new MultiDataCallback<WifiProfile>() {
+
+					@Override
+					public void onSuccess(List<WifiProfile> objects) {
+						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+						i.putExtra(WifiProfile.class.getName(), objects.get(0));
+						startActivity(i);
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+						startActivity(i);
+					}
+
+				});
+
 			}
 		});
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
@@ -134,6 +139,9 @@ public class MeFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if (!checkIsLogined()) {
+					return;
+				}
 				Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
 				startActivity(i);
 			}
@@ -148,8 +156,7 @@ public class MeFragment extends MainFragment {
 				 * Intent i = new Intent(getApplicationContext(),
 				 * ShareActivity.class); startActivity(i);
 				 */
-				if (!mLoginHelper.isLogined()) {
-					UserLoginActivity.start((BaseActivity) getActivity());
+				if (!checkIsLogined()) {
 					return;
 				}
 				/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
@@ -157,14 +164,16 @@ public class MeFragment extends MainFragment {
 				com.umeng.socialize.utils.Log.LOG = true;
 
 				UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-/*				UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(getActivity(), "", "");
-				qqSsoHandler.addToSocialSDK();
-				UMWXHandler wxSsoHandler = new UMWXHandler(getActivity(), "", "");
-				wxSsoHandler.addToSocialSDK();
-				UMWXHandler wxCircleSsoHandler = new UMWXHandler(getActivity(), "", "");
-				wxCircleSsoHandler.setToCircle(true);
-				wxCircleSsoHandler.addToSocialSDK();
-*/
+				/*
+				 * UMQQSsoHandler qqSsoHandler = new
+				 * UMQQSsoHandler(getActivity(), "", "");
+				 * qqSsoHandler.addToSocialSDK(); UMWXHandler wxSsoHandler = new
+				 * UMWXHandler(getActivity(), "", "");
+				 * wxSsoHandler.addToSocialSDK(); UMWXHandler wxCircleSsoHandler
+				 * = new UMWXHandler(getActivity(), "", "");
+				 * wxCircleSsoHandler.setToCircle(true);
+				 * wxCircleSsoHandler.addToSocialSDK();
+				 */
 				// 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
 				UMYXHandler yixinHandler = new UMYXHandler(getActivity(), GlobalConfig.YIXIN_APPKEY);
 				// 关闭分享时的等待Dialog
