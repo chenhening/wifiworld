@@ -100,6 +100,10 @@ public class WifiFragment extends MainFragment {
 	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
 		//WifiStatusReceiver.schedule(getActivity());
 		WifiStatusReceiver.bindWifiService(getActivity(), conn);
+		
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LoginHelper.LOGIN_SUCCESS);
+		getActivity().registerReceiver(mLoginReceiver, filter);
 	}
 
 	@Override
@@ -170,10 +174,17 @@ public class WifiFragment extends MainFragment {
 	}
 
 	@Override
+	public void onDestroy() {
+		getActivity().unregisterReceiver(mLoginReceiver);
+		super.onDestroy();
+	}
+
+	@Override
 	public void onPause() {
 //		if (mBroadcastRegistered) {
 //			getActivity().unregisterReceiver(mReceiver);
 //		}
+		
 		super.onPause();
 	}
 
@@ -189,10 +200,6 @@ public class WifiFragment extends MainFragment {
 //		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //		getActivity().registerReceiver(mReceiver, filter);
 //		mBroadcastRegistered = true;
-		
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(LoginHelper.LOGIN_SUCCESS);
-		getActivity().registerReceiver(mLoginReceiver, filter);
 		super.onResume();
 	}
 

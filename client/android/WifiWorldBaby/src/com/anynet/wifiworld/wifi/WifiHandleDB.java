@@ -48,10 +48,6 @@ public class WifiHandleDB {
 		mWifiProfile.Sponser = "无名氏";
 		mWifiProfile.Geometry = infoScanned.getGeometry();
 		mWifiProfile.Income = 0.0f;
-		mWifiProfile.ConnectedDuration = 998;
-		mWifiProfile.ConnectedTimes = 123;
-		mWifiProfile.Ranking = 278;
-		mWifiProfile.Rating = 4.7f;
 		mWifiProfile.StoreRemote(mContext, new DataCallback<WifiProfile>() {
 
 			@Override
@@ -81,7 +77,6 @@ public class WifiHandleDB {
 				wifi.Password = infoScanned.getWifiPwd();
 				wifi.Banner = null;
 				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
-				wifi.encryptType = infoScanned.getEncryptType();
 				wifi.Sponser = null;
 				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
@@ -110,7 +105,6 @@ public class WifiHandleDB {
 				wifi.Password = infoScanned.getWifiPwd();
 				wifi.Banner = null;
 				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
-				wifi.encryptType = infoScanned.getEncryptType();
 				wifi.Sponser = null;
 				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
@@ -138,10 +132,6 @@ public class WifiHandleDB {
 			@Override
 			public void onSuccess(final WifiProfile object) {
 				Log.i(TAG, "Success to query wifi profile from server:" + infoScanned.getWifiMAC());
-				infoScanned.setConnectedDuration(object.ConnectedDuration);
-				infoScanned.setConnectedTimes(object.ConnectedTimes);
-				infoScanned.setRanking(object.Ranking);
-				infoScanned.setRating(object.Rating);
 				
 			}
 			

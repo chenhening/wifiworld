@@ -28,7 +28,7 @@ public class WifiProfile extends BmobObject{
 	public String Password; //wifi的密码，经过base64后保存
 	public String Sponser; //绑定的用户账号，wifi提供者
 	public int Type; //wifi的类型
-	public String encryptType; //wifi加密类型
+	//public String encryptType; //wifi加密类型
 	public Bitmap Logo; //用户自定义的logo信息
 	public String Alias; //用户自定义的wifi别名
 	public BmobGeoPoint Geometry; //WiFi的地理位置
@@ -36,10 +36,10 @@ public class WifiProfile extends BmobObject{
 	public String Banner; //wifi的展示页内容(TODO(binfei)还需要定义更多)
 	public float Income; //wifi 收入
 	
-	public float Rating;
-	public int Ranking;
-	public int ConnectedTimes;
-	public int ConnectedDuration;
+	//public float Rating;
+	//public int Ranking;
+	//public int ConnectedTimes;
+	//public int ConnectedDuration;
 // ------------------------------------------------------------------------------------------------
 	public WifiProfile() {
 	}
