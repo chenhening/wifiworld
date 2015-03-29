@@ -27,7 +27,8 @@
         var timer = window.setInterval(function () {
             //TODO(binfei):这里需要加动态切换图片的效果，在网络慢的时候使用
             cordova.exec(function (message) {
-                        window.localStorage.setItem("userid", message.userid);
+                        window.localStorage.setItem("alias", message.alias);
+                        window.localStorage.setItem("macaddr", message.macaddr);
                         window.clearInterval(timer);
                         window.location.href = "pages/index.html";
                     },

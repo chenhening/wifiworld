@@ -104,17 +104,18 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				/*
-				 * 查询是否登录
-				 */
+
+				// 查询是否登录
 				if (!checkIsLogined()) {
 					return;
 				}
-//				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-//				startActivity(i);
+
+				// Intent i = new Intent(getApplicationContext(),
+				// WifiProviderDetailActivity.class);
+				// startActivity(i);
 				// 去服务器上查询是否已经登记了自己的wifi
 				WifiProfile wifi = new WifiProfile();
-				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;// "18688339822";
+				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser, new MultiDataCallback<WifiProfile>() {
 
 					@Override
@@ -126,12 +127,11 @@ public class MeFragment extends MainFragment {
 
 					@Override
 					public void onFailed(String msg) {
+						// 查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
 						Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
 						startActivity(i);
 					}
-
 				});
-
 			}
 		});
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
