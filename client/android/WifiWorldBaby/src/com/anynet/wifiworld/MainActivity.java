@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private StaticHandler handler = new StaticHandler(this);
 	private PushAgent mPushAgent;
 	//global instance
-	private LoginHelper mLoginHelper;
+	private static LoginHelper mLoginHelper;
 	private LocationHelper mLocationHelper;
 	
 	public static void startActivity(BaseActivity baseActivity,
@@ -413,7 +413,17 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	}
 
+	
 	public static class MainFragment extends BaseFragment {
+		
+		public boolean checkIsLogined(){
+			if (!mLoginHelper.isLogined()) {
+				UserLoginActivity.start((BaseActivity) getActivity());
+				return false;
+			}
+			return true;
+		}
+		
 		public void startUpdte() {
 			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
 		}

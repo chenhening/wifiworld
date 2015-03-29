@@ -35,20 +35,41 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!-- cordova hybrid-->
 
+    <script src="../bmob.js"></script>
     <script>
         function init() {
-            document.getElementById("userid").innerText = window.localStorage.getItem("userid");
+            document.getElementById("alias").innerText = window.localStorage.getItem("alias");
+            //获取mac地址后到服务器去查询
+            var macaddr = window.localStorage.getItem("macaddr");
+            Bmob.initialize("b20905c46c6f0ae1edee547057f04589", "e82ff07eacd18220b45c5c21ca034bad");
+            var WifiProfile = Bmob.Object.extend("WifiProfile");
+            var query = new Bmob.Query(WifiProfile);
+            query.equalTo("MacAddr", "40:f4:ec:a3:e3:85");//macaddr);
+            var myDate = new Date(); //计算前一周的时间差
+            query.greaterThan("LoginTime", myDate.getTime() - (7*24*60*60*1000));
+            query.find( {
+               sucess: function(result) {
+                   alert("共查询到数据：" + result.length + " 条记录。");
+                   var datasheet = Morris.getElementById("morris-area-chart");
+                   for (var i=0; i < result.length; ++i) {
+                       var object = result[i];
+                       if (object.LoginTime <= myDate.getTime() - (6*24*60*60*1000)) {//周一
+                           datasheet.data.add({
+                               period: "周一",
+
+                           });
+                       }
+                   }
+               }
+            });
         }
     </script>
 
 </head>
 
-<body>
-
+<body onload="init();">
     <div id="wrapper">
-
         <!-- Navigation  onload="init();"-->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -58,7 +79,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><span id="userid"> &nbsp;</span></a>
+                <a class="navbar-brand" href="index.html"><span id="alias"> &nbsp;</span></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -483,22 +504,22 @@
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 最近一周Wi-Fi使用情况
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
+                                        展示方式
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
+                                        <li><a href="#">折线图</a>
                                         </li>
-                                        <li><a href="#">Another action</a>
+                                        <li><a href="#">柱状图</a>
                                         </li>
-                                        <li><a href="#">Something else here</a>
+                                        <li><a href="#">点云图</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
+                                        <li><a href="#">特殊分析</a>
                                         </li>
                                     </ul>
                                 </div>

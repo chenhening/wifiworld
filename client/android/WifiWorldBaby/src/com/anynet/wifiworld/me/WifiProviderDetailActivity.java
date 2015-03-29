@@ -30,7 +30,7 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 	//IPC
 	private Intent mIntent = null;
 	
-	private WifiProfile mWifiProfile = new WifiProfile();
+	public static WifiProfile mWifiProfile = new WifiProfile();
 	private Bitmap mLogo;
 	private BmobGeoPoint mBmobGeoPoint;
 	private WifiProviderLineChartView mLineChart;
@@ -59,6 +59,7 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
+		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
