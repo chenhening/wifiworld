@@ -17,13 +17,19 @@ import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.common.SocializeConstants;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.laiwang.controller.UMLWHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.yixin.controller.UMYXHandler;
 
 public class MeFragment extends MainFragment {
 	// for saved data
@@ -146,8 +152,34 @@ public class MeFragment extends MainFragment {
 					UserLoginActivity.start((BaseActivity) getActivity());
 					return;
 				}
-				UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
+				/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
+				SocializeConstants.APPKEY = GlobalConfig.UMENG_SHARE_KEY;
+				com.umeng.socialize.utils.Log.LOG = true;
+
 				UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+/*				UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(getActivity(), "", "");
+				qqSsoHandler.addToSocialSDK();
+				UMWXHandler wxSsoHandler = new UMWXHandler(getActivity(), "", "");
+				wxSsoHandler.addToSocialSDK();
+				UMWXHandler wxCircleSsoHandler = new UMWXHandler(getActivity(), "", "");
+				wxCircleSsoHandler.setToCircle(true);
+				wxCircleSsoHandler.addToSocialSDK();
+*/
+				// 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+				UMYXHandler yixinHandler = new UMYXHandler(getActivity(), GlobalConfig.YIXIN_APPKEY);
+				// 关闭分享时的等待Dialog
+				yixinHandler.enableLoadingDialog(false);
+				// 把易信添加到SDK中
+				yixinHandler.addToSocialSDK();
+				// UMLWHandler umlwHandler = new UMLWHandler(getActivity(),
+				// "laiwangd497e70d4", "d497e70d4c3e4efeab1381476bac4c5e");
+				// umlwHandler.addToSocialSDK();
+				// umlwHandler.setMessageFrom("友盟分享组件");
+				// 设置分享面板上显示的平台
+				mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ,
+						SHARE_MEDIA.SINA, SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN,
+						SHARE_MEDIA.DOUBAN);
+				UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
 				mController.setShareContent(mUP.PhoneNumber + "邀请你使用：" + getString(R.string.app_name)
 						+ "。闲置WIFI是不是很浪费？" + getString(R.string.app_name) + "可以利用闲置的WIFI给自己赚钱啦！");
 				mController.openShare(getActivity(), new SnsPostListener() {
@@ -161,7 +193,7 @@ public class MeFragment extends MainFragment {
 					@Override
 					public void onComplete(SHARE_MEDIA arg0, int arg1, SocializeEntity arg2) {
 						// TODO Auto-generated method stub
-						if(arg1 == 200){
+						if (arg1 == 200) {
 							Toast.makeText(getActivity(), "分享完成", Toast.LENGTH_SHORT).show();
 						}
 					}

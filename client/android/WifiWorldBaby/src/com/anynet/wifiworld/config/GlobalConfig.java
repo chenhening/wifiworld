@@ -15,7 +15,9 @@ public class GlobalConfig {
 	public static final String BMOB_KEY = "b20905c46c6f0ae1edee547057f04589";
 	public static final String SMSSDK_KEY = "5ea9dee43eb2";
 	public static final String SMSSDK_SECRECT = "6f332e8768e0fe21509cddbe804f016b";
-
+	public static final String YIXIN_APPKEY = "yx551f0140a76f4f5aa6b4660b742413f6";
+	public static final String UMENG_SHARE_KEY = "5516ac08fd98c5df10000053";
+	
 	private static GlobalConfig instanceConfig = new GlobalConfig();
 
 	KeyValue configs[];
@@ -25,15 +27,13 @@ public class GlobalConfig {
 	private long updateDataDiv;
 
 	public long getLastUpdateTime() {
-		return PreferenceHelper.getInstance()
-				.getLong(Const.LAST_UPDATE_TIME, 0);
+		return PreferenceHelper.getInstance().getLong(Const.LAST_UPDATE_TIME, 0);
 		// return 0;
 
 	}
 
 	public void setLastUpdateTime(long lastUpdateTime) {
-		PreferenceHelper.getInstance().setLong(Const.LAST_UPDATE_TIME,
-				lastUpdateTime);
+		PreferenceHelper.getInstance().setLong(Const.LAST_UPDATE_TIME, lastUpdateTime);
 	}
 
 	/**
@@ -42,17 +42,14 @@ public class GlobalConfig {
 	 * @return
 	 */
 	public long getNoNeedLoginTimeDiv() {
-		noNeedLoginTimeDiv = PreferenceHelper.getInstance().getLong(
-				Const.PREF_NO_NEED_LOGIN_TIME_DIV, 0);
-		return (noNeedLoginTimeDiv <= 0) ? Const.NO_NEED_LOGIN_TIME_DIV
-				: noNeedLoginTimeDiv * 1000;
+		noNeedLoginTimeDiv = PreferenceHelper.getInstance().getLong(Const.PREF_NO_NEED_LOGIN_TIME_DIV, 0);
+		return (noNeedLoginTimeDiv <= 0) ? Const.NO_NEED_LOGIN_TIME_DIV : noNeedLoginTimeDiv * 1000;
 	}
 
 	public void setNoNeedLoginTimeDiv(long noNeedLoginTimeDiv) {
 		this.noNeedLoginTimeDiv = noNeedLoginTimeDiv;
 
-		PreferenceHelper.getInstance().setLong(
-				Const.PREF_NO_NEED_LOGIN_TIME_DIV, noNeedLoginTimeDiv);
+		PreferenceHelper.getInstance().setLong(Const.PREF_NO_NEED_LOGIN_TIME_DIV, noNeedLoginTimeDiv);
 	}
 
 	public long getUpdateDataDiv() {
@@ -80,8 +77,7 @@ public class GlobalConfig {
 			if (config.getKey().toLowerCase().equals("autologin_div_time")) {
 
 				setNoNeedLoginTimeDiv(Long.valueOf(config.getValue()));
-			} else if (config.getKey().toLowerCase()
-					.endsWith("update_div_time")) {
+			} else if (config.getKey().toLowerCase().endsWith("update_div_time")) {
 				setUpdateDataDiv(Long.valueOf(config.getValue()));
 			}
 
