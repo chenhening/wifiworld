@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.me;
 
+import java.util.List;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,9 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
@@ -99,34 +103,37 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				/*
-				 * //查询是否登录 if (!mLoginHelper.getCurLoginStatus()) { Intent i =
-				 * new Intent(getApplicationContext(),UserLoginActivity.class);
-				 * startActivity(i); return; }
-				 */
+
+				 //查询是否登录 
+				if (!mLoginHelper.getCurLoginStatus()) { 
+					Intent i = new Intent(getApplicationContext(),UserLoginActivity.class);
+					startActivity(i); 
+					return; 
+				 }
+				 
 
 				Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 				startActivity(i);
 				// 去服务器上查询是否已经登记了自己的wifi
-				/*
-				 * WifiProfile wifi = new WifiProfile(); wifi.Sponser =
-				 * "18688339822"
-				 * ;//mLoginHelper.getCurLoginUserInfo().PhoneNumber;
-				 * wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
-				 * new MultiDataCallback<WifiProfile>() {
-				 * 
-				 * @Override public void onSuccess(List<WifiProfile> objects) {
-				 * Intent i = new Intent(getApplicationContext(),
-				 * WifiProviderDetailActivity.class);
-				 * i.putExtra(WifiProfile.class.getName(), objects.get(0));
-				 * startActivity(i); }
-				 * 
-				 * @Override public void onFailed(String msg) { Intent i = new
-				 * Intent(getApplicationContext(),
-				 * WifiProviderRigisterActivity.class); startActivity(i); }
-				 * 
-				 * });
-				 */
+				WifiProfile wifi = new WifiProfile(); 
+				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser,
+					new MultiDataCallback<WifiProfile>() {
+				
+					@Override 
+					public void onSuccess(List<WifiProfile> objects) {
+						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+						i.putExtra(WifiProfile.class.getName(), objects.get(0));
+						startActivity(i); 
+					}
+					
+					@Override 
+				 	public void onFailed(String msg) {
+						//查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
+						Intent i = new Intent(getApplicationContext(),WifiProviderRigisterActivity.class); 
+						startActivity(i); 
+					}
+				});
 			}
 		});
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
