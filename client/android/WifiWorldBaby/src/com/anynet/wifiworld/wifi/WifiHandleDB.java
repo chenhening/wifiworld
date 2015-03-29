@@ -24,6 +24,8 @@ public class WifiHandleDB {
 	private WifiProfile mWifiProfile;
 	private static WifiHandleDB wifiHandleDB = null;
 	
+	private WifiDynamic mWifiDynamic;
+	
 	public static WifiHandleDB getInstance(Context context) {
 		if (wifiHandleDB == null) {
 			wifiHandleDB = new WifiHandleDB(context);
@@ -152,17 +154,17 @@ public class WifiHandleDB {
 	}
 	
 	public void updateWifiDynamic(WifiInfo wifiInfo) {
-		WifiDynamic wifiDynamic = new WifiDynamic();
-		wifiDynamic.MacAddr = wifiInfo.getBSSID();
-		wifiDynamic.Geometry = WifiAdmin.getWifiGeometry(mContext, wifiInfo.getRssi());
-		wifiDynamic.MarkLoginTime();
+		mWifiDynamic = new WifiDynamic();
+		mWifiDynamic.MacAddr = wifiInfo.getBSSID();
+		mWifiDynamic.Geometry = WifiAdmin.getWifiGeometry(mContext, wifiInfo.getRssi());
+		mWifiDynamic.MarkLoginTime();
 		UserProfile user;
 		if ((user = LoginHelper.getInstance(mContext).getCurLoginUserInfo()) != null) {
-			wifiDynamic.Userid = user.PhoneNumber;
+			mWifiDynamic.Userid = user.PhoneNumber;
 		} else {
-			wifiDynamic.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(mContext);
+			mWifiDynamic.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(mContext);
 		}
-		wifiDynamic.StoreRemote(mContext, new DataCallback<WifiDynamic>() {
+		mWifiDynamic.StoreRemote(mContext, new DataCallback<WifiDynamic>() {
 
 			@Override
 			public void onSuccess(WifiDynamic object) {

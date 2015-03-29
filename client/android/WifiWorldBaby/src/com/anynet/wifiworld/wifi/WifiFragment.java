@@ -7,6 +7,7 @@ import cn.smssdk.app.NewAppReceiver;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.api.WifiListHelper;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
 
 import android.app.ActionBar.LayoutParams;
@@ -117,7 +118,7 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper.fillWifiList();
 		mWifiFree = mWifiListHelper.getWifiFrees();
 		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-		displayWifiConnected(mWifiNameView);
+		updateWifiConMore(mWifiNameView);
 		if (mWifiAdmin.getWifiNameConnection() != "") {
 			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
 			mWifiNameView.setTextColor(Color.BLACK);
@@ -134,9 +135,6 @@ public class WifiFragment extends MainFragment {
 					int position, long id) {
 				if (position < (mWifiFree.size() + 1)) {
 					WifiInfoScanned wifiSelected = mWifiFree.get(position - 1);
-//					mWifiAdmin.Connect(wifiSelected.getWifiName(),
-//							wifiSelected.getWifiPwd(),
-//							wifiSelected.getWifiType());
 					boolean connResult = false;
 					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
 					if (cfgSelected != null) {
@@ -149,7 +147,7 @@ public class WifiFragment extends MainFragment {
 						mWifiListHelper.fillWifiList();
 						mWifiFree = mWifiListHelper.getWifiFrees();
 						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-						displayWifiConnected(mWifiNameView);
+						updateWifiConMore(mWifiNameView);
 						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 					} else {
 						Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
@@ -185,12 +183,16 @@ public class WifiFragment extends MainFragment {
 			mWifiListHelper.fillWifiList();
 			mWifiFree = mWifiListHelper.getWifiFrees();
 			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-			displayWifiConnected(mWifiNameView);
+			updateWifiConMore(mWifiNameView);
 			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 		}
 //		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //		getActivity().registerReceiver(mReceiver, filter);
 //		mBroadcastRegistered = true;
+		
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LoginHelper.LOGIN_SUCCESS);
+		getActivity().registerReceiver(mLoginReceiver, filter);
 		super.onResume();
 	}
 
@@ -233,7 +235,20 @@ public class WifiFragment extends MainFragment {
 //		
 //	};
 	
-	private void displayWifiConnected(TextView wifiNameView) {
+	BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(LoginHelper.LOGIN_SUCCESS)) {
+				if (mWifiAdmin.getWifiNameConnection() != "") {
+					WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnection());
+				}
+			}
+		}
+	};
+	
+	private void updateWifiConMore(TextView wifiNameView) {
 		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
 		if (!wifiConnected.getSSID().equals("")) {
 //			wifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(wifiConnected.getSSID()));
