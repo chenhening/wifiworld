@@ -45,6 +45,11 @@
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
+    
+    <style name="PlatformDialog" parent="android:Theme.Holo.Dialog"/>
+    <style name="textAppearanceBaseContent" parent="@android:style/TextAppearance" >
+        <item name="android:textColor">@android:color/secondary_text_dark</item>
+    </style>
 
     <attr name="textwidth" format="integer" />
     <attr name="typeface">

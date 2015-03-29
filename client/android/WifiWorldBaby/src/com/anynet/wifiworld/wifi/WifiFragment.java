@@ -2,14 +2,13 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.List;
 
-import cn.smssdk.app.NewAppReceiver;
-
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
 
+import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -19,13 +18,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +38,8 @@ import android.widget.Toast;
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 	
+	static final int WIFI_CONNECT_CONFIRM = 0;
+	
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
@@ -55,7 +52,6 @@ public class WifiFragment extends MainFragment {
 	private PopupWindow mPopupWindow;
 	
 	private boolean mBroadcastRegistered;
-	private int mNumOpenNetworksKept;
 	
 	private WifiInfo mWifiInfo = null;
 
@@ -96,8 +92,6 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity());
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		mNumOpenNetworksKept =  Settings.Secure.getInt(getActivity().getContentResolver(),
-	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
 		//WifiStatusReceiver.schedule(getActivity());
 		WifiStatusReceiver.bindWifiService(getActivity(), conn);
 		
@@ -139,23 +133,29 @@ public class WifiFragment extends MainFragment {
 					int position, long id) {
 				if (position < (mWifiFree.size() + 1)) {
 					WifiInfoScanned wifiSelected = mWifiFree.get(position - 1);
-					boolean connResult = false;
-					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
-					if (cfgSelected != null) {
-						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
-								mWifiAdmin.getWifiConfiguration(wifiSelected), true);
-					} else {
-						connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiSelected, mNumOpenNetworksKept);
-					}
-					if (connResult) {
-						mWifiListHelper.fillWifiList();
-						mWifiFree = mWifiListHelper.getWifiFrees();
-						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-						updateWifiConMore(mWifiNameView);
-						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-					} else {
-						Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
-					}
+					Intent intent = new Intent("com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM");
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("WifiSelected", wifiSelected);
+					intent.putExtras(bundle);
+					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
+					
+//					boolean connResult = false;
+//					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
+//					if (cfgSelected != null) {
+//						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
+//								mWifiAdmin.getWifiConfiguration(wifiSelected), true);
+//					} else {
+//						connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiSelected, mNumOpenNetworksKept);
+//					}
+//					if (connResult) {
+//						mWifiListHelper.fillWifiList();
+//						mWifiFree = mWifiListHelper.getWifiFrees();
+//						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//						updateWifiConMore(mWifiNameView);
+//						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+//					} else {
+//						Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
+//					}
 				}
 			}
 		});
@@ -165,6 +165,19 @@ public class WifiFragment extends MainFragment {
 		bingdingTitleUI();
 		
 		return mPageRoot;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
+			mWifiListHelper.fillWifiList();
+			mWifiFree = mWifiListHelper.getWifiFrees();
+			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+			updateWifiConMore(mWifiNameView);
+			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+		}
 	}
 
 	@Override

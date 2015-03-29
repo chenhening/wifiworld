@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="security">安全性</string>
+    <string name="signal">信号强度</string>
+    
     <string name="connect">连接</string>
     <string name="nearby">附近</string>
     <string name="find">发现</string>

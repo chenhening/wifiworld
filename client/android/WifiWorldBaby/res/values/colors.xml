@@ -394,4 +394,8 @@
     <color name="sliding_menu_item_release">#00000000</color>
     <color name="sliding_menu_background">#ff2c2c2e</color>
     <color name="sliding_menu_body_background">#fff5f5f5</color>
+    
+    <color name="title_text">#6396f7</color>
+    <color name="buttons_view_bk">@android:color/transparent</color>
+    <color name="content_bk">@android:color/transparent</color>
 </resources>
