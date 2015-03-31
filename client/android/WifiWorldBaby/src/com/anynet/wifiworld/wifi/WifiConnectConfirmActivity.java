@@ -46,8 +46,6 @@ public class WifiConnectConfirmActivity extends Activity {
 			}
 			if (connResult) {
 				setResult(RESULT_OK);
-			} else {
-				setResult(RESULT_CANCELED);
 			}
 			finish();
 		}

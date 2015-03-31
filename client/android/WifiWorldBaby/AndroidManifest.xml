@@ -229,7 +229,7 @@ ShareActivity
         </activity>
         <activity android:name="com.anynet.wifiworld.wifi.WifiConnectConfirmActivity"
 	        android:theme="@style/PlatformDialog" 
-	        android:launchMode="singleInstance" 
+	        android:launchMode="standard" 
 	        android:excludeFromRecents="true" 
 	        android:noHistory="true">
 	        

@@ -38,7 +38,7 @@ import android.widget.Toast;
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 	
-	static final int WIFI_CONNECT_CONFIRM = 0;
+	static final int WIFI_CONNECT_CONFIRM = 1;
 	
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
@@ -54,6 +54,7 @@ public class WifiFragment extends MainFragment {
 	private boolean mBroadcastRegistered;
 	
 	private WifiInfo mWifiInfo = null;
+	private WifiInfoScanned mWifiItemSelected;
 
 	private WifiStatusReceiver.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
@@ -132,10 +133,10 @@ public class WifiFragment extends MainFragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (position < (mWifiFree.size() + 1)) {
-					WifiInfoScanned wifiSelected = mWifiFree.get(position - 1);
+					mWifiItemSelected = mWifiFree.get(position - 1);
 					Intent intent = new Intent("com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM");
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("WifiSelected", wifiSelected);
+					bundle.putSerializable("WifiSelected", mWifiItemSelected);
 					intent.putExtras(bundle);
 					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
 					
@@ -177,6 +178,10 @@ public class WifiFragment extends MainFragment {
 			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 			updateWifiConMore(mWifiNameView);
 			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+		} else {
+			if (mWifiItemSelected != null) {
+				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemSelected.getWifiName(), Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
