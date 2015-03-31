@@ -528,4 +528,6 @@
     <dimen name="dimen_499_dip">499.0dip</dimen>
     <dimen name="dimen_500_dip">500.0dip</dimen>
 
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">64dp</dimen>
 </resources>

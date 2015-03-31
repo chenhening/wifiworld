@@ -398,4 +398,6 @@
     <color name="title_text">#6396f7</color>
     <color name="buttons_view_bk">@android:color/transparent</color>
     <color name="content_bk">@android:color/transparent</color>
+    
+    <color name="rippelColor">#0099CC</color>
 </resources>

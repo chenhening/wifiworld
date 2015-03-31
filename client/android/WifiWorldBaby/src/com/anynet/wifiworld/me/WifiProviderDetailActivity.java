@@ -3,20 +3,18 @@ package com.anynet.wifiworld.me;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.cordova.Config;
-import org.apache.cordova.CordovaChromeClient;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.CordovaWebViewClient;
-import org.apache.cordova.Whitelist;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.amap.api.maps.AMap;
@@ -24,8 +22,9 @@ import com.amap.api.maps.MapView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.desarrollodroide.libraryfragmenttransactionextended.FragmentTransactionExtended;
 
-public class WifiProviderDetailActivity extends BaseActivity implements CordovaInterface {
+public class WifiProviderDetailActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
@@ -40,6 +39,8 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 	
 	private MapView mapView = null;
 	private AMap aMap = null;
+	
+	private android.app.Fragment mFirstFragment = null;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -63,8 +64,16 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
+		//Add first fragment
+        mFirstFragment = new WifiOnlineSlidingFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_place, mFirstFragment);
+        fragmentTransaction.commit();
+        
 			
-		if (cordView == null) {
+		/*(if (cordView == null) {
 			Config.init(this);
 			Whitelist mWhitelist = new Whitelist();
 			cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
@@ -72,7 +81,7 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		            Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
 		}
 		cordView.loadUrl("file:///android_asset/www/index.html");
-		cordView.removeAllViews();
+		cordView.removeAllViews();*/
 		
 		//当前在线用户展示图
 		/*displayUserOnlineMap(savedInstanceState);
@@ -132,34 +141,6 @@ public class WifiProviderDetailActivity extends BaseActivity implements CordovaI
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
-
-	@Override
-    public Activity getActivity() {
-	    return this;
-    }
-
-	@Override
-    public ExecutorService getThreadPool() {
-	    return threadPool;
-    }
-
-	@Override
-    public Object onMessage(String arg0, Object arg1) {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-	@Override
-    public void setActivityResultCallback(CordovaPlugin arg0) {
-	    // TODO Auto-generated method stub
-	    
-    }
-
-	@Override
-    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-	    // TODO Auto-generated method stub
-	    
-    }
 	
 	// ---------------------------------------------------------------------------------------------
 	/*private void displayUserOnlineMap(Bundle savedInstanceState) {

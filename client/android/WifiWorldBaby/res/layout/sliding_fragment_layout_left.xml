@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back1" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="96dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_grey_normal"
+            android:gravity="center"
+            android:text="当前在线人数" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="76dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_grey_normal"
+            android:gravity="center"
+            android:hint="0人"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/appicon_mask"
+            android:text="ToggleButton" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true" >
+		<com.skyfishjy.library.RippleBackground
+    		xmlns:android="http://schemas.android.com/apk/res/android"
+		    xmlns:app="http://schemas.android.com/apk/res-auto"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:id="@+id/content">
+
+		    <ImageView
+		        android:id="@+id/centerImage"
+		        android:layout_width="32dp"
+		        android:layout_height="32dp"
+		        android:layout_centerInParent="true" />
+
+		</com.skyfishjy.library.RippleBackground>			
+    </FrameLayout>
+
+</com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>
