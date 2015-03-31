@@ -16,8 +16,10 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WifiAdmin {
 	private static final String TAG = WifiAdmin.class.getSimpleName();
@@ -27,6 +29,10 @@ public class WifiAdmin {
 	private static WifiAdmin wifiAdmin = null;
     private WifiManager mWifiManager;
     private WifiLock mWifiLock;
+    private int mNumOpenNetworksKept;
+    
+    public static WifiInfoScanned mWifiConnection;
+    private Context mContext;
     
     public static WifiAdmin getInstance(Context context) {
         if(wifiAdmin == null) {
@@ -38,6 +44,9 @@ public class WifiAdmin {
     private WifiAdmin(Context context) {
         //get WIFI manager object
         mWifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        mContext = context;
+        mNumOpenNetworksKept =  Settings.Secure.getInt(context.getContentResolver(),
+	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
     }
     
 //    public boolean Connect(String SSID, String Password, WifiCipherType Type) {
@@ -212,10 +221,10 @@ public class WifiAdmin {
 	 * @param password Password for secure network or is ignored.
 	 * @return
 	 */
-	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned, final int numOpenNetworksKept) {
+	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned) {
 		
 		if(ConfigSec.isOpenNetwork(wifiInfoScanned.getEncryptType())) {
-			checkForExcessOpenNetworkAndSave(mWifiManager, numOpenNetworksKept);
+			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
 		}
 		
 		WifiConfiguration config = new WifiConfiguration();
@@ -232,15 +241,18 @@ public class WifiAdmin {
 			// This exception is reported by user to Android Developer Console(https://market.android.com/publish/Home)
 		}
 		if(id == -1) {
+			Log.e(TAG, "Failed to add config to network");
 			return false;
 		}
 		
 		if(!mWifiManager.saveConfiguration()) {
+			Log.e(TAG, "Failed to save config");
 			return false;
 		}
 		
 		config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
 		if(config == null) {
+			Log.e(TAG, "Failed to get config from local configed wifi list");
 			return false;
 		}
 		
@@ -321,6 +333,18 @@ public class WifiAdmin {
 		}
 		
 		return true;
+	}
+	
+	public boolean checkWifiPwd(String pwd) {
+		if (mWifiConnection != null) {
+			WifiInfoScanned temp = mWifiConnection;
+			temp.setWifiPwd(pwd);
+			return connectToNewNetwork(mContext, temp);
+		} else {
+			Log.e(TAG, "Not connect to any wifi");
+			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();
+			return false;
+		}
 	}
     
     private int parseBitSet(BitSet kmtBitSet) {

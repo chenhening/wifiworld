@@ -92,6 +92,7 @@ public class WifiStatusReceiver {
 		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 		                //密码错误
+		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            }
 		            if (onWifiStatusListener != null) {
 		            	onWifiStatusListener.onChanged(statusStr);

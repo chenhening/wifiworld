@@ -31,7 +31,7 @@ public class WifiConnectConfirmActivity extends Activity {
 	
 	private WifiInfoScanned mWifiInfoScanned;
 	private WifiAdmin mWifiAdmin;
-	private int mNumOpenNetworksKept;
+	
 
 	private OnClickListener mConnectClickListener = new OnClickListener() {
 
@@ -40,9 +40,9 @@ public class WifiConnectConfirmActivity extends Activity {
 			boolean connResult = false;
 			WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(mWifiInfoScanned);
 			if (cfgSelected != null) {
-				connResult = mWifiAdmin.connectToConfiguredNetwork(ctx,	mWifiAdmin.getWifiConfiguration(mWifiInfoScanned), true);
+				connResult = mWifiAdmin.connectToConfiguredNetwork(ctx,	mWifiAdmin.getWifiConfiguration(mWifiInfoScanned), false);
 			} else {
-				connResult = mWifiAdmin.connectToNewNetwork(ctx, mWifiInfoScanned, mNumOpenNetworksKept);
+				connResult = mWifiAdmin.connectToNewNetwork(ctx, mWifiInfoScanned);
 			}
 			if (connResult) {
 				setResult(RESULT_OK);
@@ -83,8 +83,7 @@ public class WifiConnectConfirmActivity extends Activity {
 		mCancelBtn.setOnClickListener(mCancelClickListener);
 		
 		mWifiAdmin = WifiAdmin.getInstance(this);
-		mNumOpenNetworksKept =  Settings.Secure.getInt(this.getContentResolver(),
-	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
+		
 		processIntent(getIntent());
 	}
 

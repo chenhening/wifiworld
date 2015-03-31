@@ -112,12 +112,12 @@ public class WifiListHelper {
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list
 	//need compare with WIFI SSID and Encrypt type
-	public boolean rmWifiConnected(String wifiName) {
+	public WifiInfoScanned rmWifiConnected(String wifiName) {
 		for (Iterator<WifiInfoScanned> it = mWifiFree.iterator(); it.hasNext();) {
 			WifiInfoScanned tmpInfo = it.next();
 			if (wifiName.equals(tmpInfo.getWifiName())) {
 				it.remove();
-				return true;
+				return tmpInfo;
 			}
 		}
 
@@ -125,11 +125,11 @@ public class WifiListHelper {
 			WifiInfoScanned tmpInfo = it.next();
 			if (wifiName.equals(tmpInfo.getWifiName())) {
 				it.remove();
-				return true;
+				return tmpInfo;
 			}
 		}
 
-		return false;
+		return null;
 	}
 	
 	public WifiAdmin getWifiAdmin() {
