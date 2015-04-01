@@ -73,6 +73,7 @@ public class LoginHelper {
 			public void onSuccess(UserProfile object) {
 				Log.i(TAG, "用户信息更新成功。");
 				SaveProfileLocal(object);
+				mUser = object;
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 			}
@@ -92,38 +93,40 @@ public class LoginHelper {
 		mUser.PhoneNumber = mPreferences.getString(mAliasUser, "");
 		mUser.Password = mPreferences.getString(mAliasPwd, "");
 		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
-		if (mUser.PhoneNumber == null || mUser.Password == null
-				|| mUser.PhoneNumber.isEmpty() || mUser.Password.isEmpty()) {
+		if (mUser.PhoneNumber == null || mUser.Password == null || mUser.PhoneNumber.isEmpty()
+				|| mUser.Password.isEmpty()) {
 			Log.d(TAG, "用户未登录过");
 			globalContext.sendBroadcast(new Intent(AUTO_LOGIN_NEVERLOGIN));
-			//ShowToast(globalContext, "用户未登录过。", Toast.LENGTH_SHORT);
+			// ShowToast(globalContext, "用户未登录过。", Toast.LENGTH_SHORT);
 			return;
 		}
 
 		final UserProfile remote_user = new UserProfile();
-		remote_user.QueryByPhoneNumber(globalContext, mUser.PhoneNumber,
-			new DataCallback<UserProfile>() {
+		remote_user.QueryByPhoneNumber(globalContext, mUser.PhoneNumber, new DataCallback<UserProfile>() {
 
-				@Override
-				public void onSuccess(UserProfile object) {
-					if (object.Password.equals(mUser.Password)) {
-						mIsLogin = true;
-						globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
-						Log.d(TAG, "用户自动登陆成功。");
-						//ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
-					} else {
-						globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
-						Log.d(TAG, "用户自动登陆失败，请重新登陆。");
-						//ShowToast(globalContext, "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
-					}
+			@Override
+			public void onSuccess(UserProfile object) {
+				if (object.Password.equals(mUser.Password)) {
+					mIsLogin = true;
+					mUser = object;
+					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
+					Log.d(TAG, "用户自动登陆成功。");
+					// ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
+				} else {
+					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
+					Log.d(TAG, "用户自动登陆失败，请重新登陆。");
+					// ShowToast(globalContext,
+					// "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
 				}
+			}
 
-				@Override
-				public void onFailed(String msg) {
-					Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
-					//ShowToast(globalContext, "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
-				}
-			});
+			@Override
+			public void onFailed(String msg) {
+				Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
+				// ShowToast(globalContext,
+				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
+			}
+		});
 	}
 
 	public void logout() {

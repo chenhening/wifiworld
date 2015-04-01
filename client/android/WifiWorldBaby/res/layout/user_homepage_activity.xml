@@ -107,24 +107,24 @@
         item:subLabelColor="@color/gray"
         item:subLabelVisibility="invisible" />
 
-    <com.anynet.wifiworld.view.SettingItemView
+<!--     <com.anynet.wifiworld.view.SettingItemView
         android:id="@+id/siv_psw"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/dimen_45_dip"
         android:layout_below="@+id/siv_account"
-        item:icon="@drawable/icon_person_center_attention_shopper"
+        item:iconx="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account_password"
         item:showContent="true"
         item:showRedPoint="false"
         item:showTopDivider="true"
         item:subLabel="@string/account_edit"
         item:subLabelColor="@color/gray" />
-
+ -->
     <TextView
         android:id="@+id/tv_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/siv_psw"
+        android:layout_below="@id/siv_account"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="资料" />

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.anynet.wifiworld.util.StringCrypto;
 
+import android.R.array;
 import android.content.Context;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
@@ -17,16 +18,42 @@ public class UserProfile extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
 	private static final String unique_key = "PhoneNumber";
+
+	public static final String CryptoKey = "userprof";// 8bits
+
+	// public String Userid; //用户账号
+	public String PhoneNumber; // 用户手机号，作为表的唯一建
+	public String NickName;
+	public String Password; // 密码
+	public int Type; // 用户类型，
+	public float Wallet; // 用户钱包
+	private int Sex;
+
+	public static final String[] SexArray = {"女的","男的","弯的","奇怪的"};
 	
-	public static final String CryptoKey = "userprof";//8bits
-	
-	//public String Userid; //用户账号
-	public String PhoneNumber; //用户手机号，作为表的唯一建
-	public String Password; //密码
-	public int Type; //用户类型，
-	public float Wallet; //用户钱包
-	
-// ------------------------------------------------------------------------------------------------
+	public String getSex() {
+		String r = SexArray[0];
+		if(Sex<=3 && Sex >=0){
+			r = SexArray[Sex];
+		}
+		return r;
+	}
+
+	public void setSex(String sex) {
+		int r = 0;
+		if(sex.equals(SexArray[0])){
+			r = 0;
+		}else if(sex.equals(SexArray[1])){
+			r = 1;
+		}else if(sex.equals(SexArray[2])){
+			r = 2;
+		}else{
+			r = 3;
+		}
+		Sex = r;
+	}
+
+	// ------------------------------------------------------------------------------------------------
 	public void QueryByPhoneNumber(
 		final Context context, String number, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
