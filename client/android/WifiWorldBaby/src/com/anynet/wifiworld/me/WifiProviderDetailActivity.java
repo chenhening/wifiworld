@@ -41,6 +41,8 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private AMap aMap = null;
 	
 	private android.app.Fragment mFirstFragment = null;
+    private float start_x = 0;
+    private float end_x = 0;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -71,6 +73,42 @@ public class WifiProviderDetailActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_place, mFirstFragment);
         fragmentTransaction.commit();
+        
+        final WifiProviderDetailActivity activity = this;
+        this.findViewById(R.id.fragment_place).setOnTouchListener(new OnTouchListener() {
+
+        	@Override
+            public boolean onTouch(View v, MotionEvent event) {
+        		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        			start_x = event.getRawX();
+        		}
+        		else if (event.getAction() == MotionEvent.ACTION_UP) {
+        			end_x = event.getRawX();
+        			if (Math.abs(start_x - end_x) > 100) {
+        				activity.runOnUiThread(new Runnable() {
+
+							@Override
+                            public void run() {
+								if (getFragmentManager().getBackStackEntryCount()==0) {
+		        		            Fragment secondFragment = new WifiOnlineSlidingFragment();
+		        		            FragmentManager fm = getFragmentManager();
+		        		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+		        		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
+		        		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
+		        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.FLIP_HORIZONTAL);
+		        		            fragmentTransactionExtended.commit();
+		        		        }else{
+		        		            getFragmentManager().popBackStack();
+		        		        }
+                            }
+        					
+        				});
+        			}
+                }  
+        	    return true;
+            }
+        	
+        });
         
 			
 		/*(if (cordView == null) {
