@@ -2,7 +2,7 @@
 <com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back1" >
+    android:background="@drawable/bg_baoxiang" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -21,42 +21,43 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="76dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/btn_grey_normal"
             android:gravity="center"
             android:hint="0人"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <ToggleButton
-            android:id="@+id/toggleButton1"
-            android:layout_width="79dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/appicon_mask"
-            android:text="ToggleButton" />
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="320dp"
         android:layout_below="@+id/linearLayout1"
-        android:layout_centerHorizontal="true" >
-		<com.skyfishjy.library.RippleBackground
-    		xmlns:android="http://schemas.android.com/apk/res/android"
-		    xmlns:app="http://schemas.android.com/apk/res-auto"
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:id="@+id/content">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp" >
 
-		    <ImageView
-		        android:id="@+id/centerImage"
-		        android:layout_width="32dp"
-		        android:layout_height="32dp"
-		        android:layout_centerInParent="true" />
+        <com.skyfishjy.library.RippleBackground
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-		</com.skyfishjy.library.RippleBackground>			
+            <ImageView
+                android:id="@+id/centerImage"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true" />
+        </com.skyfishjy.library.RippleBackground>
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>

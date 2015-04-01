@@ -85,24 +85,17 @@ public class WifiProviderDetailActivity extends BaseActivity {
         		else if (event.getAction() == MotionEvent.ACTION_UP) {
         			end_x = event.getRawX();
         			if (Math.abs(start_x - end_x) > 100) {
-        				activity.runOnUiThread(new Runnable() {
-
-							@Override
-                            public void run() {
-								if (getFragmentManager().getBackStackEntryCount()==0) {
-		        		            Fragment secondFragment = new WifiOnlineSlidingFragment();
-		        		            FragmentManager fm = getFragmentManager();
-		        		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-		        		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
-		        		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
-		        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.FLIP_HORIZONTAL);
-		        		            fragmentTransactionExtended.commit();
-		        		        }else{
-		        		            getFragmentManager().popBackStack();
-		        		        }
-                            }
-        					
-        				});
+        				if (getFragmentManager().getBackStackEntryCount()==0) {
+        		            Fragment secondFragment = new WifiOnlineSlidingFragment();
+        		            FragmentManager fm = getFragmentManager();
+        		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
+        		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
+        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.FLIP_HORIZONTAL);
+        		            fragmentTransactionExtended.commit();
+        		        }else{
+        		            getFragmentManager().popBackStack();
+        		        }
         			}
                 }  
         	    return true;
