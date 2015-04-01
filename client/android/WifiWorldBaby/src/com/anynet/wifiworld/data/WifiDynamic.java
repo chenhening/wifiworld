@@ -26,8 +26,9 @@ public class WifiDynamic extends BmobObject {
 	//private static final String key_logout = "LogoutTime";
 	
 	//半周毫秒数
-	private static final long halfweekmillis = (long)(3.5*24*60*60*1000);
-	private static final long halfdaymillis = (long)(12*60*60*1000);
+	private static final long weekmillis = (long)(7*24*60*60*1000);
+	private static final long daymillis = (long)(24*60*60*1000);
+	private static final long ahourmills = (long)30*60*1000;
 
 	public String Userid; //用户的id即phone number
 	public String MacAddr; //所使用网络的mac地址
@@ -36,14 +37,42 @@ public class WifiDynamic extends BmobObject {
 	public long LogoutTime; //用户退出网络的时间
 	
 // ------------------------------------------------------------------------------------------------
+	public void QueryUserCurrent(
+		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		final MultiDataCallback<WifiDynamic> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereEqualTo(key_user, MacAddr);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - ahourmills);
+		Log.d("findObjects", "开始查询QueryUserInOneWeek");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiDynamic>() {
+					@Override
+					public void onSuccess(List<WifiDynamic> objects) {
+						_callback.onSuccess(objects);
+					}
+			
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryUserInOneWeek");
+			}
+			
+		}).start();
+	}
+	
 	public void QueryUserInOneWeek(
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_user, Userid);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
-		query.addWhereLessThan(key_login, time + halfweekmillis);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
 		Log.d("findObjects", "开始查询QueryUserInOneWeek");
 		new Thread(new Runnable() {
 
@@ -72,8 +101,7 @@ public class WifiDynamic extends BmobObject {
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_wifi, MacAddr);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - halfdaymillis);
-		query.addWhereLessThan(key_login, time + halfdaymillis);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - daymillis);
 		Log.d("findObjects", "开始查询QueryWiFiInOneWeek");
 		new Thread(new Runnable() {
 
@@ -102,8 +130,7 @@ public class WifiDynamic extends BmobObject {
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_wifi, MacAddr);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - halfweekmillis);
-		query.addWhereLessThan(key_login, time + halfweekmillis);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
 		Log.d("findObjects", "开始查询QueryWiFiInOneDay");
 		new Thread(new Runnable() {
 

@@ -109,7 +109,11 @@ public class LocationHelper implements LocationSource, AMapLocationListener {
 	
 	//地理位置的相关描述
 	public String getLocalDescription() {
-		return mAMapLocation.getExtras().getString("desc");
+		if (mAMapLocation.getExtras() != null) {
+			return mAMapLocation.getExtras().getString("desc");
+		} else {
+			return "未能自动识别出所在区域，请手动编辑。";
+		}
 	}
 
 }

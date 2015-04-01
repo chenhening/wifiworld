@@ -368,6 +368,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			Drawable drawable = new BitmapDrawable(this.getResources(), mLogo);
 			mWifiLogo = (ImageView)this.findViewById(R.id.img_wifi_provider_logo_preview);
 			mWifiLogo.setImageDrawable(drawable);
+			//mWifiProfile.Logo = mLogo;
 		}
 	}
 
