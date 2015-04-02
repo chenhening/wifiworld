@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.UserLoginActivity;
-import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
@@ -30,17 +28,11 @@ import com.umeng.socialize.common.SocializeConstants;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
-import com.umeng.socialize.laiwang.controller.UMLWHandler;
-import com.umeng.socialize.sso.UMQQSsoHandler;
-import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.yixin.controller.UMYXHandler;
 
 public class MeFragment extends MainFragment {
 	// for saved data
-	public static WifiProfile mWifiProfile = new WifiProfile();
 	private LoginHelper mLoginHelper;
-
-	private ProviderIncomeChartView mLineChart = null;
 
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
 
@@ -118,7 +110,7 @@ public class MeFragment extends MainFragment {
 
 					@Override
 					public void onSuccess(List<WifiProfile> objects) {
-						mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
+						mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
 						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 						startActivity(i);
 					}
@@ -126,6 +118,7 @@ public class MeFragment extends MainFragment {
 					@Override
 					public void onFailed(String msg) {
 						// 查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
+						mLoginHelper.mWifiProfile = new WifiProfile();
 						Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
 						startActivity(i);
 					}

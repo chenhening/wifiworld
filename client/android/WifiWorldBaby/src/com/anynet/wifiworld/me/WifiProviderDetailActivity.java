@@ -13,14 +13,13 @@ import android.view.View.OnTouchListener;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.desarrollodroide.libraryfragmenttransactionextended.FragmentTransactionExtended;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
-	
-	public static WifiProfile mWifiProfile = null;
 	private android.app.Fragment mFirstFragment = null;
     private float start_x = 0;
     private float end_x = 0;
@@ -43,7 +42,6 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
-		mWifiProfile = MeFragment.mWifiProfile;
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class LoginHelper {
 
@@ -29,6 +30,8 @@ public class LoginHelper {
 	private static LoginHelper mInstance = null;
 	private SharedPreferences mPreferences = null;
 	private Context globalContext = null;
+	
+	public WifiProfile mWifiProfile = null;
 
 	private double Longitude = 0.0;
 	private double Latitude = 0.0;

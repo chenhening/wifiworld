@@ -16,7 +16,7 @@ public class WifiProviderWebPlugin extends CordovaPlugin {
         if(TAG.equals(action)){  
             try {   
                 
-            	WifiProfile wifi = WifiProviderDetailActivity.mWifiProfile;
+            	WifiProfile wifi = LoginHelper.getInstance(null).mWifiProfile;
                 jsonObj.put("alias", wifi.Alias);
                 jsonObj.put("macaddr", wifi.MacAddr); 
                 

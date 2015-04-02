@@ -37,7 +37,7 @@ import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
-	public static WifiProfile mWifiProfile = null;
+	public WifiProfile mWifiProfile = null;
 	
 	private WifiListHelper mWifiHelper = null;
 	private LoginHelper mLoginHelper = null;
@@ -103,7 +103,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		
 		//获得sponser
 		mLoginHelper= LoginHelper.getInstance(getApplicationContext());
-		mWifiProfile = MeFragment.mWifiProfile;
+		mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
 		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		
 		//自动获取网络ssid

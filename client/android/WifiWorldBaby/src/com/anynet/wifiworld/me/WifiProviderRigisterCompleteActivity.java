@@ -12,6 +12,7 @@ import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 	//IPC
@@ -44,7 +45,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 
 				@Override
                 public void onClick(View arg0) {
-					mWifiProfile = WifiProviderRigisterFirstActivity.mWifiProfile;
+					mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
 					mWifiProfile.StoreRemote(getApplicationContext(), 
 						new DataCallback<WifiProfile>() {
 

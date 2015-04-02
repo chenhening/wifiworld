@@ -16,6 +16,7 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.skyfishjy.library.RippleBackground;
 
 public class WifiOnlineSlidingFragment extends Fragment {
@@ -33,7 +34,7 @@ public class WifiOnlineSlidingFragment extends Fragment {
         
         //得到wifi上传的logo信息展示
         center_image = (ImageView)view.findViewById(R.id.centerImage);
-        Bitmap bitmap = WifiProviderDetailActivity.mWifiProfile.Logo;
+        Bitmap bitmap = null;//LoginHelper.getInstance(getActivity()).mWifiProfile.Logo;
         if (bitmap == null) {//如果logo设置为空，那么采用统一的默认图片
         	center_image.setImageResource(R.drawable.ic_launcher);
         } else {
@@ -54,7 +55,7 @@ public class WifiOnlineSlidingFragment extends Fragment {
         
         //数据库里面去查询当前正在线上的用户
         WifiDynamic record = new WifiDynamic();
-        record.MacAddr = WifiProviderDetailActivity.mWifiProfile.MacAddr;
+        record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
         record.MarkLoginTime();
         record.QueryUserCurrent(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
 
@@ -75,7 +76,7 @@ public class WifiOnlineSlidingFragment extends Fragment {
     }
 	
 	private void addMarkerOnView(List<WifiDynamic> objects) {
-		BmobGeoPoint mBmobGeoPoint = WifiProviderDetailActivity.mWifiProfile.Geometry;
+		BmobGeoPoint mBmobGeoPoint = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry;
 		double center_x = mBmobGeoPoint.getLatitude();
 		double center_y = mBmobGeoPoint.getLongitude();
 		for (int i=0; i < objects.size(); ++i) {
