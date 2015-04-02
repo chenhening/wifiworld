@@ -236,13 +236,24 @@
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_my_attended_wifi"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_attention_shopper"
+                    item:label="@string/person_center_attention_shopper"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/cl_iam_wifi_user"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    android:visibility="gone"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_user"
                     item:subLabel="开放中"
                     item:subLabelColor="@color/red" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
@@ -254,6 +265,24 @@
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/message_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="@string/person_center_message"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_my_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="@string/person_my_setting"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/setiing_share_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
@@ -262,13 +291,6 @@
                     item:subLabel="奖联币"
                     item:subLabelVisibility="visible" />
 
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/message_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_msg"
-                    item:label="@string/person_center_message"
-                    item:showTopDivider="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -309,15 +331,6 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
                 android:orientation="vertical" >
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/attention_shopper_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_attention_shopper"
-                    item:label="@string/person_center_attention_shopper"
-                    item:showTopDivider="true" >
-                </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/attention_layout"

@@ -20,7 +20,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	//IPC
 	private Intent mIntent = null;
 	
-	public static WifiProfile mWifiProfile = new WifiProfile();
+	public static WifiProfile mWifiProfile = null;
 	private android.app.Fragment mFirstFragment = null;
     private float start_x = 0;
     private float end_x = 0;
@@ -43,7 +43,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
-		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
+		mWifiProfile = WifiProviderRigisterFirstActivity.mWifiProfile;
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
