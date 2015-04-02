@@ -8,7 +8,6 @@ import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
 
-import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -21,7 +20,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,7 +176,7 @@ public class WifiFragment extends MainFragment {
 			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 			updateWifiConMore(mWifiNameView);
 			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-		} else {
+		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}

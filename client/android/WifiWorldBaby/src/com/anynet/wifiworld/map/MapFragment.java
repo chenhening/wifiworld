@@ -8,6 +8,7 @@
  */
 package com.anynet.wifiworld.map;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -16,16 +17,22 @@ import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.anynet.wifiworld.wifi.WifiListAdapter;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -53,6 +60,8 @@ public class MapFragment extends MainFragment implements LocationSource,
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
+	private ListView mWifiListView;
+	private WifiListMapAdapter mWifiListMapAdapter;
 
 	// ---------------------------------------------------------------------------------------------
 	// for Fragment
@@ -82,6 +91,46 @@ public class MapFragment extends MainFragment implements LocationSource,
 		}
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
+		
+		SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
+        layout.setAnchorPoint(0.3f);
+        layout.setPanelSlideListener(new PanelSlideListener() {
+
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+
+
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+
+
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+
+
+            }
+        });
+        
+        List<WifiInfoScanned> wifiList = new ArrayList<WifiInfoScanned>();
+        WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
+        tempInfoScanned.mWifiDistance = 10;
+        tempInfoScanned.setWifiName("shit");
+        tempInfoScanned.setRemark("lalalalala");
+        wifiList.add(tempInfoScanned);
+        mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
+        mWifiListMapAdapter = new WifiListMapAdapter(this.getActivity(), wifiList);
+		mWifiListView.setAdapter(mWifiListMapAdapter);
+		
 		return mPageRoot;
 	}
 

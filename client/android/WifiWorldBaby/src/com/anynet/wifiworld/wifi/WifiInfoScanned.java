@@ -22,6 +22,8 @@ public class WifiInfoScanned implements Serializable {
 	private int ConnectedTimes;
 	private int ConnectedDuration;
 	
+	public int mWifiDistance;
+	
 	public float getRating() {
 		return mRating;
 	}
