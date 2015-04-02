@@ -22,19 +22,6 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		/*mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.push_btn);
-		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				//Intent i = new Intent(WifiProviderRigisterCompleteActivity.this,
-				//		MainActivity.class);
-				mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
-						MainActivity.class);
-				startActivity(mIntent);
-			}
-		});*/
 		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
@@ -57,7 +44,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 
 				@Override
                 public void onClick(View arg0) {
-					mWifiProfile = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
+					mWifiProfile = WifiProviderRigisterFirstActivity.mWifiProfile;
 					mWifiProfile.StoreRemote(getApplicationContext(), 
 						new DataCallback<WifiProfile>() {
 

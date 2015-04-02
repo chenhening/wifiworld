@@ -37,10 +37,10 @@ import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
+	public static WifiProfile mWifiProfile = new WifiProfile();
 	
 	private WifiListHelper mWifiHelper = null;
 	private LoginHelper mLoginHelper = null;
-	private WifiProfile mWifiProfile = new WifiProfile();
 	private LocationHelper mLocationHelper = null;
 	
 	//UI
@@ -81,7 +81,6 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 					i = new Intent(WifiProviderRigisterFirstActivity.this, 
 						WifiProviderRigisterSecondHomeActivity.class);
 				}
-				i.putExtra(WifiProfile.class.getName(), mWifiProfile);
 				startActivity(i);
 			}
 		});
@@ -349,8 +348,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 64);
-		intent.putExtra("outputY", 64);
+		intent.putExtra("outputX", 32);
+		intent.putExtra("outputY", 32);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, RESULT_REQUEST_CODE);
 	}

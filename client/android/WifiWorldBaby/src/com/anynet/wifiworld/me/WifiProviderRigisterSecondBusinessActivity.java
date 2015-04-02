@@ -25,8 +25,6 @@ public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				//Intent i = new Intent(WifiProviderRigisterSecondBusinessActivity.this,
-				//		WifiProviderRigisterThirdActivity.class);
 				mIntent.setClass(WifiProviderRigisterSecondBusinessActivity.this,
 						WifiProviderRigisterThirdActivity.class);
 				startActivity(mIntent);

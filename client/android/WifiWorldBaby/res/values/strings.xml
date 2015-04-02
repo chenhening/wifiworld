@@ -46,7 +46,8 @@
     <string name="str_openbussess">商家入驻</string>
     <string name="person_center_title">我</string>
     <string name="person_center_update">更新资料</string>
-    <string name="person_center_message">消息中心</string>
+    <string name="person_center_message">我的消息</string>
+    <string name="person_my_setting">我的设置</string>
     <string name="person_center_attention">我的关注</string>
     <string name="person_center_fensi">我的粉丝</string>
     <string name="person_center_blacklist">黑名单</string>
@@ -55,7 +56,7 @@
     <string name="person_center_wifi">Wi-Fi云备份</string>
     <string name="person_center_credit">我的联币</string>
     <string name="person_center_seller">我是商家</string>
-    <string name="person_center_attention_shopper">收藏的WiFi</string>
+    <string name="person_center_attention_shopper">我收藏的Wi-Fi</string>
     <string name="merchant_certify">商户认证</string>
     <string name="merchant_certify_name">请输入商家名称</string>
     <string name="merchant_certify_address">请选择商家地址</string>
@@ -96,8 +97,6 @@
     <string name="verifying_code_resend_verification_code_prompt"><Data>%1$s秒后&lt;BR />重新发验证码</Data></string>
     <string name="user_login_invalid_password">密码输入不正确</string>
     <string name="user_login_timeout_prompt">您的账户信息已过期，请重新登录。</string>
-    <string name="user_account_already_login_prompt">"您的联连账号已在其他设备登录，
-请注意账号安全。"</string>
     <string name="input_verification_code_error">验证码不正确</string>
     <string name="input_verification_code_overdue">验证码失效</string>
     <string name="input_verification_code_outdate">验证码失效,请重新获取验证码</string>
@@ -234,7 +233,7 @@
     <string name="str_wifi_provider_password_hint1">请输入WiFi登陆密码</string>
     <string name="str_wifi_provider_password_desc">您的密码我们会采用加密方式存储，其他用户在使用您的网络时候不会直接获取密码。每个WiFi都会提供网络理赔保险，保障您的网络财产安全。</string>
     <string name="str_wifi_provider_logo_hint">可以为您的WiFi设置logo图标，给用户留下深刻印象，商家可以设置成自己的品牌商标</string>
-    <string name="str_iam_wifi_provider">我是WiFi提供者</string>
+    <string name="str_iam_wifi_provider">我提供的Wi-Fi</string>
     <string name="str_iam_wifi_user">我是WiFi使用者</string>
     <string name="str_wifi_provider_business_warning">商家用户信息可以不填，如果不填网络宝将不会给予提供后台广告推送，营销数据分析等服务。</string>
     <string name="str_wifi_provider_home_warning">家庭网络以下认证信息可以不填，如果不填网络宝将不会给予提供后台广告推送，收益提现等服务。</string>
