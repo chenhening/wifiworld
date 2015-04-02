@@ -1,14 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <include layout="@layout/header_setting" android:visibility="gone" />
-
-    <com.amap.api.maps.MapView
-        android:id="@+id/map"
+    
+    <com.anynet.wifiworld.map.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.amap.api.maps.MapView>
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <com.amap.api.maps.MapView
+	        android:id="@+id/map"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+        </com.amap.api.maps.MapView>
+
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:gravity="center|bottom"
+                android:text="点我。。。点我"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/brought_by"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:gravity="center|top"
+                android:text="我要。。。我要"
+                android:textSize="14sp"
+                android:autoLink="web" />
+            
+            <View
+		        android:layout_width="match_parent"  
+		        android:layout_height="1px" 
+		        android:background="?android:attr/listDivider" />
+
+            <ListView
+	            android:id="@+id/wifi_list_map"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1"
+	            android:fadingEdge="none"
+	            android:cacheColorHint="#00000000" >
+	        </ListView>
+	        
+        </LinearLayout>
+    </com.anynet.wifiworld.map.SlidingUpPanelLayout>
+
+</RelativeLayout>
