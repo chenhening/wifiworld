@@ -38,10 +38,10 @@ public class WifiReportSlidingFragment extends Fragment {
         
         //display lisview 
         ListView listview1 = (ListView) view.findViewById(R.id.lv_wifi_report_1);
-        listview1.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getData()));
+        listview1.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, getData()));
         
         ListView listview2 = (ListView) view.findViewById(R.id.lv_wifi_report_2);
-        listview2.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getData()));
+        listview2.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, getData()));
         
         
         return view;

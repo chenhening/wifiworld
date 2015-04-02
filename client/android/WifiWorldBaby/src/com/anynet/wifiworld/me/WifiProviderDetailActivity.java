@@ -71,7 +71,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
         		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
         		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
         		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
-        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.FLIP_HORIZONTAL);
+        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.TABLE_HORIZONTAL);
         		            fragmentTransactionExtended.commit();
         		        }else{
         		            getFragmentManager().popBackStack();
