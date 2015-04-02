@@ -4,9 +4,34 @@
     android:layout_height="match_parent"
     android:background="@drawable/back2" >
 
-    <ListView
-        android:id="@android:id/list"
+    <RelativeLayout
+        android:id="@+id/rl_wifi_provider_line_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_wifi_report_1"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignRight="@+id/rl_wifi_provider_line_chart"
+        android:layout_below="@+id/rl_wifi_provider_line_chart"
+        android:background="@color/aliceblue" >
+
+    </ListView>
+
+    <ListView
+        android:id="@+id/lv_wifi_report_2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignLeft="@+id/lv_wifi_report_1"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/lv_wifi_report_1"
+        android:layout_marginTop="2dp"
+        android:background="@color/aliceblue" >
+
+    </ListView>
 
 </com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>

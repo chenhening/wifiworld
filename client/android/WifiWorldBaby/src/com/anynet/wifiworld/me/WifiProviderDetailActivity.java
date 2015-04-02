@@ -1,24 +1,15 @@
 package com.anynet.wifiworld.me;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.apache.cordova.CordovaWebView;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import cn.bmob.v3.datatype.BmobGeoPoint;
 
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.MapView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
@@ -30,16 +21,6 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private Intent mIntent = null;
 	
 	public static WifiProfile mWifiProfile = new WifiProfile();
-	private Bitmap mLogo;
-	private BmobGeoPoint mBmobGeoPoint;
-	private WifiProviderLineChartView mLineChart;
-	
-	private static CordovaWebView cordView = null;
-	private final ExecutorService threadPool = Executors.newCachedThreadPool();
-	
-	private MapView mapView = null;
-	private AMap aMap = null;
-	
 	private android.app.Fragment mFirstFragment = null;
     private float start_x = 0;
     private float end_x = 0;
@@ -74,7 +55,6 @@ public class WifiProviderDetailActivity extends BaseActivity {
         fragmentTransaction.add(R.id.fragment_place, mFirstFragment);
         fragmentTransaction.commit();
         
-        final WifiProviderDetailActivity activity = this;
         this.findViewById(R.id.fragment_place).setOnTouchListener(new OnTouchListener() {
 
         	@Override
@@ -86,7 +66,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
         			end_x = event.getRawX();
         			if (Math.abs(start_x - end_x) > 100) {
         				if (getFragmentManager().getBackStackEntryCount()==0) {
-        		            Fragment secondFragment = new WifiOnlineSlidingFragment();
+        		            Fragment secondFragment = new WifiReportSlidingFragment();
         		            FragmentManager fm = getFragmentManager();
         		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
         		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
