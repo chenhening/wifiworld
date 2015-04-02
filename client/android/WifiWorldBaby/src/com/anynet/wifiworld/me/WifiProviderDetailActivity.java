@@ -43,7 +43,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
-		mWifiProfile = WifiProviderRigisterFirstActivity.mWifiProfile;
+		mWifiProfile = MeFragment.mWifiProfile;
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();

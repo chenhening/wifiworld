@@ -47,17 +47,11 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		setContentView(R.layout.wifi_provider_certify_introduce);
-		super.onCreate(savedInstanceState);		
-		//WebView mWebView = (WebView) findViewById(R.id.sv_open);
-//		mWebView.loadUrl("file:///android_asset/www/pages/bussessopen.html");
-//		WebSettings webSettings= mWebView.getSettings();
-//		webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);  
+		super.onCreate(savedInstanceState);		 
 		TextView mTVLinkLicense = (TextView) findViewById(R.id.tv_link_license);
-		//SpannableString msp = new SpannableString("认证即表明您同意我们的《WifiWorld商户服务协议》");  
 		
-		final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《WifiWorld商户服务协议》</a>";
+		final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝商户服务协议》</a>";
 		mTVLinkLicense.setText(Html.fromHtml(sText));
 		mTVLinkLicense.setClickable(true);
 		mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());

@@ -37,6 +37,7 @@ import com.umeng.socialize.yixin.controller.UMYXHandler;
 
 public class MeFragment extends MainFragment {
 	// for saved data
+	public static WifiProfile mWifiProfile = new WifiProfile();
 	private LoginHelper mLoginHelper;
 
 	private ProviderIncomeChartView mLineChart = null;
@@ -117,6 +118,7 @@ public class MeFragment extends MainFragment {
 
 					@Override
 					public void onSuccess(List<WifiProfile> objects) {
+						mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
 						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 						startActivity(i);
 					}
