@@ -23,6 +23,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class WifiFragment extends MainFragment {
 	private WifiListHelper mWifiListHelper;
 	
 	private TextView mWifiNameView;
+	private Button mOpenWifiBtn;
 	private LinearLayout mWifiSquareLayout;
 	private PopupWindow mPopupWindow;
 	
@@ -72,6 +74,28 @@ public class WifiFragment extends MainFragment {
 				public void onChanged(String str) {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
+				}
+
+				@Override
+				public void onWifiStatChanged(boolean isEnabled) {
+					if (isEnabled) {
+						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
+						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
+						if (mWifiListAdapter != null) {
+							Log.i(TAG, "start scan wifi list");
+							boolean success = mWifiListHelper.fillWifiList();
+							Log.i(TAG, "start scan wifi list:"+success);
+							mWifiFree = mWifiListHelper.getWifiFrees();
+							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+							Log.i(TAG, "start scan wifi list:"+mWifiFree.size() + " " + mWifiEncrypt.size());
+							updateWifiConMore(mWifiNameView);
+							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+						}
+					} else {
+						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
+						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
+					}
+					
 				}
 			});
 		}
@@ -104,6 +128,14 @@ public class WifiFragment extends MainFragment {
 			Bundle savedInstanceState) {
 		
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
+		if (mWifiAdmin.isWifiEnabled()) {
+			mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
+			mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
+		} else {
+			mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
+			mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
+		}
+		
 		//handle WIFI square view
 		mWifiSquareLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_square);
 		//initial WIFI square pop-up view
@@ -137,25 +169,16 @@ public class WifiFragment extends MainFragment {
 					bundle.putSerializable("WifiSelected", mWifiItemClick);
 					intent.putExtras(bundle);
 					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
-					
-//					boolean connResult = false;
-//					WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiSelected);
-//					if (cfgSelected != null) {
-//						connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(),
-//								mWifiAdmin.getWifiConfiguration(wifiSelected), true);
-//					} else {
-//						connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiSelected, mNumOpenNetworksKept);
-//					}
-//					if (connResult) {
-//						mWifiListHelper.fillWifiList();
-//						mWifiFree = mWifiListHelper.getWifiFrees();
-//						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//						updateWifiConMore(mWifiNameView);
-//						mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-//					} else {
-//						Toast.makeText(getActivity(), "Failed to connect to " + wifiSelected.getWifiName(), Toast.LENGTH_LONG).show();
-//					}
 				}
+			}
+		});
+		
+		mOpenWifiBtn = (Button) mPageRoot.findViewById(R.id.open_wifi_btn);
+		mOpenWifiBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				mWifiAdmin.openWifi();
 			}
 		});
 		

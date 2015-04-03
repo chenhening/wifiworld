@@ -393,6 +393,16 @@ public class WifiAdmin {
         return this.mWifiManager.getWifiState();
     }
     
+    //get WIFI status
+    public boolean isWifiEnabled() {
+    	if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED
+    			|| mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+			return true;
+		} else {
+			return false;
+		}
+    }
+    
     //lock WIFI, when download large file
     public void acquireWifiLock() {
         this.mWifiLock.acquire();
@@ -429,6 +439,7 @@ public class WifiAdmin {
         }
         mWifiManager.startScan();
         List<ScanResult> scanResults = mWifiManager.getScanResults();
+        Log.i(TAG, "start to scan wifi nearby:" + scanResults.size());
         return filterWifiScanned(scanResults);
     }
     

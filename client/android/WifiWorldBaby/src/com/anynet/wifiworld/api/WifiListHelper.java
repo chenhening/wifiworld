@@ -43,7 +43,7 @@ public class WifiListHelper {
 	}
 	
 	public boolean fillWifiList() {
-		if (mWifiAdmin.openWifi()) {
+		if (mWifiAdmin.isWifiEnabled()) {
 			organizeWifiList(mWifiAdmin.scanWifi());
 			return true;
 		}

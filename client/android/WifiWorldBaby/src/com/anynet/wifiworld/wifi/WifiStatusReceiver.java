@@ -99,6 +99,27 @@ public class WifiStatusReceiver {
 					}
 		            //Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 		        }
+		        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
+					Log.i(TAG, "wifi state changed action");
+					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+					switch (wifiState) {
+					case WifiManager.WIFI_STATE_ENABLED:
+						if (onWifiStatusListener != null) {
+							onWifiStatusListener.onWifiStatChanged(true);
+						}
+						break;
+					case WifiManager.WIFI_STATE_DISABLED:
+					case WifiManager.WIFI_STATE_DISABLING:
+					case WifiManager.WIFI_STATE_ENABLING:
+					case WifiManager.WIFI_STATE_UNKNOWN:
+						if (onWifiStatusListener != null) {
+							onWifiStatusListener.onWifiStatChanged(false);
+						}
+						break;
+					default:
+						break;
+					}
+				}
 		        
 			}
 			
@@ -117,6 +138,7 @@ public class WifiStatusReceiver {
 			mIntentFilter = new IntentFilter();
 			mIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 			mIntentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+			mIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 			registerReceiver(mBroadcastReceiver, mIntentFilter);
 		}
 
@@ -140,5 +162,6 @@ public class WifiStatusReceiver {
 	
 	public interface OnWifiStatusListener {
 		void onChanged(String str);
+		void onWifiStatChanged(boolean isEnabled);
 	}
 }
