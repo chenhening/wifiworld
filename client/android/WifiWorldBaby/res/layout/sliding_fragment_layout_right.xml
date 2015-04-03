@@ -13,25 +13,31 @@
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/lv_wifi_report_1"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignRight="@+id/rl_wifi_provider_line_chart"
-        android:layout_below="@+id/rl_wifi_provider_line_chart"
-        android:background="@color/aliceblue" >
-
-    </ListView>
-
-    <ListView
         android:id="@+id/lv_wifi_report_2"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignLeft="@+id/lv_wifi_report_1"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/lv_wifi_report_1"
-        android:layout_marginTop="2dp"
-        android:background="@color/aliceblue" >
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true" >
 
     </ListView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_below="@+id/rl_wifi_provider_line_chart" >
+
+        <RelativeLayout
+            android:id="@+id/rl_wifi_user_location_chart"
+            android:layout_width="143dp"
+            android:layout_height="match_parent" >
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_wifi_user_timer_chart"
+            android:layout_width="143dp"
+            android:layout_height="match_parent" >
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>
