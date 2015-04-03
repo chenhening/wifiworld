@@ -30,13 +30,15 @@ public class WifiOnlineSlidingFragment extends Fragment {
 	private boolean bOnAnimating = false;
 	private RippleBackground rippleBackground = null;
 	private ImageView center_image = null;
+	private TextView tv_online = null;
+	private ArrayList<ImageView> mPhones = new ArrayList<ImageView>();
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.sliding_fragment_layout_left, container, false);
         rippleBackground = (RippleBackground)mRootView.findViewById(R.id.content);
-        rippleBackground.startRippleAnimation();
+        StartDisaplay();
         bOnAnimating = true;
         
         //得到wifi上传的logo信息展示
@@ -45,33 +47,11 @@ public class WifiOnlineSlidingFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				if (bOnAnimating) {
-					rippleBackground.stopRippleAnimation();
-				} else {
-					rippleBackground.startRippleAnimation();
-				}
-				bOnAnimating = !bOnAnimating;
+				SetOpenOrCloseStatus();
 			}
         });
         
-        //数据库里面去查询当前正在线上的用户
-        WifiDynamic record = new WifiDynamic();
-        record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
-        record.MarkLoginTime();
-        record.QueryUserCurrent(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
-
-			@Override
-			public void onSuccess(List<WifiDynamic> objects) {
-				addMarkerOnView(objects);
-			}
-
-			@Override
-			public void onFailed(String msg) {
-				TextView tv_online = (TextView)mRootView.findViewById(R.id.tv_online_count);
-				tv_online.setText("0 人");
-			}
-        	
-        });
+        tv_online = (TextView)mRootView.findViewById(R.id.tv_online_count);
         
         return mRootView;
     }
@@ -98,9 +78,54 @@ public class WifiOnlineSlidingFragment extends Fragment {
 			relLayoutParams.leftMargin = x;
 			relLayoutParams.topMargin = y;
 			rippleBackground.addView(image, relLayoutParams);
+			mPhones.add(image);
 		}
 		
-		TextView tv_online = (TextView)mRootView.findViewById(R.id.tv_online_count);
 		tv_online.setText(records.size() + " 人");
+	}
+	
+	private void StartDisaplay() {
+		rippleBackground.startRippleAnimation();
+		//数据库里面去查询当前正在线上的用户
+        WifiDynamic record = new WifiDynamic();
+        record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
+        record.MarkLoginTime();
+        record.QueryUserCurrent(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
+
+			@Override
+			public void onSuccess(List<WifiDynamic> objects) {
+				addMarkerOnView(objects);
+			}
+
+			@Override
+			public void onFailed(String msg) {
+				tv_online.setText("0 人");
+			}
+        	
+        });
+        
+        //设置打开和关闭按钮
+        mRootView.findViewById(R.id.tb_open_close_wifi).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				SetOpenOrCloseStatus();
+            }
+        	
+        });
+	}
+	
+	private void SetOpenOrCloseStatus() {
+		if (bOnAnimating) {
+			rippleBackground.stopRippleAnimation();
+			tv_online.setText("0 人");
+			for (int i=0; i<mPhones.size(); ++i) {
+				rippleBackground.removeView(mPhones.get(i));
+			}
+			mPhones.clear();
+		} else {
+			StartDisaplay();
+		}
+		bOnAnimating = !bOnAnimating;
 	}
 }

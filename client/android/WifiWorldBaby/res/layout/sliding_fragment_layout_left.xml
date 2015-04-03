@@ -76,7 +76,7 @@
                 android:text="关闭当前网络" />
 
             <ToggleButton
-                android:id="@+id/toggleButton1"
+                android:id="@+id/tb_open_close_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/auth_cb"
