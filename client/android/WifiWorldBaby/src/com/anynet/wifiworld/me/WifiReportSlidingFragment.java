@@ -105,7 +105,7 @@ public class WifiReportSlidingFragment extends Fragment {
 				double router_x = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLatitude();
 				double router_y = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLongitude();;
 	            for (int i=0; i < objects.size(); ++i) {
-	            	WifiDynamic one = objects.get(0);
+	            	WifiDynamic one = objects.get(i);
 	            	//分析时间段曲线
 	            	long time = record.LoginTime - one.LoginTime;
 	            	if (time > day6) {
@@ -179,7 +179,7 @@ public class WifiReportSlidingFragment extends Fragment {
 	            			timecount[4] += 1;
 	            		}
 	            	} else if (time > day1) {
-	            		headcount[6] += 1;
+	            		headcount[5] += 1;
 	            		time = time - day1;
 	            		if (time > time0to8) {
 	            			timecount[0] += 1;
