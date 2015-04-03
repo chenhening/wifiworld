@@ -1,17 +1,30 @@
 package com.anynet.wifiworld.api;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.umeng.message.proguard.br;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +39,8 @@ public class WifiListHelper {
 	private List<WifiInfoScanned> mWifiFree;
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private List<String> mWifiListUnique;
+	
+	private final String WIFI_LIST_FILE_NAME = "wifi_list_file.txt";
 
 	public static WifiListHelper getInstance(Context context) {
 		if (null == mInstance) {
@@ -62,6 +77,8 @@ public class WifiListHelper {
 		mWifiFree.clear();
 		mWifiEncrypt.clear();
 
+		//readFile();
+		
 		String wifiName;
 		String wifiPwd;
 		String wifiType;
@@ -99,15 +116,16 @@ public class WifiListHelper {
 					mWifiEncrypt.add(wifiInfoScanned);
 				}
 			}
-			//WifiHandleDB.getInstance(mContext).updateOneRow(wifiInfoScanned);
 			
-//			String hotspotKey = hotspot.SSID + " " + hotspot.capabilities;
+//			String hotspotKey = hotspot.SSID + ":" + hotspot.BSSID + " " + hotspot.capabilities;
 //			if (!mWifiListUnique.contains(hotspotKey)) {
 //				mWifiListUnique.add(hotspotKey);
 //				//upload WIFI info to WIFI Unregistered
-//				updateHotspot(wifiInfoScanned);
+//				Log.i(TAG, "upload to database: " + hotspotKey);
+//				WifiHandleDB.getInstance(mContext).updateWifiUnregistered(wifiInfoScanned);
 //			}
 		}
+		//writeFile();
 	}
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list
@@ -130,6 +148,74 @@ public class WifiListHelper {
 		}
 
 		return null;
+	}
+	
+	private boolean readFile() {
+		mWifiListUnique.clear();
+		FileInputStream fis = null;
+		BufferedReader br = null;
+		try {
+			fis = mContext.openFileInput(WIFI_LIST_FILE_NAME);
+			br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+			String line = "";
+			while ((line=br.readLine()) != null) {
+				mWifiListUnique.add(line);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+				if (fis != null) {
+					fis.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+			
+		}
+		return true;
+	}
+	
+	private boolean writeFile() {
+		if (mWifiListUnique.isEmpty()) {
+			Log.i(TAG, "no wifi date store in wifilistunique");
+			return false;
+		}
+		FileOutputStream fos = null;
+		OutputStreamWriter osw = null;
+		BufferedWriter bw = null;
+		try {
+			fos = mContext.openFileOutput(WIFI_LIST_FILE_NAME, mContext.MODE_PRIVATE);
+			osw = new OutputStreamWriter(fos, "UTF-8");
+			bw = new BufferedWriter(osw);
+			for (String wifi_str : mWifiListUnique) {
+				bw.write(wifi_str+"\n");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null) {
+					bw.close();
+				}
+				if (osw != null) {
+					osw.close();
+				}
+				if (bw != null) {
+					bw.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		return true;
 	}
 	
 	public WifiAdmin getWifiAdmin() {
