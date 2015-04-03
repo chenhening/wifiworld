@@ -64,12 +64,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private ImageView ivMyNew;
 	private StaticHandler handler = new StaticHandler(this);
 	private PushAgent mPushAgent;
-	//global instance
+	// global instance
 	private static LoginHelper mLoginHelper;
 	private LocationHelper mLocationHelper;
-	
-	public static void startActivity(BaseActivity baseActivity,
-			boolean isFromWelcomeActivity) {
+
+	public static void startActivity(BaseActivity baseActivity, boolean isFromWelcomeActivity) {
 		Intent i = new Intent(baseActivity, MainActivity.class);
 		i.putExtra("isFromWelcomeActivity", isFromWelcomeActivity);
 		if (isFromWelcomeActivity) {
@@ -82,16 +81,16 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		
+
 		mLoginHelper = LoginHelper.getInstance(this);
 		mLoginHelper.getClass();
 		mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
 		mLocationHelper.getClass();
 		dbHelper = DBHelper.getInstance(this);
-		
+
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-		
+
 		Intent i = getIntent();
 		i.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
@@ -102,18 +101,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		discoverFragment = new DiscoverFragment();
 		meFragment = new MeFragment();
 
-		fragments = new MainFragment[] { wifiFragment, mapFragment,
-				discoverFragment, meFragment };
+		fragments = new MainFragment[] { wifiFragment, mapFragment, discoverFragment, meFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment_container, wifiFragment)
-				.add(R.id.fragment_container, mapFragment)
-				.add(R.id.fragment_container, discoverFragment)
-				.add(R.id.fragment_container, meFragment).hide(mapFragment)
-				.hide(discoverFragment).hide(meFragment).show(wifiFragment)
-				.commit();
+		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, wifiFragment)
+				.add(R.id.fragment_container, mapFragment).add(R.id.fragment_container, discoverFragment)
+				.add(R.id.fragment_container, meFragment).hide(mapFragment).hide(discoverFragment).hide(meFragment)
+				.show(wifiFragment).commit();
 
-		/*// 友盟自动更新
+		// 友盟自动更新
 		UmengUpdateAgent.update(this);
 
 		// 打开友盟推送
@@ -122,13 +117,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mPushAgent.enable(mRegisterCallback);
 		String device_token = mPushAgent.getRegistrationId();
 		String appVersion = AppInfoUtil.getVersionName(this);
-		if (null != device_token && !device_token.equals("")) {
+/*		if (null != device_token && !device_token.equals("")) {
 			reportDeviceToken(appVersion, device_token);
-		}*/
-
-        // Dianle SDK provision
-        Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
-        Data.setCurrentUserID(this,"123456789");
+		}
+*/
+		// Dianle SDK provision
+		Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
+		Data.setCurrentUserID(this, "123456789");
 
 		changeToConnect();
 
@@ -158,9 +153,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	}
 
-	/**
-	 * 初始化组件
-	 */
+	/** 初始化组件 */
 	private void initView() {
 		mTabs = new Button[4];
 		mTabs[0] = (Button) findViewById(R.id.btn_connect);
@@ -170,11 +163,9 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		ivMyNew = (ImageView) findViewById(R.id.iv_my_new);
 	}
 
-	/**
-	 * button点击事件
+	/** button点击事件
 	 * 
-	 * @param view
-	 */
+	 * @param view */
 	public void onTabClicked(View view) {
 		switch (view.getId()) {
 		case R.id.btn_connect:
@@ -222,13 +213,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	private void reflesh() {
 		if (currentTabIndex != index) {
-			FragmentTransaction trx = getSupportFragmentManager()
-					.beginTransaction();
+			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 			trx.hide(fragments[currentTabIndex]);
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			//fragments[index].onResume();
+			// fragments[index].onResume();
 			trx.show(fragments[index]).commit();
 
 			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
@@ -253,12 +243,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-			if (event.getAction() == KeyEvent.ACTION_DOWN
-					&& event.getRepeatCount() == 0) {
-				if(fragments[currentTabIndex].onBackPressed()){
+			if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+				if (fragments[currentTabIndex].onBackPressed()) {
 					return true;
 				}
-			} 
+			}
 			return super.dispatchKeyEvent(event);
 		} else {
 			return super.dispatchKeyEvent(event);
@@ -268,7 +257,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
+		mPushAgent.disable();
 	}
 
 	@Override
@@ -294,9 +283,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		super.onNewIntent(intent);
 	}
 
-	/**
-	 * 获取系统推送
-	 */
+	/** 获取系统推送 */
 	private void updateData() {
 
 		getSystemMsg(dbHelper.getMaxServId());
@@ -305,91 +292,79 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	private int retryCnt = 0;
 
-	private void reportDeviceToken(final String appVersion,
-			final String deviceToken) {
+	private void reportDeviceToken(final String appVersion, final String deviceToken) {
 		final int version = 1; // 接口版本
 		final int type = 1; // 1 android; 2 ios appstore; 3 ios 黑
 		Runnable reportDeviceTokenRunnable = new Runnable() {
 			@Override
 			public void run() {
-//				AppRestClient.reportDeviceToken(version, type, appVersion,
-//						deviceToken, new ResponseCallback<DeviceTokenResp>(
-//								WifiWorldApplication.getInstance()) {
-//							public void onSuccess(JSONObject paramJSONObject,
-//									DeviceTokenResp deviceTokenResp) {
-//								// 返回数据ok则更新
-//								if (deviceTokenResp.isOK()) {
-//
-//								}
-//							}
-//
-//							public void onFailure(int paramInt,
-//									Throwable paramThrowable) {
-//								/** 网络错误 */
-//								// XLLog.e(TAG, paramThrowable.toString());
-//								if (retryCnt < 5) {
-//									retryCnt++;
-//									run();
-//								}
-//							}
-//						});
+				// AppRestClient.reportDeviceToken(version, type, appVersion,
+				// deviceToken, new ResponseCallback<DeviceTokenResp>(
+				// WifiWorldApplication.getInstance()) {
+				// public void onSuccess(JSONObject paramJSONObject,
+				// DeviceTokenResp deviceTokenResp) {
+				// // 返回数据ok则更新
+				// if (deviceTokenResp.isOK()) {
+				//
+				// }
+				// }
+				//
+				// public void onFailure(int paramInt,
+				// Throwable paramThrowable) {
+				// /** 网络错误 */
+				// // XLLog.e(TAG, paramThrowable.toString());
+				// if (retryCnt < 5) {
+				// retryCnt++;
+				// run();
+				// }
+				// }
+				// });
 			}
 		};
 		handler.post(reportDeviceTokenRunnable);
 	}
 
-	/**
-	 * 查询水晶信息
-	 */
+	/** 查询水晶信息 */
 	private void getSystemMsg(long maxServId) {
 
 		// 通过上拉刷新方法 所有数据都插入数据库中
-		AppRestClient.getSystemMsg(
-				maxServId,
-				0,
-				Const.PAGE_SIZE,
-				new ResponseCallback<SystemMsgResp>(WifiWorldApplication
-						.getInstance()) {
+		AppRestClient.getSystemMsg(maxServId, 0, Const.PAGE_SIZE, new ResponseCallback<SystemMsgResp>(
+				WifiWorldApplication.getInstance()) {
 
-					public void onSuccess(JSONObject paramJSONObject,
-							SystemMsgResp systemMsgResp) {
-						// 返回数据ok则更新
-						if (systemMsgResp.isOK()) {
-							if (systemMsgResp.getMsg().length > 0) {
-								ivMyNew.setVisibility(View.INVISIBLE);
+			public void onSuccess(JSONObject paramJSONObject, SystemMsgResp systemMsgResp) {
+				// 返回数据ok则更新
+				if (systemMsgResp.isOK()) {
+					if (systemMsgResp.getMsg().length > 0) {
+						ivMyNew.setVisibility(View.INVISIBLE);
 
-								long maxSysMsgId = PreferenceHelper
-										.getInstance().getLong(
-												Const.MAX_SYS_MSG_ID, 0);
-								for (Msg msg : systemMsgResp.getMsg()) {
-									// 新消息
-									if (msg.getId() > maxSysMsgId) {
-										ivMyNew.setVisibility(View.VISIBLE);
-										PreferenceHelper.getInstance()
-												.setBoolean(Const.SYS_NEW_MSG,
-														true);
-										break;
-									}
-								}
-							} else {
-								ivMyNew.setVisibility(View.INVISIBLE);
+						long maxSysMsgId = PreferenceHelper.getInstance().getLong(Const.MAX_SYS_MSG_ID, 0);
+						for (Msg msg : systemMsgResp.getMsg()) {
+							// 新消息
+							if (msg.getId() > maxSysMsgId) {
+								ivMyNew.setVisibility(View.VISIBLE);
+								PreferenceHelper.getInstance().setBoolean(Const.SYS_NEW_MSG, true);
+								break;
 							}
-
-						} else {
-							// 业务错误
-							// XLLog.e(TAG, systemMsgResp.getReturnDesc());
-							ivMyNew.setVisibility(View.INVISIBLE);
 						}
-
-					}
-
-					public void onFailure(int paramInt, Throwable paramThrowable) {
-						// 网络问题
-						// XLLog.e(TAG, paramThrowable.toString());
+					} else {
 						ivMyNew.setVisibility(View.INVISIBLE);
 					}
 
-				});
+				} else {
+					// 业务错误
+					// XLLog.e(TAG, systemMsgResp.getReturnDesc());
+					ivMyNew.setVisibility(View.INVISIBLE);
+				}
+
+			}
+
+			public void onFailure(int paramInt, Throwable paramThrowable) {
+				// 网络问题
+				// XLLog.e(TAG, paramThrowable.toString());
+				ivMyNew.setVisibility(View.INVISIBLE);
+			}
+
+		});
 
 	}
 
@@ -413,17 +388,16 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	}
 
-	
 	public static class MainFragment extends BaseFragment {
-		
-		public boolean checkIsLogined(){
+
+		public boolean checkIsLogined() {
 			if (!mLoginHelper.isLogined()) {
 				UserLoginActivity.start((BaseActivity) getActivity());
 				return false;
 			}
 			return true;
 		}
-		
+
 		public void startUpdte() {
 			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
 		}
@@ -442,8 +416,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				@Override
 				public void run() {
 					String device_token = mPushAgent.getRegistrationId();
-					String appVersion = AppInfoUtil
-							.getVersionName(MainActivity.this);
+					String appVersion = AppInfoUtil.getVersionName(MainActivity.this);
 					reportDeviceToken(appVersion, device_token);
 					return;
 				}

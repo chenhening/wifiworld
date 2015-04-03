@@ -41,14 +41,14 @@ public class UmengHelper
         //根据签名判断不同的包
         if (PackageSignHelper.isRelease(WifiWorldApplication.getInstance()))
         {
-            TestinAgent.init(weakAct.get(), weakAct.get().getResources().getString(R.string.release_testin_crash_key));
+            //TestinAgent.init(weakAct.get(), weakAct.get().getResources().getString(R.string.release_testin_crash_key));
             UmengUpdateAgent.setAppkey(weakAct.get().getResources().getString(R.string.release_umeng_appkey));
             AnalyticsConfig.setAppkey(weakAct.get().getResources().getString(R.string.release_umeng_appkey));
             AnalyticsConfig.setChannel(weakAct.get().getResources().getString(R.string.release_umeng_channel));
         }
         else
         {
-            TestinAgent.init(weakAct.get(), act.getResources().getString(R.string.test_testin_crash_key));
+           // TestinAgent.init(weakAct.get(), act.getResources().getString(R.string.test_testin_crash_key));
             UmengUpdateAgent.setAppkey(weakAct.get().getResources().getString(R.string.test_umeng_appkey));
             AnalyticsConfig.setAppkey(weakAct.get().getResources().getString(R.string.test_umeng_appkey));
             AnalyticsConfig.setChannel(weakAct.get().getResources().getString(R.string.test_umeng_channel));

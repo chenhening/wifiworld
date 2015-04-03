@@ -45,6 +45,18 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="39192cd2a95f37f072fa829b8349e753" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5516ac08fd98c5df10000053" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="c621650b4e9a0bc5092f17e1ad5086a6" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="10000UMENG" >
+        </meta-data>
 
         <activity
             android:name="com.anynet.wifiworld.NewVersionActivity"
@@ -87,7 +99,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
-ShareActivity
+
         <activity
             android:name="com.anynet.wifiworld.me.WifiProviderRigisterThirdActivity"
             android:launchMode="singleTop"
@@ -227,21 +239,20 @@ ShareActivity
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.anynet.wifiworld.wifi.WifiConnectConfirmActivity"
-	        android:theme="@style/PlatformDialog" 
-	        android:launchMode="standard" 
-	        android:excludeFromRecents="true" 
-	        android:noHistory="true">
-	        
-	        <intent-filter>
-	            <category android:name="android.intent.category.INFO" />
-	        </intent-filter>
-	        
-	        <intent-filter>
-	            <action android:name="com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM" />
-	            <category android:name="android.intent.category.DEFAULT" />
-	        </intent-filter>
-            
+        <activity
+            android:name="com.anynet.wifiworld.wifi.WifiConnectConfirmActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="standard"
+            android:noHistory="true"
+            android:theme="@style/PlatformDialog" >
+            <intent-filter>
+                <category android:name="android.intent.category.INFO" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />
@@ -265,51 +276,6 @@ ShareActivity
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-
-        <!-- 友盟推送 -->
-        <receiver
-            android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
-            android:exported="false" >
-        </receiver>
-        <receiver android:name="com.umeng.message.RegistrationReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.umeng.message.UmengBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="org.agoo.android.intent.action.RECEIVE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.anynet.wifiworld.intent.action.COMMAND" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.agoo.android.intent.action.RE_ELECTION_V2" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="com.umeng.message.UmengService"
-            android:exported="true"
-            android:process=":umengService_v1" >
-            <intent-filter>
-                <action android:name="com.anynet.wifiworld.intent.action.START" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.anynet.wifiworld.intent.action.COCKROACH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.agoo.android.intent.action.PING" />
-            </intent-filter>
-        </service>
 
         <!-- umeng分享编辑页 -->
         <activity
@@ -340,7 +306,7 @@ ShareActivity
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        
+
         <!-- yixin -->
         <activity
             android:name=".me.YXEntryActivity"
@@ -359,11 +325,6 @@ ShareActivity
         </service>
         <service android:name="com.umeng.message.UmengIntentService" />
         <service android:name="com.umeng.message.UmengDownloadResourceService" />
-
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="54572823fd98c547e1002e49" >
-        </meta-data>
 
         <!-- 有米广告平台 -->
         <activity
@@ -388,6 +349,76 @@ ShareActivity
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
+
+        <!-- umeng message sdk -->
+        <receiver
+            android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+            android:exported="false" >
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.SystemReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.MessageReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.ElectionReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.RegistrationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.COMMAND" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.umeng.message.BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.umeng.message.UmengService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.START" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.COCKROACH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.PING_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
+        </service>
+        <service android:name="com.umeng.message.UmengIntentService" />
+        <!-- V1.3.0添加的service，负责下载通知的资源 -->
+        <service android:name="com.umeng.message.UmengDownloadResourceService" />
     </application>
 
 </manifest>

@@ -120,12 +120,12 @@
     <string name="release_testin_crash_key">4a206f73512bf81400a7ceb0edd7e7e7</string>
 
     <!-- 友盟key -->
-    <string name="test_umeng_appkey">54572823fd98c547e1002e49</string>
-    <string name="release_umeng_appkey">5457284bfd98c5364f003432</string>
-    <string name="test_umeng_message_secret">daa5d420bf5b19e84d7d0420895fe64e</string>
-    <string name="release_umeng_message_secret">306acd093390ee3d1214920efa6b1c48</string>
-    <string name="test_umeng_channel">xunlei-test</string>
-    <string name="release_umeng_channel">xunlei</string>
+    <string name="test_umeng_appkey">5516ac08fd98c5df10000053</string>
+    <string name="release_umeng_appkey">5516ac08fd98c5df10000053</string>
+    <string name="test_umeng_message_secret">c621650b4e9a0bc5092f17e1ad5086a6</string>
+    <string name="release_umeng_message_secret">c621650b4e9a0bc5092f17e1ad5086a6</string>
+    <string name="test_umeng_channel">anynet-test</string>
+    <string name="release_umeng_channel">anynet</string>
     <string name="empty_data">--</string>
 
     <!-- login -->

@@ -10,8 +10,12 @@
 4. 友盟后台：
 	179770346@qq.com
 	
-
-	vpn地址：v.ipa.social
-	协议：pptp
-	用户：vu123h5i
-	密码：QF15sVZ73Yacw
+5.VPN
+vpn地址：v.ipa.social
+协议：pptp
+用户：vu123h5i
+密码：QF15sVZ73Yacw
+	
+	
+6.云测：http://realauto.testin.cn（APK云测试）
+	帐号密码同上

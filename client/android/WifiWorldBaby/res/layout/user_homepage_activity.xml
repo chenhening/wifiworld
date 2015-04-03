@@ -112,7 +112,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/dimen_45_dip"
         android:layout_below="@+id/siv_account"
-        item:iconx="@drawable/icon_person_center_attention_shopper"
+        item:icon="@drawable/icon_person_center_attention_shopper"
         item:label="@string/my_account_password"
         item:showContent="true"
         item:showRedPoint="false"

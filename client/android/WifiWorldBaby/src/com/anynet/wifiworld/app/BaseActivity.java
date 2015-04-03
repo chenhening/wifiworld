@@ -214,7 +214,7 @@ public class BaseActivity extends FragmentActivity
         GlobalBroadcast.unregisterBroadcastListener(mNetworkListener);
         
         // 用于崩溃上报
-        TestinAgent.onStop(this);
+       // TestinAgent.onStop(this);
         
     }
     
@@ -243,7 +243,7 @@ public class BaseActivity extends FragmentActivity
         MobclickAgent.onResume(this);
         
         // 用于崩溃上报
-        TestinAgent.onResume(this);
+        //TestinAgent.onResume(this);
     }
     
     // 用于友盟统计

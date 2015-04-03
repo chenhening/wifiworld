@@ -48,9 +48,9 @@ public class AppRestClient {
 	private static boolean isToastNetworkDisconnect = false;
 	// private static final String TEST_URL = "http://test.red.local/index.php";
 
-	private static final String TEST_URL = "http://10.10.159.33/index.php";
+	private static final String TEST_URL = "https://www.anynet.com/";
 
-	private static final String BASE_URL = "https://red.xunlei.com/";
+	private static final String BASE_URL = "https://www.anynet.com/";
 
 	// private static final String BASE_URL =
 	// "https://61.155.184.110/index.php";
