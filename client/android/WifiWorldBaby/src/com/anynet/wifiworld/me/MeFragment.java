@@ -99,13 +99,13 @@ public class MeFragment extends MainFragment {
 			public void onClick(View v) {
 
 				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}
+				//if (!checkIsLogined()) {
+				//	return;
+				//}
 
 				// 去服务器上查询是否已经登记了自己的wifi
 				WifiProfile wifi = new WifiProfile();
-				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+				wifi.Sponser = "18688339822";//mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser, new MultiDataCallback<WifiProfile>() {
 
 					@Override
