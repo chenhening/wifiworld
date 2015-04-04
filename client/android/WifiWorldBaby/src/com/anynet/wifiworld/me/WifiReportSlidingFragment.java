@@ -95,6 +95,9 @@ public class WifiReportSlidingFragment extends Fragment {
 		final WifiDynamic record = new WifiDynamic();
         record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
         record.MarkLoginTime();
+        //得到当前日期，取整到七天
+        long today = record.LoginTime / day1 + 1;
+        record.LoginTime = today * day1;
 	    record.QueryUserInOneWeek(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
 
 			@Override
