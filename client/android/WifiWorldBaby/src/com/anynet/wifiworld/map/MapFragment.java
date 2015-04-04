@@ -252,7 +252,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				// , mPendingIntent);
 				// query wifi nearby
 				WifiProfile wifis = new WifiProfile();
-				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1,
+				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 0.025,
 						new MultiDataCallback<WifiProfile>() {
 
 							@Override
@@ -266,12 +266,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 							@Override
 							public void onFailed(String msg) {
 								Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
-								showToast("您附近还没有可用wifi信号，请更换位置。");
+								showToast("您附近还没有可用wifi信号，请更换位置：" + msg);
 							}
 
 						});
 
-				WifiProfile wifisu = new WifiProfile(WifiProfile.table_name_wifiunregistered);
+				/*WifiProfile wifisu = new WifiProfile(WifiProfile.table_name_wifiunregistered);
 				wifisu.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1,
 						new MultiDataCallback<WifiProfile>() {
 
@@ -289,7 +289,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								showToast("您附近还没有可用wifi信号，请更换位置。");
 							}
 
-						});
+						});*/
 
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);

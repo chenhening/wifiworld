@@ -14,12 +14,6 @@ import android.widget.TextView;
 public class WifiDetailsActivity extends Activity {
 
 	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-	}
-
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wifi_details_activity);
@@ -34,8 +28,6 @@ public class WifiDetailsActivity extends Activity {
 		
 		TextView rating = (TextView)findViewById(R.id.wifi_account_rank);
 		rating.setText("排名：" + String.valueOf(wifiSelected.getRanking()));
-		TextView ranking = (TextView)findViewById(R.id.wifi_account_star_num);
-		ranking.setText(String.valueOf(wifiSelected.getRating()));
 		TextView connectedTimes = (TextView)findViewById(R.id.wifi_connect_times_num);
 		connectedTimes.setText(String.valueOf(wifiSelected.getConnectedTimes()) + "次");
 		TextView connectedDuration = (TextView)findViewById(R.id.wifi_connect_time_num);
@@ -47,9 +39,11 @@ public class WifiDetailsActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				finish();
-				
 			}
 		});
+		
+		//设置logo信息
+		
 	}
 
 	@Override

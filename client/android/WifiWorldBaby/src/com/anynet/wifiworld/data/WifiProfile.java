@@ -82,12 +82,14 @@ public class WifiProfile extends BmobObject{
 	}
 	
 	//以圆的半径查找
-	public void QueryInRadians(final Context context, BmobGeoPoint center, int radians, 
+	public void QueryInRadians(final Context context, BmobGeoPoint center, double radians, 
 		MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereWithinRadians("Geometry", center, radians);
+		//query.addWhereNear("Geometry", center);
+		query.setLimit(30);//最多查询到30个，多了用户也会疲劳
 		Log.d("findObjects", "开始查询QueryInRadians");
 		new Thread(new Runnable() {
 
