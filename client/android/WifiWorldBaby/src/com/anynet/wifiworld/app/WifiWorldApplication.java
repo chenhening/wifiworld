@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Process;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.UmengRegistrar;
 import com.umeng.message.entity.UMessage;
 //import com.xunlei.common.member.XLUserUtil;
 import com.anynet.wifiworld.constant.Const;
@@ -52,7 +54,7 @@ public class WifiWorldApplication extends Application
     {
         super.onCreate();
         
-        boolean isRelease = new PackageSignHelper().isRelease(this);
+        boolean isRelease = PackageSignHelper.isRelease(this);
         XLLog.log(TAG , "isReleased:", isRelease);
         XLLog.setLog(!isRelease);
         
@@ -87,8 +89,8 @@ public class WifiWorldApplication extends Application
             		getResources().getString(R.string.test_umeng_message_secret));
     	}
 		
-		
-		
+    	String device_token = UmengRegistrar.getRegistrationId(this);
+		Log.e(TAG, "Device Token:"+device_token);
 		/**
 		 * 该Handler是在IntentService中被调用，故
 		 * 1. 如果需启动Activity，需添加Intent.FLAG_ACTIVITY_NEW_TASK

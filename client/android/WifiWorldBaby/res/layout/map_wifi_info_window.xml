@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="80dp"
+    android:background="@drawable/btn_notice_go_normal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="30m"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/distance_ext"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/common_new_msg_ico"
+                android:gravity="center_vertical"
+                android:text="与我距离"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/wifi_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="alibaba"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/wifi_name_ext"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:text="深圳市南山高新技术园区"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:contentDescription="@string/app_name"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_arrow_right" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/window_ext_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:text="深圳市南山高新技术园区"
+        android:textSize="12sp" />
+
+</LinearLayout>
