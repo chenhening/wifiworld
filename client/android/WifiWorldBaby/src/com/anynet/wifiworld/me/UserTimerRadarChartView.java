@@ -120,7 +120,7 @@ public class UserTimerRadarChartView extends ChartView implements Runnable {
 		chartData.add(new PieData("12-16", dcmFmt.format(per) + "%", per, Color.rgb(242, 167, 69)));
 		per = (timercount[3]+1)*100 / (double)total;
 		chartData.add(new PieData("16-20", dcmFmt.format(per) + "%", per, Color.rgb(60, 173, 213)));
-		per = (timercount[3]+1)*100 / (double)total;
+		per = (timercount[4]+1)*100 / (double)total;
 		chartData.add(new PieData("20-24", dcmFmt.format(per) + "%", per, Color.rgb(90, 79, 88)));
 
 		chart.setDataSource(chartData);	//设定数据源

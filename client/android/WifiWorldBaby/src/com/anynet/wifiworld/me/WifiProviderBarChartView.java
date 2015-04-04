@@ -106,9 +106,15 @@ public class WifiProviderBarChartView extends ChartView {
 		labels.clear();
 		chart.setTitle("最近一周WiFi使用情况");
 		
+		long max = 0;
 		for (int i=0; i<size; ++i) {
+			if (max < headcount[i]) {
+				max = headcount[i];
+			}
 			mdataSeries.add((double) headcount[i]);
 		}
+		if (max > 0)
+			chart.getDataAxis().setAxisMax(max); //数据轴最大值
 		BarData lineData1 = new BarData("网络使用次数", mdataSeries, Color.rgb(234, 83, 71));
 		chartData.add(lineData1);
 		chart.setDataSource(chartData);	//设定数据源

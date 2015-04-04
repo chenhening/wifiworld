@@ -173,7 +173,11 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 					if (password.length() >= 8) { //现在wifi的密码都要求8位以上
 						showToast("正在验证WiFi密码......");
 						//首先尝试登陆路由器
-						//mWifiHelper.getWifiAdmin().connectToConfiguredNetwork(ctx, config, reassociate)
+						boolean result = mWifiHelper.getWifiAdmin().checkWifiPwd(password);
+						if (!result) {
+							showToast("您输入的WiFi密码验证不通过，请重新输入");
+							return;
+						}
 						//然后查询数据库此wifi是否被占用
 						mWifiProfile.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr,
 							new DataCallback<WifiProfile>() {
