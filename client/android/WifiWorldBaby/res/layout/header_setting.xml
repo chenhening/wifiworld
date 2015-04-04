@@ -58,15 +58,15 @@
             android:textSize="@dimen/text_size_content"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/ll_header_my"
+        <ImageView
+            android:id="@+id/lv_my_setting_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:layout_alignParentRight="true"
-             android:gravity="center"
-            android:background="@drawable/header_settting_my_selector"
-            android:orientation="vertical"
-            android:visibility="invisible" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/my_setting_logo"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
 </RelativeLayout>

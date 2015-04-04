@@ -104,7 +104,7 @@ public class WifiFragment extends MainFragment {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		// mTitlebar.llFinish.setOnClickListener(this);
 		mTitlebar.tvTitle.setText(getString(R.string.connect));

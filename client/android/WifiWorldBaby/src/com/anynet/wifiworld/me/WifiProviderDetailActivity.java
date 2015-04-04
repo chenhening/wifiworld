@@ -27,10 +27,19 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		mTitlebar.ivMySetting.setVisibility(View.VISIBLE);
+		mTitlebar.ivMySetting.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
