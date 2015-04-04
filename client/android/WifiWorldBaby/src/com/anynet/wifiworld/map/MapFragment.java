@@ -15,22 +15,27 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -337,7 +342,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	/** 自定义infowinfow窗口，动态修改内容的 */
 	private void render(Marker marker, View infoWindow) {
 		// TODO Auto-generated method stub
-		WifiProfile mWP = (WifiProfile) marker.getObject();
+		final WifiProfile mWP = (WifiProfile) marker.getObject();
 		Log.e("marker", "marker :getInfoWindow  " + marker.getId());
 		TextView disTV = (TextView) infoWindow.findViewById(R.id.distance);
 		TextView disExtTV = (TextView) infoWindow.findViewById(R.id.distance_ext);
@@ -349,6 +354,28 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		wifiNameTV.setText(mWP.Ssid);
 		wifiNameExtTV.setText(mWP.ExtAddress);
 		winExtTV.setText("测试中……………………");
+		infoWindow.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+				Bundle wifiData = new Bundle();
+				WifiListHelper mWifiListHelper = WifiListHelper.getInstance(getActivity());
+				List<WifiInfoScanned> list = mWifiListHelper.getWifiFrees();
+				list.addAll(mWifiListHelper.getWifiEncrypts());
+				for (WifiInfoScanned wifiInfoScanned : list) {
+					if(wifiInfoScanned.getWifiMAC().equals(mWP.MacAddr)){
+						WifiHandleDB.getInstance(getActivity()).queryWifiProfile(wifiInfoScanned);
+						wifiData.putSerializable("WifiSelected", wifiInfoScanned);
+						intent.putExtras(wifiData);
+						getActivity().startActivity(intent);
+						return;
+					}
+				}
+				Toast.makeText(getActivity(), "Wifi信息有错！", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	// 点击非marker区域，将显示的InfoWindow隐藏
