@@ -1,5 +1,8 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
@@ -8,7 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class WifiDetailsActivity extends Activity {
@@ -43,7 +48,28 @@ public class WifiDetailsActivity extends Activity {
 		});
 		
 		//设置logo信息
-		
+		//添加动态信息
+		ListView listview = (ListView) findViewById(R.id.lv_provider_new_info);
+		List<String> data = new ArrayList<String>();
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
+		listview.setAdapter(new ArrayAdapter<String>(this, R.layout.list_view_item, data));
+		//添加评论信息
+		ListView listview1 = (ListView) findViewById(R.id.wifi_list_comments);
+		List<String> data1 = new ArrayList<String>();
+		data1.add("网络很好用，感谢主人的分享。");
+		data1.add("网络很好用，感谢主人的分享。");
+		data1.add("楼主是好人啊，好人一生平安。");
+		data1.add("看起来楼主是个美女，求认识下，谢谢。");
+		data1.add("哈啊啊啊啊啊啊啊啊啊啊啊啊啊啊。");
+		data1.add("能不能早点开放给我们用啊啊啊。");
+		data1.add("怎么办。");
+		listview1.setAdapter(new ArrayAdapter<String>(this, R.layout.list_view_item, data1));
 	}
 
 	@Override
