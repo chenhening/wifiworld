@@ -1,6 +1,9 @@
 package com.anynet.wifiworld.me;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.Fragment;
@@ -78,17 +81,17 @@ public class WifiReportSlidingFragment extends Fragment {
         return view;
     }
 	
-	private static long day6 = 6*24*60*60*1000;
-	private static long day5 = 5*24*60*60*1000;
-	private static long day4 = 4*24*60*60*1000;
-	private static long day3 = 3*24*60*60*1000;
-	private static long day2 = 2*24*60*60*1000;
+	//private static long day6 = 6*24*60*60*1000;
+	//private static long day5 = 5*24*60*60*1000;
+	//private static long day4 = 4*24*60*60*1000;
+	//private static long day3 = 3*24*60*60*1000;
+	//private static long day2 = 2*24*60*60*1000;
 	private static long day1 = 1*24*60*60*1000;
 	
-	private static long time0to8 = 16*60*60*1000;
-	private static long time8to12 = 12*60*60*1000;
-	private static long time12to16 = 8*60*60*1000;
-	private static long time16to20 = 4*60*60*1000;
+	//private static long time0to8 = 8*60*60*1000;
+	//private static long time8to12 = 12*60*60*1000;
+	//private static long time12to16 = 16*60*60*1000;
+	//private static long time16to20 = 20*60*60*1000;
 	
 	private void AnalysizeData() {
 		//为了节省API调用一次性拉取一周数据下来
@@ -96,21 +99,38 @@ public class WifiReportSlidingFragment extends Fragment {
         record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
         record.MarkLoginTime();
         //得到当前日期，取整到七天
-        long today = record.LoginTime / day1 + 1;
-        record.LoginTime = today * day1;
+        final int today = (int) (record.LoginTime / day1);
+        record.LoginTime = (today+1) * day1;
 	    record.QueryUserInOneWeek(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
 
 			@Override
             public void onSuccess(List<WifiDynamic> objects) {
-				long headcount[] = new long[7]; //暂时统统计一周情况
-				long poscount[] = new long[4]; //暂时分东南西北四个方向
-				long timecount[] = new long[5]; //暂时分5个时间段
+				final long headcount[] = new long[7]; //暂时统统计一周情况
+				final long poscount[] = new long[4]; //暂时分东南西北四个方向
+				final long timecount[] = new long[5]; //暂时分5个时间段
+				Calendar calendar = new GregorianCalendar();
 				double router_x = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLatitude();
 				double router_y = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLongitude();;
 	            for (int i=0; i < objects.size(); ++i) {
 	            	WifiDynamic one = objects.get(i);
 	            	//分析时间段曲线
-	            	long time = record.LoginTime - one.LoginTime;
+	            	int thatday = (int) (one.LoginTime / day1); //取整
+	            	calendar.setTimeInMillis(one.LoginTime);
+	            	int time = calendar.get(Calendar.HOUR_OF_DAY); 
+	            	headcount[6 - today + thatday] += 1;
+	            	if (time < 8) {
+            			timecount[0] += 1;
+            		} else if (time < 12) {
+            			timecount[1] += 1;
+            		} else if (time < 16) {
+            			timecount[2] += 1;
+            		} else if (time < 20) {
+            			timecount[3] += 1;
+            		} else {
+            			timecount[4] += 1;
+            		}
+	            	
+	            	/*long time = record.LoginTime - one.LoginTime;
 	            	if (time > day6) {
 	            		headcount[0] += 1;
 	            		time = time - day6;
@@ -208,7 +228,7 @@ public class WifiReportSlidingFragment extends Fragment {
 	            		} else {
 	            			timecount[4] += 1;
 	            		}
-	            	}
+	            	}*/
 	            	//分析地理位置曲线
 	            	double dist_x = one.Geometry.getLatitude() - router_x;
 	            	double dist_y = one.Geometry.getLongitude() - router_y;
@@ -226,16 +246,23 @@ public class WifiReportSlidingFragment extends Fragment {
 	            		}
 	            	}
 	            }
-	            mLineChart.DisplayOneWeek(headcount, 7);
-	            mPosRadarChart.DisplayOneWeek(poscount, 4);
-	            mTimerRadarChart.DisplayOneWeek(timecount, 5);
-	            mdescriptions.clear();
-	            mdescriptions.add("分析报告如下：");
-	            mdescriptions.add("您的WiFi一周总共开放了：    小时");
-	            mdescriptions.add("您的WiFi一周总共被使用了：    小时");
-	            mdescriptions.add("您的用户主要在东南角上网，建议您将WiFi向东北角移动");
-	            mdescriptions.add("您的用户主要在18-24上网，建议您在这些时段开放网络");
-	            mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, mdescriptions));
+	            getActivity().runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						mLineChart.DisplayOneWeek(headcount, 7);
+			            mPosRadarChart.DisplayOneWeek(poscount, 4);
+			            mTimerRadarChart.DisplayOneWeek(timecount, 5);
+			            mdescriptions.clear();
+			            mdescriptions.add("分析报告如下：");
+			            mdescriptions.add("您的WiFi一周总共开放了：    小时");
+			            mdescriptions.add("您的WiFi一周总共被使用了：    小时");
+			            mdescriptions.add("您的用户主要在东南角上网，建议您将WiFi向东北角移动");
+			            mdescriptions.add("您的用户主要在18-24上网，建议您在这些时段开放网络");
+			            mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, mdescriptions));
+					}
+	            	
+	            });
 	            Log.d(TAG, "查询到数据" + objects.size() + "条。");
             }
 
