@@ -43,7 +43,8 @@ public class WifiProviderDetailActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				finish();
+				mIntent.setClass(getApplicationContext(), WifiProviderSettingActivity.class);
+				startActivity(mIntent);
 			}
 		});
 	}

@@ -200,4 +200,9 @@ public class WifiProfile extends BmobObject{
 			
 		});
 	}
+	
+	public void deleteRemote(final Context context) {
+		final WifiProfile wifi = this;
+		wifi.delete(context);
+	}
 }

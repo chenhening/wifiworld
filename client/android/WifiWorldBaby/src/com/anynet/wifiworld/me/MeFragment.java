@@ -93,7 +93,7 @@ public class MeFragment extends MainFragment {
 			}
 		});
 
-		mPageRoot.findViewById(R.id.cl_iam_wifi_provider).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
