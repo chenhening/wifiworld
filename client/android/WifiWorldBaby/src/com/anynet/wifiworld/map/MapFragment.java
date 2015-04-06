@@ -15,13 +15,13 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 import android.app.Activity;
 import android.content.Intent;

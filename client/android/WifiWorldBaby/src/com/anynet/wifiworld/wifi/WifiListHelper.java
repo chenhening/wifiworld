@@ -1,33 +1,28 @@
-package com.anynet.wifiworld.api;
+package com.anynet.wifiworld.wifi;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.anynet.wifiworld.MainActivity;
+import com.anynet.wifiworld.bean.Msg;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
+
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiHandleDB;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
-import com.umeng.message.proguard.br;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class WifiListHelper {
 	private final static String TAG = WifiListHelper.class.getSimpleName();
@@ -35,6 +30,7 @@ public class WifiListHelper {
 	public static WifiListHelper mInstance;
 	
 	private Context mContext;
+	private Handler mHandler;
 	private WifiAdmin mWifiAdmin;
 	private List<WifiInfoScanned> mWifiFree;
 	private List<WifiInfoScanned> mWifiEncrypt;
@@ -42,6 +38,22 @@ public class WifiListHelper {
 	
 	private final String WIFI_LIST_FILE_NAME = "wifi_list_file.txt";
 
+	public static WifiListHelper getInstance(Context context, Handler handler) {
+		if (null == mInstance) {
+			mInstance = new WifiListHelper(context, handler);
+		}
+		return mInstance;
+	}
+	
+	private WifiListHelper(Context context, Handler handler) {
+		mWifiAdmin = WifiAdmin.getInstance(context);
+		mWifiFree = new ArrayList<WifiInfoScanned>();
+		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
+		mWifiListUnique = new ArrayList<String>();
+		mContext = context;
+		mHandler = handler;
+	}
+	
 	public static WifiListHelper getInstance(Context context) {
 		if (null == mInstance) {
 			mInstance = new WifiListHelper(context);
@@ -74,48 +86,50 @@ public class WifiListHelper {
 	}
 
 	public void organizeWifiList(final List<ScanResult> wifiList) {
-		mWifiFree.clear();
-		mWifiEncrypt.clear();
-
 		//readFile();
 		
-		String wifiName;
-		String wifiPwd;
-		String wifiType;
-		String wifiMAC;
-		Integer wifiStrength;
-		BmobGeoPoint wifiGeometry;
-		WifiInfoScanned wifiInfoScanned;
-		for (int i = 0; i < wifiList.size(); i++) {
-			ScanResult hotspot = wifiList.get(i);
+		List<String> macAddresses = new ArrayList<String>();
+		for (ScanResult scanResult : wifiList) {
+			macAddresses.add(scanResult.BSSID);
+		}
+		WifiProfile wifiProfile = new WifiProfile();
+		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, new MultiDataCallback<WifiProfile>() {
 			
-			WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-			if (wifiCfg != null) {
-				wifiName = hotspot.SSID;
-				wifiPwd = wifiCfg.preSharedKey;
-				wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
-				wifiMAC = hotspot.BSSID;
-				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
-				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
-						wifiStrength, wifiGeometry, "本地已保存");
-				mWifiFree.add(wifiInfoScanned);
-			} else {
-				wifiName = hotspot.SSID;
-				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
-				wifiMAC = hotspot.BSSID;
-				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
-				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
-							wifiGeometry, "无密码");
-					mWifiFree.add(wifiInfoScanned);
-				} else {
-					wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
-							wifiGeometry, null);
-					mWifiEncrypt.add(wifiInfoScanned);
+			@Override
+			public void onSuccess(List<WifiProfile> objects) {
+				Log.i(TAG, "Batch query by mac address success");
+				mWifiFree.clear();
+				mWifiEncrypt.clear();
+				for (ScanResult hotspot : wifiList) {
+					//Check whether WiFi is stored local
+					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
+					int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+					if (idx != -1) {
+						Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
+						final String wifiName = hotspot.SSID;
+						final String wifiMac = hotspot.BSSID;
+						final String wifiPwd = objects.get(idx).Password;
+						final String wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+						final Integer wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+						final WifiInfoScanned wifiSharedTmp = new WifiInfoScanned(wifiName, wifiMac, wifiPwd, 
+								wifiType, wifiStrength, null, "已认证");
+						if (wifiCfg != null) {
+							wifiSharedTmp.setRemark(wifiSharedTmp.getRemark() + ", 本地已保存");
+						}
+						mWifiFree.add(wifiSharedTmp);
+					} else {
+						refreashList(wifiCfg, hotspot);
+					}
 				}
+				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.i(TAG, msg);
+				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
+			}
+		});
 			
 //			String hotspotKey = hotspot.SSID + ":" + hotspot.BSSID + " " + hotspot.capabilities;
 //			if (!mWifiListUnique.contains(hotspotKey)) {
@@ -124,8 +138,55 @@ public class WifiListHelper {
 //				Log.i(TAG, "upload to database: " + hotspotKey);
 //				WifiHandleDB.getInstance(mContext).updateWifiUnregistered(wifiInfoScanned);
 //			}
-		}
 		//writeFile();
+	}
+	
+	private void refreashList(WifiConfiguration wifiCfg, ScanResult hotspot) {
+		String wifiName;
+		String wifiPwd;
+		String wifiType;
+		String wifiMAC;
+		Integer wifiStrength;
+		BmobGeoPoint wifiGeometry;
+		WifiInfoScanned wifiInfoScanned;
+		
+		if (wifiCfg != null) {
+			wifiName = hotspot.SSID;
+			wifiPwd = wifiCfg.preSharedKey;
+			wifiType = WifiAdmin.ConfigSec.getWifiConfigurationSecurity(wifiCfg);
+			wifiMAC = hotspot.BSSID;
+			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
+			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
+					wifiStrength, wifiGeometry, "本地已保存");
+			mWifiFree.add(wifiInfoScanned);
+		} else {
+			//Check whether is a open WiFi
+			wifiName = hotspot.SSID;
+			wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+			wifiMAC = hotspot.BSSID;
+			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
+			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
+						wifiGeometry, "无密码");
+				mWifiFree.add(wifiInfoScanned);
+			} else {
+				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
+						wifiGeometry, null);
+				mWifiEncrypt.add(wifiInfoScanned);
+			}
+		}
+	}
+	
+	private int isContained(String macAddress, List<WifiProfile> mList) {
+		for (int idx=0; idx<mList.size(); ++idx) {
+			if (mList.get(idx).MacAddr.equals(macAddress)) {
+				return idx;
+			}
+		}
+		
+		return -1;
 	}
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list

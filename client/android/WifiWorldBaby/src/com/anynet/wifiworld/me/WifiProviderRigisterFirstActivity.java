@@ -28,13 +28,13 @@ import android.widget.Toast;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	public WifiProfile mWifiProfile = null;

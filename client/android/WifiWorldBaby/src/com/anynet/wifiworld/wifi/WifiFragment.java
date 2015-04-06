@@ -1,10 +1,11 @@
 package com.anynet.wifiworld.wifi;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
 
@@ -19,7 +20,9 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +45,8 @@ public class WifiFragment extends MainFragment {
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
-	private List<WifiInfoScanned> mWifiFree;
-	private List<WifiInfoScanned> mWifiEncrypt;
+	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
+	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
 	
 	private TextView mWifiNameView;
@@ -56,6 +59,25 @@ public class WifiFragment extends MainFragment {
 	private WifiInfo mWifiInfo = null;
 	private WifiInfoScanned mWifiItemClick;
 
+	private Handler mHandler = new Handler() {
+		
+				@Override
+				public void handleMessage(Message msg) {
+					Log.i(TAG, "handle wifi list helper message");
+					int value = msg.what;
+					if (value == ((MainActivity)getActivity()).UPDATE_WIFI_LIST) {
+						mWifiFree = mWifiListHelper.getWifiFrees();
+						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+						updateWifiConMore(mWifiNameView);
+						if (mWifiListAdapter != null) {
+							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+						}
+					}
+					super.handleMessage(msg);
+				}
+				
+			};
+	
 	private WifiStatusReceiver.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
 		
@@ -74,6 +96,7 @@ public class WifiFragment extends MainFragment {
 				public void onChanged(String str) {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
+					mWifiListHelper.fillWifiList();
 				}
 
 				@Override
@@ -85,11 +108,11 @@ public class WifiFragment extends MainFragment {
 							Log.i(TAG, "start scan wifi list");
 							boolean success = mWifiListHelper.fillWifiList();
 							Log.i(TAG, "start scan wifi list:"+success);
-							mWifiFree = mWifiListHelper.getWifiFrees();
-							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-							Log.i(TAG, "start scan wifi list:"+mWifiFree.size() + " " + mWifiEncrypt.size());
-							updateWifiConMore(mWifiNameView);
-							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+//							mWifiFree = mWifiListHelper.getWifiFrees();
+//							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//							Log.i(TAG, "start scan wifi list:"+mWifiFree.size() + " " + mWifiEncrypt.size());
+//							updateWifiConMore(mWifiNameView);
+//							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 						}
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
@@ -113,7 +136,7 @@ public class WifiFragment extends MainFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mWifiListHelper = WifiListHelper.getInstance(getActivity());
+		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		//WifiStatusReceiver.schedule(getActivity());
 		WifiStatusReceiver.bindWifiService(getActivity(), conn);
@@ -145,9 +168,9 @@ public class WifiFragment extends MainFragment {
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
 		mWifiListHelper.fillWifiList();
-		mWifiFree = mWifiListHelper.getWifiFrees();
-		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-		updateWifiConMore(mWifiNameView);
+//		mWifiFree = mWifiListHelper.getWifiFrees();
+//		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//		updateWifiConMore(mWifiNameView);
 		if (mWifiAdmin.getWifiNameConnection() != "") {
 			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
 			mWifiNameView.setTextColor(Color.BLACK);
@@ -195,10 +218,10 @@ public class WifiFragment extends MainFragment {
 		
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
-			mWifiFree = mWifiListHelper.getWifiFrees();
-			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-			updateWifiConMore(mWifiNameView);
-			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+//			mWifiFree = mWifiListHelper.getWifiFrees();
+//			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//			updateWifiConMore(mWifiNameView);
+//			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
@@ -229,13 +252,13 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onResume() {
-		if (mWifiListAdapter != null) {
+//		if (mWifiListAdapter != null) {
 			mWifiListHelper.fillWifiList();
-			mWifiFree = mWifiListHelper.getWifiFrees();
-			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-			updateWifiConMore(mWifiNameView);
-			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-		}
+//			mWifiFree = mWifiListHelper.getWifiFrees();
+//			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
+//			updateWifiConMore(mWifiNameView);
+//			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+//		}
 //		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //		getActivity().registerReceiver(mReceiver, filter);
 //		mBroadcastRegistered = true;

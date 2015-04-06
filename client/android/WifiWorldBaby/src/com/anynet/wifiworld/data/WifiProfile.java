@@ -50,6 +50,17 @@ public class WifiProfile extends BmobObject{
 		this.setTableName(tablename);
 	}
 	
+	public String decryptPwd(String pwd) {
+		String decryptedStr = null;
+		try {
+			decryptedStr = StringCrypto.decryptDES(pwd, CryptoKey);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return decryptedStr;
+	}
+	
 	public void QueryByMacAddress(
 		final Context context, String Mac, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
@@ -65,7 +76,9 @@ public class WifiProfile extends BmobObject{
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() == 1) {
-							_callback.onSuccess(object.get(0));
+							WifiProfile returnProfile = object.get(0);
+							returnProfile.Password = decryptPwd(returnProfile.Password);
+							_callback.onSuccess(returnProfile);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
 						}
@@ -97,6 +110,9 @@ public class WifiProfile extends BmobObject{
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() >= 1) {
+							for (WifiProfile wifiProfile : object) {
+								wifiProfile.Password = decryptPwd(wifiProfile.Password);
+							}
 							_callback.onSuccess(object);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
