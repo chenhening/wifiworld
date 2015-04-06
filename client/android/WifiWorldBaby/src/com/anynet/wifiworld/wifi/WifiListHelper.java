@@ -127,6 +127,13 @@ public class WifiListHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.i(TAG, msg);
+				mWifiFree.clear();
+				mWifiEncrypt.clear();
+				for (ScanResult hotspot : wifiList) {
+					//Check whether WiFi is stored local
+					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
+					refreashList(wifiCfg, hotspot);
+				}
 				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
 		});

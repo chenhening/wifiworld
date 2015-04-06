@@ -7,147 +7,140 @@
 
     <include layout="@layout/wifi_details_header" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/wifi_account_info"
         android:layout_width="match_parent"
-        android:layout_height="137dp"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/wifi_account_rank"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:text="排名：--"
-            android:textColor="@color/darkgray"
-            android:textSize="12sp" />
-
-        <View
-            android:id="@+id/View1"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/wifi_connect_parameters"
-            android:background="?android:attr/listDivider" />
+        android:layout_height="84dp"
+        android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/wifi_account_portral"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/wifi_account_rank"
-            android:layout_marginLeft="14dp"
+            android:layout_margin="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_default_portal" />
 
-        <TextView
-            android:id="@+id/wifi_account_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/wifi_account_portral"
-            android:layout_alignRight="@+id/wifi_account_rank"
-            android:layout_alignTop="@+id/wifi_account_portral"
-            android:layout_marginLeft="19dp"
-            android:layout_toRightOf="@+id/wifi_account_portral"
-            android:background="@color/ghostwhite"
-            android:gravity="center"
-            android:text="本人WiFi只提供给有缘人" />
+        <FrameLayout
+            android:id="@+id/wifi_account_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp" >
+
+            <TextView
+                android:id="@+id/wifi_account_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_gravity="right"
+                android:text="排名：--"
+                android:textColor="@color/darkgray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/wifi_account_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/ghostwhite"
+                android:gravity="center"
+                android:text="本人WiFi只提供给有缘人" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wifi_connect_parameters"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal" >
 
         <LinearLayout
-            android:id="@+id/wifi_connect_parameters"
+            android:id="@+id/wifi_connect_times_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/wifi_account_portral"
-            android:background="@color/white"
-            android:orientation="horizontal" >
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-            <LinearLayout
-                android:id="@+id/wifi_connect_times_layout"
+            <TextView
+                android:id="@+id/wifi_connect_times_tag"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="连接次数" />
 
-                <TextView
-                    android:id="@+id/wifi_connect_times_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="连接次数" />
-
-                <TextView
-                    android:id="@+id/wifi_connect_times_num"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="--次"
-                    android:textColor="@color/darkgray"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/wifi_connect_time_layout"
+            <TextView
+                android:id="@+id/wifi_connect_times_num"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/wifi_connect_time_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="连接时长" />
-
-                <TextView
-                    android:id="@+id/wifi_connect_time_num"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="--小时"
-                    android:textColor="@color/darkgray"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/wifi_connect_strength_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/wifi_connect_strength_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="用户好评" />
-
-                <TextView
-                    android:id="@+id/wifi_connect_strength_num"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:text="--"
-                    android:textColor="@color/darkgray"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="--次"
+                android:textColor="@color/darkgray"
+                android:textSize="12sp" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:id="@+id/wifi_connect_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/wifi_connect_time_tag"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="连接时长" />
+
+            <TextView
+                android:id="@+id/wifi_connect_time_num"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="--小时"
+                android:textColor="@color/darkgray"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:id="@+id/wifi_connect_strength_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/wifi_connect_strength_tag"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="用户好评" />
+
+            <TextView
+                android:id="@+id/wifi_connect_strength_num"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="--"
+                android:textColor="@color/darkgray"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/brown" />
 
     <LinearLayout
         android:id="@+id/wifi_connect_security_level"
@@ -238,7 +231,6 @@
                     android:background="@color/color_light_gray"
                     android:cacheColorHint="#00000000"
                     android:fadingEdge="vertical" >
-
                 </ListView>
             </LinearLayout>
 
@@ -270,10 +262,8 @@
                     android:background="@color/color_chat_bg"
                     android:cacheColorHint="#00000000"
                     android:fadingEdge="vertical" >
-
                 </ListView>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
@@ -302,7 +292,6 @@
             android:background="@color/color_gray_white"
             android:gravity="center"
             android:text="联系主人" />
-
     </LinearLayout>
 
 </LinearLayout>
