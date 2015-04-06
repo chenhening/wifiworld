@@ -4,11 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <include
-    	android:id="@+id/title_bar_replacement"
-    	layout="@layout/header_setting"/>
-    
+
+    <include layout="@layout/header_setting" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -64,23 +62,54 @@
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="12dp" >
-				<TextView
-	                android:id="@+id/merchant_produce_name"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:layout_alignParentLeft="true"
-	                android:layout_marginTop="@dimen/dimen_8_dip"
-	                android:drawableLeft="@drawable/img_merchant_certify_mark"
-	                android:drawablePadding="@dimen/dimen_5_dip"
-	                android:text="添加最新动态"
-	                android:textColor="@color/color_main_text"
-	                android:textSize="@dimen/font_main_big" />
-				
-            </RelativeLayout>
+                android:layout_height="175dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/SettingItemView01"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="添加最新动态"
+                    item:subLabel="限140字"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <EditText
+                    android:id="@+id/ec_wifi_message_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:ems="10"
+                    android:hint="输入您的WiFi动态，每天仅限一次，一次140字" />
+
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/btn_wifi_message_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="48dp"
+                        android:text="提交" />
+
+                    <Button
+                        android:id="@+id/btn_wifi_message_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="48dp"
+                        android:text="重置" />
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"

@@ -1,26 +1,26 @@
 package com.anynet.wifiworld.me;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+import android.widget.EditText;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
-import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.desarrollodroide.libraryfragmenttransactionextended.FragmentTransactionExtended;
 
 public class WifiProviderSettingActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
+	private Activity activity = this;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -49,19 +49,80 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
-				mIntent.setClass(getApplicationContext(), MainActivity.class);
-				startActivity(mIntent);
+				new AlertDialog.Builder(activity)
+					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
+							mIntent.setClass(getApplicationContext(), MainActivity.class);
+							startActivity(mIntent);
+						}
+						
+					})  
+					.setNegativeButton("取消", null)
+					.show();
 			}
 		});
 		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
-				mIntent.setClass(getApplicationContext(), MainActivity.class);
-				startActivity(mIntent);
+				new AlertDialog.Builder(activity)
+					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+	
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
+							mIntent.setClass(getApplicationContext(), MainActivity.class);
+							startActivity(mIntent);
+						}
+						
+					})  
+					.setNegativeButton("取消", null)
+					.show();
 			}
+		});
+		
+		//提交和重置
+		final EditText edit = (EditText) this.findViewById(R.id.ec_wifi_message_content);
+		this.findViewById(R.id.btn_wifi_message_send).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String str = edit.getText().toString();
+				if (str.length() <= 0) {
+					showToast("未输入任何信息，请重新输入。");
+					return;
+				}
+				WifiMessages msg = new WifiMessages();
+				msg.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
+				msg.Message = edit.getText().toString();
+				msg.MarkSendTime();
+				msg.StoreRemote(getApplicationContext(), new DataCallback<WifiMessages>() {
+
+					@Override
+					public void onSuccess(WifiMessages object) {
+						showToast("提交动态信息成功。");
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						showToast("提交动态信息失败。");
+					}
+					
+				});
+			}	
+		});
+		this.findViewById(R.id.btn_wifi_message_clear).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				edit.getText().clear();
+			}
+			
 		});
 	}
 
