@@ -11,6 +11,7 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -237,5 +238,33 @@ public class WifiProfile extends BmobObject{
 	public void deleteRemote(final Context context) {
 		final WifiProfile wifi = this;
 		wifi.delete(context);
+	}
+	
+	public void QueryConnectedTimes(final Context context, String Mac, DataCallback<Long> callback) {
+		final DataCallback<Long> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereEqualTo(unique_key, Mac);
+		Log.d("QueryConnectedTimes", "开始查询QueryConnectedTimes");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.count(context, WifiProfile.class, new CountListener() {
+
+					@Override
+					public void onFailure(int arg0, String msg) {
+						Log.d("QueryConnectedTimes", "query failed: " + msg);
+					}
+
+					@Override
+					public void onSuccess(int arg0) {
+						_callback.onSuccess((long) arg0);
+					}
+				});
+				Log.d("QueryConnectedTimes", "结束查询QueryConnectedTimes");
+			}
+			
+		}).start();
 	}
 }

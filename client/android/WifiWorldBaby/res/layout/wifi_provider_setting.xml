@@ -73,7 +73,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/icon_person_center_msg"
-                    item:label="添加最新动态"
+                    item:label="添加WiFi最新动态"
                     item:subLabel="限140字"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="96dp"
                     android:ems="10"
-                    android:hint="输入您的WiFi动态，每天仅限一次，一次140字" />
+                    android:hint="输入您的WiFi动态，每天仅限一次" />
 
                 <RelativeLayout
                     android:id="@+id/RelativeLayout1"
