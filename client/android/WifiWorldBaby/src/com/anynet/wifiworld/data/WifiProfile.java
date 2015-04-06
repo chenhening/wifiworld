@@ -82,36 +82,36 @@ public class WifiProfile extends BmobObject{
 	}
 	
 	public void BatchQueryByMacAddress(
-			final Context context, List<String> Macs, DataCallback<WifiProfile> callback) {
-			final DataCallback<WifiProfile> _callback = callback;
-			final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-			query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
-			query.addWhereContainedIn(unique_key, Macs);
-			Log.d("findObjects", "开始查询BatchQueryByMacAddress");
-			new Thread(new Runnable() {
+		final Context context, List<String> Macs, MultiDataCallback<WifiProfile> callback) {
+		final MultiDataCallback<WifiProfile> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereContainedIn(unique_key, Macs);
+		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
+		new Thread(new Runnable() {
 
-				@Override
-				public void run() {
-					query.findObjects(context, new FindListener<WifiProfile>() {
-						@Override
-						public void onSuccess(List<WifiProfile> object) {
-							if (object.size() >= 1) {
-								_callback.onSuccess(object.get(0));
-							} else {
-								_callback.onFailed("数据库中没有数据。");
-							}
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() >= 1) {
+							_callback.onSuccess(object);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
 						}
+					}
 
-						@Override
-						public void onError(int code, String msg) {
-							_callback.onFailed(msg);
-						}
-					});
-					Log.d("findObjects", "结束查询BatchQueryByMacAddress");
-				}
-				
-			}).start();
-		}
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询BatchQueryByMacAddress");
+			}
+			
+		}).start();
+	}
 	
 	
 	//以圆的半径查找
