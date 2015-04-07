@@ -58,8 +58,10 @@ public class WifiOnlineSlidingFragment extends Fragment {
 	
 	private void addMarkerOnView(List<WifiDynamic> objects) {
 		ArrayList<String> records = new ArrayList<String>();
-		
 		BmobGeoPoint mBmobGeoPoint = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry;
+		if (mBmobGeoPoint == null) 
+			return;
+		
 		double center_x = mBmobGeoPoint.getLatitude();
 		double center_y = mBmobGeoPoint.getLongitude();
 		for (int i=0; i < objects.size(); ++i) {

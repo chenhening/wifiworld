@@ -110,17 +110,21 @@ public class MeFragment extends MainFragment {
 
 					@Override
 					public void onSuccess(List<WifiProfile> objects) {
-						mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
-						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-						startActivity(i);
+						if (objects.size() >= 1) {
+							mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
+							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+							startActivity(i);
+						} else {
+							mLoginHelper.mWifiProfile = new WifiProfile();
+							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+							startActivity(i);
+						}
 					}
 
 					@Override
 					public void onFailed(String msg) {
 						// 查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
-						mLoginHelper.mWifiProfile = new WifiProfile();
-						Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
-						startActivity(i);
+						showToast("当前网络不稳定请稍后再试： " + msg);
 					}
 				});
 			}
