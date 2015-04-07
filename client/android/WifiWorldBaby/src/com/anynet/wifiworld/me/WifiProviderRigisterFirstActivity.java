@@ -190,6 +190,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 										public void run() {
 											showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
 											//TODO(buffer):需要调到wifi申请找回仲裁
+											return;
 										}
 										
 									});
@@ -390,7 +391,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		}
 		
 		mWifiProfile.ExtAddress = mtv_location.getText().toString();
-		if(mWifiProfile.Alias == "") {
+		if(mWifiProfile.ExtAddress == "") {
 			showToast("获取地理位置失败，请重新点击获取地理位置");
 			return false;
 		}
