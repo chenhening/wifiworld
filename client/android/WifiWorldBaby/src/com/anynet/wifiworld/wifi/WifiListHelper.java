@@ -35,6 +35,7 @@ public class WifiListHelper {
 	private List<WifiInfoScanned> mWifiFree;
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private List<String> mWifiListUnique;
+	public List<WifiProfile> mWifiProfiles;
 	
 	private final String WIFI_LIST_FILE_NAME = "wifi_list_file.txt";
 
@@ -98,6 +99,7 @@ public class WifiListHelper {
 			@Override
 			public void onSuccess(List<WifiProfile> objects) {
 				Log.i(TAG, "Batch query by mac address success");
+				mWifiProfiles = objects;
 				mWifiFree.clear();
 				mWifiEncrypt.clear();
 				for (ScanResult hotspot : wifiList) {

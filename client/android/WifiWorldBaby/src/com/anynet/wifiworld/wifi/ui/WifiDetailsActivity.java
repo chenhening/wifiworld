@@ -22,22 +22,12 @@ public class WifiDetailsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wifi_details_activity);
-		
+		//Get intent data
 		Intent intent = getIntent();
 		WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
+		//Set title text and back button listener
 		TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
 		detailsTitle.setText(wifiSelected.getWifiName());
-		
-		TextView strength = (TextView)findViewById(R.id.wifi_connect_strength_num);
-		strength.setText(String.valueOf(wifiSelected.getWifiStrength()) + "%");
-		
-		TextView rating = (TextView)findViewById(R.id.wifi_account_rank);
-		rating.setText("排名：" + String.valueOf(wifiSelected.getRanking()));
-		TextView connectedTimes = (TextView)findViewById(R.id.wifi_connect_times_num);
-		connectedTimes.setText(String.valueOf(wifiSelected.getConnectedTimes()) + "次");
-		TextView connectedDuration = (TextView)findViewById(R.id.wifi_connect_time_num);
-		connectedDuration.setText(String.valueOf(wifiSelected.getConnectedDuration()) + "小时");
-		
 		ImageView backView = (ImageView)findViewById(R.id.iv_setting_header_left);
 		backView.setOnClickListener(new OnClickListener() {
 			
@@ -47,7 +37,21 @@ public class WifiDetailsActivity extends Activity {
 			}
 		});
 		
-		//设置logo信息
+		TextView rating = (TextView)findViewById(R.id.wifi_rate);
+		rating.setText(String.valueOf(wifiSelected.getWifiStrength()));
+		TextView ranking = (TextView)findViewById(R.id.wifi_account_rank);
+		ranking.setText("排名：" + String.valueOf(wifiSelected.getRanking()));
+		TextView connectedTimes = (TextView)findViewById(R.id.wifi_connect_times_num);
+		connectedTimes.setText(String.valueOf(wifiSelected.getConnectedTimes()) + "次");
+		TextView connectedDuration = (TextView)findViewById(R.id.wifi_connect_time_num);
+		connectedDuration.setText(String.valueOf(wifiSelected.getConnectedDuration()) + "小时");
+		
+		//Set WiFi logo image
+		if (wifiSelected.getWifiLogo() != null) {
+			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
+			logo.setImageBitmap(wifiSelected.getWifiLogo());
+		}
+		
 		//添加动态信息
 		ListView listview = (ListView) findViewById(R.id.lv_provider_new_info);
 		List<String> data = new ArrayList<String>();

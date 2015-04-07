@@ -120,14 +120,14 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/wifi_connect_strength_tag"
+                android:id="@+id/wifi_rate_tag"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:gravity="center"
                 android:text="用户好评" />
 
             <TextView
-                android:id="@+id/wifi_connect_strength_num"
+                android:id="@+id/wifi_rate"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:gravity="center"
