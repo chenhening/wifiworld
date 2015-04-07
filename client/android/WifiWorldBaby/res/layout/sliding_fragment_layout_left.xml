@@ -67,7 +67,7 @@
             android:layout_height="32dp" >
 
             <TextView
-                android:id="@+id/TextView02"
+                android:id="@+id/tv_wifi_used_ssid"
                 android:layout_width="96dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -85,7 +85,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_wifi_used_addr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bottom_text_color_normal"

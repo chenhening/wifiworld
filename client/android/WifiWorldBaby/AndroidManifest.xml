@@ -65,6 +65,11 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.me.WifiUsedListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.me.MySettingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >

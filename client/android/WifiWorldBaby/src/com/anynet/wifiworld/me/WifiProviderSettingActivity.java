@@ -45,12 +45,12 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		bingdingTitleUI();
 		
 		//取消wifi
-		this.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
+		this.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				new AlertDialog.Builder(activity)
-					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")   
 					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
 						@Override
@@ -65,12 +65,12 @@ public class WifiProviderSettingActivity extends BaseActivity {
 					.show();
 			}
 		});
-		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
+		this.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				new AlertDialog.Builder(activity)
-					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")  
 					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 	
 						@Override

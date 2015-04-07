@@ -100,9 +100,10 @@ public class WifiDynamic extends BmobObject {
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setLimit(10);//查询最大数量
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
-		query.addWhereEqualTo(key_wifi, MacAddr);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - daymillis);
+		query.addWhereEqualTo(key_user, Userid);
+		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
 		Log.d("findObjects", "开始查询QueryWiFiInOneWeek");
 		new Thread(new Runnable() {
 
@@ -120,35 +121,6 @@ public class WifiDynamic extends BmobObject {
 					}
 				});
 				Log.d("findObjects", "结束查询QueryWiFiInOneWeek");
-			}
-			
-		}).start();
-	}
-	
-	public void QueryWiFiInOneDay(
-		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
-		final MultiDataCallback<WifiDynamic> _callback = callback;
-		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
-		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
-		query.addWhereEqualTo(key_wifi, MacAddr);
-		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
-		Log.d("findObjects", "开始查询QueryWiFiInOneDay");
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				query.findObjects(context, new FindListener<WifiDynamic>() {
-					@Override
-					public void onSuccess(List<WifiDynamic> objects) {
-						_callback.onSuccess(objects);
-					}
-			
-					@Override
-					public void onError(int code, String msg) {
-						_callback.onFailed(msg);
-					}
-				});
-				Log.d("findObjects", "结束查询QueryWiFiInOneDay");
 			}
 			
 		}).start();

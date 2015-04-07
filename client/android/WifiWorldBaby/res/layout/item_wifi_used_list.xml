@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
+
+    <ImageView
+        android:id="@+id/iv_wifi_logo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/iv_wifi_logo"
+        android:layout_marginLeft="6dp"
+        android:layout_toRightOf="@+id/iv_wifi_logo"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:layout_gravity="center" >
+
+            <TextView
+                android:id="@+id/tv_wifi_used_ssid"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@color/color_chat_bg"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tv_wifi_used_alias"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="0.5"
+                android:background="@color/color_chat_bg"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_wifi_used_addr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/color_chat_bg"
+            android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="1dp" >
+
+            <TextView
+                android:id="@+id/tv_wifi_used_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@color/color_chat_bg"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tv_wifi_used_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="0.5"
+                android:background="@color/color_chat_bg"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
