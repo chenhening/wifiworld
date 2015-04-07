@@ -530,4 +530,5 @@
 
     <dimen name="rippleStrokeWidth">2dp</dimen>
     <dimen name="rippleRadius">64dp</dimen>
+    <dimen name="common_listview_divider_height">1.0px</dimen>
 </resources>

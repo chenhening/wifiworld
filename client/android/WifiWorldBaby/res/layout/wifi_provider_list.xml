@@ -6,16 +6,6 @@
 
     <include layout="@layout/header_setting" />
 
-    <TextView
-        android:id="@+id/tv_add_wifi"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_grey_normal"
-        android:drawableLeft="@drawable/menu_icon_add"
-        android:gravity="center"
-        android:text="Add" />
-
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/wifi_provider_list"
         android:layout_width="match_parent"

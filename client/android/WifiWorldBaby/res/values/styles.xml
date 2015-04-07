@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -45,9 +45,10 @@
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
-    
-    <style name="PlatformDialog" parent="android:Theme.Holo.Dialog"/>
-    <style name="textAppearanceBaseContent" parent="@android:style/TextAppearance" >
+
+    <style name="PlatformDialog" parent="android:Theme.Holo.Dialog" />
+
+    <style name="textAppearanceBaseContent" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/secondary_text_dark</item>
     </style>
 
@@ -109,6 +110,10 @@
         <item name="android:paddingBottom">15.0dip</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="user_check_box" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_bg</item>
     </style>
 
 </resources>

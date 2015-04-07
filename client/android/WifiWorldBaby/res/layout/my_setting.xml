@@ -26,7 +26,7 @@
                 android:visibility="visible" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_change_provider_info"
+                    android:id="@+id/slv_i_am_wifi_provider"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_shopper"
@@ -36,7 +36,7 @@
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_cancle_provider_info"
+                    android:id="@+id/slv_iam_wifi_user"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_attention_shopper"
