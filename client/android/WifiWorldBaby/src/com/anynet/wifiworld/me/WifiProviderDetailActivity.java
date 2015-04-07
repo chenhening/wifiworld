@@ -27,7 +27,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -35,6 +35,16 @@ public class WifiProviderDetailActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				finish();
+			}
+		});
+		
+		mTitlebar.ivMySetting.setVisibility(View.VISIBLE);
+		mTitlebar.ivMySetting.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mIntent.setClass(getApplicationContext(), WifiProviderSettingActivity.class);
+				startActivity(mIntent);
 			}
 		});
 	}
@@ -69,7 +79,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
         		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
         		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
         		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
-        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.TABLE_HORIZONTAL);
+        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.SLIDE_HORIZONTAL);
         		            fragmentTransactionExtended.commit();
         		        }else{
         		            getFragmentManager().popBackStack();

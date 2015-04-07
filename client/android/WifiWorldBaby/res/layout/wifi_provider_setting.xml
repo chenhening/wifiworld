@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res/com.anynet.wifiworld"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_main_bg" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:background="@drawable/bg_person_cener_item"
+                android:orientation="vertical"
+                android:visibility="visible" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_change_provider_info"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/icon_person_center_shopper"
+                    item:label="更改WiFi信息"
+                    item:subLabel="删除后重新登记"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_cancle_provider_info"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/icon_person_center_attention_shopper"
+                    item:label="取消WiFi共享"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:background="@drawable/bg_person_cener_item"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/message_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="设置WiFi敲门问题"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/SettingItemView01"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="添加WiFi最新动态"
+                    item:subLabel="限140字"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <EditText
+                    android:id="@+id/ec_wifi_message_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:ems="10"
+                    android:hint="输入您的WiFi动态，每天仅限一次" />
+
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/btn_wifi_message_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="48dp"
+                        android:text="提交" />
+
+                    <Button
+                        android:id="@+id/btn_wifi_message_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="48dp"
+                        android:text="重置" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:background="@drawable/bg_person_cener_item"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/attention_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_attention"
+                    item:label="更多功能"
+                    item:showTopDivider="true" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/fensi_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/icon_person_center_fans"
+                    item:label="更多功能"
+                    item:showTopDivider="true" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/blacklist_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    item:icon="@drawable/ic_person_blacklist"
+                    item:label="更多功能"
+                    item:showTopDivider="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

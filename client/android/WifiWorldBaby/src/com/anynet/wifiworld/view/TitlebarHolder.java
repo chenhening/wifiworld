@@ -26,7 +26,8 @@ public class TitlebarHolder {
 	public TextView tvHeaderRight;
 	private BaseActivity activity;
 	
-	public LinearLayout llHeaderMy;
+	//public LinearLayout llHeaderMy;
+	public ImageView ivMySetting;
 
 	public TitlebarHolder(BaseActivity a) {
 		this.activity = a;
@@ -36,7 +37,8 @@ public class TitlebarHolder {
 		llFinish = (RelativeLayout) activity.findViewById(R.id.setting_header_finish);
 		tvHeaderRight = (TextView) activity.findViewById(R.id.tv_header_right);
 		
-		llHeaderMy = (LinearLayout) activity.findViewById(R.id.ll_header_my);
+		//llHeaderMy = (LinearLayout) activity.findViewById(R.id.ll_header_my);
+		ivMySetting = (ImageView) activity.findViewById(R.id.lv_my_setting_image);
 		
 		if (null != llHeaderLeft) {
 			llHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -65,7 +67,8 @@ public class TitlebarHolder {
 		tvTitle = (TextView) v.findViewById(R.id.setting_main_title);
 		llFinish = (RelativeLayout) v.findViewById(R.id.setting_header_finish);
 		tvHeaderRight = (TextView) v.findViewById(R.id.tv_header_right);
-		llHeaderMy=(LinearLayout) v.findViewById(R.id.ll_header_my);
+		ivMySetting = (ImageView) v.findViewById(R.id.lv_my_setting_image);
+		//llHeaderMy=(LinearLayout) v.findViewById(R.id.ll_header_my);
 
 	}
 }

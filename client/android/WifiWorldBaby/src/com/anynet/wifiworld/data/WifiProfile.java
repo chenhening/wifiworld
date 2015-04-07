@@ -11,6 +11,7 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -54,6 +55,17 @@ public class WifiProfile extends BmobObject {
 				+ " Point(" + Geometry.getLongitude() + "," + Geometry.getLatitude() + ") ExtAddress:" + ExtAddress;
 	}
 
+	public String decryptPwd(String pwd) {
+		String decryptedStr = null;
+		try {
+			decryptedStr = StringCrypto.decryptDES(pwd, CryptoKey);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return decryptedStr;
+	}
+
 	public void QueryByMacAddress(final Context context, String Mac, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
@@ -68,7 +80,9 @@ public class WifiProfile extends BmobObject {
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() == 1) {
-							_callback.onSuccess(object.get(0));
+							WifiProfile returnProfile = object.get(0);
+							returnProfile.Password = decryptPwd(returnProfile.Password);
+							_callback.onSuccess(returnProfile);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
 						}
@@ -85,13 +99,50 @@ public class WifiProfile extends BmobObject {
 		}).start();
 	}
 
-	// 以圆的半径查找
-	public void QueryInRadians(final Context context, BmobGeoPoint center, int radians,
-			MultiDataCallback<WifiProfile> callback) {
+	public void BatchQueryByMacAddress(final Context context, List<String> Macs, MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereContainedIn(unique_key, Macs);
+		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() >= 1) {
+							for (WifiProfile wifiProfile : object) {
+								wifiProfile.Password = decryptPwd(wifiProfile.Password);
+							}
+							_callback.onSuccess(object);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询BatchQueryByMacAddress");
+			}
+
+		}).start();
+	}
+
+	// 以圆的半径查找
+	public void QueryInRadians(final Context context, BmobGeoPoint center, double radians,
+			MultiDataCallback<WifiProfile> callback) {
+		final MultiDataCallback<WifiProfile> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+		// 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereWithinRadians("Geometry", center, radians);
+		// query.addWhereNear("Geometry", center);
+		query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
 		Log.d("findObjects", "开始查询QueryInRadians");
 		new Thread(new Runnable() {
 
@@ -133,11 +184,11 @@ public class WifiProfile extends BmobObject {
 				query.findObjects(context, new FindListener<WifiProfile>() {
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
-						if (object.size() >= 1) {
-							_callback.onSuccess(object);
-						} else {
-							_callback.onFailed("数据库中没有数据。");
-						}
+						// if (object.size() >= 1) {
+						_callback.onSuccess(object);
+						// } else {
+						// _callback.onFailed("数据库中没有数据。");
+						// }
 					}
 
 					@Override
@@ -202,4 +253,10 @@ public class WifiProfile extends BmobObject {
 
 		});
 	}
+
+	public void deleteRemote(final Context context) {
+		final WifiProfile wifi = this;
+		wifi.delete(context);
+	}
+
 }

@@ -6,10 +6,13 @@ import org.apache.cordova.LOG;
 
 import android.content.Context;
 import android.net.wifi.WifiInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiDynamic;
@@ -21,6 +24,7 @@ public class WifiHandleDB {
 	private final static String TAG = WifiHandleDB.class.getSimpleName();
 	
 	private Context mContext;
+	private Handler mHandler;
 	private WifiProfile mWifiProfile;
 	private static WifiHandleDB wifiHandleDB = null;
 	
@@ -36,6 +40,19 @@ public class WifiHandleDB {
 	private WifiHandleDB(Context context) {
 		mContext = context;
 		mWifiProfile = new WifiProfile();
+	}
+	
+	public static WifiHandleDB getInstance(Context context, Handler handler) {
+		if (wifiHandleDB == null) {
+			wifiHandleDB = new WifiHandleDB(context, handler);
+		}
+		return wifiHandleDB;
+	}
+	
+	private WifiHandleDB(Context context, Handler handler) {
+		mContext = context;
+		mWifiProfile = new WifiProfile();
+		mHandler = handler;
 	}
 	
 	public void updateWifiProfile(WifiInfoScanned infoScanned) {
@@ -139,6 +156,33 @@ public class WifiHandleDB {
 			public void onFailed(String msg) {
 				Log.e(TAG, "Failed to query wifi profile from server" + infoScanned.getWifiMAC());
 				
+			}
+		});
+	}
+	
+	public void queryWifiProfile4Display(final WifiInfoScanned infoScanned) {
+		WifiProfile wifiProfile = new WifiProfile();
+		wifiProfile.QueryByMacAddress(mContext, infoScanned.getWifiMAC(), new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(final WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + infoScanned.getWifiMAC());
+				Message msg = new Message();
+				msg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				msg.obj = object;
+				mHandler.sendMessage(msg);
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi profile from server" + infoScanned.getWifiMAC());
+				Message msgg = new Message();
+				msgg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				WifiProfile wifiProfile = new WifiProfile();
+				wifiProfile.Ssid = infoScanned.getWifiName();
+				msgg.obj = wifiProfile;
+				mHandler.sendMessage(msgg);
+				//mHandler.sendEmptyMessage(((MainActivity)mContext).GET_WIFI_DETAILS);
 			}
 		});
 	}

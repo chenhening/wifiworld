@@ -31,7 +31,6 @@ public class WifiAdmin {
     private WifiLock mWifiLock;
     private int mNumOpenNetworksKept;
     
-    public static WifiInfoScanned mWifiConnection;
     private Context mContext;
     
     public static WifiAdmin getInstance(Context context) {
@@ -336,10 +335,33 @@ public class WifiAdmin {
 	}
 	
 	public boolean checkWifiPwd(String pwd) {
-		if (mWifiConnection != null) {
-			WifiInfoScanned temp = mWifiConnection;
-			temp.setWifiPwd(pwd);
-			return connectToNewNetwork(mContext, temp);
+		WifiInfoScanned wifiInfoCur = WifiListHelper.getInstance(mContext).mWifiInfoCur;
+		if (wifiInfoCur != null) {
+			WifiConfiguration config = new WifiConfiguration();
+			config.SSID = convertToQuotedString(wifiInfoCur.getWifiName());
+			config.BSSID = wifiInfoCur.getWifiMAC();
+			wifiInfoCur.setWifiPwd(pwd);
+			ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
+			
+			int id = -1;
+			try {
+				id = mWifiManager.addNetwork(config);
+			} catch(NullPointerException e) {
+				Log.e(TAG, "Weird!! Really!! What's wrong??", e);
+				// Weird!! Really!!
+				// This exception is reported by user to Android Developer Console(https://market.android.com/publish/Home)
+			}
+			if(id == -1) {
+				Log.e(TAG, "Failed to add config to network");
+				return false;
+			}
+			
+			if(!mWifiManager.enableNetwork(config.networkId, true)) {
+				Log.e(TAG, "Failed to enable current network");
+				return false;
+			}
+			
+			return mWifiManager.reassociate();
 		} else {
 			Log.e(TAG, "Not connect to any wifi");
 			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();
@@ -489,6 +511,11 @@ public class WifiAdmin {
     public void disConnectionWifi(int netId){
         this.mWifiManager.disableNetwork(netId);
         this.mWifiManager.disconnect();
+    }
+    
+    public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {
+    	return mWifiManager.removeNetwork(wifiConfiguration.networkId)
+				&& mWifiManager.saveConfiguration();
     }
     
     public WifiConfiguration getWifiConfiguration(final WifiInfoScanned hotspot) {

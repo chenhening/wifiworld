@@ -2,6 +2,8 @@ package com.anynet.wifiworld.wifi;
 
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
+
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 public class WifiInfoScanned implements Serializable {
@@ -16,6 +18,7 @@ public class WifiInfoScanned implements Serializable {
 	private Integer mWifiStrength;
 	private String mRemark;
 	private BmobGeoPoint mGeometry;
+	private Bitmap mWifiLogo;
 	
 	private float mRating;
 	private int mRanking;
@@ -141,6 +144,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setGeometry(BmobGeoPoint mGeometry) {
 		this.mGeometry = mGeometry;
+	}
+
+	public Bitmap getWifiLogo() {
+		return mWifiLogo;
+	}
+
+	public void setWifiLogo(Bitmap wifiLogo) {
+		this.mWifiLogo = wifiLogo;
 	}
 	
 }

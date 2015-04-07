@@ -2,15 +2,16 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiType;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,35 @@ public class WifiListAdapter extends BaseAdapter {
 	private List<WifiInfoScanned> mWifiTags = new ArrayList<WifiInfoScanned>();
 	private int wifiFreeCnt = 0;
 	private int wifiEncryptCnt = 0;
-	private Context context;
+	private Context mContext;
+	private WifiHandleDB mWifiHandleDB;
+	
+//	private Handler mHandler = new Handler() {
+//		
+//		@Override
+//		public void handleMessage(Message msg) {
+//			Log.i(TAG, "handle display wifi details message");
+//			int value = msg.what;
+//			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
+//				WifiProfile wifiProfile = (WifiProfile)msg.obj;
+//				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
+//				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
+//				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+//				
+//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+//				Bundle wifiData = new Bundle();
+//				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
+//				intent.putExtras(wifiData);
+//				mContext.startActivity(intent);
+//			}
+//			super.handleMessage(msg);
+//		}
+//	};
 
 	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		super();
-		this.context = context;
+		this.mContext = context;
+		//mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
 		
 		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
@@ -89,6 +114,20 @@ public class WifiListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
+	private void getWifiProfiles(WifiInfoScanned wifiInfoScanned) {
+		List<WifiProfile> listProfiles = WifiListHelper.getInstance(mContext).mWifiProfiles;
+		if (listProfiles != null) {
+			for (WifiProfile wifiProfile : listProfiles) {
+				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
+					wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+					break;
+				}
+			}
+		} else {
+			Log.i(TAG, "Wifi Profile table return null");
+		}
+	}
+	
 	@Override
 	public int getCount() {
 		return mWifiList.size();
@@ -120,7 +159,7 @@ public class WifiListAdapter extends BaseAdapter {
 		TextView textView = null;
 		final WifiInfoScanned infoScanned = (WifiInfoScanned)getItem(position);
         if(mWifiTags.contains(infoScanned)){
-            view = LayoutInflater.from(this.context).inflate(R.layout.wifi_tag, null);
+            view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_tag, null);
             textView = (TextView) view.findViewById(R.id.wifi_tag_text);
             if ((infoScanned).getWifiName().equals("Free")) {
             	textView.setText("挖掘到" + wifiFreeCnt + "个免费WiFi");
@@ -129,17 +168,17 @@ public class WifiListAdapter extends BaseAdapter {
 			}
         } else {
             if ((infoScanned).getWifiName() == "FreeDeclare") {
-            	view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
+            	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("免费WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
 			} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
-				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_declare, null);
+				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("需要密码的WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
 			} else {
-				view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item, null);
+				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
 	            textView = (TextView) view.findViewById(R.id.wifi_name);
 				textView.setText((infoScanned).getWifiName());
 				
@@ -174,12 +213,13 @@ public class WifiListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View arg0) {
+						//mWifiHandleDB.queryWifiProfile4Display(infoScanned);
+						getWifiProfiles(infoScanned);
 						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 						Bundle wifiData = new Bundle();
-						WifiHandleDB.getInstance(context).queryWifiProfile(infoScanned);
 						wifiData.putSerializable("WifiSelected", infoScanned);
 						intent.putExtras(wifiData);
-						context.startActivity(intent);
+						mContext.startActivity(intent);
 					}
 				});
 			}

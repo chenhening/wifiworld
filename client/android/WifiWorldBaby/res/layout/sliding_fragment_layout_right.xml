@@ -2,7 +2,7 @@
 <com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back2" >
+    android:background="@drawable/crystal_collect_btn_normal" >
 
     <RelativeLayout
         android:id="@+id/rl_wifi_provider_line_chart"
@@ -12,32 +12,34 @@
         android:layout_alignParentTop="true" >
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_wifi_report_2"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_alignParentBottom="true" >
-
-    </ListView>
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_two_chart"
+        android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_below="@+id/rl_wifi_provider_line_chart" >
 
         <RelativeLayout
             android:id="@+id/rl_wifi_user_location_chart"
-            android:layout_width="143dp"
-            android:layout_height="match_parent" >
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" >
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_wifi_user_timer_chart"
-            android:layout_width="143dp"
-            android:layout_height="match_parent" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" >
         </RelativeLayout>
-
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_wifi_report_2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ll_two_chart" >
+    </ListView>
 
 </com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>

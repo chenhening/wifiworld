@@ -27,7 +27,7 @@ public class DiscoverFragment extends MainFragment {
 
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my));
 	}

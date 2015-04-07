@@ -1,50 +1,49 @@
 package com.anynet.wifiworld.me;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiMessages;
+import com.anynet.wifiworld.util.LoginHelper;
 
-public class WifiProviderRigisterSecondHomeActivity extends BaseActivity {
+public class MySettingActivity extends BaseActivity {
+
 	//IPC
 	private Intent mIntent = null;
+	private Activity activity = this;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.next_step);
-		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mIntent.setClass(WifiProviderRigisterSecondHomeActivity.this,
-						WifiProviderRigisterThirdActivity.class);
-				startActivity(mIntent);
-			}
-		});
-		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
+		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
+		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
 	}
-	
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
-		setContentView(R.layout.wifi_provider_certify_second_home);
+		setContentView(R.layout.my_setting);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
 	}
 
 	@Override
@@ -68,6 +67,7 @@ public class WifiProviderRigisterSecondHomeActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		
 		super.onResume();
 	}
 
@@ -77,4 +77,15 @@ public class WifiProviderRigisterSecondHomeActivity extends BaseActivity {
 		super.onPause();
 	}
 
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+	}
 }

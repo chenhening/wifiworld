@@ -76,7 +76,7 @@ public class SettingFeedbackActivity extends BaseActivity implements
     private void bindingEvent()
     {
         mTitlebar.llFinish.setVisibility(View.VISIBLE);
-        mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+        //mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
         mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
         mTitlebar.llFinish.setOnClickListener(this);
         

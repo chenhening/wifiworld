@@ -15,13 +15,13 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,7 +73,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.nearby));
 	}
@@ -252,7 +252,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				// , mPendingIntent);
 				// query wifi nearby
 				WifiProfile wifis = new WifiProfile();
-				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1,
+				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 0.025,
 						new MultiDataCallback<WifiProfile>() {
 
 							@Override
@@ -266,12 +266,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 							@Override
 							public void onFailed(String msg) {
 								Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
-								showToast("您附近还没有可用wifi信号，请更换位置。");
+								showToast("您附近还没有可用wifi信号，请更换位置：" + msg);
 							}
 
 						});
 
-				WifiProfile wifisu = new WifiProfile(WifiProfile.table_name_wifiunregistered);
+				/*WifiProfile wifisu = new WifiProfile(WifiProfile.table_name_wifiunregistered);
 				wifisu.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 1,
 						new MultiDataCallback<WifiProfile>() {
 
@@ -289,7 +289,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								showToast("您附近还没有可用wifi信号，请更换位置。");
 							}
 
-						});
+						});*/
 
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);

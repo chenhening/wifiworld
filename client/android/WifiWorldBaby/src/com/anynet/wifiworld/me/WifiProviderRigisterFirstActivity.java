@@ -28,13 +28,13 @@ import android.widget.Toast;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.api.WifiListHelper;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	public WifiProfile mWifiProfile = null;
@@ -61,7 +61,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
@@ -190,6 +190,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 										public void run() {
 											showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
 											//TODO(buffer):需要调到wifi申请找回仲裁
+											return;
 										}
 										
 									});
@@ -390,7 +391,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		}
 		
 		mWifiProfile.ExtAddress = mtv_location.getText().toString();
-		if(mWifiProfile.Alias == "") {
+		if(mWifiProfile.ExtAddress == "") {
 			showToast("获取地理位置失败，请重新点击获取地理位置");
 			return false;
 		}

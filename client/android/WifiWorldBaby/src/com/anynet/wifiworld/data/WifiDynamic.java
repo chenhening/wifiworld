@@ -191,6 +191,34 @@ public class WifiDynamic extends BmobObject {
 		});
 	}
 	
+	public void QueryConnectedTimes(final Context context, String Mac, DataCallback<Long> callback) {
+		final DataCallback<Long> _callback = callback;
+		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
+		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereEqualTo("MacAddr", Mac);
+		Log.d("QueryConnectedTimes", "开始查询QueryConnectedTimes");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.count(context, WifiDynamic.class, new CountListener() {
+
+					@Override
+					public void onFailure(int arg0, String msg) {
+						Log.d("QueryConnectedTimes", "query failed: " + msg);
+					}
+
+					@Override
+					public void onSuccess(int arg0) {
+						_callback.onSuccess((long) arg0);
+					}
+				});
+				Log.d("QueryConnectedTimes", "结束查询QueryConnectedTimes");
+			}
+			
+		}).start();
+	}
+	
 	public void MarkLoginTime() {
 		LoginTime = System.currentTimeMillis();
 	}

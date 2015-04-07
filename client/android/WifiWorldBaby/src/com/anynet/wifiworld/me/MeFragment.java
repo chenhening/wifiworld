@@ -83,7 +83,7 @@ public class MeFragment extends MainFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 		setLoginedUI(false);
-		// DisplayIncomeChart();
+		
 		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -94,7 +94,7 @@ public class MeFragment extends MainFragment {
 			}
 		});
 
-		mPageRoot.findViewById(R.id.cl_iam_wifi_provider).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -111,17 +111,21 @@ public class MeFragment extends MainFragment {
 
 					@Override
 					public void onSuccess(List<WifiProfile> objects) {
-						mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
-						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-						startActivity(i);
+						if (objects.size() >= 1) {
+							mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
+							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+							startActivity(i);
+						} else {
+							mLoginHelper.mWifiProfile = new WifiProfile();
+							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+							startActivity(i);
+						}
 					}
 
 					@Override
 					public void onFailed(String msg) {
 						// 查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
-						mLoginHelper.mWifiProfile = new WifiProfile();
-						Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
-						startActivity(i);
+						showToast("当前网络不稳定请稍后再试： " + msg);
 					}
 				});
 			}
@@ -156,11 +160,6 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				/*
-				 * Intent i = new Intent(getApplicationContext(),
-				 * ShareActivity.class); startActivity(i);
-				 */
 				if (!checkIsLogined()) {
 					return;
 				}
@@ -214,6 +213,16 @@ public class MeFragment extends MainFragment {
 				});
 			}
 		});
+		
+		this.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+				startActivity(i);
+            }
+			
+		});
 		return mPageRoot;
 	}
 
@@ -222,7 +231,7 @@ public class MeFragment extends MainFragment {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my));
 	}
@@ -241,15 +250,4 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.GONE);
 		}
 	}
-
-	/*
-	 * private void DisplayIncomeChart() { LinearLayout chartLayout =
-	 * (LinearLayout)findViewById(R.id.ll_money_get); // 图表显示范围在占屏幕大小的90%的区域内
-	 * int scrWidth = chartLayout.getLayoutParams().width; int scrHeight =
-	 * chartLayout.getLayoutParams().height; RelativeLayout.LayoutParams
-	 * layoutParams = new RelativeLayout.LayoutParams( scrWidth, scrHeight); //
-	 * 居中显示 layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT); mLineChart =
-	 * new ProviderIncomeChartView(getActivity());
-	 * chartLayout.addView(mLineChart, layoutParams); }
-	 */
 }

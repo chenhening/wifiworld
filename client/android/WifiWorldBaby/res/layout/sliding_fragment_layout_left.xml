@@ -2,16 +2,16 @@
 <com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back1" >
+    android:background="@drawable/crystal_uncollected_ring" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/ll_two_chart"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_alignParentTop="true" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/wifi_account_desc"
             android:layout_width="96dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="410dp"
         android:layout_above="@+id/linearLayout2"
-        android:layout_below="@+id/linearLayout1"
+        android:layout_below="@+id/ll_two_chart"
         android:layout_marginTop="2dp" >
 
         <com.skyfishjy.library.RippleBackground
@@ -88,7 +88,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bisque"
+            android:background="@color/bottom_text_color_normal"
             android:text="当前WiFi网络实时在线统计，方位信息是通过用户的位置定位模拟出来，可能有一定的误差。您可以根据实际情况实时的关闭您提供的网络，并且有权将在线用户踢出下线。" />
 
     </LinearLayout>
