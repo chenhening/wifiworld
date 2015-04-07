@@ -52,17 +52,6 @@ public class WifiDetailsActivity extends Activity {
 			logo.setImageBitmap(wifiSelected.getWifiLogo());
 		}
 		
-		//添加动态信息
-		ListView listview = (ListView) findViewById(R.id.lv_provider_new_info);
-		List<String> data = new ArrayList<String>();
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		data.add("重要通知，今天晚上8点左右开放wifi，请需要网络的准时等候，谢谢。");
-		listview.setAdapter(new ArrayAdapter<String>(this, R.layout.list_view_item, data));
 		//添加评论信息
 		ListView listview1 = (ListView) findViewById(R.id.wifi_list_comments);
 		List<String> data1 = new ArrayList<String>();
