@@ -214,15 +214,15 @@ public class MeFragment extends MainFragment {
 			}
 		});
 		
-		this.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
-
-			@Override
-            public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
-				startActivity(i);
-            }
-			
-		});
+//		this.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//            public void onClick(View v) {
+//				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+//				startActivity(i);
+//            }
+//			
+//		});
 		return mPageRoot;
 	}
 
