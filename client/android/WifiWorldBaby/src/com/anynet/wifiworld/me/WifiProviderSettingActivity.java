@@ -14,6 +14,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
+import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderSettingActivity extends BaseActivity {
@@ -45,7 +46,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		bingdingTitleUI();
 		
 		//取消wifi
-		this.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
+		this.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -65,7 +66,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 					.show();
 			}
 		});
-		this.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
+		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -83,6 +84,15 @@ public class WifiProviderSettingActivity extends BaseActivity {
 					})  
 					.setNegativeButton("取消", null)
 					.show();
+			}
+		});
+		
+		this.findViewById(R.id.slv_my_knock_setting).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(), KnockTopActivity.class);
+				startActivity(i);
 			}
 		});
 		
