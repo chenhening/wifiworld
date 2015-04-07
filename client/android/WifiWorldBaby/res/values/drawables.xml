@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="action_bar_bg">#ff322a34</item>
+    <item type="drawable" name="action_divider_line">#ff372f38</item>
+    <item type="drawable" name="action_menu_press_bg">#cccccccc</item>
+    <item type="drawable" name="btn_flat_green_pressed">#ff5fa944</item>
+    <item type="drawable" name="btn_gray_bg">#ffe6e6e6</item>
+    <item type="drawable" name="chat_input_panel_divider">#ffb8b8b8</item>
+    <item type="drawable" name="custom_menu_press_bg">#ff90d7ec</item>
+    <item type="drawable" name="date_color">#ffc5cbd1</item>
+    <item type="drawable" name="default_divider">#ffd9d9d9</item>
+    <item type="drawable" name="drawable_gray_bg">#ffd9d9d9</item>
+    <item type="drawable" name="indicator_color">#ffffffff</item>
+    <item type="drawable" name="item_color">#ff333333</item>
+    <item type="drawable" name="mini_list_devider">#ffbababa</item>
+    <item type="drawable" name="mini_page_bg_color">#ffededed</item>
+    <item type="drawable" name="mini_web_back_text_default">#ff333333</item>
+    <item type="drawable" name="mini_web_back_text_press">#ffcccccc</item>
+    <item type="drawable" name="mini_win_background_draw">#00000000</item>
+    <item type="drawable" name="navigator_background_default">#ff372f38</item>
+    <item type="drawable" name="navigator_horizonal_divider">#ff372f38</item>
+    <item type="drawable" name="navigator_vertical_divider">#ff372f38</item>
+    <item type="drawable" name="pubaccount_detail_page_divider">#ffd9d9d9</item>
+    <item type="drawable" name="v3_tab_bg">#ff322a34</item>
+</resources>
