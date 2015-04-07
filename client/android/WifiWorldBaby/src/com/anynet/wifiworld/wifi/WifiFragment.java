@@ -19,6 +19,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -30,9 +31,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -51,6 +55,7 @@ public class WifiFragment extends MainFragment {
 	
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
+	private ToggleButton mWifiSwitch;
 	private LinearLayout mWifiSquareLayout;
 	private PopupWindow mPopupWindow;
 	
@@ -91,13 +96,6 @@ public class WifiFragment extends MainFragment {
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			mWifiMonitorService = ((WifiStatusReceiver.WifiMonitorService.WifiStatusBinder)service).getService();
 			mWifiMonitorService.setOnWifiStatusListener(new OnWifiStatusListener() {
-				
-				@Override
-				public void onChanged(String str) {
-					mWifiNameView.setText(str);
-					mWifiNameView.setTextColor(Color.BLACK);
-					mWifiListHelper.fillWifiList();
-				}
 
 				@Override
 				public void onWifiStatChanged(boolean isEnabled) {
@@ -118,6 +116,20 @@ public class WifiFragment extends MainFragment {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
 					}
+					
+				}
+
+				@Override
+				public void onNetWorkChanged(String str) {
+					mWifiNameView.setText(str);
+					mWifiNameView.setTextColor(Color.BLACK);
+					mWifiListHelper.fillWifiList();
+				}
+
+				@Override
+				public void onSupplicantChanged(String str) {
+					mWifiNameView.setText(str);
+					mWifiNameView.setTextColor(Color.BLACK);
 					
 				}
 			});
@@ -171,6 +183,7 @@ public class WifiFragment extends MainFragment {
 //		mWifiFree = mWifiListHelper.getWifiFrees();
 //		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 //		updateWifiConMore(mWifiNameView);
+		
 		if (mWifiAdmin.getWifiNameConnection() != "") {
 			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
 			mWifiNameView.setTextColor(Color.BLACK);
@@ -202,6 +215,19 @@ public class WifiFragment extends MainFragment {
 			@Override
 			public void onClick(View view) {
 				mWifiAdmin.openWifi();
+			}
+		});
+		
+		mWifiSwitch = (ToggleButton) mPageRoot.findViewById(R.id.wifi_control_toggle);
+		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
+				if (!isChecked) {
+					WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
+					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+				}
+				
 			}
 		});
 		
@@ -320,11 +346,16 @@ public class WifiFragment extends MainFragment {
 	private void displayWifiSquare() {
 		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
 		if (!wifiConnected.getSSID().equals("")) {
+			mWifiSwitch.setVisibility(View.VISIBLE);
+			mWifiSwitch.setChecked(true);
+			
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 			if (mWifiInfo == null || !mWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
 				WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiConnected);
 			}
 		} else {
+			mWifiSwitch.setVisibility(View.GONE);
+			mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		

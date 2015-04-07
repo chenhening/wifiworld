@@ -161,6 +161,7 @@ public class WifiListHelper {
 		String wifiPwd;
 		String wifiType;
 		String wifiMAC;
+		String wifiRemark = "";
 		Integer wifiStrength;
 		BmobGeoPoint wifiGeometry;
 		WifiInfoScanned wifiInfoScanned;
@@ -173,8 +174,9 @@ public class WifiListHelper {
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
 			wifiPwd = null;
+			wifiRemark = "当前连接WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
-					wifiStrength, wifiGeometry, "当前连接WiFi");
+					wifiStrength, wifiGeometry, wifiRemark);
 			return;
 		}
 		
@@ -188,11 +190,12 @@ public class WifiListHelper {
 				wifiPwd = objects.get(idx).Password;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
-						wifiType, wifiStrength, null, "已认证");
+				wifiRemark = "已认证";
 				if (wifiCfg != null) {
-					wifiInfoScanned.setRemark(wifiInfoScanned.getRemark() + ", 本地已保存");
+					wifiRemark += ", 本地已保存";
 				}
+				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
+						wifiType, wifiStrength, null, wifiRemark);
 				mWifiFree.add(wifiInfoScanned);
 				return;
 			}
@@ -205,8 +208,12 @@ public class WifiListHelper {
 			wifiMAC = hotspot.BSSID;
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
+			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+				wifiRemark = "无密码, ";
+			}
+			wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
-					wifiStrength, wifiGeometry, "本地已保存");
+					wifiStrength, wifiGeometry, wifiRemark);
 			mWifiFree.add(wifiInfoScanned);
 		} else {
 			//Check whether is a open WiFi
@@ -216,8 +223,9 @@ public class WifiListHelper {
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
 			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+				wifiRemark = "无密码";
 				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
-						wifiGeometry, "无密码");
+						wifiGeometry, wifiRemark);
 				mWifiFree.add(wifiInfoScanned);
 			} else {
 				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
