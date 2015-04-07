@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+
 public class KnockTopActivity extends BaseActivity {
 
 	private void bingdingTitleUI() {
