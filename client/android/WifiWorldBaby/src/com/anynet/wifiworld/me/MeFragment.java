@@ -24,6 +24,7 @@ import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
@@ -170,6 +171,19 @@ public class MeFragment extends MainFragment {
 			}
 		});
 
+		mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (!checkIsLogined()) {
+					return;
+				}
+				Intent i = new Intent(getApplicationContext(), KnockTopActivity.class);
+				startActivity(i);
+			}
+		});
+		
 		mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
 
 			@Override

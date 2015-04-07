@@ -21,6 +21,7 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.os.Handler;
 import android.util.Log;
 
@@ -36,6 +37,7 @@ public class WifiListHelper {
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private List<String> mWifiListUnique;
 	public List<WifiProfile> mWifiProfiles;
+	public WifiInfoScanned mWifiInfoCur; 
 	
 	private final String WIFI_LIST_FILE_NAME = "wifi_list_file.txt";
 
@@ -93,6 +95,9 @@ public class WifiListHelper {
 		for (ScanResult scanResult : wifiList) {
 			macAddresses.add(scanResult.BSSID);
 		}
+		
+		final WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
+		
 		WifiProfile wifiProfile = new WifiProfile();
 		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, new MultiDataCallback<WifiProfile>() {
 			
@@ -105,23 +110,24 @@ public class WifiListHelper {
 				for (ScanResult hotspot : wifiList) {
 					//Check whether WiFi is stored local
 					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-					int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
-					if (idx != -1) {
-						Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
-						final String wifiName = hotspot.SSID;
-						final String wifiMac = hotspot.BSSID;
-						final String wifiPwd = objects.get(idx).Password;
-						final String wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
-						final Integer wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-						final WifiInfoScanned wifiSharedTmp = new WifiInfoScanned(wifiName, wifiMac, wifiPwd, 
-								wifiType, wifiStrength, null, "已认证");
-						if (wifiCfg != null) {
-							wifiSharedTmp.setRemark(wifiSharedTmp.getRemark() + ", 本地已保存");
-						}
-						mWifiFree.add(wifiSharedTmp);
-					} else {
-						refreashList(wifiCfg, hotspot);
-					}
+//					int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+//					if (idx != -1) {
+//						Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
+//						final String wifiName = hotspot.SSID;
+//						final String wifiMac = hotspot.BSSID;
+//						final String wifiPwd = objects.get(idx).Password;
+//						final String wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+//						final Integer wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+//						final WifiInfoScanned wifiSharedTmp = new WifiInfoScanned(wifiName, wifiMac, wifiPwd, 
+//								wifiType, wifiStrength, null, "已认证");
+//						if (wifiCfg != null) {
+//							wifiSharedTmp.setRemark(wifiSharedTmp.getRemark() + ", 本地已保存");
+//						}
+//						mWifiFree.add(wifiSharedTmp);
+//					} else {
+//						refreashList(wifiCfg, hotspot, wifiInfo);
+//					}
+					refreashList(wifiCfg, hotspot, wifiInfo, objects);
 				}
 				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
@@ -134,7 +140,7 @@ public class WifiListHelper {
 				for (ScanResult hotspot : wifiList) {
 					//Check whether WiFi is stored local
 					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-					refreashList(wifiCfg, hotspot);
+					refreashList(wifiCfg, hotspot, wifiInfo, null);
 				}
 				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
@@ -150,7 +156,7 @@ public class WifiListHelper {
 		//writeFile();
 	}
 	
-	private void refreashList(WifiConfiguration wifiCfg, ScanResult hotspot) {
+	private void refreashList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
 		String wifiName;
 		String wifiPwd;
 		String wifiType;
@@ -158,6 +164,39 @@ public class WifiListHelper {
 		Integer wifiStrength;
 		BmobGeoPoint wifiGeometry;
 		WifiInfoScanned wifiInfoScanned;
+		
+		if (wifiInfo != null &&  wifiInfo.getSSID().equals(WifiAdmin.convertToQuotedString(hotspot.SSID))) {
+			Log.i(TAG, hotspot.SSID + " is the current connected wifi");
+			wifiName = hotspot.SSID;
+			wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+			wifiMAC = hotspot.BSSID;
+			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
+			wifiPwd = null;
+			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
+					wifiStrength, wifiGeometry, "当前连接WiFi");
+			return;
+		}
+		
+		if (objects != null) {
+			Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
+			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+			if (idx != -1) {
+				Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
+				wifiName = hotspot.SSID;
+				wifiMAC = hotspot.BSSID;
+				wifiPwd = objects.get(idx).Password;
+				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
+				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
+				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
+						wifiType, wifiStrength, null, "已认证");
+				if (wifiCfg != null) {
+					wifiInfoScanned.setRemark(wifiInfoScanned.getRemark() + ", 本地已保存");
+				}
+				mWifiFree.add(wifiInfoScanned);
+				return;
+			}
+		}
 		
 		if (wifiCfg != null) {
 			wifiName = hotspot.SSID;

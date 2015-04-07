@@ -6,6 +6,7 @@
     <color name="header_bg">#CA2525</color>
     <color name="transparent">#00000000</color>
     <!-- 主框架 -->
+    <color name="body_background">#fff3f3f3</color>
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="common_bottom_bar_normal_bg">#00FFFFFF</color>
     <color name="common_bottom_bar_selected_bg">#858585</color>
@@ -394,10 +395,17 @@
     <color name="sliding_menu_item_release">#00000000</color>
     <color name="sliding_menu_background">#ff2c2c2e</color>
     <color name="sliding_menu_body_background">#fff5f5f5</color>
-    
     <color name="title_text">#6396f7</color>
     <color name="buttons_view_bk">@android:color/transparent</color>
     <color name="content_bk">@android:color/transparent</color>
-    
     <color name="rippelColor">#0099CC</color>
+    <color name="setting_text_color">#ff000000</color>
+    <color name="settings_gray_item">#ff999999</color>
+    <color name="settings_gray_title">#ffbbbbbb</color>
+    <color name="color_question_request_selected">#ffffffff</color>
+    <color name="color_question_request_unselected">#ff868686</color>
+    <color name="color_question_category">#ffffaa00</color>
+    <color name="color_question_category_selected">#ffffaa00</color>
+    <color name="color_question_category_text">#ff999999</color>
+
 </resources>

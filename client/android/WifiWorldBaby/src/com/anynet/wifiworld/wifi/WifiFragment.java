@@ -68,10 +68,10 @@ public class WifiFragment extends MainFragment {
 					if (value == ((MainActivity)getActivity()).UPDATE_WIFI_LIST) {
 						mWifiFree = mWifiListHelper.getWifiFrees();
 						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-						updateWifiConMore(mWifiNameView);
 						if (mWifiListAdapter != null) {
 							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 						}
+						displayWifiSquare();
 					}
 					super.handleMessage(msg);
 				}
@@ -317,18 +317,14 @@ public class WifiFragment extends MainFragment {
 		}
 	};
 	
-	private void updateWifiConMore(TextView wifiNameView) {
+	private void displayWifiSquare() {
 		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
 		if (!wifiConnected.getSSID().equals("")) {
-//			wifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(wifiConnected.getSSID()));
-//			wifiNameView.setTextColor(Color.BLACK);
-			WifiAdmin.mWifiConnection = mWifiListHelper.rmWifiConnected(WifiAdmin.convertToNonQuotedString(wifiConnected.getSSID()));
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 			if (mWifiInfo == null || !mWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
 				WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiConnected);
 			}
 		} else {
-//			wifiNameView.setText("未连接任何Wifi");
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		

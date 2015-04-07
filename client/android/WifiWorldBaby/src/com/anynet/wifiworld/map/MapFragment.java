@@ -165,10 +165,10 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		aMap.setOnMapClickListener(this);
 		aMap.setOnMarkerClickListener(this);
 		aMap.setOnInfoWindowClickListener(this);
-		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式  
-		aMap.setOnMapClickListener(this);  
-//        centerMarker.setAnimationListener(this);  
-//        locate.setOnClickListener(this);  
+		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
+		aMap.setOnMapClickListener(this);
+		// centerMarker.setAnimationListener(this);
+		// locate.setOnClickListener(this);
 	}
 
 	@Override
@@ -305,9 +305,11 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	public boolean onMarkerClick(Marker marker) {
 		// TODO Auto-generated method stub
-		currentMarker = marker;  
-        Log.e("marker",  "marker: " + marker.getPosition().latitude+" ： "+marker);  
-        marker.showInfoWindow();
+		currentMarker = marker;
+		WifiProfile mWP = (WifiProfile) marker.getObject();
+		if (mWP != null)
+			Log.e("marker", "Maker WifiProfile:" + mWP.toString());
+		marker.showInfoWindow();
 		return false;
 	}
 
@@ -316,8 +318,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	public void onInfoWindowClick(Marker marker) {
 		// TODO Auto-generated method stub
-		Log.e("marker",  
-                "onInfoWindowClick: " + marker.getId());
+		Log.e("marker", "onInfoWindowClick: " + marker.getId());
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -325,8 +326,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	public View getInfoContents(Marker marker) {
 		// TODO Auto-generated method stub
-		Log.e("marker",  
-                "getInfoContents: " + marker.getId());  
+		Log.e("marker", "getInfoContents: " + marker.getId());
 		return null;
 	}
 
@@ -355,7 +355,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		wifiNameExtTV.setText(mWP.ExtAddress);
 		winExtTV.setText("测试中……………………");
 		infoWindow.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -365,7 +365,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				List<WifiInfoScanned> list = mWifiListHelper.getWifiFrees();
 				list.addAll(mWifiListHelper.getWifiEncrypts());
 				for (WifiInfoScanned wifiInfoScanned : list) {
-					if(wifiInfoScanned.getWifiMAC().equals(mWP.MacAddr)){
+					if (wifiInfoScanned.getWifiMAC().equals(mWP.MacAddr)) {
 						WifiHandleDB.getInstance(getActivity()).queryWifiProfile(wifiInfoScanned);
 						wifiData.putSerializable("WifiSelected", wifiInfoScanned);
 						intent.putExtras(wifiData);
