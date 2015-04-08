@@ -3,11 +3,11 @@
     android:id="@+id/wifi_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:layout_gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="6dp"
     android:paddingLeft="9dip"
-    android:paddingTop="9dip"
-    android:paddingBottom="9dip" >
+    android:paddingTop="6dp" >
         
 	<ImageView
 	    android:id="@+id/wifi_icon"

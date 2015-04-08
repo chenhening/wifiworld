@@ -43,7 +43,7 @@
         <LinearLayout
             android:id="@+id/wifi_connected_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="148dp"
             android:layout_gravity="center"
             android:orientation="horizontal" >
 
@@ -51,6 +51,7 @@
                 android:id="@+id/wifi_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_gravity="center"
                 android:layout_margin="10dip"
                 android:background="@drawable/id_default"
                 android:contentDescription="@string/wifi_icon" />
