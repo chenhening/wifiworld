@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include layout="@layout/wifi_details_header" />
+    <include layout="@layout/header_setting" />
 
     <LinearLayout
         android:id="@+id/wifi_account_info"
@@ -288,7 +288,7 @@
                     android:layout_weight="1"
                     android:background="@color/color_gray_white"
                     android:gravity="center"
-                    android:text="联系主人" />
+                    android:text="关注WiFi" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

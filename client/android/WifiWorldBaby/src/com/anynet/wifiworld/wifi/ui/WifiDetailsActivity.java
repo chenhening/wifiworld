@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.app.Activity;
@@ -16,20 +17,29 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class WifiDetailsActivity extends Activity {
+public class WifiDetailsActivity extends BaseActivity {
 
+	private void bingdingTitleUI() {
+		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
+		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		//mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
+		mTitlebar.tvTitle.setText(getString(R.string.my));
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setContentView(R.layout.activity_wifi_details);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.wifi_details_activity);
+		bingdingTitleUI();
 		//Get intent data
 		Intent intent = getIntent();
 		WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
-		TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
-		detailsTitle.setText(wifiSelected.getWifiName());
-		ImageView backView = (ImageView)findViewById(R.id.iv_setting_header_left);
-		backView.setOnClickListener(new OnClickListener() {
+		//TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
+		mTitlebar.tvTitle.setText(wifiSelected.getWifiName());
+		//ImageView backView = (ImageView)findViewById(R.id.iv_setting_header_left);
+		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
