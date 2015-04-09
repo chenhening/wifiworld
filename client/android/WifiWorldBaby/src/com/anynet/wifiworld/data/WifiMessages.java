@@ -1,9 +1,6 @@
 package com.anynet.wifiworld.data;
 
-import java.sql.Time;
-
 import android.content.Context;
-
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.listener.SaveListener;
 

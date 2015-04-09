@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiWhiteBlacklist;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.app.Activity;
@@ -36,7 +38,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		bingdingTitleUI();
 		//Get intent data
 		Intent intent = getIntent();
-		WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
+		final WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
 		//TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
 		mTitlebar.tvTitle.setText(wifiSelected.getWifiName());
@@ -75,6 +77,39 @@ public class WifiDetailsActivity extends BaseActivity {
 		data1.add("能不能早点开放给我们用啊啊啊。");
 		data1.add("怎么办。");
 		listview1.setAdapter(new ArrayAdapter<String>(this, R.layout.list_view_item, data1));
+		
+		//添加关注
+		this.findViewById(R.id.wifi_watch).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+					showToast("需要登录后才能操作。");
+					return;
+				}
+				WifiWhiteBlacklist list = new WifiWhiteBlacklist();
+				list.Userid = LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber;
+				list.MacAddr = wifiSelected.getWifiMAC();
+				list.BeLove = true;
+			}
+			
+		});
+		
+		this.findViewById(R.id.wifi_report).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+					showToast("需要登录后才能操作。");
+					return;
+				}
+				WifiWhiteBlacklist list = new WifiWhiteBlacklist();
+				list.Userid = LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber;
+				list.MacAddr = wifiSelected.getWifiMAC();
+				list.BeLove = false;
+			}
+			
+		});
 	}
 
 	@Override
