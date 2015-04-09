@@ -23,7 +23,7 @@
             <RelativeLayout
                 android:id="@+id/login_content_layout"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/dimen_100_dip"
+                android:layout_height="@dimen/dimen_120_dip"
                 android:background="@drawable/bg_person_center" 
                 android:visibility="visible">
 
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dimen_15_dip"
-                    android:text="新用户注册即送10联币大礼包"
+                    android:text="新用户注册即送大礼包"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_main_big" />
 
@@ -174,7 +174,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_person_cener_item"
                 android:orientation="horizontal"
-                android:padding="10.0dip" >
+                android:padding="10.0dip"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/get_coin_txt"
@@ -226,9 +227,9 @@
                 android:visibility="visible" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_change_provider_info"
+                    android:id="@+id/slv_i_am_wifi_provider"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_provider"
                     item:subLabel="内测中"
@@ -236,18 +237,18 @@
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_cancle_provider_info"
+                    android:id="@+id/slv_iam_wifi_user"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_attention_shopper"
-                    item:label="@string/person_center_attention_shopper"
+                    item:label="我用过的Wi-Fi"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/cl_iam_wifi_user"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     android:visibility="gone"
                     item:icon="@drawable/icon_person_center_shopper"
                     item:label="@string/str_iam_wifi_user"
@@ -267,7 +268,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/message_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="@string/person_center_message"
                     item:showTopDivider="true" >
@@ -276,7 +277,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_my_setting"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="@string/person_my_setting"
                     item:showTopDivider="true" >
@@ -285,7 +286,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/setiing_share_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_share"
                     item:label="邀请好友"
                     item:subLabel="奖联币"
@@ -304,14 +305,14 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/wifi_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_hotsite_backup"
                     item:label="@string/person_center_wifi" />
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/seller_hot_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_visit_shop"
                     item:label="@string/person_center_seller_hotwifi"
                     item:showTopDivider="true" />
@@ -319,7 +320,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/wfi_master_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_wifi_master"
                     item:label="@string/person_center_wifi_master"
                     item:showTopDivider="true" />
@@ -335,7 +336,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/attention_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_attention"
                     item:label="@string/person_center_attention"
                     item:showTopDivider="true" />
@@ -343,7 +344,8 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/fensi_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    android:visibility="gone"
                     item:icon="@drawable/icon_person_center_fans"
                     item:label="@string/person_center_fensi"
                     item:showTopDivider="true" />
@@ -351,7 +353,7 @@
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/blacklist_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
+                    android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/ic_person_blacklist"
                     item:label="@string/person_center_blacklist"
                     item:showTopDivider="true" />

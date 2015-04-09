@@ -2,8 +2,10 @@ package com.anynet.wifiworld.me;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
@@ -94,7 +97,7 @@ public class MeFragment extends MainFragment {
 			}
 		});
 
-		mPageRoot.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -116,9 +119,19 @@ public class MeFragment extends MainFragment {
 							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 							startActivity(i);
 						} else {
-							mLoginHelper.mWifiProfile = new WifiProfile();
-							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
-							startActivity(i);
+							new AlertDialog.Builder(getActivity())
+							.setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")  
+							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+			
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									mLoginHelper.mWifiProfile = new WifiProfile();
+									Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+									startActivity(i);
+								}					
+							})  
+							.setNegativeButton("取消", null)
+							.show();
 						}
 					}
 
@@ -130,6 +143,21 @@ public class MeFragment extends MainFragment {
 				});
 			}
 		});
+		
+		mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				// 查询是否登录
+				if (!checkIsLogined()) {
+					return;
+				}
+				Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
+				startActivity(i); 
+            }
+			
+		});
+		
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -139,19 +167,6 @@ public class MeFragment extends MainFragment {
 					return;
 				}
 				Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
-				startActivity(i);
-			}
-		});
-
-		mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (!checkIsLogined()) {
-					return;
-				}
-				Intent i = new Intent(getApplicationContext(), KnockTopActivity.class);
 				startActivity(i);
 			}
 		});
@@ -214,15 +229,14 @@ public class MeFragment extends MainFragment {
 			}
 		});
 		
-//		this.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//            public void onClick(View v) {
-//				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
-//				startActivity(i);
-//            }
-//			
-//		});
+		this.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+				startActivity(i);
+			}
+		});
 		return mPageRoot;
 	}
 

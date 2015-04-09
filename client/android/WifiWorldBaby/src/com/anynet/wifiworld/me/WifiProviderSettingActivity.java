@@ -14,6 +14,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
+import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderSettingActivity extends BaseActivity {
@@ -50,7 +51,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 			@Override
 			public void onClick(View arg0) {
 				new AlertDialog.Builder(activity)
-					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")   
 					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
 						@Override
@@ -70,7 +71,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 			@Override
 			public void onClick(View arg0) {
 				new AlertDialog.Builder(activity)
-					.setTitle("解绑WiFi").setMessage("确定解绑此WiFi?")  
+					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")  
 					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 	
 						@Override
@@ -83,6 +84,15 @@ public class WifiProviderSettingActivity extends BaseActivity {
 					})  
 					.setNegativeButton("取消", null)
 					.show();
+			}
+		});
+		
+		this.findViewById(R.id.slv_my_knock_setting).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(), KnockTopActivity.class);
+				startActivity(i);
 			}
 		});
 		

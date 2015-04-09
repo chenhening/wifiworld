@@ -50,7 +50,7 @@
     <string name="person_my_setting">我的设置</string>
     <string name="person_center_attention">我的关注</string>
     <string name="person_center_fensi">我的粉丝</string>
-    <string name="person_center_blacklist">黑名单</string>
+    <string name="person_center_blacklist">我的黑名单</string>
     <string name="person_center_seller_hotwifi">访问过的热点</string>
     <string name="person_center_wifi_master">我抢到的WiFi</string>
     <string name="person_center_wifi">Wi-Fi云备份</string>

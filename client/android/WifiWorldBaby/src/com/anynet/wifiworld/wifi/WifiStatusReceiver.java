@@ -47,11 +47,13 @@ public class WifiStatusReceiver {
 		        		boolean isConnected = state==State.CONNECTED;
 		        		if(isConnected){
 		        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
-		        			if (onWifiStatusListener != null) {
-				            	onWifiStatusListener.onChanged(statusStr);
-		        			}
-		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
-		        		}
+		        		} else {
+		        			statusStr = "已断开连接";
+						}
+		        		if (onWifiStatusListener != null) {
+			            	onWifiStatusListener.onNetWorkChanged(statusStr);
+	        			}
+	        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 		        	}
 		        }
 		        if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
@@ -95,7 +97,7 @@ public class WifiStatusReceiver {
 		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            }
 		            if (onWifiStatusListener != null) {
-		            	onWifiStatusListener.onChanged(statusStr);
+		            	onWifiStatusListener.onSupplicantChanged(statusStr);
 					}
 		            //Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 		        }
@@ -161,7 +163,8 @@ public class WifiStatusReceiver {
 	}
 	
 	public interface OnWifiStatusListener {
-		void onChanged(String str);
+		void onNetWorkChanged(String str);
+		void onSupplicantChanged(String str);
 		void onWifiStatChanged(boolean isEnabled);
 	}
 }

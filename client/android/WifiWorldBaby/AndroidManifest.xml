@@ -44,7 +44,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="26c4d1b29815fd60ed83ff6095da2714" />
+            android:value="39192cd2a95f37f072fa829b8349e753" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5516ac08fd98c5df10000053" >
@@ -63,6 +63,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.me.WifiUsedListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.anynet.wifiworld.me.MySettingActivity"

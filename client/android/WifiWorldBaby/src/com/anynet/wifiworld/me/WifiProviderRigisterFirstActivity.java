@@ -176,7 +176,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 						boolean result = mWifiHelper.getWifiAdmin().checkWifiPwd(password);
 						if (!result) {
 							showToast("您输入的WiFi密码验证不通过，请重新输入");
-							return;
+							//return;
 						}
 						//然后查询数据库此wifi是否被占用
 						mWifiProfile.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr,
