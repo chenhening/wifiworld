@@ -12,7 +12,7 @@ public class SetupFragmentBean {
 	private String attachMedia;
 	private String OKAnswer;
 	private List<String> ErrorAnswer = new ArrayList<String>();
-	
+
 	public String getQuestionStr() {
 		return questionStr;
 	}
@@ -60,6 +60,5 @@ public class SetupFragmentBean {
 	public void setErrorAnswer(List<String> errorAnswer) {
 		ErrorAnswer = errorAnswer;
 	}
-
 
 }

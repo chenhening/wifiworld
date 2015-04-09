@@ -119,13 +119,13 @@
                 android:visibility="invisible" />-->
 			
 			<LinearLayout
-                    android:id="@+id/button_sms"
-                    android:layout_width="0.0dip"
-	                android:layout_height="@dimen/dimen_40_dip"
-	                android:layout_weight="2.0"                    
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/sl_green_button"
-                    android:gravity="center_vertical" >
+			    android:id="@+id/button_sms"
+			    android:layout_width="0.0dip"
+			    android:layout_height="@dimen/dimen_40_dip"
+			    android:layout_gravity="center_vertical"
+			    android:layout_weight="2.0"
+			    android:background="@drawable/umeng_common_gradient_orange"
+			    android:gravity="center_vertical" >
 
                     <TextView
                         android:id="@+id/tv_button_sms"
@@ -199,6 +199,7 @@
         android:layout_marginLeft="@dimen/dimen_9_dip"
         android:layout_marginRight="@dimen/dimen_9_dip"
         android:layout_marginTop="@dimen/dimen_18_dip"
+        android:background="@drawable/umeng_common_gradient_orange"
         android:text="@string/user_login_btn_title"
         android:textSize="@dimen/font_main_title" />
 

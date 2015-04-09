@@ -69,7 +69,7 @@
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/SettingItemView01"
+                    android:id="@+id/slv_age"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/icon_person_center_msg"
