@@ -3,6 +3,7 @@ package com.anynet.wifiworld.knock;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
@@ -41,58 +42,127 @@ public class KnockStepFirstActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setText(getString(R.string.my));
 
 	}
 
 	public void next() {
-		if(currentIndex==2)currentIndex=2;
-		if(currentIndex==1)currentIndex=2;
-		if(currentIndex==0)currentIndex=1;
+		if (currentIndex == 2)
+			currentIndex = 2;
+		if (currentIndex == 1)
+			currentIndex = 2;
+		if (currentIndex == 0)
+			currentIndex = 1;
 		reflesh();
 	}
 
 	public void pre() {
-		if(currentIndex==0)currentIndex=0;
-		if(currentIndex==1)currentIndex=0;
-		if(currentIndex==2)currentIndex=1;
+		if (currentIndex == 0)
+			currentIndex = 0;
+		if (currentIndex == 1)
+			currentIndex = 0;
+		if (currentIndex == 2)
+			currentIndex = 1;
 		reflesh();
 	}
 
+	private void save() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	private void reflesh() {
-			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-			if(currentIndex == 0){
-				trx.hide(mSetupFragment[1]);
-			}else if(currentIndex == 1){
-				trx.hide(mSetupFragment[0]);
-				trx.hide(mSetupFragment[2]);
-			}else{
-				trx.hide(mSetupFragment[1]);
-			}
+		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+		if (currentIndex == 0) {
+			trx.hide(mSetupFragment[1]);
+			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+			mTitlebar.tvHeaderLeft.setVisibility(View.INVISIBLE);
+			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
-			if (!mSetupFragment[currentIndex].isAdded()) {
-				trx.add(R.id.fragment_container, mSetupFragment[currentIndex]);
-			}
-			// fragments[index].onResume();
-			trx.show(mSetupFragment[currentIndex]).commit();
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					finish();
+				}
+			});
+			mTitlebar.tvHeaderRight.setText(R.string.next_step);
+			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
-			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
-			if (NetHelper.isNetworkAvailable(getApplicationContext())) {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					next();
+				}
+			});
+		} else if (currentIndex == 1) {
+			trx.hide(mSetupFragment[0]);
+			trx.hide(mSetupFragment[2]);
+			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+			mTitlebar.tvHeaderLeft.setVisibility(View.VISIBLE);
+			mTitlebar.tvHeaderLeft.setOnClickListener(new OnClickListener() {
 
-				for (int i = 0; i < mSetupFragment.length; i++) {
-					if (i == currentIndex) {
-						mSetupFragment[i].startUpdte();
-					} else {
-						mSetupFragment[i].stopUpdte();
-					}
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					pre();
+				}
+			});
+			mTitlebar.tvHeaderRight.setText(R.string.next_step);
+			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					save();
+				}
+
+
+			});
+		} else {
+			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+			mTitlebar.tvHeaderLeft.setVisibility(View.VISIBLE);
+			mTitlebar.tvHeaderLeft.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					pre();
+				}
+			});
+			mTitlebar.tvHeaderRight.setText(R.string.next_step);
+			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					next();
+				}
+			});
+			trx.hide(mSetupFragment[1]);
+		}
+
+		if (!mSetupFragment[currentIndex].isAdded()) {
+			trx.add(R.id.fragment_container, mSetupFragment[currentIndex]);
+		}
+		// fragments[index].onResume();
+		trx.show(mSetupFragment[currentIndex]).commit();
+
+		// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
+		if (NetHelper.isNetworkAvailable(getApplicationContext())) {
+
+			for (int i = 0; i < mSetupFragment.length; i++) {
+				if (i == currentIndex) {
+					mSetupFragment[i].startUpdte();
+				} else {
+					mSetupFragment[i].stopUpdte();
 				}
 			}
-//			mSetupFragment[currentIndex].setSelected(false);
-//		// 把当前tab设为选中状态
-//			mSetupFragment[currentIndex].setSelected(true);
+		}
+		// mSetupFragment[currentIndex].setSelected(false);
+		// // 把当前tab设为选中状态
+		// mSetupFragment[currentIndex].setSelected(true);
 	}
 
 	@Override
