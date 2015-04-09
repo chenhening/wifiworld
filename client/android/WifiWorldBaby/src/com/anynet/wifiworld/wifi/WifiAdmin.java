@@ -356,7 +356,7 @@ public class WifiAdmin {
 				return false;
 			}
 			
-			if(!mWifiManager.enableNetwork(config.networkId, true)) {
+			if(!mWifiManager.enableNetwork(config.networkId, false)) {
 				Log.e(TAG, "Failed to enable current network");
 				return false;
 			}
