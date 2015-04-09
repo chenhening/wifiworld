@@ -187,6 +187,30 @@ public class WifiHandleDB {
 		});
 	}
 	
+	public void queryWifiDynamic4Display(final WifiInfoScanned infoScanned) {
+		WifiDynamic wifiDynamic = new WifiDynamic();
+		wifiDynamic.QueryConnectedTimes(mContext, infoScanned.getWifiMAC(), new DataCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long object) {
+				Log.i(TAG, "Success to query wifi dynamic from server:" + infoScanned.getWifiMAC());
+				Message msg = new Message();
+				msg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				Log.i(TAG, "wifi connect count:" + object);
+				infoScanned.setConnectedTimes(object);
+				Log.i(TAG, "wifi connect count:" + infoScanned.getConnectedTimes());
+				msg.obj = infoScanned;
+				mHandler.sendMessage(msg);
+			}
+
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi dynamic from server" + infoScanned.getWifiMAC());
+				
+			}
+		});
+	}
+	
 	public void updateWifiDynamic(WifiInfo wifiInfo) {
 		mWifiDynamic = new WifiDynamic();
 		mWifiDynamic.MacAddr = wifiInfo.getBSSID();

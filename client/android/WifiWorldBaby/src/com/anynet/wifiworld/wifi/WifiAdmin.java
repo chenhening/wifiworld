@@ -356,12 +356,12 @@ public class WifiAdmin {
 				return false;
 			}
 			
-			if(!mWifiManager.enableNetwork(config.networkId, true)) {
+			if(!mWifiManager.enableNetwork(config.networkId, false)) {
 				Log.e(TAG, "Failed to enable current network");
 				return false;
 			}
 			
-			return mWifiManager.reassociate();
+			return mWifiManager.reconnect();
 		} else {
 			Log.e(TAG, "Not connect to any wifi");
 			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();
@@ -449,7 +449,6 @@ public class WifiAdmin {
     
     public List<ScanResult> scanWifi() {
     	Log.i(TAG, "start to scan wifi nearby");
-    	
     	//may need some time to open WiFi
     	while (this.mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
     		try {
@@ -461,7 +460,6 @@ public class WifiAdmin {
         }
         mWifiManager.startScan();
         List<ScanResult> scanResults = mWifiManager.getScanResults();
-        Log.i(TAG, "start to scan wifi nearby:" + scanResults.size());
         return filterWifiScanned(scanResults);
     }
     

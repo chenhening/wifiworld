@@ -9,6 +9,8 @@ import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,7 +61,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		//Set WiFi logo image
 		if (wifiSelected.getWifiLogo() != null) {
 			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
-			logo.setImageBitmap(wifiSelected.getWifiLogo());
+			logo.setImageBitmap(byte2Bitmap(wifiSelected.getWifiLogo()));
 		}
 		
 		//添加评论信息
@@ -91,6 +93,13 @@ public class WifiDetailsActivity extends BaseActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+	}
+	
+	private Bitmap byte2Bitmap(byte[] b) {
+		if (b.length != 0) {
+			return BitmapFactory.decodeByteArray(b,  0, b.length);
+		}
+		return null;
 	}
 
 }

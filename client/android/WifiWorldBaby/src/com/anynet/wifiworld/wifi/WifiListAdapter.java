@@ -1,13 +1,18 @@
 package com.anynet.wifiworld.wifi;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,32 +37,36 @@ public class WifiListAdapter extends BaseAdapter {
 	private Context mContext;
 	private WifiHandleDB mWifiHandleDB;
 	
-//	private Handler mHandler = new Handler() {
-//		
-//		@Override
-//		public void handleMessage(Message msg) {
-//			Log.i(TAG, "handle display wifi details message");
-//			int value = msg.what;
-//			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
+	private Handler mHandler = new Handler() {
+		
+		@Override
+		public void handleMessage(Message msg) {
+			Log.i(TAG, "handle display wifi details message");
+			int value = msg.what;
+			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
 //				WifiProfile wifiProfile = (WifiProfile)msg.obj;
 //				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
 //				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
 //				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
-//				
-//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-//				Bundle wifiData = new Bundle();
-//				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
-//				intent.putExtras(wifiData);
-//				mContext.startActivity(intent);
-//			}
-//			super.handleMessage(msg);
-//		}
-//	};
+				WifiInfoScanned wifiInfoScanned = (WifiInfoScanned)msg.obj;
+//				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
+//				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
+//				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+				Log.i(TAG, "wifi connect count:" + wifiInfoScanned.getConnectedTimes());
+				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+				Bundle wifiData = new Bundle();
+				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
+				intent.putExtras(wifiData);
+				mContext.startActivity(intent);
+			}
+			super.handleMessage(msg);
+		}
+	};
 
 	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		super();
 		this.mContext = context;
-		//mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
+		mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
 		
 		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
@@ -111,7 +120,15 @@ public class WifiListAdapter extends BaseAdapter {
 			mWifiList.add(wifiEncrypt.get(i));
 		}
 		
+		Log.i(TAG, "refresh wifi list...");
 		notifyDataSetChanged();
+	}
+	
+	private byte[] bitmap2Bytes(Bitmap bm) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		boolean convertFlag = bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		Log.i(TAG, "convert to png: " + convertFlag);
+		return baos.toByteArray();
 	}
 	
 	private void getWifiProfiles(WifiInfoScanned wifiInfoScanned) {
@@ -119,7 +136,7 @@ public class WifiListAdapter extends BaseAdapter {
 		if (listProfiles != null) {
 			for (WifiProfile wifiProfile : listProfiles) {
 				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+					wifiInfoScanned.setWifiLogo(bitmap2Bytes(wifiProfile.Logo));
 					break;
 				}
 			}
@@ -191,7 +208,7 @@ public class WifiListAdapter extends BaseAdapter {
 				
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 	            if (position >= (wifiFreeCnt + 2)) {
-	                imageView.setImageResource(R.drawable.id_locked);
+					imageView.setImageResource(R.drawable.id_locked);
 				} else {
 					imageView.setImageResource(R.drawable.id_default);
 				}
@@ -213,13 +230,13 @@ public class WifiListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View arg0) {
-						//mWifiHandleDB.queryWifiProfile4Display(infoScanned);
-						getWifiProfiles(infoScanned);
-						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-						Bundle wifiData = new Bundle();
-						wifiData.putSerializable("WifiSelected", infoScanned);
-						intent.putExtras(wifiData);
-						mContext.startActivity(intent);
+						mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
+						//getWifiProfiles(infoScanned);
+//						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+//						Bundle wifiData = new Bundle();
+//						wifiData.putSerializable("WifiSelected", infoScanned);
+//						intent.putExtras(wifiData);
+//						mContext.startActivity(intent);
 					}
 				});
 			}

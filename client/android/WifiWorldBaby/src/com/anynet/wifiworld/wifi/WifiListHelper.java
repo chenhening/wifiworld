@@ -181,7 +181,6 @@ public class WifiListHelper {
 		}
 		
 		if (objects != null) {
-			Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
 			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
 			if (idx != -1) {
 				Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");

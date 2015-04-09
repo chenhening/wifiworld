@@ -19,13 +19,23 @@ import android.widget.Toast;
 
 public class WifiStatusReceiver {
 	private final static String TAG = WifiStatusReceiver.class.getName();
+	private static Intent mIntent = null;
 	
 	public static void schedule(final Context ctx) {
-		ctx.startService(new Intent(ctx, WifiMonitorService.class));
+		mIntent = new Intent(ctx, WifiMonitorService.class);
+		ctx.startService(mIntent);
 	}
 	
 	public static void bindWifiService(final Context ctx, ServiceConnection conn) {
-		ctx.bindService(new Intent(ctx, WifiMonitorService.class), conn, Context.BIND_AUTO_CREATE);
+		mIntent = new Intent(ctx, WifiMonitorService.class);
+		ctx.bindService(mIntent, conn, Context.BIND_AUTO_CREATE);
+	}
+	
+	public static void stopWifiService(final Context ctx) {
+		if (mIntent != null) {
+			ctx.stopService(mIntent);
+		}
+		mIntent = null;
 	}
 
 	public static class WifiMonitorService extends Service {
@@ -45,15 +55,20 @@ public class WifiStatusReceiver {
 		        		NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
 		        		State state = networkInfo.getState();
 		        		boolean isConnected = state==State.CONNECTED;
+		        		boolean isDisconnected = state==State.DISCONNECTED;
 		        		if(isConnected){
 		        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
-		        		} else {
+		        			if (onWifiStatusListener != null) {
+				            	onWifiStatusListener.onNetWorkChanged(statusStr);
+		        			}
+		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+		        		} else if(isDisconnected) {
 		        			statusStr = "已断开连接";
+		        			if (onWifiStatusListener != null) {
+				            	onWifiStatusListener.onNetWorkChanged(statusStr);
+		        			}
+		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 						}
-		        		if (onWifiStatusListener != null) {
-			            	onWifiStatusListener.onNetWorkChanged(statusStr);
-	        			}
-	        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 		        	}
 		        }
 		        if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
