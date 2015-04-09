@@ -13,9 +13,10 @@ import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.bean.SetupFragmentBean;
 
-public class StepFragment extends MainFragment implements OnClickListener {
+public class StepFragment extends BaseFragment implements OnClickListener {
 
 	private SetupFragmentBean mSetupFragmentBean = new SetupFragmentBean();
 
