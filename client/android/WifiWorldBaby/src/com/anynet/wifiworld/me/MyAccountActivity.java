@@ -1,4 +1,4 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -25,6 +29,7 @@ public class MyAccountActivity extends BaseActivity{
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
 	SettingItemView sexIV;
+	SettingItemView si;
 	private static int REQUEST_LIST_SIMPLE = 10000;
 
 	private void bingdingTitleUI() {
@@ -42,12 +47,9 @@ public class MyAccountActivity extends BaseActivity{
 		});
 	}
 
-	SettingItemView si;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		setContentView(R.layout.user_homepage_activity);
+		setContentView(R.layout.activity_user_homepage);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
@@ -75,30 +77,12 @@ public class MyAccountActivity extends BaseActivity{
 			
 			@Override
 			public void save(Editable editable) {
-				// TODO Auto-generated method stub
 				mUserProfile.NickName = editable.toString();
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1,
-								Toast.LENGTH_LONG).show();
-					}
-				});
 				nicknameIV.setContent(mUserProfile.NickName);
 			}
 			
 			@Override
 			public void edit() {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 /*		

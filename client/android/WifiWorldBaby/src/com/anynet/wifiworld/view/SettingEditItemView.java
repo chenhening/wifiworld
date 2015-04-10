@@ -26,12 +26,10 @@ public class SettingEditItemView extends RelativeLayout {
 	private Button editBtn;
 	public SettingEditItemView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingEditItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingEditItemView(Context context, AttributeSet attrs) {
@@ -39,7 +37,6 @@ public class SettingEditItemView extends RelativeLayout {
 		RelativeLayout.inflate(context, R.layout.view_setting_edit_item, this);
 		ImageView img;
 		TextView tv;
-		EditText et;
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
 		contentET = (EditText) findViewById(R.id.setting_item_content_edit);
 		contentTV = (TextView) findViewById(R.id.setting_item_content);
@@ -143,12 +140,11 @@ public class SettingEditItemView extends RelativeLayout {
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
 		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
-		if(contentEditable)editBtn.setText(R.string.edit);
+		if(contentEditable) editBtn.setText(R.string.edit);
 		editBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if(contentEditable){
 					if(View.VISIBLE == contentET.getVisibility()){
 						contentET.setVisibility(View.INVISIBLE);

@@ -113,47 +113,37 @@
             item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingEditItemView>
-
-<!--         <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/siv_alias"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            item:icon="@drawable/icon_person_center_attention_shopper"
-            item:label="@string/my_account_nikename"
-            item:showContent="true"
-            item:showRedPoint="false"
-            item:showTopDivider="true"
-            item:subLabel="@string/account_edit"
-            item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView> -->
+        </com.anynet.wifiworld.view.SettingEditItemView>  
         
-        
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/siv_psw"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_email"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
             item:label="邮箱"
+            item:sublabel="设置邮箱用于找回账号"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
+            item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
+        </com.anynet.wifiworld.view.SettingEditItemView>
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/siv_account"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_password"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
             item:label="密码"
+            item:sublabel="设置密码用于找回账号"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
-            item:subLabelColor="@color/gray"
-            item:subLabelVisibility="invisible" >
-        </com.anynet.wifiworld.view.SettingItemView>
+            item:contentEditable="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingEditItemView>
     </LinearLayout>
 
     <LinearLayout
@@ -172,57 +162,61 @@
             android:layout_marginTop="8dp"
             android:text="资料" />
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/siv_sex"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_sex"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
-            item:label="@string/my_account_sex"
+            item:label="性别"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
+            item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
+        </com.anynet.wifiworld.view.SettingEditItemView>
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_age"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_age"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
             item:label="生日"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
+            item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
+        </com.anynet.wifiworld.view.SettingEditItemView>
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_job1"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_job"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
             item:label="职业"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
+            item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
+        </com.anynet.wifiworld.view.SettingEditItemView>
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_interest"
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/sev_interest"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_height="@dimen/dimen_45_dip"
             item:icon="@drawable/icon_person_center_attention_shopper"
             item:label="爱好"
             item:showContent="true"
             item:showRedPoint="false"
             item:showTopDivider="true"
+            item:contentEditable="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
+        </com.anynet.wifiworld.view.SettingEditItemView>
 
     </LinearLayout>
 
