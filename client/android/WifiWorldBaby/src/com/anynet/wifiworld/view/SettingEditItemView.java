@@ -121,7 +121,32 @@ public class SettingEditItemView extends RelativeLayout {
 				}
 				break;
 			}
+			case R.styleable.SettingItemView_subLabel: {
+				String sublibel = array.getString(attr);
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setText(sublibel);
+				break;
+			}
 
+			case R.styleable.SettingItemView_subLabelColor: {
+				int sublibelcolor = array.getColor(attr, Color.RED);
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setTextColor(sublibelcolor);
+				break;
+			}
+
+			case R.styleable.SettingItemView_subLabelVisibility: {
+				int showt = array.getInt(attr, VISIBLE);
+				findViewById(R.id.setting_item_sub_text).setVisibility(showt);
+				break;
+			}
+
+			case R.styleable.SettingItemView_subLabelSize: {
+				float shows = array.getFloat(attr, 16.0f);
+				tv = (TextView) findViewById(R.id.setting_item_sub_text);
+				tv.setTextSize(shows);
+				break;
+			}
 			case R.styleable.SettingItemView_contentColor: {
 				int contentcolor = array.getColor(attr, Color.GRAY);
 

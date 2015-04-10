@@ -70,7 +70,22 @@
             android:textSize="@dimen/font_main_meduim"
             android:visibility="gone" />
     </FrameLayout>
-
+    
+    <TextView
+        android:id="@+id/setting_item_sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/global_layout_margin"
+        android:layout_toLeftOf="@+id/setting_item_edit"
+        android:layout_toRightOf="@+id/fl_setting_point_centent"
+        android:gravity="right|center"
+        android:maxWidth="@dimen/dimen_100_dip"
+        android:text="30"
+        android:textColor="#fffd8b06"
+        android:textSize="@dimen/font_main_min"
+        android:visibility="visible" />
+    
     <View
         android:id="@+id/setting_item_top_line"
         android:layout_width="fill_parent"

@@ -18,9 +18,6 @@ import android.widget.Toast;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.id;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -32,7 +29,7 @@ public class MyAccountActivity extends BaseActivity {
 
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
-	SettingItemView sexIV;
+	SettingEditItemView sexIV;
 	SettingItemView si;
 	private static int REQUEST_LIST_SIMPLE = 10000;
 
@@ -78,11 +75,7 @@ public class MyAccountActivity extends BaseActivity {
 			nicknameIV.setContent(mUserProfile.NickName);
 		}
 		// String[] titleArr = getResources().getStringArray(R.array.gender);
-		List<String> datas = new ArrayList<String>();
-		for (String string : UserProfile.SexArray) {
-			datas.add(string);
-		}
-		nicknameIV.setDatas(datas);
+
 		nicknameIV.setClickEditButtonListener(new ClickEditButtonListener() {
 
 			@Override
@@ -151,52 +144,42 @@ public class MyAccountActivity extends BaseActivity {
 		// e.printStackTrace();
 		// }
 
-		sexIV = (SettingItemView) findViewById(R.id.siv_sex);
+		sexIV = (SettingEditItemView) findViewById(R.id.sev_sex);
 		sexIV.setContent(mUserProfile.getSex());
-		sexIV.findViewById(R.id.setting_item_next).setOnClickListener(new OnClickListener() {
-
+		List<String> datas = new ArrayList<String>();
+		for (String string : UserProfile.SexArray) {
+			datas.add(string);
+		}
+		sexIV.setDatas(datas);
+		sexIV.setClickEditButtonListener(new ClickEditButtonListener() {
+			
 			@Override
-			public void onClick(View v) {
+			public void onSave(CharSequence charSequence) {
 				// TODO Auto-generated method stub
-				// ListDialogFragment.createBuilder(MyAccountActivity.this,
-				// getSupportFragmentManager())
-				// .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE).setTitle("选择性别").setItems(UserProfile.SexArray)
-				// .setRequestCode(REQUEST_LIST_SIMPLE).show();
-				new AlertDialog.Builder(MyAccountActivity.this) // build
-																// AlertDialog
-						.setTitle("选择性别") // title
-						.setItems(UserProfile.SexArray, new DialogInterface.OnClickListener() {
-							// content
+				mUserProfile.setSex(charSequence.toString());
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mUserProfile.setSex(UserProfile.SexArray[which]);
-								mUserProfile.update(getApplicationContext(), new UpdateListener() {
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
 
-									@Override
-									public void onSuccess() {
-										// TODO Auto-generatedmethod stub
-										Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-									}
-
-									@Override
-									public void onFailure(int arg0, String arg1) {
-										// TODO Auto-generated method stub
-										Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1,
-												Toast.LENGTH_LONG).show();
-									}
-								});
-								sexIV.setContent(UserProfile.SexArray[which]);
-							}
-						}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss(); // 关闭alertDialog
-							}
-						}).show();
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+				sexIV.setContent(mUserProfile.NickName);
 			}
-
+			
+			@Override
+			public void beforeEdit() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 
 		findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {

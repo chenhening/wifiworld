@@ -29,7 +29,7 @@ public class UserProfile extends BmobObject {
 	public String NickName; //昵称
 	public String Email; //用于找回账号的邮箱
 	public String CustomPwd; //用于固定登录的密码
-	public int Sex; //性别，男女
+	private int Sex; //性别，男女
 	public long Age; //年龄，用滴答数表示
 	public int Job; //职业
 	public int Interest; //兴趣
