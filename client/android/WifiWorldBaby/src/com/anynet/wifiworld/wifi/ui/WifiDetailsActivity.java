@@ -199,7 +199,9 @@ public class WifiDetailsActivity extends BaseActivity {
 						mConnectedCnt.setText(String.valueOf(mWifiInfoScanned.getConnectedTimes()) + "次");
 						mConnectedTime.setText(String.valueOf(mWifiInfoScanned.getConnectedDuration()) + "小时");
 						
-						mWifiMessage.setText(mWifiInfoScanned.getMessages().get(0));
+						if (mWifiInfoScanned.getMessages().size() > 0) {
+							mWifiMessage.setText(mWifiInfoScanned.getMessages().get(0));
+						}
 						
 						List<String> comment_item = mWifiInfoScanned.getComments();
 						mListComments.setAdapter(new ArrayAdapter<String>(getBaseContext(), R.layout.list_view_item, comment_item));
