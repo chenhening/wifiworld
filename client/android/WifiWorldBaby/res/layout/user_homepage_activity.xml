@@ -101,7 +101,21 @@
             android:layout_marginTop="2dp"
             android:text="帐号" />
 
-        <com.anynet.wifiworld.view.SettingItemView
+        <com.anynet.wifiworld.view.SettingEditItemView
+            android:id="@+id/siv_alias"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_45_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="@string/my_account_nikename"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:contentEditable="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingEditItemView>
+
+<!--         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/siv_alias"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
@@ -112,8 +126,9 @@
             item:showTopDivider="true"
             item:subLabel="@string/account_edit"
             item:subLabelColor="@color/gray" >
-        </com.anynet.wifiworld.view.SettingItemView>
-
+        </com.anynet.wifiworld.view.SettingItemView> -->
+        
+        
         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/siv_psw"
             android:layout_width="fill_parent"

@@ -3,6 +3,7 @@ package com.anynet.wifiworld;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -15,6 +16,8 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.view.SettingEditItemView;
+import com.anynet.wifiworld.view.SettingEditItemView.ClickEditButtonListener;
 import com.anynet.wifiworld.view.SettingItemView;
 
 public class MyAccountActivity extends BaseActivity{
@@ -62,12 +65,43 @@ public class MyAccountActivity extends BaseActivity{
 		tvContent.setText(mUserProfile.PhoneNumber);
 		si.findViewById(R.id.setting_item_next).setVisibility(View.INVISIBLE);
 
-		final SettingItemView nicknameIV = (SettingItemView) findViewById(R.id.siv_alias);
+		final SettingEditItemView nicknameIV = (SettingEditItemView) findViewById(R.id.siv_alias);
 		if (mUserProfile.NickName == null || mUserProfile.NickName.equals("")) {
 			nicknameIV.setContent(mUserProfile.PhoneNumber);
 		} else {
 			nicknameIV.setContent(mUserProfile.NickName);
 		}
+		nicknameIV.setClickEditButtonListener(new ClickEditButtonListener() {
+			
+			@Override
+			public void save(Editable editable) {
+				// TODO Auto-generated method stub
+				mUserProfile.NickName = editable.toString();
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1,
+								Toast.LENGTH_LONG).show();
+					}
+				});
+				nicknameIV.setContent(mUserProfile.NickName);
+			}
+			
+			@Override
+			public void edit() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+/*		
 		nicknameIV.findViewById(R.id.setting_item_next).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -103,7 +137,7 @@ public class MyAccountActivity extends BaseActivity{
 
 			}
 		});
-
+*/
 		// si = (SettingItemView) findViewById(R.id.siv_psw);
 		// String psw =
 		// (LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo()).Password;
