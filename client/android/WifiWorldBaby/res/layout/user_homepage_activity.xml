@@ -18,7 +18,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/umeng_fb_bar_bg" />
+            android:background="@drawable/bg_map_wifi_detail" />
 
         <ImageView
             android:id="@+id/person_icon"
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:text="帐号" />
 
         <com.anynet.wifiworld.view.SettingItemView

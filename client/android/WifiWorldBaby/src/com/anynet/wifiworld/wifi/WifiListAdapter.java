@@ -208,9 +208,9 @@ public class WifiListAdapter extends BaseAdapter {
 				
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 	            if (position >= (wifiFreeCnt + 2)) {
-					imageView.setImageResource(R.drawable.id_locked);
+					imageView.setImageResource(R.drawable.icon_crack_failed);
 				} else {
-					imageView.setImageResource(R.drawable.id_default);
+					imageView.setImageResource(R.drawable.icon_invalid);
 				}
 	            
 	            int signalStrength = (infoScanned).getWifiStrength();

@@ -73,7 +73,7 @@ public class WifiListMapAdapter extends BaseAdapter {
 		}
 		
 		ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-		imageView.setImageResource(R.drawable.id_default);
+		imageView.setImageResource(R.drawable.icon_invalid);
 	    
 	    int wifiDistance = (infoScanned).mWifiDistance;
 	    TextView distanceView = (TextView) view.findViewById(R.id.wifi_dis_digit);
