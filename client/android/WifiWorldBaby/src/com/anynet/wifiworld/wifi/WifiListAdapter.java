@@ -35,38 +35,38 @@ public class WifiListAdapter extends BaseAdapter {
 	private int wifiFreeCnt = 0;
 	private int wifiEncryptCnt = 0;
 	private Context mContext;
-	private WifiHandleDB mWifiHandleDB;
+//	private WifiHandleDB mWifiHandleDB;
 	
-	private Handler mHandler = new Handler() {
-		
-		@Override
-		public void handleMessage(Message msg) {
-			Log.i(TAG, "handle display wifi details message");
-			int value = msg.what;
-			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
-//				WifiProfile wifiProfile = (WifiProfile)msg.obj;
-//				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
-//				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
-//				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
-				WifiInfoScanned wifiInfoScanned = (WifiInfoScanned)msg.obj;
-//				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
-//				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
-//				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
-				Log.i(TAG, "wifi connect count:" + wifiInfoScanned.getConnectedTimes());
-				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-				Bundle wifiData = new Bundle();
-				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
-				intent.putExtras(wifiData);
-				mContext.startActivity(intent);
-			}
-			super.handleMessage(msg);
-		}
-	};
+//	private Handler mHandler = new Handler() {
+//		
+//		@Override
+//		public void handleMessage(Message msg) {
+//			Log.i(TAG, "handle display wifi details message");
+//			int value = msg.what;
+//			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
+////				WifiProfile wifiProfile = (WifiProfile)msg.obj;
+////				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
+////				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
+////				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+//				WifiInfoScanned wifiInfoScanned = (WifiInfoScanned)msg.obj;
+////				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
+////				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
+////				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+//				Log.i(TAG, "wifi connect count:" + wifiInfoScanned.getConnectedTimes());
+//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+//				Bundle wifiData = new Bundle();
+//				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
+//				intent.putExtras(wifiData);
+//				mContext.startActivity(intent);
+//			}
+//			super.handleMessage(msg);
+//		}
+//	};
 
 	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		super();
 		this.mContext = context;
-		mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
+		//mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
 		
 		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
@@ -122,27 +122,6 @@ public class WifiListAdapter extends BaseAdapter {
 		
 		Log.i(TAG, "refresh wifi list...");
 		notifyDataSetChanged();
-	}
-	
-	private byte[] bitmap2Bytes(Bitmap bm) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		boolean convertFlag = bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		Log.i(TAG, "convert to png: " + convertFlag);
-		return baos.toByteArray();
-	}
-	
-	private void getWifiProfiles(WifiInfoScanned wifiInfoScanned) {
-		List<WifiProfile> listProfiles = WifiListHelper.getInstance(mContext).mWifiProfiles;
-		if (listProfiles != null) {
-			for (WifiProfile wifiProfile : listProfiles) {
-				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					wifiInfoScanned.setWifiLogo(bitmap2Bytes(wifiProfile.Logo));
-					break;
-				}
-			}
-		} else {
-			Log.i(TAG, "Wifi Profile table return null");
-		}
 	}
 	
 	@Override
@@ -230,13 +209,13 @@ public class WifiListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View arg0) {
-						mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
+						//mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
 						//getWifiProfiles(infoScanned);
-//						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-//						Bundle wifiData = new Bundle();
-//						wifiData.putSerializable("WifiSelected", infoScanned);
-//						intent.putExtras(wifiData);
-//						mContext.startActivity(intent);
+						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+						Bundle wifiData = new Bundle();
+						wifiData.putSerializable("WifiSelected", infoScanned);
+						intent.putExtras(wifiData);
+						mContext.startActivity(intent);
 					}
 				});
 			}

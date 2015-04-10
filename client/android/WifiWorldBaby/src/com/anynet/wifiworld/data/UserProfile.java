@@ -2,17 +2,17 @@ package com.anynet.wifiworld.data;
 
 import java.util.List;
 
-import com.anynet.wifiworld.util.StringCrypto;
-
-import android.R.array;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
-//import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+
+import com.anynet.wifiworld.util.StringCrypto;
+//import cn.bmob.v3.BmobQuery.CachePolicy;
 
 public class UserProfile extends BmobObject {
 
@@ -23,11 +23,17 @@ public class UserProfile extends BmobObject {
 
 	// public String Userid; //用户账号
 	public String PhoneNumber; // 用户手机号，作为表的唯一建
-	public String NickName;
 	public String Password; // 密码
 	public int Type; // 用户类型，
 	public float Wallet; // 用户钱包
-	private int Sex;
+	public String NickName; //昵称
+	public String Email; //用于找回账号的邮箱
+	public String CustomPwd; //用于固定登录的密码
+	public int Sex; //性别，男女
+	public long Age; //年龄，用滴答数表示
+	public int Job; //职业
+	public int Interest; //兴趣
+	public Bitmap Avatar; //头像 
 
 	public static final String[] SexArray = {"女的","男的","弯的","奇怪的"};
 	

@@ -1,10 +1,13 @@
 package com.anynet.wifiworld.wifi;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.Bitmap;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.smssdk.app.NewAppReceiver;
 
 public class WifiInfoScanned implements Serializable {
 	/**
@@ -18,12 +21,15 @@ public class WifiInfoScanned implements Serializable {
 	private Integer mWifiStrength;
 	private String mRemark;
 	private BmobGeoPoint mGeometry;
-	private byte[] mWifiLogo;
+	private Bitmap mWifiLogo;
 	
 	private float mRating;
 	private int mRanking;
 	private long ConnectedTimes;
 	private int ConnectedDuration;
+	
+	private List<String> mComments = new ArrayList<String>();
+	private List<String> mMessages = new ArrayList<String>();
 	
 	public int mWifiDistance;
 	
@@ -146,12 +152,36 @@ public class WifiInfoScanned implements Serializable {
 		this.mGeometry = mGeometry;
 	}
 
-	public byte[] getWifiLogo() {
+	public Bitmap getWifiLogo() {
 		return mWifiLogo;
 	}
 
-	public void setWifiLogo(byte[] wifiLogo) {
+	public void setWifiLogo(Bitmap wifiLogo) {
 		this.mWifiLogo = wifiLogo;
+	}
+
+	public List<String> getComments() {
+		return mComments;
+	}
+
+	public void setComments(List<String> mComments) {
+		this.mComments = mComments;
+	}
+	
+	public void addComment(String comment) {
+		mComments.add(comment);
+	}
+
+	public List<String> getMessages() {
+		return mMessages;
+	}
+
+	public void setMessages(List<String> mMessages) {
+		this.mMessages = mMessages;
+	}
+	
+	public void addMessage(String message) {
+		mMessages.add(message);
 	}
 	
 }

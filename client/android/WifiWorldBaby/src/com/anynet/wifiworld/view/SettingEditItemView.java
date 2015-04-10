@@ -62,7 +62,6 @@ public class SettingEditItemView extends RelativeLayout {
 	public SettingEditItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		mContext = context;
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingEditItemView(Context context, AttributeSet attrs) {
@@ -180,6 +179,8 @@ public class SettingEditItemView extends RelativeLayout {
 			contentET.setVisibility(View.INVISIBLE);
 		}
 		edited = false;
+
+		if(contentEditable) editBtn.setText(R.string.edit);
 		editBtn.setOnClickListener(new OnClickListener() {
 
 			@Override

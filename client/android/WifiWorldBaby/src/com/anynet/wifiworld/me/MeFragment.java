@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.MyAccountActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.MultiDataCallback;

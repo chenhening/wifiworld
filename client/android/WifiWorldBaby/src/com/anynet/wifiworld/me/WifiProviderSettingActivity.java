@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
+import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
@@ -87,53 +90,87 @@ public class WifiProviderSettingActivity extends BaseActivity {
 			}
 		});
 		
-		this.findViewById(R.id.slv_my_knock_setting).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.tv_setting_knock).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), KnockTopActivity.class);
-				startActivity(i);
+				// TODO Auto-generated method stub
+				CheckBox ksCB = (CheckBox) findViewById(R.id.knock_switch);
+				if (ksCB.isChecked()) {
+					ksCB.setChecked(false);
+					findViewById(R.id.specific_setting_layout).setVisibility(View.GONE);
+				} else {
+					ksCB.setChecked(true);
+					findViewById(R.id.specific_setting_layout).setVisibility(View.VISIBLE);
+					findViewById(R.id.question_setting).setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
+							startActivity(i);
+						}
+					});
+				}
+
 			}
 		});
 		
-		//提交和重置
-		final EditText edit = (EditText) this.findViewById(R.id.ec_wifi_message_content);
-		this.findViewById(R.id.btn_wifi_message_send).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.rl_setting_message).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String str = edit.getText().toString();
-				if (str.length() <= 0) {
-					showToast("未输入任何信息，请重新输入。");
-					return;
-				}
-				WifiMessages msg = new WifiMessages();
-				msg.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
-				msg.Message = edit.getText().toString();
-				msg.MarkSendTime();
-				msg.StoreRemote(getApplicationContext(), new DataCallback<WifiMessages>() {
+				// TODO Auto-generated method stub
+				CheckBox ksCB = (CheckBox) findViewById(R.id.message_switch);
+				if (ksCB.isChecked()) {
+					ksCB.setChecked(false);
+					findViewById(R.id.ll_wifi_message).setVisibility(View.GONE);
+				} else {
+					ksCB.setChecked(true);
+					findViewById(R.id.ll_wifi_message).setVisibility(View.VISIBLE);
+					//提交和重置
+					final EditText edit = (EditText)findViewById(R.id.ec_wifi_message_content);
+					findViewById(R.id.btn_wifi_message_send).setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onSuccess(WifiMessages object) {
-						showToast("提交动态信息成功。");
-					}
+						@Override
+						public void onClick(View v) {
+							String str = edit.getText().toString();
+							if (str.length() <= 0) {
+								showToast("未输入任何信息，请重新输入。");
+								return;
+							}
+							WifiMessages msg = new WifiMessages();
+							msg.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
+							msg.Message = edit.getText().toString();
+							msg.MarkSendTime();
+							msg.StoreRemote(getApplicationContext(), new DataCallback<WifiMessages>() {
 
-					@Override
-					public void onFailed(String msg) {
-						showToast("提交动态信息失败。");
-					}
+								@Override
+								public void onSuccess(WifiMessages object) {
+									showToast("提交动态信息成功。");
+								}
+
+								@Override
+								public void onFailed(String msg) {
+									showToast("提交动态信息失败。");
+								}
+								
+							});
+						}	
+					});
 					
-				});
-			}	
-		});
-		this.findViewById(R.id.btn_wifi_message_clear).setOnClickListener(new OnClickListener() {
+					findViewById(R.id.btn_wifi_message_clear).setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				edit.getText().clear();
+						@Override
+						public void onClick(View v) {
+							edit.getText().clear();
+						}
+						
+					});
+				}
+
 			}
-			
-		});
+		});	
 	}
 
 	@Override

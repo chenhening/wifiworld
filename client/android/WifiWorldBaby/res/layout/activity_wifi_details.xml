@@ -41,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/ghostwhite"
                 android:gravity="center"
                 android:text="本人WiFi只提供给有缘人" />
         </FrameLayout>
@@ -195,14 +194,14 @@
         android:background="@color/brown" />
 
     <LinearLayout
-        android:id="@+id/wifi_announce"
+        android:id="@+id/wifi_messages_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/white"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/wifi_messages_tag"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginLeft="15dp"
@@ -215,7 +214,7 @@
             android:background="@color/brown" />
 
         <TextView
-            android:id="@+id/lv_provider_new_info"
+            android:id="@+id/wifi_messages_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/ghostwhite"
@@ -227,7 +226,7 @@
     <LinearLayout
         android:id="@+id/wifi_connect_comments_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical" >
 
@@ -247,12 +246,12 @@
         <FrameLayout
             android:id="@+id/wifi_comment_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent" >
 
             <ListView
                 android:id="@+id/wifi_list_comments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/color_chat_bg"
                 android:cacheColorHint="#00000000"
                 android:fadingEdge="vertical" >
@@ -288,7 +287,6 @@
                     android:background="@color/orange"
                     android:gravity="center"
                     android:text="关注WiFi" />
-
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

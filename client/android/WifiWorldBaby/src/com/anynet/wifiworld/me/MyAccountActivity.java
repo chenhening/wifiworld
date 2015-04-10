@@ -1,4 +1,4 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,10 @@ import android.widget.Toast;
 
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.id;
+import com.anynet.wifiworld.R.layout;
+import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -29,6 +33,7 @@ public class MyAccountActivity extends BaseActivity {
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
 	SettingItemView sexIV;
+	SettingItemView si;
 	private static int REQUEST_LIST_SIMPLE = 10000;
 
 	private void bingdingTitleUI() {
@@ -46,12 +51,9 @@ public class MyAccountActivity extends BaseActivity {
 		});
 	}
 
-	SettingItemView si;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		setContentView(R.layout.user_homepage_activity);
+		setContentView(R.layout.activity_user_homepage);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
@@ -104,7 +106,6 @@ public class MyAccountActivity extends BaseActivity {
 				});
 				nicknameIV.setContent(mUserProfile.NickName);
 			}
-
 			@Override
 			public void beforeEdit() {
 				// TODO Auto-generated method stub
