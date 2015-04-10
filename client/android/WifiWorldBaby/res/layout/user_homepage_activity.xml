@@ -109,6 +109,7 @@
             item:label="@string/my_account_nikename"
             item:showContent="true"
             item:showRedPoint="false"
+            item:contentEditType="selectbox"
             item:showTopDivider="true"
             item:contentEditable="true"
             item:subLabel="@string/account_edit"

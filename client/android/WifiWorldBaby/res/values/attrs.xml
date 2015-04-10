@@ -29,13 +29,11 @@
         <attr name="showRedPoint" format="boolean" />
         <attr name="showContent" format="boolean" />
         <attr name="contentEditable" format="boolean" />
-        <attr name="contentEditType"  format="enum">
+        <attr name="contentEditType" format="enum">
             <enum name="inputbox" value="0" />
             <enum name="selectbox" value="1" />
         </attr>
     </declare-styleable>
-    
-    
     <declare-styleable name="RippleBackground">
         <attr name="rb_color" format="color" />
         <attr name="rb_strokeWidth" format="dimension" />

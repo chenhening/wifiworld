@@ -1,9 +1,13 @@
 package com.anynet.wifiworld;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -20,7 +24,7 @@ import com.anynet.wifiworld.view.SettingEditItemView;
 import com.anynet.wifiworld.view.SettingEditItemView.ClickEditButtonListener;
 import com.anynet.wifiworld.view.SettingItemView;
 
-public class MyAccountActivity extends BaseActivity{
+public class MyAccountActivity extends BaseActivity {
 
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
@@ -30,7 +34,7 @@ public class MyAccountActivity extends BaseActivity{
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my_account_title));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -71,12 +75,18 @@ public class MyAccountActivity extends BaseActivity{
 		} else {
 			nicknameIV.setContent(mUserProfile.NickName);
 		}
+		// String[] titleArr = getResources().getStringArray(R.array.gender);
+		List<String> datas = new ArrayList<String>();
+		for (String string : UserProfile.SexArray) {
+			datas.add(string);
+		}
+		nicknameIV.setDatas(datas);
 		nicknameIV.setClickEditButtonListener(new ClickEditButtonListener() {
-			
+
 			@Override
-			public void save(Editable editable) {
+			public void onSave(CharSequence data) {
 				// TODO Auto-generated method stub
-				mUserProfile.NickName = editable.toString();
+				mUserProfile.NickName = data.toString();
 				mUserProfile.update(getApplicationContext(), new UpdateListener() {
 
 					@Override
@@ -88,56 +98,47 @@ public class MyAccountActivity extends BaseActivity{
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1,
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
 					}
 				});
 				nicknameIV.setContent(mUserProfile.NickName);
 			}
-			
-			@Override
-			public void edit() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-/*		
-		nicknameIV.findViewById(R.id.setting_item_next).setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void beforeEdit() {
 				// TODO Auto-generated method stub
-				AlertDialog.Builder builder = new AlertDialog.Builder(MyAccountActivity.this);
-				final EditText inputServer = new EditText(MyAccountActivity.this);
-				builder.setTitle("昵称").setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
-						.setNegativeButton("取消", null);
-				builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						mUserProfile.NickName = inputServer.getText().toString();
-						mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-							@Override
-							public void onSuccess() {
-								// TODO Auto-generated method stub
-								Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-							}
-
-							@Override
-							public void onFailure(int arg0, String arg1) {
-								// TODO Auto-generated method stub
-								Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1,
-										Toast.LENGTH_LONG).show();
-							}
-						});
-						nicknameIV.setContent(mUserProfile.NickName);
-					}
-				});
-				builder.show();
-
 			}
 		});
-*/
+		/*
+		 * nicknameIV.findViewById(R.id.setting_item_next).setOnClickListener(new
+		 * OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { // TODO Auto-generated method
+		 * stub AlertDialog.Builder builder = new
+		 * AlertDialog.Builder(MyAccountActivity.this); final EditText
+		 * inputServer = new EditText(MyAccountActivity.this);
+		 * builder.setTitle("昵称"
+		 * ).setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
+		 * .setNegativeButton("取消", null); builder.setPositiveButton("保存", new
+		 * DialogInterface.OnClickListener() {
+		 * 
+		 * public void onClick(DialogInterface dialog, int which) {
+		 * mUserProfile.NickName = inputServer.getText().toString();
+		 * mUserProfile.update(getApplicationContext(), new UpdateListener() {
+		 * 
+		 * @Override public void onSuccess() { // TODO Auto-generated method
+		 * stub Toast.makeText(MyAccountActivity.this, "保存成功！",
+		 * Toast.LENGTH_LONG).show(); }
+		 * 
+		 * @Override public void onFailure(int arg0, String arg1) { // TODO
+		 * Auto-generated method stub Toast.makeText(MyAccountActivity.this,
+		 * "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG).show(); }
+		 * }); nicknameIV.setContent(mUserProfile.NickName); } });
+		 * builder.show();
+		 * 
+		 * } });
+		 */
 		// si = (SettingItemView) findViewById(R.id.siv_psw);
 		// String psw =
 		// (LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo()).Password;
