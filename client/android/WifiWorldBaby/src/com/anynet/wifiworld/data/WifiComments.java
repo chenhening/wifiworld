@@ -12,19 +12,19 @@ import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class WifiMessages extends BmobObject {
-	private final static String TAG = WifiMessages.class.getSimpleName();
+public class WifiComments extends BmobObject {
+	private final static String TAG = WifiComments.class.getSimpleName();
 	private final static String MACADDR_TAG = "MacAddr";
 	
 	private static final long serialVersionUID = 1L;
 	
 	public String MacAddr; //wifi的唯一标识
-	public String Message; //这里指的是蹭网的用户id
+	public String Comment; //这里指的是蹭网的用户id
 	public long SendTime; //用户登陆网络的时间
 	
-	public void StoreRemote(final Context context, DataCallback<WifiMessages> callback) {
-		final DataCallback<WifiMessages> _callback = callback;
-		final WifiMessages user = this;
+	public void StoreRemote(final Context context, DataCallback<WifiComments> callback) {
+		final DataCallback<WifiComments> _callback = callback;
+		final WifiComments user = this;
 		user.save(context, new SaveListener() {
 			
 			@Override
@@ -39,18 +39,18 @@ public class WifiMessages extends BmobObject {
 		});
 	}
 	
-	public void QueryByMacAddress(final Context context, final String Mac, MessagesCallback<WifiMessages> callback) {
-		final MessagesCallback<WifiMessages> _callback = callback;
-		final BmobQuery<WifiMessages> query = new BmobQuery<WifiMessages>();
+	public void QueryByMacAddress(final Context context, final String Mac, CommentsCallback<WifiComments> callback) {
+		final CommentsCallback<WifiComments> _callback = callback;
+		final BmobQuery<WifiComments> query = new BmobQuery<WifiComments>();
 		query.addWhereEqualTo(MACADDR_TAG, Mac);
-		Log.d(TAG, "Start to query wifi messages table for:" + Mac);
+		Log.d(TAG, "Start to query wifi comments table for:" + Mac);
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				query.findObjects(context, new FindListener<WifiMessages>() {
+				query.findObjects(context, new FindListener<WifiComments>() {
 					@Override
-					public void onSuccess(List<WifiMessages> object) {
+					public void onSuccess(List<WifiComments> object) {
 						_callback.onSuccess(object);
 					}
 
@@ -59,7 +59,7 @@ public class WifiMessages extends BmobObject {
 						_callback.onFailed(msg);
 					}
 				});
-				Log.d(TAG, "Finish to query wifi messages");
+				Log.d(TAG, "Finish to query wifi comments");
 			}
 
 		}).start();
@@ -69,7 +69,7 @@ public class WifiMessages extends BmobObject {
 		SendTime = System.currentTimeMillis();
 	}
 	
-	public interface MessagesCallback<T> {
+	public interface CommentsCallback<T> {
 		public void onSuccess(List<T> object);
 		public void onFailed(String msg);
 	}
