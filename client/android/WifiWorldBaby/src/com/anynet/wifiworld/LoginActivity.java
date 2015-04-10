@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		setContentView(R.layout.login);
+		//setContentView(R.layout.login);
 		super.onCreate(savedInstanceState);
 
 		binddingUI();
@@ -336,9 +336,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		btClearLoginAccount = (Button) findViewById(R.id.bt_clear_login_account);
 		//btClearLoginPasswd = (Button) findViewById(R.id.bt_clear_login_passwd);
 
-		tvLoginErrortip = (TextView) findViewById(R.id.tv_login_errortip);
+		//tvLoginErrortip = (TextView) findViewById(R.id.tv_login_errortip);
 
-		llLoginErrortip = (LinearLayout) findViewById(R.id.ll_login_errortip);
+		//llLoginErrortip = (LinearLayout) findViewById(R.id.ll_login_errortip);
 
 		// 登录文字
 		tvLogin = (TextView) findViewById(R.id.tv_login);

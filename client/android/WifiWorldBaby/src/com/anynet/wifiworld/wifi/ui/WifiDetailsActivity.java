@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.WifiWhiteBlacklist;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +38,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		bingdingTitleUI();
 		//Get intent data
 		Intent intent = getIntent();
-		WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
+		final WifiInfoScanned wifiSelected = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
 		//TextView detailsTitle = (TextView)findViewById(R.id.setting_main_title);
 		mTitlebar.tvTitle.setText(wifiSelected.getWifiName());
@@ -59,7 +63,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		//Set WiFi logo image
 		if (wifiSelected.getWifiLogo() != null) {
 			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
-			logo.setImageBitmap(wifiSelected.getWifiLogo());
+			logo.setImageBitmap(byte2Bitmap(wifiSelected.getWifiLogo()));
 		}
 		
 		//添加评论信息
@@ -73,6 +77,39 @@ public class WifiDetailsActivity extends BaseActivity {
 		data1.add("能不能早点开放给我们用啊啊啊。");
 		data1.add("怎么办。");
 		listview1.setAdapter(new ArrayAdapter<String>(this, R.layout.list_view_item, data1));
+		
+		//添加关注
+		this.findViewById(R.id.wifi_watch).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+					showToast("需要登录后才能操作。");
+					return;
+				}
+				WifiWhiteBlacklist list = new WifiWhiteBlacklist();
+				list.Userid = LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber;
+				list.MacAddr = wifiSelected.getWifiMAC();
+				list.BeLove = true;
+			}
+			
+		});
+		
+		this.findViewById(R.id.wifi_report).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+					showToast("需要登录后才能操作。");
+					return;
+				}
+				WifiWhiteBlacklist list = new WifiWhiteBlacklist();
+				list.Userid = LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo().PhoneNumber;
+				list.MacAddr = wifiSelected.getWifiMAC();
+				list.BeLove = false;
+			}
+			
+		});
 	}
 
 	@Override
@@ -91,6 +128,13 @@ public class WifiDetailsActivity extends BaseActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+	}
+	
+	private Bitmap byte2Bitmap(byte[] b) {
+		if (b.length != 0) {
+			return BitmapFactory.decodeByteArray(b,  0, b.length);
+		}
+		return null;
 	}
 
 }

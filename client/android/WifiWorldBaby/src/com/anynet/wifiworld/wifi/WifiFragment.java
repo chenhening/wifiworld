@@ -179,7 +179,7 @@ public class WifiFragment extends MainFragment {
 		setWifiSquareListener(mWifiSquareLayout);
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
-		mWifiListHelper.fillWifiList();
+//		mWifiListHelper.fillWifiList();
 //		mWifiFree = mWifiListHelper.getWifiFrees();
 //		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 //		updateWifiConMore(mWifiNameView);
@@ -244,6 +244,7 @@ public class WifiFragment extends MainFragment {
 		
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
+			WifiStatusReceiver.stopWifiService(getActivity());
 //			mWifiFree = mWifiListHelper.getWifiFrees();
 //			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 //			updateWifiConMore(mWifiNameView);
@@ -252,6 +253,7 @@ public class WifiFragment extends MainFragment {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
+			WifiStatusReceiver.stopWifiService(getActivity());
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.me;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +170,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 				@Override
 				public void onFocusChange(View v, boolean hasFocus) {
+					if (hasFocus)
+						return;
 					String password = met_password.getText().toString();
 					if (password.length() >= 8) { //现在wifi的密码都要求8位以上
 						showToast("正在验证WiFi密码......");

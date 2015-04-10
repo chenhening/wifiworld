@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="148dp"
             android:layout_gravity="center"
+            android:background="@drawable/bg_portal_1"
             android:orientation="horizontal" >
 
             <ImageView
@@ -53,7 +54,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dip"
-                android:background="@drawable/id_default"
+                android:background="@drawable/icon_invalid"
                 android:contentDescription="@string/wifi_icon" />
 
             <TextView
@@ -76,9 +77,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:layout_marginRight="10dp"
-                    android:textOn=""
+                    android:background="@drawable/sl_checkbox_open_or_close"
                     android:textOff=""
-                    android:background="@drawable/wifi_switch_selector" />
+                    android:textOn="" />
+
             </FrameLayout>
         </LinearLayout>
 
@@ -91,7 +93,7 @@
             android:id="@+id/wifi_square"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/gainsboro"
+            android:background="@color/orange"
             android:orientation="horizontal"
             android:visibility="gone" >
 

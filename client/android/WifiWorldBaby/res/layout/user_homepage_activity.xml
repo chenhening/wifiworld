@@ -18,7 +18,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/bg_person_center" />
+            android:background="@drawable/bg_map_wifi_detail" />
 
         <ImageView
             android:id="@+id/person_icon"
@@ -85,84 +85,139 @@
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_account"
+    <LinearLayout
+        android:id="@+id/ll_account_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/person_content_layout"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:text="帐号" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/person_content_layout"
+        android:orientation="vertical" >
 
-    <com.anynet.wifiworld.view.SettingItemView
-        android:id="@+id/siv_account"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/dimen_45_dip"
-        android:layout_below="@id/tv_account"
-        item:icon="@drawable/icon_person_center_attention_shopper"
-        item:label="@string/my_account"
-        item:showContent="true"
-        item:showRedPoint="false"
-        item:showTopDivider="true"
-        item:subLabelColor="@color/gray"
-        item:subLabelVisibility="invisible" />
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="2dp"
+            android:text="帐号" />
 
-<!--     <com.anynet.wifiworld.view.SettingItemView
-        android:id="@+id/siv_psw"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/dimen_45_dip"
-        android:layout_below="@+id/siv_account"
-        item:icon="@drawable/icon_person_center_attention_shopper"
-        item:label="@string/my_account_password"
-        item:showContent="true"
-        item:showRedPoint="false"
-        item:showTopDivider="true"
-        item:subLabel="@string/account_edit"
-        item:subLabelColor="@color/gray" />
- -->
-    <TextView
-        android:id="@+id/tv_detail"
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/siv_alias"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_45_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="@string/my_account_nikename"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/siv_psw"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_45_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="邮箱"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/siv_account"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_45_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="密码"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabelColor="@color/gray"
+            item:subLabelVisibility="invisible" >
+        </com.anynet.wifiworld.view.SettingItemView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_account_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/siv_account"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:text="资料" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ll_account_account"
+        android:orientation="vertical" >
 
-    <com.anynet.wifiworld.view.SettingItemView
-        android:id="@+id/siv_alias"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/dimen_45_dip"
-        android:layout_below="@id/tv_detail"
-        item:icon="@drawable/icon_person_center_attention_shopper"
-        item:label="@string/my_account_nikename"
-        item:showContent="true"
-        item:showRedPoint="false"
-        item:showTopDivider="true"
-        item:subLabel="@string/account_edit"
-        item:subLabelColor="@color/gray" />
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="资料" />
 
-    <com.anynet.wifiworld.view.SettingItemView
-        android:id="@+id/siv_sex"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/dimen_45_dip"
-        android:layout_below="@+id/siv_alias"
-        item:icon="@drawable/icon_person_center_attention_shopper"
-        item:label="@string/my_account_sex"
-        item:showContent="true"
-        item:showRedPoint="false"
-        item:showTopDivider="true"
-        item:subLabel="@string/account_edit"
-        item:subLabelColor="@color/gray" />
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/siv_sex"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="@string/my_account_sex"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/slv_age"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="生日"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/slv_job1"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="职业"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/slv_interest"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            item:icon="@drawable/icon_person_center_attention_shopper"
+            item:label="爱好"
+            item:showContent="true"
+            item:showRedPoint="false"
+            item:showTopDivider="true"
+            item:subLabel="@string/account_edit"
+            item:subLabelColor="@color/gray" >
+        </com.anynet.wifiworld.view.SettingItemView>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_login"
         style="@style/Button.Default.Green"
-        android:layout_below="@+id/siv_sex"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/dimen_9_dip"
-        android:layout_marginRight="@dimen/dimen_9_dip"
-        android:layout_marginTop="@dimen/dimen_18_dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ll_account_desc"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/umeng_common_gradient_orange"
         android:text="@string/setting_exit"
         android:textSize="@dimen/font_main_title" />
 

@@ -18,11 +18,11 @@ public class WifiInfoScanned implements Serializable {
 	private Integer mWifiStrength;
 	private String mRemark;
 	private BmobGeoPoint mGeometry;
-	private Bitmap mWifiLogo;
+	private byte[] mWifiLogo;
 	
 	private float mRating;
 	private int mRanking;
-	private int ConnectedTimes;
+	private long ConnectedTimes;
 	private int ConnectedDuration;
 	
 	public int mWifiDistance;
@@ -43,11 +43,11 @@ public class WifiInfoScanned implements Serializable {
 		mRanking = ranking;
 	}
 
-	public int getConnectedTimes() {
+	public long getConnectedTimes() {
 		return ConnectedTimes;
 	}
 
-	public void setConnectedTimes(int connectedTimes) {
+	public void setConnectedTimes(long connectedTimes) {
 		ConnectedTimes = connectedTimes;
 	}
 
@@ -146,11 +146,11 @@ public class WifiInfoScanned implements Serializable {
 		this.mGeometry = mGeometry;
 	}
 
-	public Bitmap getWifiLogo() {
+	public byte[] getWifiLogo() {
 		return mWifiLogo;
 	}
 
-	public void setWifiLogo(Bitmap wifiLogo) {
+	public void setWifiLogo(byte[] wifiLogo) {
 		this.mWifiLogo = wifiLogo;
 	}
 	
