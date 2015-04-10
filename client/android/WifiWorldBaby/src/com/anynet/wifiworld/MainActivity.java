@@ -32,7 +32,7 @@ import com.anynet.wifiworld.bean.SystemMsgResp;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.dao.DBHelper;
-import com.anynet.wifiworld.discover.DiscoverFragment;
+//import com.anynet.wifiworld.discover.DiscoverFragment;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.report.ReportUtil;
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private Button[] mTabs;
 	private WifiFragment wifiFragment;
 	private MapFragment mapFragment;
-	private DiscoverFragment discoverFragment;
+	//private DiscoverFragment discoverFragment;
 	private MeFragment meFragment;
 	private MainFragment[] fragments;
 	private int index;
@@ -67,6 +67,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	// global instance
 	private static LoginHelper mLoginHelper;
 	private LocationHelper mLocationHelper;
+	
+	private final static int TAB_COUNTS = 3;
+	private final static int CONNECT_TAB_IDX = 0;
+	private final static int NEARBY_TAB_IDX = 1;
+	//private final static int FIND_TAB_IDX = 2;
+	private final static int MY_TAB_IDX = 2;
 	
 	public final static int UPDATE_WIFI_LIST = 99;
 	public final static int GET_WIFI_DETAILS = 98;
@@ -101,14 +107,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 		wifiFragment = new WifiFragment();
 		mapFragment = new MapFragment();
-		discoverFragment = new DiscoverFragment();
+		//discoverFragment = new DiscoverFragment();
 		meFragment = new MeFragment();
 
-		fragments = new MainFragment[] { wifiFragment, mapFragment, discoverFragment, meFragment };
+		fragments = new MainFragment[] { wifiFragment, mapFragment, /*discoverFragment,*/ meFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, wifiFragment)
-				.add(R.id.fragment_container, mapFragment).add(R.id.fragment_container, discoverFragment)
-				.add(R.id.fragment_container, meFragment).hide(mapFragment).hide(discoverFragment).hide(meFragment)
+				.add(R.id.fragment_container, mapFragment)/*.add(R.id.fragment_container, discoverFragment)*/
+				.add(R.id.fragment_container, meFragment).hide(mapFragment)/*.hide(discoverFragment)*/.hide(meFragment)
 				.show(wifiFragment).commit();
 
 		// 友盟自动更新
@@ -158,11 +164,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	/** 初始化组件 */
 	private void initView() {
-		mTabs = new Button[4];
-		mTabs[0] = (Button) findViewById(R.id.btn_connect);
-		mTabs[1] = (Button) findViewById(R.id.btn_nearby);
-		mTabs[2] = (Button) findViewById(R.id.btn_find);
-		mTabs[3] = (Button) findViewById(R.id.btn_my);
+		mTabs = new Button[TAB_COUNTS];
+		mTabs[CONNECT_TAB_IDX] = (Button) findViewById(R.id.btn_connect);
+		mTabs[NEARBY_TAB_IDX] = (Button) findViewById(R.id.btn_nearby);
+		//mTabs[FIND_TAB_IDX] = (Button) findViewById(R.id.btn_find);
+		mTabs[MY_TAB_IDX] = (Button) findViewById(R.id.btn_my);
 		ivMyNew = (ImageView) findViewById(R.id.iv_my_new);
 	}
 
@@ -179,10 +185,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			chageToNearby();
 			ReportUtil.reportClickTabWithDraw(this);
 			break;
-		case R.id.btn_find:
-			chageToFind();
-			ReportUtil.reportClickTabWithDraw(this);
-			break;
+//		case R.id.btn_find:
+//			chageToFind();
+//			ReportUtil.reportClickTabWithDraw(this);
+//			break;
 		case R.id.btn_my:
 			chageToMy();
 			ReportUtil.reportClickTabWithMY(this);
@@ -192,25 +198,25 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	}
 
 	private void changeToConnect() {
-		index = 0;
+		index = CONNECT_TAB_IDX;
 		reflesh();
 
 	}
 
 	private void chageToNearby() {
-		index = 1;
+		index = NEARBY_TAB_IDX;
 		reflesh();
 
 	}
 
-	private void chageToFind() {
-		index = 2;
-		reflesh();
-
-	}
+//	private void chageToFind() {
+//		index = FIND_TAB_IDX;
+//		reflesh();
+//
+//	}
 
 	private void chageToMy() {
-		index = 3;
+		index = MY_TAB_IDX;
 		reflesh();
 	}
 
