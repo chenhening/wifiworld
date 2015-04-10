@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
+	private boolean mImageClickDown = false;
+	private ImageView mImageView;
 	private ListView mWifiListView;
 	private WifiListMapAdapter mWifiListMapAdapter;
 	Marker currentMarker;
@@ -130,6 +133,20 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
 		mWifiListMapAdapter = new WifiListMapAdapter(this.getActivity(), wifiList);
 		mWifiListView.setAdapter(mWifiListMapAdapter);
+		
+		mImageView = (ImageView) mPageRoot.findViewById(R.id.brought_by);
+		mImageView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				if (mImageClickDown) {
+					mImageView.setImageResource(R.drawable.map_wifi_down);
+				} else {
+					mImageView.setImageResource(R.drawable.map_wifi_up);
+				}
+				mImageClickDown = !mImageClickDown;
+			}
+		});
 
 		return mPageRoot;
 	}
