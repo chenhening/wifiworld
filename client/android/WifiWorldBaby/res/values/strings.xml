@@ -110,8 +110,7 @@
     <string name="password_input_format_error_prompt">密码不符合要求</string>
     <string name="password_return_login_prompt">返回登录页面</string>
     <string name="password_reset_success_prompt">新密码设置成功</string>
-    
-    
+    <string name="back">返回</string>
     
     <string name="merchant_promotion"><Data>&lt;font color=#acacac>每月只能修改&lt;/font> &lt;font color=#03a3a6>1&lt;/font> &lt;font color=#acacac>次&lt;/font> </Data></string>
     <!-- testin崩溃测试key -->

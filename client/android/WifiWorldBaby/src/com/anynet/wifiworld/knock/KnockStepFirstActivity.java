@@ -2,17 +2,21 @@ package com.anynet.wifiworld.knock;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.util.DipPixelUtil;
 import com.anynet.wifiworld.util.NetHelper;
 
 public class KnockStepFirstActivity extends BaseActivity {
 
+	private static final String TAG = KnockStepFirstActivity.class.getSimpleName();
 	StepFragment[] mSetupFragment = new StepFragment[3];
 	int currentIndex = 0;
 
@@ -20,6 +24,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		currentIndex = 0;
+		isAnimation = false;
 		setContentView(R.layout.knock_step_setup);
 		super.onCreate(savedInstanceState);
 		initView();
@@ -30,10 +35,9 @@ public class KnockStepFirstActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 3; i++) {
 			mSetupFragment[i] = new StepFragment();
+			mSetupFragment[i].setTitle("我是第" + i + "个Fragment！");
 		}
-		// fragments = new MainFragment[] { wifiFragment, mapFragment,
-		// discoverFragment, meFragment };
-		// 添加显示第一个fragment
+
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (!mSetupFragment[currentIndex].isAdded())
 			ft.add(R.id.knock_fragment_container, mSetupFragment[0]);
@@ -61,6 +65,10 @@ public class KnockStepFirstActivity extends BaseActivity {
 				next();
 			}
 		});
+		step1V = findViewById(R.id.iv_knock_step_1);
+		step2V = findViewById(R.id.iv_knock_step_2);
+		step3V = findViewById(R.id.iv_knock_step_3);
+		moveV = findViewById(R.id.iv_move33);
 	}
 
 	public void setTitleUI() {
@@ -73,53 +81,68 @@ public class KnockStepFirstActivity extends BaseActivity {
 	}
 
 	View step1V, step2V, step3V, moveV;
-
-	int toleft;
+	static boolean isAnimation = false;
 
 	private void moveQbar(boolean right) {
-		step1V = findViewById(R.id.iv_knock_step_1);
-		step2V = findViewById(R.id.iv_knock_step_2);
-		step3V = findViewById(R.id.iv_knock_step_3);
-		moveV = findViewById(R.id.iv_move33);
-		TranslateAnimation translateAnimation;
-		float deltaX = moveV.getWidth();
-		float deataY = moveV.getHeight();
-		if (right) {
-			translateAnimation = new TranslateAnimation(0, deltaX, 0, 0);
-			toleft = (int) (moveV.getLeft() + deltaX);
-		} else {
-			translateAnimation = new TranslateAnimation(0, -deltaX, 0, 0);
-			toleft = (int) (moveV.getLeft() - deltaX);
+		synchronized (ACCESSIBILITY_SERVICE) {
+			TranslateAnimation translateAnimation;
+			float deltaX = 0;
+			if (right) {
+				if (currentIndex == 0) {
+					deltaX = step2V.getRight() - moveV.getRight();
+				} else if (currentIndex == 1) {
+					deltaX = step3V.getRight() - moveV.getRight();
+				}
+				deltaX = DipPixelUtil.px2dip(this, deltaX);
+				translateAnimation = new TranslateAnimation(0, deltaX, 0, 0);
+			} else {
+				if (currentIndex == 2) {
+					deltaX = moveV.getRight() - step2V.getRight();
+				} else if (currentIndex == 1) {
+					deltaX = moveV.getRight() - step1V.getRight();
+				}
+				deltaX = DipPixelUtil.px2dip(this, deltaX);
+				translateAnimation = new TranslateAnimation(0, -deltaX, 0, 0);
+			}
+
+			final int toleft = right ? (int) (moveV.getLeft() + deltaX) : (int) (moveV.getLeft() - deltaX);
+			Log.e(TAG, "toleft:" + toleft + "deltaX:" + deltaX);
+			translateAnimation.setDuration(500);
+			translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					// To change body of implemented methods use File | Settings
+					// |
+					// File Templates.
+					isAnimation = true;
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					// int left = left;
+					int top = moveV.getTop();
+					int width = moveV.getWidth();
+					int height = moveV.getHeight();
+					moveV.clearAnimation();
+					moveV.layout(toleft, top, toleft + width, top + height);
+					isAnimation = false;
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// To change body of implemented methods use File | Settings
+					// |
+					// File Templates.
+				}
+			});
+			moveV.startAnimation(translateAnimation);
 		}
-		translateAnimation.setDuration(200);
-		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-				// To change body of implemented methods use File | Settings |
-				// File Templates.
-			}
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// int left = left;
-				int top = moveV.getTop();
-				int width = moveV.getWidth();
-				int height = moveV.getHeight();
-				moveV.clearAnimation();
-				moveV.layout(toleft, top, toleft + width, top + height);
-
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				// To change body of implemented methods use File | Settings |
-				// File Templates.
-			}
-		});
-		moveV.startAnimation(translateAnimation);
 	}
 
 	public void next() {
+		if (isAnimation)
+			return;
 		if (currentIndex == 2) {
 			currentIndex = 2;
 		}
@@ -136,6 +159,8 @@ public class KnockStepFirstActivity extends BaseActivity {
 	}
 
 	public void pre() {
+		if (isAnimation)
+			return;
 		if (currentIndex == 0) {
 			currentIndex = 0;
 		}
@@ -152,7 +177,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 	private void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void reflesh() {

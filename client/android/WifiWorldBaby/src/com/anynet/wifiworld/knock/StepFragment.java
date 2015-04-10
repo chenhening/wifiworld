@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.MainActivity.MainFragment;
@@ -40,6 +41,16 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	private CheckBox check4;
 	private EditText answer4;
 	private ImageButton a4_delete;
+
+	private String title = "测试";
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public SetupFragmentBean getFragmentData() {
 		return mSetupFragmentBean;
@@ -178,6 +189,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		Toast.makeText(getActivity(), getTitle(), Toast.LENGTH_LONG).show();
 	}
 
 	@Override
