@@ -12,6 +12,7 @@ import android.view.animation.TranslateAnimation;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
+import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.util.DipPixelUtil;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -40,8 +41,10 @@ public class KnockStepFirstActivity extends BaseActivity {
 				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i));
 			}
 		} else {
+			mQuestions = new WifiQuestions();
+			mQuestions.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
 			for (int i = 0; i < 3; i++) {
-				mSetupFragment[i] = new StepFragment();
+				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i));
 			}
 		}
 		initView();
@@ -152,6 +155,12 @@ public class KnockStepFirstActivity extends BaseActivity {
 	public void next() {
 		if (isAnimation)
 			return;
+		
+		//提取数据
+		if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+			showToast("问题的每一项都不能为空，请补全。");
+			return;
+		}
 
 		if (currentIndex == 1) {
 			moveQbar(true);
@@ -185,7 +194,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 		if (mAskOrAnswer) {
 			//验证答案并提交
 			for (int i = 0; i < 3; ++i) {
-				if (((AnswerFragment)mSetupFragment[i]).getRightAnswer() != mQuestions.AnswerIndex.get(i)) {
+				if (((AnswerFragment)mSetupFragment[i]).getRightAnswer() != 1) {
 					showToast("问题回答的不完全正确请稍后再试。");
 					break;
 				}
@@ -194,7 +203,23 @@ public class KnockStepFirstActivity extends BaseActivity {
 			if (mQuestions.MacAddr != null)
 				LoginHelper.getInstance(getApplicationContext()).mKnockList.add(mQuestions.MacAddr);
 		} else {
-			
+			if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+				showToast("问题的每一项都不能为空，请补全。");
+				return;
+			}
+			mQuestions.StoreRemote(getApplicationContext(), new DataCallback<WifiQuestions>() {
+
+				@Override
+				public void onSuccess(WifiQuestions object) {
+					showToast("上传敲门问题成功。");
+				}
+
+				@Override
+				public void onFailed(String msg) {
+					showToast("当前网络不稳定，上传问题失败，请稍后再试。");
+				}
+				
+			});
 		}
 		finish();
 	}

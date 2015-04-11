@@ -1,5 +1,8 @@
 package com.anynet.wifiworld.knock;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -23,6 +26,11 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 	private TextView mAnswer2;
 	private TextView mAnswer3;
 	private TextView mAnswer4;
+	
+	private int mindex1 = 0;
+	private int mindex2 = 0;
+	private int mindex3 = 0;
+	private int mindex4 = 0;
 	
 	private int mRightAnswer = 1;
 	private List<String> mData;
@@ -53,16 +61,16 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.answer1:
-			mRightAnswer = 1;
+			mRightAnswer = mindex1;
 			break;
 		case R.id.answer2:
-			mRightAnswer = 2;
+			mRightAnswer = mindex2;
 			break;
 		case R.id.answer3:
-			mRightAnswer = 3;
+			mRightAnswer = mindex3;
 			break;
 		case R.id.answer4:
-			mRightAnswer = 4;
+			mRightAnswer = mindex4;
 			break;
 		}
 	}
@@ -75,19 +83,25 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 		
 		//显示问题或者图片
 		mQuestion = (TextView) this.findViewById(R.id.question);
-		//TODO(binfei):拉取服务器信息
 		mQuestion.setText(mData.get(0));
+		
+		//打乱顺序后存放
+		List<Integer> order = reOrder();
 		mAnswer1 = (TextView) this.findViewById(R.id.answer1);
-		mAnswer1.setText(mData.get(1));
+		mindex1 = order.get(0);
+		mAnswer1.setText(mData.get(mindex1));
 		mAnswer1.setOnClickListener(this);
 		mAnswer2 = (TextView) this.findViewById(R.id.answer2);
-		mAnswer2.setText(mData.get(2));
+		mindex2 = order.get(1);
+		mAnswer2.setText(mData.get(mindex2));
 		mAnswer2.setOnClickListener(this);
 		mAnswer3 = (TextView) this.findViewById(R.id.answer3);
-		mAnswer3.setText(mData.get(3));
+		mindex3 = order.get(2);
+		mAnswer3.setText(mData.get(mindex3));
 		mAnswer3.setOnClickListener(this);
 		mAnswer4 = (TextView) this.findViewById(R.id.answer4);
-		mAnswer4.setText(mData.get(4));
+		mindex4 = order.get(3);
+		mAnswer4.setText(mData.get(mindex4));
 		mAnswer4.setOnClickListener(this);
 		
 		return mPageRoot;
@@ -133,5 +147,14 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
 		return super.onBackPressed();
+	}
+	
+	//re-order 
+	private List<Integer> reOrder() {
+		List<Integer> list = new ArrayList<Integer>();
+		for(int i=1; i<5; ++i)
+			list.add(i);
+		Collections.shuffle(list);
+		return list;
 	}
 }

@@ -1,5 +1,8 @@
 package com.anynet.wifiworld.knock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +26,6 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 
 	private EditText questionET;
 	private ImageButton btn_question_delete;
-	private TextView remainingTV;
 	private TextView question_categoryTV;
 	private TextView change_questionTV;
 	private View btn_cameraLL;
@@ -41,15 +43,11 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	private CheckBox check4;
 	private EditText answer4;
 	private ImageButton a4_delete;
-
-	private String title = "测试";
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+	private List<String> mData;
+	
+	public StepFragment(List<String> data) {
+		mData = data;
 	}
 
 	public SetupFragmentBean getFragmentData() {
@@ -76,28 +74,39 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	}
 
 	private void setupUI() {
-		// TODO Auto-generated method stub
 		questionET = (EditText) findViewById(R.id.question);
+		questionET.setText(mData.get(0));
+		
 		btn_question_delete = (ImageButton) findViewById(R.id.btn_question_delete);
-		remainingTV = (TextView) findViewById(R.id.text_remaining);
+		btn_question_delete.setOnClickListener(this);
 		question_categoryTV = (TextView) findViewById(R.id.question_category);
 		change_questionTV = (TextView) findViewById(R.id.knock_change_question);
 		btn_cameraLL = findViewById(R.id.btn_camera);
 		btn_recordLL = findViewById(R.id.btn_record);
+		
 		check1 = (CheckBox) findViewById(R.id.check1);
 		answer1 = (EditText) findViewById(R.id.answer1);
+		answer1.setText(mData.get(1));
 		a1_delete = (ImageButton) findViewById(R.id.a1_delete);
 		a1_delete.setOnClickListener(this);
+		
 		check2 = (CheckBox) findViewById(R.id.check2);
 		answer2 = (EditText) findViewById(R.id.answer2);
+		answer2.setText(mData.get(2));
 		a2_delete = (ImageButton) findViewById(R.id.a2_delete);
+		a2_delete.setOnClickListener(this);
+		
 		check3 = (CheckBox) findViewById(R.id.check3);
 		answer3 = (EditText) findViewById(R.id.answer3);
+		answer3.setText(mData.get(3));
 		a3_delete = (ImageButton) findViewById(R.id.a3_delete);
+		a3_delete.setOnClickListener(this);
+		
 		check4 = (CheckBox) findViewById(R.id.check4);
 		answer4 = (EditText) findViewById(R.id.answer4);
+		answer4.setText(mData.get(4));
 		a4_delete = (ImageButton) findViewById(R.id.a4_delete);
-
+		a4_delete.setOnClickListener(this);
 	}
 
 	@Override
@@ -109,9 +118,6 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 		}
 		case R.id.btn_question_delete: {
 			questionET.setText("");
-			break;
-		}
-		case R.id.text_remaining: {
 			break;
 		}
 		case R.id.question_category: {
@@ -127,7 +133,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 			break;
 		}
 		case R.id.check1: {
-			check1.setChecked(!check1.isChecked());
+			//check1.setChecked(!check1.isChecked());
 			break;
 		}
 		case R.id.answer1: {
@@ -138,7 +144,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 			break;
 		}
 		case R.id.check2: {
-			check2.setChecked(!check2.isChecked());
+			//check2.setChecked(!check2.isChecked());
 			break;
 		}
 		case R.id.answer2: {
@@ -149,7 +155,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 			break;
 		}
 		case R.id.check3: {
-			check3.setChecked(!check3.isChecked());
+			//check3.setChecked(!check3.isChecked());
 			break;
 		}
 		case R.id.answer3: {
@@ -160,7 +166,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 			break;
 		}
 		case R.id.check4: {
-			check4.setChecked(!check4.isChecked());
+			//check4.setChecked(!check4.isChecked());
 			break;
 		}
 		case R.id.answer4: {
@@ -189,7 +195,6 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Toast.makeText(getActivity(), getTitle(), Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -216,4 +221,21 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 		return super.onBackPressed();
 	}
 
+	public boolean getData(List<String> data) {
+		//验证每一个选项
+		String questions = questionET.getText().toString();
+		if (questions.length() <= 0) {
+			return false;
+		}
+		
+		String str1 = answer1.getText().toString();
+		String str2 = answer2.getText().toString();
+		String str3 = answer3.getText().toString();
+		String str4 = answer4.getText().toString();
+		if (str1.length() <= 0 || str2.length() <= 0 || str3.length() <= 0 || str4.length() <= 0) {
+			return false;
+		}
+		
+		return true;
+	}
 }
