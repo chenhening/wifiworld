@@ -2,8 +2,10 @@
 <resources>
 
     <string-array name="gender">
-        <item>男的</item>
         <item>女的</item>
+        <item>男的</item>
+        <item>弯的</item>
+        <item>奇怪的</item>
     </string-array>
 
 </resources>

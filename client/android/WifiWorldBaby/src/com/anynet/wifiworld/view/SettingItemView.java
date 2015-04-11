@@ -48,7 +48,7 @@ public class SettingItemView extends RelativeLayout {
 			case R.styleable.SettingItemView_icon: {
 				Drawable icon = array.getDrawable(attr);
 				img = (ImageView) findViewById(R.id.setting_item_icon);
-				img.setImageDrawable(icon);
+				if(icon!=null)img.setImageDrawable(icon);
 				break;
 			}
 

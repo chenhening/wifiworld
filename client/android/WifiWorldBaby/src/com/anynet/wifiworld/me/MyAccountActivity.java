@@ -146,11 +146,11 @@ public class MyAccountActivity extends BaseActivity {
 
 		sexIV = (SettingEditItemView) findViewById(R.id.sev_sex);
 		sexIV.setContent(mUserProfile.getSex());
-		List<String> datas = new ArrayList<String>();
-		for (String string : UserProfile.SexArray) {
-			datas.add(string);
-		}
-		sexIV.setDatas(datas);
+//		List<String> datas = new ArrayList<String>();
+//		for (String string : UserProfile.SexArray) {
+//			datas.add(string);
+//		}
+		//sexIV.setDatas(datas);
 		sexIV.setClickEditButtonListener(new ClickEditButtonListener() {
 			
 			@Override

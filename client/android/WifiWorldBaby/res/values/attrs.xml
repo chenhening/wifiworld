@@ -28,11 +28,20 @@
         <attr name="showBottomDivider" format="boolean" />
         <attr name="showRedPoint" format="boolean" />
         <attr name="showContent" format="boolean" />
+        <attr name="contentHint" format="string" />
+        <attr name="contentHintColor" format="reference|color" />
+        <attr name="contentHintSize" format="dimension" />
         <attr name="contentEditable" format="boolean" />
+        <attr name="contentHintVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
         <attr name="contentEditType" format="enum">
             <enum name="inputbox" value="0" />
             <enum name="selectbox" value="1" />
         </attr>
+        <attr name="listData" format="reference" />
     </declare-styleable>
     <declare-styleable name="RippleBackground">
         <attr name="rb_color" format="color" />

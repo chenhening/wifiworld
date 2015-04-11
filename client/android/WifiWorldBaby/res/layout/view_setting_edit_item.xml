@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/lib_button_bg"
         android:layout_marginRight="@dimen/global_layout_margin"
+        android:background="@drawable/lib_button_bg"
         android:text="修改" />
 
     <TextView
@@ -26,8 +26,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/global_layout_margin"
         android:layout_toRightOf="@+id/setting_item_icon"
-        android:maxWidth="@dimen/dimen_180_dip"
-        android:text="11111"
+        android:maxWidth="@dimen/dimen_100_dip"
         android:textColor="@color/color_main_text"
         android:textSize="@dimen/font_main_big" />
 
@@ -38,54 +37,53 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_8_dip"
         android:layout_marginRight="@dimen/dimen_8_dip"
+        android:layout_toLeftOf="@+id/setting_item_edit"
         android:layout_toRightOf="@+id/setting_item_text" >
 
         <TextView
             android:id="@+id/setting_item_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_8_dip"
             android:layout_marginRight="@dimen/dimen_8_dip"
-            android:layout_gravity="center_vertical"
             android:gravity="left|center"
             android:maxWidth="@dimen/dimen_200_dip"
             android:singleLine="true"
-            android:text="111111111111111111"
             android:textColor="@color/gray"
             android:textSize="@dimen/font_main_meduim"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <EditText
             android:id="@+id/setting_item_content_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_8_dip"
             android:layout_marginRight="@dimen/dimen_8_dip"
+            android:background="@drawable/knock_input"
             android:gravity="left|center"
             android:maxWidth="@dimen/dimen_200_dip"
+            android:minWidth="@dimen/dimen_100_dip"
             android:singleLine="true"
-            android:text="111111111111111111"
             android:textColor="@color/gray"
-            android:minWidth="200dp"
             android:textSize="@dimen/font_main_meduim"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/setting_item_content_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/global_layout_margin"
+            android:gravity="left|center"
+            android:maxWidth="@dimen/dimen_200_dip"
+            android:text="@string/input"
+            android:textColor="#fffd8b06"
+            android:textSize="@dimen/font_main_min"
+            android:visibility="gone" />
     </FrameLayout>
-    
-    <TextView
-        android:id="@+id/setting_item_sub_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/global_layout_margin"
-        android:layout_toLeftOf="@+id/setting_item_edit"
-        android:layout_toRightOf="@+id/fl_setting_point_centent"
-        android:gravity="right|center"
-        android:maxWidth="@dimen/dimen_100_dip"
-        android:text="30"
-        android:textColor="#fffd8b06"
-        android:textSize="@dimen/font_main_min"
-        android:visibility="visible" />
-    
+
     <View
         android:id="@+id/setting_item_top_line"
         android:layout_width="fill_parent"
