@@ -337,6 +337,16 @@ public class WifiFragment extends MainFragment {
 //		mBroadcastRegistered = true;
 		super.onResume();
 	}
+	
+	@Override
+	public boolean onBackPressed() {
+		if (mWifiSquarePopup.isShowing()) {
+			mWifiSquarePopup.dismiss();
+			return true;
+		} else {
+			return super.onBackPressed();
+		}
+	}
 
 //	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //		
@@ -376,7 +386,7 @@ public class WifiFragment extends MainFragment {
 //		}
 //		
 //	};
-	
+
 	BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
 
 		@Override
