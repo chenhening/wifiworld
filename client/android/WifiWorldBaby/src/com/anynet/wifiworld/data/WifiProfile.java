@@ -138,32 +138,36 @@ public class WifiProfile extends BmobObject {
 			MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
-		query.addWhereWithinRadians("Geometry", center, radians);
-		// query.addWhereNear("Geometry", center);
-		query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
+		//query.addWhereWithinRadians("Geometry", center, radians);
+		//query.addWhereWithinKilometers("Geometry", center, radians);
+		//query.addWhereWithinMiles("Geometry", center, radians);
+		query.addWhereEqualTo("Sponser", "18688339822");
+		//query.addWhereNear("Geometry", center);
+		query.setLimit(1);// 最多查询到30个，多了用户也会疲劳
 		Log.d("findObjects", "开始查询QueryInRadians");
+		query.findObjects(context, new FindListener<WifiProfile>() {
+			@Override
+			public void onSuccess(List<WifiProfile> object) {
+				if (object.size() == 1) {
+					_callback.onSuccess(object);
+				} else {
+					_callback.onFailed("数据库中没有数据。");
+				}
+			}
+
+			@Override
+			public void onError(int code, String msg) {
+				_callback.onFailed(msg);
+			}
+		});
+		Log.d("findObjects", "结束查询QueryInRadians");
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				query.findObjects(context, new FindListener<WifiProfile>() {
-					@Override
-					public void onSuccess(List<WifiProfile> object) {
-						if (object.size() == 1) {
-							_callback.onSuccess(object);
-						} else {
-							_callback.onFailed("数据库中没有数据。");
-						}
-					}
-
-					@Override
-					public void onError(int code, String msg) {
-						_callback.onFailed(msg);
-					}
-				});
-				Log.d("findObjects", "结束查询QueryInRadians");
+				
 			}
 
 		}).start();

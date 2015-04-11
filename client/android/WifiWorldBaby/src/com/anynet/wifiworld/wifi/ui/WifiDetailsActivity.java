@@ -123,7 +123,7 @@ public class WifiDetailsActivity extends BaseActivity {
 
 			@Override
 			public void onSuccess(Long object) {
-				Log.i(TAG, "Success to query wifi dynamic from server:" + mWifiInfoScanned.getWifiMAC());
+				Log.i(TAG, "Success to query wifi dynamic from server: " + mWifiInfoScanned.getWifiMAC());
 				mWifiInfoScanned.setConnectedTimes(object);
 				mDynamicFlag = GET_DATA_SUCCESS;
 			}
