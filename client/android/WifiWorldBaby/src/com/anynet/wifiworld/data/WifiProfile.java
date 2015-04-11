@@ -134,40 +134,49 @@ public class WifiProfile extends BmobObject {
 	}
 
 	// 以圆的半径查找
-	public void QueryInRadians(final Context context, BmobGeoPoint center, double radians,
+	public void QueryInRadians(final Context context, final BmobGeoPoint center, final double radians,
 			MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
-		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
-		// 先从缓存获取数据，再拉取网络数据更新
-		//query.addWhereWithinRadians("Geometry", center, radians);
-		//query.addWhereWithinKilometers("Geometry", center, radians);
-		//query.addWhereWithinMiles("Geometry", center, radians);
-		query.addWhereEqualTo("Sponser", "18688339822");
-		//query.addWhereNear("Geometry", center);
-		query.setLimit(1);// 最多查询到30个，多了用户也会疲劳
-		Log.d("findObjects", "开始查询QueryInRadians");
-		query.findObjects(context, new FindListener<WifiProfile>() {
-			@Override
-			public void onSuccess(List<WifiProfile> object) {
-				if (object.size() == 1) {
-					_callback.onSuccess(object);
-				} else {
-					_callback.onFailed("数据库中没有数据。");
-				}
-			}
-
-			@Override
-			public void onError(int code, String msg) {
-				_callback.onFailed(msg);
-			}
-		});
-		Log.d("findObjects", "结束查询QueryInRadians");
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
+				//先从leancloud上拉取数据
+				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
+				geo.setGeometry(center.getLatitude(), center.getLongitude());
+				List<String> result = geo.QueryInRadians(radians, 30);
+				if (result == null) {
+					_callback.onFailed("数据库中没有数据。");
+					return;
+				}
 				
+				final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+				//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+				// 先从缓存获取数据，再拉取网络数据更新
+				//query.addWhereWithinRadians("Geometry", center, radians);
+				//query.addWhereWithinKilometers("Geometry", center, radians);
+				//query.addWhereWithinMiles("Geometry", center, radians);
+				query.addWhereContainedIn(unique_key, result);
+				//query.addWhereNear("Geometry", center);
+				query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
+				Log.d("findObjects", "开始查询QueryInRadians");
+				
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() == 1) {
+							_callback.onSuccess(object);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryInRadians");
 			}
 
 		}).start();
@@ -209,53 +218,69 @@ public class WifiProfile extends BmobObject {
 	public void StoreRemote(final Context context, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final WifiProfile wifi = this;
-		// 对密码进行加密
-		if (wifi.Password != null) {
-			try {
-				wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
-			} catch (Exception e) {
-				_callback.onFailed("无法保存数据: " + e.getMessage());
-				return;
-			}
-		}
-
-		// 先查询，如果有数据就更新，否则增加一条新记录
-		QueryByMacAddress(context, MacAddr, new DataCallback<WifiProfile>() {
+		
+		new Thread(new Runnable () {
 
 			@Override
-			public void onSuccess(final WifiProfile object) {
-				wifi.setObjectId(object.getObjectId());
-				wifi.update(context, new UpdateListener() {
+			public void run() {
+				//先保存到leancloud去，不成功就失败
+				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
+				geo.setKey(MacAddr);
+				geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
+				if (!geo.StoreRemote()) {
+					return;
+				}
+				// 对密码进行加密
+				if (wifi.Password != null) {
+					try {
+						wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
+					} catch (Exception e) {
+						_callback.onFailed("无法保存数据: " + e.getMessage());
+						return;
+					}
+				}
+
+				// 先查询，如果有数据就更新，否则增加一条新记录
+				QueryByMacAddress(context, MacAddr, new DataCallback<WifiProfile>() {
 
 					@Override
-					public void onSuccess() {
-						_callback.onSuccess(wifi);
+					public void onSuccess(final WifiProfile object) {
+						wifi.setObjectId(object.getObjectId());
+						wifi.update(context, new UpdateListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int arg0, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
 					}
 
 					@Override
-					public void onFailure(int arg0, String msg) {
-						_callback.onFailed(msg);
+					public void onFailed(String msg) {
+						wifi.save(context, new SaveListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int code, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
 					}
+
 				});
+				
 			}
-
-			@Override
-			public void onFailed(String msg) {
-				wifi.save(context, new SaveListener() {
-
-					@Override
-					public void onSuccess() {
-						_callback.onSuccess(wifi);
-					}
-
-					@Override
-					public void onFailure(int code, String msg) {
-						_callback.onFailed(msg);
-					}
-				});
-			}
-
-		});
+			
+		}).start();
 	}
 
 	public void deleteRemote(final Context context) {

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
-import com.anynet.wifiworld.report.ReportUtil;
 import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
@@ -114,9 +113,9 @@ public class SplashActivity extends BaseActivity
     
     private void gotoLogin()
     {
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        startActivity(intent);
-        SplashActivity.this.finish();
+        //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        //startActivity(intent);
+        //SplashActivity.this.finish();
     }
     
     public void onDestroy() {
