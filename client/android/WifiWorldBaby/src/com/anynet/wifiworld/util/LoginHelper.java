@@ -1,5 +1,10 @@
 package com.anynet.wifiworld.util;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +37,7 @@ public class LoginHelper {
 	private Context globalContext = null;
 	
 	public WifiProfile mWifiProfile = null;
+	public Set<String> mKnockList = new HashSet<String>();//保存敲门历史到本地
 
 	private double Longitude = 0.0;
 	private double Latitude = 0.0;

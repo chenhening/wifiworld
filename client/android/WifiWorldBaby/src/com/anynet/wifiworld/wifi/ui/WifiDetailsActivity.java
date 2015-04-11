@@ -6,10 +6,14 @@ import java.util.List;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.knock.KnockStepFirstActivity;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListHelper;
 
@@ -97,6 +101,37 @@ public class WifiDetailsActivity extends BaseActivity {
 		pullDataFromDB();
 		initializeProcessBar();
 		monitorDataDownload();
+		
+		//敲门
+		if (LoginHelper.getInstance(this).mKnockList.contains(mWifiInfoScanned.getWifiMAC())) {
+			((TextView)this.findViewById(R.id.tv_wifi_used_addr)).setHint("已经敲过门，可直接使用网络");
+			this.findViewById(R.id.ll_wifi_knock).setEnabled(false);
+		} else {
+			this.findViewById(R.id.ll_wifi_knock).setOnClickListener(new OnClickListener() {
+	
+				@Override
+				public void onClick(View arg0) {
+					//拉取敲门问题
+					WifiQuestions wifiQuestions = new WifiQuestions();
+					wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiInfoScanned.getWifiMAC(), new DataCallback<WifiQuestions>() {
+						
+						@Override
+						public void onSuccess(WifiQuestions object) {
+							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
+							i.putExtra("whoami", "WifiDetailsActivity");
+							i.putExtra("data", object);
+							startActivity(i);
+						}
+						
+						@Override
+						public void onFailed(String msg) {
+							showToast("获取敲门信息失败，请稍后重试。");
+						}
+					});
+				}
+				
+			});
+		}
 	}
 
 	@Override
@@ -136,7 +171,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiMessages wifiMessages = new WifiMessages();
-		wifiMessages.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new WifiMessages.MessagesCallback<WifiMessages>() {
+		wifiMessages.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiMessages>() {
 			
 			@Override
 			public void onSuccess(List<WifiMessages> object) {
@@ -155,7 +190,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiComments wifiComments = new WifiComments();
-		wifiComments.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new WifiComments.CommentsCallback<WifiComments>() {
+		wifiComments.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
 			
 			@Override
 			public void onSuccess(List<WifiComments> object) {

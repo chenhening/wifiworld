@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:overScrollMode="never" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="240dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/knock_input"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10.0dip"
+                android:background="@drawable/bg_map_wifi_detail"
+                android:gravity="center"
+                android:maxLength="30"
+                android:maxLines="2"
+                android:minLines="2"
+                android:singleLine="false"
+                android:text="哈哈"
+                android:textColor="@color/btn_pressed_green_solid"
+                android:textSize="22sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="vertical" >
+
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="8dp"
+               android:gravity="center"
+               android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_anwser_num1"
+                    android:button="@null"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/answer1"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:maxLength="14"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/chocolate"
+                    android:textSize="22sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+           <View
+               android:layout_width="fill_parent"
+               android:layout_height="@dimen/common_listview_divider_height"
+               android:background="@drawable/default_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_anwser_num2"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:id="@+id/answer2"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:maxLength="14"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/chocolate"
+                    android:textSize="22sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_anwser_num3"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:id="@+id/answer3"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:maxLength="14"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/chocolate"
+                    android:textSize="22sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_anwser_num4"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:id="@+id/answer4"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:maxLength="14"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/chocolate"
+                    android:textSize="22sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

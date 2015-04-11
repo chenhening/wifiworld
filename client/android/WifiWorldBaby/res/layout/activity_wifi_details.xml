@@ -143,7 +143,7 @@
         android:background="@color/brown" />
 
     <LinearLayout
-        android:id="@+id/wifi_connect_security_level"
+        android:id="@+id/ll_wifi_knock"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/orange"
@@ -180,10 +180,10 @@
             <ImageView
                 android:id="@+id/wifi_connect_security_more"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="32dp"
                 android:layout_weight="1.00"
                 android:paddingRight="10dp"
-                android:src="@drawable/wifi_diglist_press" />
+                android:src="@drawable/wifi_free_icon" />
         </LinearLayout>
     </LinearLayout>
 

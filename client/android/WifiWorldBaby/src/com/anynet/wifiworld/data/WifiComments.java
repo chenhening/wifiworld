@@ -39,8 +39,8 @@ public class WifiComments extends BmobObject {
 		});
 	}
 	
-	public void QueryByMacAddress(final Context context, final String Mac, CommentsCallback<WifiComments> callback) {
-		final CommentsCallback<WifiComments> _callback = callback;
+	public void QueryByMacAddress(final Context context, final String Mac, MultiDataCallback<WifiComments> callback) {
+		final MultiDataCallback<WifiComments> _callback = callback;
 		final BmobQuery<WifiComments> query = new BmobQuery<WifiComments>();
 		query.addWhereEqualTo(MACADDR_TAG, Mac);
 		Log.d(TAG, "Start to query wifi comments table for:" + Mac);
@@ -67,10 +67,5 @@ public class WifiComments extends BmobObject {
 	
 	public void MarkSendTime() {
 		SendTime = System.currentTimeMillis();
-	}
-	
-	public interface CommentsCallback<T> {
-		public void onSuccess(List<T> object);
-		public void onFailed(String msg);
 	}
 }

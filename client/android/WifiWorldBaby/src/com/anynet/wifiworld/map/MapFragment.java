@@ -265,7 +265,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 				// query wifi nearby
 				WifiProfile wifis = new WifiProfile();
-				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 0.025,
+				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 0.25,
 						new MultiDataCallback<WifiProfile>() {
 
 							@Override
