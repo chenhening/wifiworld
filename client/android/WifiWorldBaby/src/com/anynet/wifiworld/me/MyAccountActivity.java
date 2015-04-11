@@ -104,53 +104,10 @@ public class MyAccountActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 			}
 		});
-		/*
-		 * nicknameIV.findViewById(R.id.setting_item_next).setOnClickListener(new
-		 * OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { // TODO Auto-generated method
-		 * stub AlertDialog.Builder builder = new
-		 * AlertDialog.Builder(MyAccountActivity.this); final EditText
-		 * inputServer = new EditText(MyAccountActivity.this);
-		 * builder.setTitle("昵称"
-		 * ).setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
-		 * .setNegativeButton("取消", null); builder.setPositiveButton("保存", new
-		 * DialogInterface.OnClickListener() {
-		 * 
-		 * public void onClick(DialogInterface dialog, int which) {
-		 * mUserProfile.NickName = inputServer.getText().toString();
-		 * mUserProfile.update(getApplicationContext(), new UpdateListener() {
-		 * 
-		 * @Override public void onSuccess() { // TODO Auto-generated method
-		 * stub Toast.makeText(MyAccountActivity.this, "保存成功！",
-		 * Toast.LENGTH_LONG).show(); }
-		 * 
-		 * @Override public void onFailure(int arg0, String arg1) { // TODO
-		 * Auto-generated method stub Toast.makeText(MyAccountActivity.this,
-		 * "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG).show(); }
-		 * }); nicknameIV.setContent(mUserProfile.NickName); } });
-		 * builder.show();
-		 * 
-		 * } });
-		 */
-		// si = (SettingItemView) findViewById(R.id.siv_psw);
-		// String psw =
-		// (LoginHelper.getInstance(getApplicationContext()).getCurLoginUserInfo()).Password;
-		// try {
-		// if (psw != null && !psw.equals(""))
-		// si.setContent(StringCrypto.decryptDES(psw, UserProfile.CryptoKey));
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+
 
 		sexIV = (SettingEditItemView) findViewById(R.id.sev_sex);
 		sexIV.setContent(mUserProfile.getSex());
-//		List<String> datas = new ArrayList<String>();
-//		for (String string : UserProfile.SexArray) {
-//			datas.add(string);
-//		}
-		//sexIV.setDatas(datas);
 		sexIV.setClickEditButtonListener(new ClickEditButtonListener() {
 			
 			@Override
@@ -172,7 +129,7 @@ public class MyAccountActivity extends BaseActivity {
 								.show();
 					}
 				});
-				sexIV.setContent(mUserProfile.NickName);
+				sexIV.setContent(mUserProfile.getSex());
 			}
 			
 			@Override

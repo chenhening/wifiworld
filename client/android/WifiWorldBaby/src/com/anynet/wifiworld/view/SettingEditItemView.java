@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,24 +28,20 @@ import android.view.View.OnClickListener;
 
 public class SettingEditItemView extends RelativeLayout implements OnClickListener {
 
-	private static final String TAG = SettingEditItemView.class.getSimpleName();
+	private boolean contentEditable;
+	private int contentEditType;
 	private static final int EDIT_TYPE_INPUTBOX = 0;
 	private static final int EDIT_TYPE_SELECTBOX = 1;
 
 	private static final int EDIT_MODE = 0;
 	private static final int VIEW_MODE = 1;
 
-	public final class DataHolder {
-		public EditText contentET;
-		public TextView contentTV;
-		public Button editBtn;
-		public TextView contentHint;
-		public Context mContext;
-		public boolean contentEditable;
-		public int contentEditType;
-	}
-
+	private EditText contentET;
+	private TextView contentTV;
+	private Button editBtn;
+	private TextView contentHint;
 	private Context mContext;
+
 	private PopupWindow pWindow = null;
 	private ListView list = null; // 下拉表
 
@@ -72,17 +67,9 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	public SettingEditItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		DataHolder mDataHolder = null;
 		RelativeLayout.inflate(context, R.layout.view_setting_edit_item, this);
 		ImageView img;
 		TextView tv;
-		EditText contentET;
-		TextView contentTV;
-		Button editBtn;
-		TextView contentHint;
-		Context mContext;
-		boolean contentEditable = false;
-		int contentEditType = EDIT_TYPE_INPUTBOX;
 		edited = false;
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
 		contentET = (EditText) findViewById(R.id.setting_item_content_edit);
@@ -231,7 +218,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				contentET.setVisibility(View.INVISIBLE);
 				contentHint.setVisibility(View.GONE);
 				contentTV.setVisibility(VISIBLE);
-			} else {
+			}else{
 				if (contentHint.getText() == null || contentHint.getText().equals("")) {
 					contentHint.setText(R.string.input);
 				}
@@ -247,78 +234,68 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			contentET.setVisibility(View.GONE);
 			contentHint.setVisibility(View.GONE);
 		}
-		mDataHolder = new DataHolder();
-		mDataHolder.contentET = contentET;
-		mDataHolder.contentHint = contentHint;
-		mDataHolder.contentTV = contentTV;
-		mDataHolder.editBtn = editBtn;
-		mDataHolder.contentEditType = contentEditType;
-		mDataHolder.contentEditable = contentEditable;
-		this.setTag(mDataHolder);
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		DataHolder mDataHolder = (DataHolder) this.getTag();
-		Log.e(TAG, mDataHolder.toString());
-		if (mDataHolder.contentEditType == EDIT_TYPE_INPUTBOX) {
-			if (View.VISIBLE == mDataHolder.contentET.getVisibility()) {
-				mDataHolder.editBtn.setText(R.string.edit);
+		if (contentEditType == EDIT_TYPE_INPUTBOX) {
+			if (View.VISIBLE == contentET.getVisibility()) {
+				editBtn.setText(R.string.edit);
 				show(VIEW_MODE);
 				if (mClickEditButtonListener != null) {
-					mClickEditButtonListener.onSave(mDataHolder.contentET.getText().toString());
+					mClickEditButtonListener.onSave(contentET.getText().toString());
 				}
 			} else {
-				mDataHolder.contentET.setFocusable(true);
-				mDataHolder.contentET.setFocusableInTouchMode(true);
-				mDataHolder.contentET.requestFocus();
-				mDataHolder.contentET.requestFocusFromTouch();
-				mDataHolder.editBtn.setText(R.string.save);
+				contentET.setFocusable(true);
+				contentET.setFocusableInTouchMode(true);
+				contentET.requestFocus();
+				contentET.requestFocusFromTouch();
+				editBtn.setText(R.string.save);
 				show(EDIT_MODE);
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.beforeEdit();
 				}
 			}
-		} else if (mDataHolder.contentEditType == EDIT_TYPE_SELECTBOX) {
-			mDataHolder.contentET.setVisibility(View.INVISIBLE);
+		} else if (contentEditType == EDIT_TYPE_SELECTBOX) {
+			contentET.setVisibility(View.INVISIBLE);
 			if (edited) {
-				mDataHolder.editBtn.setText(R.string.edit);
+				editBtn.setText(R.string.edit);
 				edited = false;
 				if (mClickEditButtonListener != null) {
-					mClickEditButtonListener.onSave(mDataHolder.contentTV.getText());
+					mClickEditButtonListener.onSave(contentTV.getText());
 				}
 				return;
 			} else {
-				mDataHolder.editBtn.setText(R.string.edit);
+				editBtn.setText(R.string.edit);
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.beforeEdit();
 				}
-				changPopState(mDataHolder.contentET);
+				changPopState(contentET);
 			}
 		}
 	}
 
 	private void show(int mode) {
-		DataHolder mDataHolder = (DataHolder) this.getTag();
 		switch (mode) {
 		case EDIT_MODE: {
-			if (mDataHolder.contentHint.getText() != null && !mDataHolder.contentHint.getText().equals(""))
-				mDataHolder.contentET.setHint(mDataHolder.contentHint.getText());
-			mDataHolder.contentTV.setVisibility(View.INVISIBLE);
-			mDataHolder.contentET.setVisibility(VISIBLE);
-			mDataHolder.contentHint.setVisibility(INVISIBLE);
+			if (contentHint.getText() != null && !contentHint.getText().equals(""))
+				contentET.setHint(contentHint.getText());
+			contentTV.setVisibility(View.INVISIBLE);
+			contentET.setVisibility(VISIBLE);
+			contentHint.setVisibility(INVISIBLE);
 			break;
 		}
 		case VIEW_MODE: {
-			mDataHolder.contentET.setVisibility(INVISIBLE);
-			if (mDataHolder.contentET.getText() != null && !mDataHolder.contentET.getText().equals("")) {
-				mDataHolder.contentTV.setText(mDataHolder.contentET.getText());
-				mDataHolder.contentTV.setVisibility(View.VISIBLE);
-				mDataHolder.contentHint.setVisibility(INVISIBLE);
+			contentET.setVisibility(INVISIBLE);
+			if (contentET.getText() != null && !contentET.getText().equals("")) {
+				contentTV.setText(contentET.getText());
+				contentTV.setVisibility(View.VISIBLE);
+				contentHint.setVisibility(INVISIBLE);
 			} else {
-				mDataHolder.contentTV.setVisibility(View.INVISIBLE);
-				mDataHolder.contentHint.setVisibility(VISIBLE);
+				contentTV.setVisibility(View.INVISIBLE);
+				contentHint.setVisibility(VISIBLE);
 			}
 
 			break;
@@ -330,9 +307,8 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	}
 
 	public void editContent() {
-		DataHolder mDataHolder = (DataHolder) this.getTag();
-		if (mDataHolder.contentEditable) {
-			switch (mDataHolder.contentEditType) {
+		if (contentEditable) {
+			switch (contentEditType) {
 			case EDIT_TYPE_INPUTBOX:
 
 				break;
@@ -384,7 +360,6 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	 * @param par
 	 *            父控件 */
 	private void popWindow(final View par) {
-		final DataHolder mDataHolder = (DataHolder) this.getTag();
 		if (pWindow == null) {
 
 			// 布局文件
@@ -393,9 +368,9 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			list.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					// R.String.butian代表的是“不填”
-					mDataHolder.contentTV.setText(datas.get(arg2).toString()); // 将当前点击的item中的字符串显示出来
+					contentTV.setText(datas.get(arg2).toString()); // 将当前点击的item中的字符串显示出来
 					edited = true;
-					mDataHolder.editBtn.setText(R.string.save);
+					editBtn.setText(R.string.save);
 					if (pWindow != null) { // 关闭下拉框
 						changPopState(par);
 					}
@@ -416,7 +391,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			pWindow.setOutsideTouchable(true);
 			pWindow.update();
 		}
-		pWindow.showAsDropDown(mDataHolder.contentET);
+		pWindow.showAsDropDown(contentET);
 	}
 
 	/** 显示或者隐藏下拉框
