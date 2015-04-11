@@ -38,8 +38,9 @@
             <enum name="gone" value="8" />
         </attr>
         <attr name="contentEditType" format="enum">
-            <enum name="inputbox" value="0" />
-            <enum name="selectbox" value="1" />
+            <enum name="normal" value="0"/>
+            <enum name="inputbox" value="1" />
+            <enum name="selectbox" value="2" />
         </attr>
         <attr name="listData" format="reference" />
     </declare-styleable>
