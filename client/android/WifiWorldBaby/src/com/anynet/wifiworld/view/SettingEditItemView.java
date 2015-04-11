@@ -30,9 +30,10 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 	private boolean contentEditable;
 	private int contentEditType;
-	private static final int EDIT_TYPE_INPUTBOX = 0;
-	private static final int EDIT_TYPE_SELECTBOX = 1;
-
+	private static final int EDIT_TYPE_NORMAL = 0;
+	private static final int EDIT_TYPE_INPUTBOX = 1;
+	private static final int EDIT_TYPE_SELECTBOX = 2;
+	
 	private static final int EDIT_MODE = 0;
 	private static final int VIEW_MODE = 1;
 
@@ -193,7 +194,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				break;
 			}
 			case R.styleable.SettingItemView_contentEditType: {
-				contentEditType = array.getInt(attr, EDIT_TYPE_INPUTBOX);
+				contentEditType = array.getInt(attr, EDIT_TYPE_NORMAL);
 				break;
 			}
 			case R.styleable.SettingItemView_listData: {
@@ -218,13 +219,17 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				contentET.setVisibility(View.INVISIBLE);
 				contentHint.setVisibility(View.GONE);
 				contentTV.setVisibility(VISIBLE);
-			}else{
+			} else if (EDIT_TYPE_INPUTBOX == contentEditType) {
 				if (contentHint.getText() == null || contentHint.getText().equals("")) {
 					contentHint.setText(R.string.input);
 				}
 				if (contentTV.getText() != null && !contentTV.getText().equals("")) {
 					contentHint.setVisibility(View.INVISIBLE);
 				}
+			} else if (EDIT_TYPE_NORMAL == contentEditType) {
+				contentET.setVisibility(View.INVISIBLE);
+				contentHint.setVisibility(View.GONE);
+				contentTV.setVisibility(VISIBLE);
 			}
 
 			editBtn.setText(R.string.edit);
@@ -248,10 +253,10 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 					mClickEditButtonListener.onSave(contentET.getText().toString());
 				}
 			} else {
-				contentET.setFocusable(true);
-				contentET.setFocusableInTouchMode(true);
-				contentET.requestFocus();
-				contentET.requestFocusFromTouch();
+				// contentET.setFocusable(true);
+				// contentET.setFocusableInTouchMode(true);
+				// contentET.requestFocus();
+				// contentET.requestFocusFromTouch();
 				editBtn.setText(R.string.save);
 				show(EDIT_MODE);
 				if (mClickEditButtonListener != null) {
@@ -274,6 +279,10 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				}
 				changPopState(contentET);
 			}
+		}
+		if (mClickButtonListener != null) {
+			CharSequence text = contentTV.getText();
+			mClickButtonListener.onClick(text);
 		}
 	}
 
@@ -338,6 +347,15 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	}
 
 	ClickEditButtonListener mClickEditButtonListener;
+	ClickButtonListener mClickButtonListener;
+
+	public ClickButtonListener getmClickButtonListener() {
+		return mClickButtonListener;
+	}
+
+	public void setmClickButtonListener(ClickButtonListener mClickButtonListener) {
+		this.mClickButtonListener = mClickButtonListener;
+	}
 
 	public void setClickEditButtonListener(ClickEditButtonListener m) {
 		mClickEditButtonListener = m;
@@ -351,6 +369,10 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		public void onSave(CharSequence charSequence);
 
 		public void beforeEdit();
+	}
+
+	public interface ClickButtonListener {
+		public void onClick(CharSequence charSequence);
 	}
 
 	boolean edited = false;

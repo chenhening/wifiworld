@@ -129,13 +129,13 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditType="inputbox"
                     item:contentEditable="true"
+                    item:contentHint="@string/account_edit"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="@string/my_account_nikename"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHint="@string/account_edit"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
 
                 <com.anynet.wifiworld.view.SettingEditItemView
@@ -143,13 +143,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditable="true"
+                    item:contentHint="@string/account_edit"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="邮箱"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHint="@string/account_edit"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
 
                 <com.anynet.wifiworld.view.SettingEditItemView
@@ -157,13 +157,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditable="true"
+                    item:contentHint="@string/account_edit"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="密码"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHint="@string/account_edit"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
             </LinearLayout>
 
@@ -189,27 +189,28 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditType="selectbox"
                     item:contentEditable="true"
+                    item:contentHint="请填入性别"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="性别"
                     item:listData="@array/gender"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHint="请填入性别"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
 
                 <com.anynet.wifiworld.view.SettingEditItemView
                     android:id="@+id/sev_age"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    item:contentEditType="normal"
                     item:contentEditable="true"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="生日"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
 
                 <com.anynet.wifiworld.view.SettingEditItemView
@@ -217,12 +218,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditable="true"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="职业"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
 
                 <com.anynet.wifiworld.view.SettingEditItemView
@@ -230,12 +231,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
                     item:contentEditable="true"
+                    item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
                     item:label="爱好"
                     item:showContent="true"
                     item:showRedPoint="false"
-                    item:showTopDivider="true"
-                    item:contentHintColor="@color/gray" >
+                    item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingEditItemView>
             </LinearLayout>
 
