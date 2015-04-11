@@ -1,7 +1,5 @@
 package com.anynet.wifiworld;
 
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -11,40 +9,31 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import cn.bmob.v3.Bmob;
 
+import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.app.BaseFragment;
+import com.anynet.wifiworld.config.GlobalConfig;
+import com.anynet.wifiworld.constant.Const;
+import com.anynet.wifiworld.dao.DBHelper;
+import com.anynet.wifiworld.map.MapFragment;
+import com.anynet.wifiworld.me.MeFragment;
+import com.anynet.wifiworld.util.AppInfoUtil;
+import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
+import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
+import com.anynet.wifiworld.util.LocationHelper;
+import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.NetHelper;
+import com.anynet.wifiworld.util.PreferenceHelper;
+import com.anynet.wifiworld.wifi.WifiFragment;
+import com.avos.avoscloud.AVOSCloud;
 import com.dlnetwork.Data;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengUpdateAgent;
-
-//import com.xunlei.common.member.XLLog;
-import com.anynet.wifiworld.api.AppRestClient;
-import com.anynet.wifiworld.api.callback.ResponseCallback;
-import com.anynet.wifiworld.app.BaseActivity;
-import com.anynet.wifiworld.app.BaseFragment;
-import com.anynet.wifiworld.app.WifiWorldApplication;
-import com.anynet.wifiworld.bean.Msg;
-import com.anynet.wifiworld.bean.SystemMsgResp;
-import com.anynet.wifiworld.config.GlobalConfig;
-import com.anynet.wifiworld.constant.Const;
-import com.anynet.wifiworld.dao.DBHelper;
 //import com.anynet.wifiworld.discover.DiscoverFragment;
-import com.anynet.wifiworld.map.MapFragment;
-import com.anynet.wifiworld.me.MeFragment;
-import com.anynet.wifiworld.report.ReportUtil;
-import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
-import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
-import com.anynet.wifiworld.util.AppInfoUtil;
-import com.anynet.wifiworld.util.LocationHelper;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.NetHelper;
-import com.anynet.wifiworld.util.PreferenceHelper;
-import com.anynet.wifiworld.wifi.WifiFragment;
-import com.anynet.wifiworld.R;
 
 public class MainActivity extends BaseActivity implements MessageListener {
 
@@ -99,6 +88,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		dbHelper = DBHelper.getInstance(this);
 
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
+		AVOSCloud.initialize(this, 
+			"0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as", "ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
 
 		Intent i = getIntent();
 		i.getBooleanExtra("isFromWelcomeActivity", false);
@@ -135,8 +126,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		Data.setCurrentUserID(this, "123456789");
 
 		changeToConnect();
-
-		updateData();
 	}
 
 	@Override
@@ -179,11 +168,9 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		switch (view.getId()) {
 		case R.id.btn_connect:
 			changeToConnect();
-			ReportUtil.reportClickTabDig(this);
 			break;
 		case R.id.btn_nearby:
 			chageToNearby();
-			ReportUtil.reportClickTabWithDraw(this);
 			break;
 //		case R.id.btn_find:
 //			chageToFind();
@@ -191,7 +178,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 //			break;
 		case R.id.btn_my:
 			chageToMy();
-			ReportUtil.reportClickTabWithMY(this);
 			break;
 		}
 
@@ -292,13 +278,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		super.onNewIntent(intent);
 	}
 
-	/** 获取系统推送 */
-	private void updateData() {
-
-		getSystemMsg(dbHelper.getMaxServId());
-
-	}
-
 	private int retryCnt = 0;
 
 	private void reportDeviceToken(final String appVersion, final String deviceToken) {
@@ -331,50 +310,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			}
 		};
 		handler.post(reportDeviceTokenRunnable);
-	}
-
-	/** 查询水晶信息 */
-	private void getSystemMsg(long maxServId) {
-
-		// 通过上拉刷新方法 所有数据都插入数据库中
-		AppRestClient.getSystemMsg(maxServId, 0, Const.PAGE_SIZE, new ResponseCallback<SystemMsgResp>(
-				WifiWorldApplication.getInstance()) {
-
-			public void onSuccess(JSONObject paramJSONObject, SystemMsgResp systemMsgResp) {
-				// 返回数据ok则更新
-				if (systemMsgResp.isOK()) {
-					if (systemMsgResp.getMsg().length > 0) {
-						ivMyNew.setVisibility(View.INVISIBLE);
-
-						long maxSysMsgId = PreferenceHelper.getInstance().getLong(Const.MAX_SYS_MSG_ID, 0);
-						for (Msg msg : systemMsgResp.getMsg()) {
-							// 新消息
-							if (msg.getId() > maxSysMsgId) {
-								ivMyNew.setVisibility(View.VISIBLE);
-								PreferenceHelper.getInstance().setBoolean(Const.SYS_NEW_MSG, true);
-								break;
-							}
-						}
-					} else {
-						ivMyNew.setVisibility(View.INVISIBLE);
-					}
-
-				} else {
-					// 业务错误
-					// XLLog.e(TAG, systemMsgResp.getReturnDesc());
-					ivMyNew.setVisibility(View.INVISIBLE);
-				}
-
-			}
-
-			public void onFailure(int paramInt, Throwable paramThrowable) {
-				// 网络问题
-				// XLLog.e(TAG, paramThrowable.toString());
-				ivMyNew.setVisibility(View.INVISIBLE);
-			}
-
-		});
-
 	}
 
 	@Override

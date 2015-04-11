@@ -263,10 +263,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				loginHelper.setLongitude(Longitude);
 				loginHelper.setLatitude(Latitude);
 
-				// mAMapLocationManager.addGeoFenceAlert(Latitude,
-				// Longitude, 1000,
-				// 1000 * 60 * 30
-				// , mPendingIntent);
 				// query wifi nearby
 				WifiProfile wifis = new WifiProfile();
 				wifis.QueryInRadians(getApplicationContext(), new BmobGeoPoint(Longitude, Latitude), 0.025,

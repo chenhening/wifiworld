@@ -19,7 +19,6 @@ import com.anynet.wifiworld.broadcast.GlobalBroadcast;
 import com.anynet.wifiworld.broadcast.NetworkStateListener;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 import com.anynet.wifiworld.dialog.XLWaitingDialog;
-import com.anynet.wifiworld.report.LogcatHelper;
 import com.anynet.wifiworld.util.ActivityUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
@@ -167,8 +166,8 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		LogcatHelper lh = LogcatHelper.getInstance(this);
-		lh.start();
+		//LogcatHelper lh = LogcatHelper.getInstance(this);
+		//lh.start();
 		bindingView();
 		// 将Activity放入堆栈中
 		WifiWorldApplication.getInstance().activityCreated(this);
@@ -201,7 +200,7 @@ public class BaseActivity extends FragmentActivity {
 		// LoginHelper.getInstance().removeLogoutObserver(mLogoutListener);
 		// }
 		WifiWorldApplication.getInstance().activityDestroyed(this);
-		LogcatHelper.getInstance(this).start();
+		//LogcatHelper.getInstance(this).start();
 	}
 
 	protected void onNewIntent(Intent intent) {

@@ -151,7 +151,7 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		//WifiStatusReceiver.schedule(getActivity());
-		WifiStatusReceiver.bindWifiService(getActivity(), conn);
+		//WifiStatusReceiver.bindWifiService(getActivity(), conn);
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
