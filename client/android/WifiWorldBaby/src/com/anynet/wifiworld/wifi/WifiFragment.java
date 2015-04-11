@@ -2,6 +2,10 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import cn.smssdk.app.NewAppReceiver;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
@@ -25,14 +29,18 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -57,7 +65,10 @@ public class WifiFragment extends MainFragment {
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
 	private LinearLayout mWifiSquareLayout;
-	private PopupWindow mPopupWindow;
+	private PopupWindow mWifiSquarePopup;
+	private LinearLayout mWifiSpeedLayout;
+	private LinearLayout mWifiShareLayout;
+	private LinearLayout mWifiLouderLayout;
 	
 	private boolean mBroadcastRegistered;
 	
@@ -136,6 +147,40 @@ public class WifiFragment extends MainFragment {
 		}
 	};
 	
+	private int curSquareIdx = R.id.wifi_speed;
+	private OnClickListener mSquareClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View view) {
+			switch (view.getId()) {
+			case R.id.wifi_speed:
+				mWifiSpeedLayout.setVisibility(View.VISIBLE);
+				mWifiShareLayout.setVisibility(View.GONE);
+				mWifiLouderLayout.setVisibility(View.GONE);
+				break;
+			case R.id.wifi_share:
+				mWifiSpeedLayout.setVisibility(View.GONE);
+				mWifiShareLayout.setVisibility(View.VISIBLE);
+				mWifiLouderLayout.setVisibility(View.GONE);
+				break;
+			case R.id.wifi_louder:
+				mWifiSpeedLayout.setVisibility(View.GONE);
+				mWifiShareLayout.setVisibility(View.GONE);
+				mWifiLouderLayout.setVisibility(View.VISIBLE);
+				break;
+			default:
+				break;
+			}
+			if (!mWifiSquarePopup.isShowing()) {
+				showPopupWindow(view, mWifiSquarePopup);
+			} else if (curSquareIdx == view.getId()) {
+				mWifiSquarePopup.dismiss();
+			}
+			
+			curSquareIdx = view.getId();
+		}
+	};
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -151,7 +196,7 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		//WifiStatusReceiver.schedule(getActivity());
-		//WifiStatusReceiver.bindWifiService(getActivity(), conn);
+		WifiStatusReceiver.bindWifiService(getActivity(), conn);
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
@@ -364,34 +409,63 @@ public class WifiFragment extends MainFragment {
 		mWifiInfo = wifiConnected;
 	}
 	
+	private void showPopupWindow(View view, PopupWindow popupWindow) {
+		Log.i(TAG, "Show Wifi Square PopupWindow");
+		popupWindow.setFocusable(false);
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setAnimationStyle(R.style.PopupAnimation);
+		popupWindow.showAsDropDown(view);
+	}
+	
 	private void initWifiSquarePopupView() {
-		if (mPopupWindow == null) {
+		if (mWifiSquarePopup == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
+			
+			mWifiSpeedLayout = (LinearLayout) popupView.findViewById(R.id.wifi_speed_layout);
+			mWifiShareLayout = (LinearLayout) popupView.findViewById(R.id.wifi_share_layout);
+			mWifiLouderLayout = (LinearLayout) popupView.findViewById(R.id.wifi_louder_layout);
+			
 			//create one pop-up window object
-			mPopupWindow = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			
 			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
 			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
+			
+			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
+			comment_edit.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View view) {
+					Toast.makeText(getActivity(), "dianjishit", Toast.LENGTH_LONG).show();
+					openInputMethod(comment_edit);
+				}
+			});
 		}
 	}
 	
-	private void showPopupWindow(View view) {
-		Log.i(TAG, "show PopupWindow");
-		mPopupWindow.setFocusable(true);
-		mPopupWindow.setOutsideTouchable(false);
-		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-		mPopupWindow.setAnimationStyle(R.style.PopupAnimation);
-		mPopupWindow.showAsDropDown(view);
+	private void setWifiSquareListener(LinearLayout wifiTasteLayout) {
+		TextView wifiSpeed = (TextView) wifiTasteLayout.findViewById(R.id.wifi_speed);
+		wifiSpeed.setOnClickListener(mSquareClickListener);
+		
+		TextView wifiShare = (TextView) wifiTasteLayout.findViewById(R.id.wifi_share);
+		wifiShare.setOnClickListener(mSquareClickListener);
+		
+		TextView wifiLouder = (TextView) wifiTasteLayout.findViewById(R.id.wifi_louder);
+		wifiLouder.setOnClickListener(mSquareClickListener);
 	}
 	
-	private void setWifiSquareListener(LinearLayout wifiTasteLayout) {
-		TextView wifiSpeed = (TextView) wifiTasteLayout.findViewById(R.id.wifi_speed_test);
-		wifiSpeed.setOnClickListener(new View.OnClickListener() {
+	private void openInputMethod(final EditText editText) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
 			
 			@Override
-			public void onClick(View view) {
-				showPopupWindow(view);
+			public void run() {
+				InputMethodManager inputManager = (InputMethodManager) editText.getContext()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputManager.showSoftInput(editText, 0);
+				
 			}
-		});
+		}, 200);
 	}
 }

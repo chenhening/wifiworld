@@ -98,7 +98,7 @@
             android:visibility="gone" >
 
             <TextView
-                android:id="@+id/wifi_speed_test"
+                android:id="@+id/wifi_speed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -124,7 +124,7 @@
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/wifi_trumpet"
+                android:id="@+id/wifi_louder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
