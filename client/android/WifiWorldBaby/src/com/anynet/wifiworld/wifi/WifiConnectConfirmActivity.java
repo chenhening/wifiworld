@@ -25,8 +25,8 @@ public class WifiConnectConfirmActivity extends Activity {
 	private View mView;
 	private TextView mSecurityView;
 	private TextView mSignalView;
-	private Button mConnectBtn;
-	private Button mCancelBtn;
+	private TextView mConnectBtn;
+	private TextView mCancelBtn;
 	private TextView mTitle;
 	
 	private WifiInfoScanned mWifiInfoScanned;
@@ -64,22 +64,21 @@ public class WifiConnectConfirmActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		
 		ctx = this;
 		
-		mView = View.inflate(this, R.layout.wifi_floating, null);
-		final DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		mView.setMinimumWidth(Math.min(dm.widthPixels, dm.heightPixels) - 20);
+		mView = View.inflate(this, R.layout.wifi_connect_dialog, null);
+//		final DisplayMetrics dm = new DisplayMetrics();
+//		getWindowManager().getDefaultDisplay().getMetrics(dm);
+//		mView.setMinimumWidth(Math.min(dm.widthPixels, dm.heightPixels) - 20);
 		setContentView(mView);
 		
 		mTitle = (TextView)mView.findViewById(R.id.wifi_title);
 		mSecurityView = (TextView)mView.findViewById(R.id.security_text);
 		mSignalView = (TextView)mView.findViewById(R.id.signal_strength_text);
-		mConnectBtn = (Button)mView.findViewById(R.id.btn_connect);
-		mCancelBtn = (Button)mView.findViewById(R.id.btn_cancel);
+		mConnectBtn = (TextView)mView.findViewById(R.id.btn_connect);
+		mCancelBtn = (TextView)mView.findViewById(R.id.btn_cancel);
 		mConnectBtn.setOnClickListener(mConnectClickListener);
 		mCancelBtn.setOnClickListener(mCancelClickListener);
 		

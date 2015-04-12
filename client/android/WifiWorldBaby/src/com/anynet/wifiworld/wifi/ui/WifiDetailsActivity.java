@@ -376,7 +376,6 @@ public class WifiDetailsActivity extends BaseActivity {
 						List<String> comment_item = mWifiInfoScanned.getComments();
 						mListComments.setAdapter(new ArrayAdapter<String>(getBaseContext(), R.layout.list_view_item, comment_item));
 					}
-					Log.i(TAG, "comment, dynamic, message, follow: " + mCommentsFlag + mDynamicFlag + mMessagesFlag + mFollowFlag);
 					if (mCommentsFlag != GET_DATA_DEFAULT && mDynamicFlag != GET_DATA_DEFAULT
 							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT) {
 						mProcessBar.setVisibility(View.GONE);

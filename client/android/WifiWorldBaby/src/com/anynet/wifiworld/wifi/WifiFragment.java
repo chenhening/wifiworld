@@ -17,17 +17,20 @@ import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -69,6 +72,8 @@ public class WifiFragment extends MainFragment {
 	private LinearLayout mWifiSpeedLayout;
 	private LinearLayout mWifiShareLayout;
 	private LinearLayout mWifiLouderLayout;
+	
+	private WifiConnectDialog mWifiConnectDialog;
 	
 	private boolean mBroadcastRegistered;
 	
@@ -116,12 +121,6 @@ public class WifiFragment extends MainFragment {
 						if (mWifiListAdapter != null) {
 							Log.i(TAG, "start scan wifi list");
 							boolean success = mWifiListHelper.fillWifiList();
-							Log.i(TAG, "start scan wifi list:"+success);
-//							mWifiFree = mWifiListHelper.getWifiFrees();
-//							mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//							Log.i(TAG, "start scan wifi list:"+mWifiFree.size() + " " + mWifiEncrypt.size());
-//							updateWifiConMore(mWifiNameView);
-//							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 						}
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
@@ -201,6 +200,8 @@ public class WifiFragment extends MainFragment {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
 		getActivity().registerReceiver(mLoginReceiver, filter);
+		
+		mWifiConnectDialog = new WifiConnectDialog(getActivity());
 	}
 
 	@Override
@@ -245,11 +246,12 @@ public class WifiFragment extends MainFragment {
 					int position, long id) {
 				if (position < (mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1);
-					Intent intent = new Intent("com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM");
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("WifiSelected", mWifiItemClick);
-					intent.putExtras(bundle);
-					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
+//					Intent intent = new Intent("com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM");
+//					Bundle bundle = new Bundle();
+//					bundle.putSerializable("WifiSelected", mWifiItemClick);
+//					intent.putExtras(bundle);
+//					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
+					showWifiConnectConfirmDialog(mWifiItemClick);
 				}
 			}
 		});
@@ -290,10 +292,6 @@ public class WifiFragment extends MainFragment {
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
 			WifiStatusReceiver.stopWifiService(getActivity());
-//			mWifiFree = mWifiListHelper.getWifiFrees();
-//			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//			updateWifiConMore(mWifiNameView);
-//			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
@@ -348,6 +346,42 @@ public class WifiFragment extends MainFragment {
 		}
 	}
 
+	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned) {
+		mWifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
+		mWifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
+		mWifiConnectDialog.setSecurity(wifiInfoScanned.getEncryptType());
+		mWifiConnectDialog.setLeftBtnStr("取消");
+		mWifiConnectDialog.setRightBtnStr("确定");
+		
+		mWifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				boolean connResult = false;
+				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
+				if (cfgSelected != null) {
+					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), false);
+				} else {
+					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
+				}
+				dialog.dismiss();
+				if (connResult) {
+					mWifiListHelper.fillWifiList();
+				} else {
+					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		mWifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+
+				dialog.dismiss();
+
+			}
+		});
+
+		mWifiConnectDialog.show();
+	}
+	
 //	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //		
 //		@Override
