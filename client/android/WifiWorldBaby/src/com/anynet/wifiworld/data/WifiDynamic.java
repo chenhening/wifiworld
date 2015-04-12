@@ -178,6 +178,7 @@ public class WifiDynamic extends BmobObject {
 					@Override
 					public void onFailure(int arg0, String msg) {
 						Log.d("QueryConnectedTimes", "query failed: " + msg);
+						_callback.onFailed(msg);
 					}
 
 					@Override

@@ -266,7 +266,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/wifi_report"
+                    android:id="@+id/wifi_black"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -280,13 +280,13 @@
                     android:background="?android:attr/listDivider" />
 
                 <TextView
-                    android:id="@+id/wifi_watch"
+                    android:id="@+id/wifi_follow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/orange"
                     android:gravity="center"
-                    android:text="关注WiFi" />
+                    android:text="收藏WiFi" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
