@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.knock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -7,37 +8,49 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.app.BaseFragment;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.util.DipPixelUtil;
-import com.anynet.wifiworld.util.NetHelper;
+import com.anynet.wifiworld.util.LoginHelper;
 
 public class KnockStepFirstActivity extends BaseActivity {
 
 	private static final String TAG = KnockStepFirstActivity.class.getSimpleName();
-	StepFragment[] mSetupFragment = new StepFragment[3];
+	BaseFragment[] mSetupFragment = new BaseFragment[4];
 	int currentIndex = 0;
+	private WifiQuestions mQuestions;
+	private boolean mAskOrAnswer = false; //true: ask, false: answer
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		currentIndex = 0;
 		isAnimation = false;
 		setContentView(R.layout.knock_step_setup);
 		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+		String whoami = intent.getStringExtra("whoami");
+		if (whoami != null && whoami.equals("WifiDetailsActivity")) {
+			mAskOrAnswer = true;
+			mQuestions = (WifiQuestions) intent.getSerializableExtra("data");
+			for (int i = 0; i < 3; i++) {
+				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i));
+			}
+		} else {
+			mQuestions = new WifiQuestions();
+			mQuestions.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
+			for (int i = 0; i < 3; i++) {
+				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i));
+			}
+		}
 		initView();
-
 	}
 
 	private void initView() {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < 3; i++) {
-			mSetupFragment[i] = new StepFragment();
-			mSetupFragment[i].setTitle("我是第" + i + "个Fragment！");
-		}
-
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (!mSetupFragment[currentIndex].isAdded())
 			ft.add(R.id.knock_fragment_container, mSetupFragment[0]);
@@ -61,7 +74,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				next();
 			}
 		});
@@ -143,8 +155,11 @@ public class KnockStepFirstActivity extends BaseActivity {
 	public void next() {
 		if (isAnimation)
 			return;
-		if (currentIndex == 2) {
-			currentIndex = 2;
+		
+		//提取数据
+		if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+			showToast("问题的每一项都不能为空，请补全。");
+			return;
 		}
 
 		if (currentIndex == 1) {
@@ -176,8 +191,37 @@ public class KnockStepFirstActivity extends BaseActivity {
 	}
 
 	private void save() {
-		// TODO Auto-generated method stub
+		if (mAskOrAnswer) {
+			//验证答案并提交
+			for (int i = 0; i < 3; ++i) {
+				if (((AnswerFragment)mSetupFragment[i]).getRightAnswer() != 1) {
+					showToast("问题回答的不完全正确请稍后再试。");
+					break;
+				}
+			}
+			//保存敲门数据到本地
+			if (mQuestions.MacAddr != null)
+				LoginHelper.getInstance(getApplicationContext()).mKnockList.add(mQuestions.MacAddr);
+		} else {
+			if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+				showToast("问题的每一项都不能为空，请补全。");
+				return;
+			}
+			mQuestions.StoreRemote(getApplicationContext(), new DataCallback<WifiQuestions>() {
 
+				@Override
+				public void onSuccess(WifiQuestions object) {
+					showToast("上传敲门问题成功。");
+				}
+
+				@Override
+				public void onFailed(String msg) {
+					showToast("当前网络不稳定，上传问题失败，请稍后再试。");
+				}
+				
+			});
+		}
+		finish();
 	}
 
 	private void reflesh() {

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="334dp"
+    android:layout_height="202dp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/wifi_title_layout"
+        android:layout_width="334dp"
+        android:layout_height="30dp"
+        android:gravity="left|center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/wifi_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="@string/tips"
+            style="@style/dlg_title_txt"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="334dp"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:minHeight="100dp"
+        android:orientation="vertical" >
+        
+        <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content">
+	        
+	        <TextView
+	            style="@style/textAppearanceBaseContent"
+	            android:text="@string/signal"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        
+	        <TextView android:id="@+id/signal_strength_text"
+	            android:text="Poor"
+	            android:paddingLeft = "5sp"
+	            android:textStyle="bold"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/dlg_content_txt" />
+	    
+		</LinearLayout>
+        
+        <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content">
+	        
+	        <TextView
+	            style="@style/textAppearanceBaseContent"
+	            android:text="@string/security"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        
+	        <TextView android:id="@+id/security_text"
+	            android:text="WEP"
+	            android:paddingLeft = "5sp"
+	            android:textStyle="bold"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/dlg_content_txt" />
+            
+	    </LinearLayout>
+        
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E7E9EA" />
+    
+    <LinearLayout
+        android:id="@+id/buttons_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            style="@style/dlg_left_button_txt"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#E7E9EA" />
+
+        <TextView
+            android:id="@+id/btn_connect"
+            style="@style/dlg_right_button_txt"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="连接" />
+    </LinearLayout>
+
+</LinearLayout>

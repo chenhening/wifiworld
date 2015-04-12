@@ -39,8 +39,8 @@ public class WifiMessages extends BmobObject {
 		});
 	}
 	
-	public void QueryByMacAddress(final Context context, final String Mac, MessagesCallback<WifiMessages> callback) {
-		final MessagesCallback<WifiMessages> _callback = callback;
+	public void QueryByMacAddress(final Context context, final String Mac, MultiDataCallback<WifiMessages> callback) {
+		final MultiDataCallback<WifiMessages> _callback = callback;
 		final BmobQuery<WifiMessages> query = new BmobQuery<WifiMessages>();
 		query.addWhereEqualTo(MACADDR_TAG, Mac);
 		Log.d(TAG, "Start to query wifi messages table for:" + Mac);
@@ -67,10 +67,5 @@ public class WifiMessages extends BmobObject {
 	
 	public void MarkSendTime() {
 		SendTime = System.currentTimeMillis();
-	}
-	
-	public interface MessagesCallback<T> {
-		public void onSuccess(List<T> object);
-		public void onFailed(String msg);
 	}
 }

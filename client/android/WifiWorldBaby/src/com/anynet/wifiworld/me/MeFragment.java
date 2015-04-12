@@ -238,14 +238,6 @@ public class MeFragment extends MainFragment {
 			}
 		});
 		
-		mPageRoot.findViewById(R.id.message_layout).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-				startActivity(i);
-			}
-		});
 		return mPageRoot;
 	}
 

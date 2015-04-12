@@ -44,7 +44,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="40bcd4d71cce6deb7199fa3df74ef9dd" />
+            android:value="39192cd2a95f37f072fa829b8349e753" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5516ac08fd98c5df10000053" >

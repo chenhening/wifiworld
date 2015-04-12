@@ -164,7 +164,7 @@ public class WifiProfile extends BmobObject {
 				query.findObjects(context, new FindListener<WifiProfile>() {
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
-						if (object.size() == 1) {
+						if (object.size() >= 1) {
 							_callback.onSuccess(object);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
