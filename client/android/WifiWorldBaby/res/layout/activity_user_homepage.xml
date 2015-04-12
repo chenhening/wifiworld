@@ -12,11 +12,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar_replacement" >
+        android:layout_below="@id/title_bar_replacement"
+        android:scrollbars="none" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="19dp"
             android:background="@color/white" >
 
             <RelativeLayout
@@ -142,6 +144,7 @@
                     android:id="@+id/sev_email"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHint="@string/account_edit"
                     item:contentHintColor="@color/gray"
@@ -156,6 +159,7 @@
                     android:id="@+id/sev_password"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHint="@string/account_edit"
                     item:contentHintColor="@color/gray"
@@ -217,6 +221,7 @@
                     android:id="@+id/sev_job"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
@@ -230,6 +235,7 @@
                     android:id="@+id/sev_interest"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHintColor="@color/gray"
                     item:icon="@drawable/icon_person_center_attention_shopper"
@@ -245,6 +251,8 @@
                 style="@style/Button.Default.Green"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/ll_account_desc"
+                android:layout_margin="20dp"
+                android:layout_marginBottom="19dp"
                 android:layout_marginTop="19dp"
                 android:background="@drawable/umeng_common_gradient_orange"
                 android:text="@string/setting_exit"

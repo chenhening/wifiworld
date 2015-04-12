@@ -1,16 +1,20 @@
 package com.anynet.wifiworld.me;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.view.SettingEditItemView;
+import com.anynet.wifiworld.view.SettingEditItemView.ClickButtonListener;
 import com.anynet.wifiworld.view.SettingEditItemView.ClickEditButtonListener;
 import com.anynet.wifiworld.view.SettingItemView;
 
@@ -99,17 +104,17 @@ public class MyAccountActivity extends BaseActivity {
 				});
 				nicknameIV.setContent(mUserProfile.NickName);
 			}
+
 			@Override
 			public void beforeEdit() {
 				// TODO Auto-generated method stub
 			}
 		});
 
-
 		sexIV = (SettingEditItemView) findViewById(R.id.sev_sex);
 		sexIV.setContent(mUserProfile.getSex());
 		sexIV.setClickEditButtonListener(new ClickEditButtonListener() {
-			
+
 			@Override
 			public void onSave(CharSequence charSequence) {
 				// TODO Auto-generated method stub
@@ -131,11 +136,11 @@ public class MyAccountActivity extends BaseActivity {
 				});
 				sexIV.setContent(mUserProfile.getSex());
 			}
-			
+
 			@Override
 			public void beforeEdit() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -148,6 +153,65 @@ public class MyAccountActivity extends BaseActivity {
 				finish();
 			}
 		});
+
+		
+
+		((SettingEditItemView) findViewById(R.id.sev_email)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+//				final EditText inputServer = new EditText(MyAccountActivity.this);
+//				AlertDialog.Builder builder = new AlertDialog.Builder(MyAccountActivity.this);
+//				builder.setTitle("Server").setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
+//						.setNegativeButton("Cancel", null);
+//				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//
+//					public void onClick(DialogInterface dialog, int which) {
+//						String value = inputServer.getText().toString();
+//						((SettingEditItemView) findViewById(R.id.sev_email)).setContent(value);
+//					}
+//				});
+//				builder.show();
+			}
+		});
+		((SettingEditItemView) findViewById(R.id.sev_password)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+
+			}
+		});
+
+		((SettingEditItemView) findViewById(R.id.sev_sex)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+			}
+		});
+		((SettingEditItemView) findViewById(R.id.sev_age)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+				final Calendar c = Calendar.getInstance();
+				DatePickerDialog dialog = new DatePickerDialog(MyAccountActivity.this,
+						new DatePickerDialog.OnDateSetListener() {
+							@Override
+							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+								c.set(year, monthOfYear, dayOfMonth);
+								((SettingEditItemView) findViewById(R.id.sev_age)).setContent(DateFormat.format(
+										"yyy-MM-dd", c).toString());
+							}
+						}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				dialog.show();
+			}
+		});
+		((SettingEditItemView) findViewById(R.id.sev_job)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+			}
+		});
+		((SettingEditItemView) findViewById(R.id.sev_interest)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onClick(CharSequence charSequence) {
+			}
+		});
+
 	}
 
 	@Override

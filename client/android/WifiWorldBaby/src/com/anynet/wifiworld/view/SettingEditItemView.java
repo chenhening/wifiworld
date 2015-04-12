@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -33,7 +34,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	private static final int EDIT_TYPE_NORMAL = 0;
 	private static final int EDIT_TYPE_INPUTBOX = 1;
 	private static final int EDIT_TYPE_SELECTBOX = 2;
-	
+
 	private static final int EDIT_MODE = 0;
 	private static final int VIEW_MODE = 1;
 
@@ -220,11 +221,14 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				contentHint.setVisibility(View.GONE);
 				contentTV.setVisibility(VISIBLE);
 			} else if (EDIT_TYPE_INPUTBOX == contentEditType) {
-				if (contentHint.getText() == null || contentHint.getText().equals("")) {
+				if (contentTV.getText() == null && contentTV.getText().equals("")) {
 					contentHint.setText(R.string.input);
-				}
-				if (contentTV.getText() != null && !contentTV.getText().equals("")) {
+					contentHint.setVisibility(VISIBLE);
+				} else if (contentTV.getText() != null && !contentTV.getText().equals("")) {
+					// contentHint.setText(contentTV.getText());
 					contentHint.setVisibility(View.INVISIBLE);
+					// contentET.setText(contentTV.getText());
+					contentTV.setVisibility(VISIBLE);
 				}
 			} else if (EDIT_TYPE_NORMAL == contentEditType) {
 				contentET.setVisibility(View.INVISIBLE);
@@ -240,6 +244,24 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			contentHint.setVisibility(View.GONE);
 		}
 
+	}
+
+	@Override
+	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+		// TODO Auto-generated method stub
+		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+		
+		if(!gainFocus){
+			if (EDIT_TYPE_INPUTBOX == contentEditType  && contentET.getText()!=null && !contentET.getText().equals("")) {
+				contentET.setText(contentTV.getText());
+			}
+		}
+	}
+
+	@Override
+	public void onHoverChanged(boolean hovered) {
+		// TODO Auto-generated method stub
+		super.onHoverChanged(hovered);
 	}
 
 	@Override
@@ -289,8 +311,11 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	private void show(int mode) {
 		switch (mode) {
 		case EDIT_MODE: {
-			if (contentHint.getText() != null && !contentHint.getText().equals(""))
+			if (contentTV.getText() != null && !contentTV.getText().equals("")) {
+				contentET.setText(contentTV.getText());
+			} else if (contentHint.getText() != null && !contentHint.getText().equals("")) {
 				contentET.setHint(contentHint.getText());
+			}
 			contentTV.setVisibility(View.INVISIBLE);
 			contentET.setVisibility(VISIBLE);
 			contentHint.setVisibility(INVISIBLE);
@@ -353,7 +378,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		return mClickButtonListener;
 	}
 
-	public void setmClickButtonListener(ClickButtonListener mClickButtonListener) {
+	public void setClickButtonListener(ClickButtonListener mClickButtonListener) {
 		this.mClickButtonListener = mClickButtonListener;
 	}
 
