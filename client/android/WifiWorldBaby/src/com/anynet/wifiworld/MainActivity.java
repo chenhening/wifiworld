@@ -258,12 +258,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// 红点消失
-		if (PreferenceHelper.getInstance().getBoolean(Const.SYS_NEW_MSG, false)) {
-			ivMyNew.setVisibility(View.VISIBLE);
-		} else {
-			ivMyNew.setVisibility(View.INVISIBLE);
-		}
 		MobclickAgent.onPageStart("MainScreen"); // 统计页面
 	}
 
