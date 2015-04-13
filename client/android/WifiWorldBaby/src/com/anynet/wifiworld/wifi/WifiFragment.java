@@ -10,6 +10,9 @@ import cn.smssdk.app.NewAppReceiver;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.WifiProviderRigisterActivity;
+import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
+import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
@@ -31,6 +34,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -477,9 +482,37 @@ public class WifiFragment extends MainFragment {
 			//create one pop-up window object
 			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			
+			//加速ui
 			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
 			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
 			
+			//shared ui
+			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
+			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝商户服务协议》</a>";
+			mTVLinkLicense.setText(Html.fromHtml(sText));
+			mTVLinkLicense.setClickable(true);
+			mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());
+			mTVLinkLicense.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterLicenseActivity.class);
+					startActivity(i);
+				}
+			});
+			TextView mAcceptTv = (TextView) mWifiShareLayout.findViewById(R.id.certify_button);
+			mAcceptTv.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
+					startActivity(i);
+				}
+			});
+			
+			//评论ui
 			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
 			comment_edit.setOnClickListener(new OnClickListener() {
 				

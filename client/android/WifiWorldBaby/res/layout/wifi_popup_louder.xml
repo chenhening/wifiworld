@@ -9,6 +9,7 @@
         android:id="@+id/wifi_louder_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_main_text"
         android:orientation="vertical" >
 
         <ImageView
@@ -24,9 +25,12 @@
             android:id="@+id/wifi_louder_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="2"
+            android:gravity="center"
             android:text="小天是我见过的最单纯善良的女孩"
-            android:textColor="@color/white" />
+            android:textColor="@color/knock_question_click_color" />
+
     </LinearLayout>
 
     <View
@@ -64,13 +68,14 @@
             <EditText
                 android:id="@+id/wifi_input_frame"
                 android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="3"
                 android:background="@null"
                 android:drawablePadding="@dimen/dimen_10_dip"
                 android:gravity="center_vertical"
                 android:hint="输入评论"
+                android:maxLines="4"
                 android:paddingBottom="@dimen/dimen_12_dip"
                 android:paddingTop="@dimen/dimen_12_dip"
                 android:textColor="@color/font_color_black"
