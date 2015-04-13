@@ -2,12 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="false"
+    android:longClickable="false"
     android:padding="8dp" >
 
     <ImageView
         android:id="@+id/iv_wifi_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:clickable="false"
+        android:longClickable="false"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
@@ -16,12 +20,16 @@
         android:layout_alignBottom="@+id/iv_wifi_logo"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@+id/iv_wifi_logo"
+        android:clickable="false"
+        android:longClickable="false"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="21dp"
-            android:layout_gravity="center" >
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:longClickable="false" >
 
             <TextView
                 android:id="@+id/tv_wifi_used_ssid"
@@ -29,6 +37,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:background="@color/color_chat_bg"
+                android:clickable="false"
+                android:longClickable="false"
                 android:text="TextView" />
 
             <TextView
@@ -38,6 +48,8 @@
                 android:layout_marginLeft="1dp"
                 android:layout_weight="0.5"
                 android:background="@color/color_chat_bg"
+                android:clickable="false"
+                android:longClickable="false"
                 android:text="TextView" />
 
         </LinearLayout>
@@ -48,6 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/color_chat_bg"
+            android:clickable="false"
+            android:longClickable="false"
             android:text="TextView" />
 
         <LinearLayout
@@ -61,6 +75,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:background="@color/color_chat_bg"
+                android:clickable="false"
+                android:longClickable="false"
                 android:text="TextView" />
 
             <TextView
@@ -70,6 +86,8 @@
                 android:layout_marginLeft="1dp"
                 android:layout_weight="0.5"
                 android:background="@color/color_chat_bg"
+                android:clickable="false"
+                android:longClickable="false"
                 android:text="TextView" />
 
         </LinearLayout>

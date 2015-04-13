@@ -1,15 +1,11 @@
 package com.anynet.wifiworld;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import com.anynet.wifiworld.util.DisplayUtil;
+
 import com.anynet.wifiworld.util.XLLog;
-import com.anynet.wifiworld.R;
 
 
 /**

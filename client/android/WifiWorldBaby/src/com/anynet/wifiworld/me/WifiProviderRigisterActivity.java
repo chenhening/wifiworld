@@ -1,29 +1,14 @@
 package com.anynet.wifiworld.me;
 
-import org.xml.sax.XMLReader;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Html.TagHandler;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.id;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 
 public class WifiProviderRigisterActivity extends BaseActivity {

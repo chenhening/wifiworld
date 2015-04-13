@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="1"
-    android:versionName="0.0.1" >
+    android:versionCode="4"
+    android:versionName="0.1.4" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="22" />
 
     <supports-screens
         android:anyDensity="true"
@@ -44,7 +44,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="39192cd2a95f37f072fa829b8349e753" />
+            android:value="26c4d1b29815fd60ed83ff6095da2714" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5516ac08fd98c5df10000053" >

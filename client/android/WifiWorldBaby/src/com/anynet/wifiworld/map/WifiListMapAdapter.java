@@ -2,24 +2,16 @@ package com.anynet.wifiworld.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.DataCallback;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiType;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
-
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.WifiInfoScanned;
 
 
 public class WifiListMapAdapter extends BaseAdapter {

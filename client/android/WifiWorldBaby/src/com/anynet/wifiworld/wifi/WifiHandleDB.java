@@ -1,7 +1,5 @@
 package com.anynet.wifiworld.wifi;
 
-import java.net.NetworkInterface;
-
 import org.apache.cordova.LOG;
 
 import android.content.Context;
@@ -9,7 +7,6 @@ import android.net.wifi.WifiInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.MainActivity;
