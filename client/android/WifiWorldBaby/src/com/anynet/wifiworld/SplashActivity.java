@@ -1,30 +1,20 @@
 package com.anynet.wifiworld;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.config.GlobalConfig;
+import com.anynet.wifiworld.constant.Const;
+import com.anynet.wifiworld.util.AppInfoUtil;
+import com.anynet.wifiworld.util.NetHelper;
+import com.anynet.wifiworld.util.PreferenceHelper;
 //
 //import com.xunlei.common.member.XLErrorCode;
 //import com.xunlei.common.member.XLOnUserListener;
 //import com.xunlei.common.member.XLUserInfo;
 //import com.xunlei.common.member.XLUserUtil;
-import com.anynet.wifiworld.app.BaseActivity;
-import com.anynet.wifiworld.config.GlobalConfig;
-import com.anynet.wifiworld.constant.Const;
-import com.anynet.wifiworld.util.AppInfoUtil;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.NetHelper;
-import com.anynet.wifiworld.util.PreferenceHelper;
-import com.anynet.wifiworld.util.UmengHelper;
-import com.anynet.wifiworld.R;
 
 public class SplashActivity extends BaseActivity
 {

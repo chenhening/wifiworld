@@ -1,22 +1,11 @@
 package com.anynet.wifiworld.wifi;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.anynet.wifiworld.R;
 
 
 public class WifiListAdapter extends BaseAdapter {

@@ -3,7 +3,6 @@ package com.anynet.wifiworld.me;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.xclcharts.chart.LineChart;
 import org.xclcharts.chart.LineData;
@@ -19,10 +18,6 @@ import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
-
-import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiDynamic;
 
 public class ProviderIncomeChartView extends ChartView {
 

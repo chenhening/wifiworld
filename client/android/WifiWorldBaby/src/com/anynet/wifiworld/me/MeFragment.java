@@ -17,14 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.knock.KnockStepFirstActivity;
-import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
