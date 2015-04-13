@@ -11,7 +11,7 @@ import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
+import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
@@ -76,6 +76,7 @@ public class WifiFragment extends MainFragment {
 	private WifiConnectDialog mWifiConnectDialog;
 	
 	private boolean mBroadcastRegistered;
+	private boolean mSupplicantBRRegisterd;
 	
 	private WifiInfo mWifiInfo = null;
 	private WifiInfoScanned mWifiItemClick;
@@ -99,7 +100,7 @@ public class WifiFragment extends MainFragment {
 				
 			};
 	
-	private WifiStatusReceiver.WifiMonitorService mWifiMonitorService;
+	private WifiBRService.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
 		
 		@Override
@@ -110,7 +111,7 @@ public class WifiFragment extends MainFragment {
 		
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			mWifiMonitorService = ((WifiStatusReceiver.WifiMonitorService.WifiStatusBinder)service).getService();
+			mWifiMonitorService = ((WifiBRService.WifiMonitorService.WifiStatusBinder)service).getService();
 			mWifiMonitorService.setOnWifiStatusListener(new OnWifiStatusListener() {
 
 				@Override
@@ -134,13 +135,11 @@ public class WifiFragment extends MainFragment {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
 					mWifiListHelper.fillWifiList();
-				}
-
-				@Override
-				public void onSupplicantChanged(String str) {
-					mWifiNameView.setText(str);
-					mWifiNameView.setTextColor(Color.BLACK);
 					
+					if (mSupplicantBRRegisterd) {
+						getActivity().unregisterReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver);
+						mSupplicantBRRegisterd = false;
+					}
 				}
 			});
 		}
@@ -195,7 +194,8 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		//WifiStatusReceiver.schedule(getActivity());
-		WifiStatusReceiver.bindWifiService(getActivity(), conn);
+		WifiBRService.bindWifiService(getActivity(), conn);
+		mSupplicantBRRegisterd = false;
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
@@ -291,12 +291,12 @@ public class WifiFragment extends MainFragment {
 		
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
-			WifiStatusReceiver.stopWifiService(getActivity());
+			WifiBRService.stopWifiService(getActivity());
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
-			WifiStatusReceiver.stopWifiService(getActivity());
+			WifiBRService.stopWifiService(getActivity());
 		}
 	}
 
@@ -317,7 +317,6 @@ public class WifiFragment extends MainFragment {
 //		if (mBroadcastRegistered) {
 //			getActivity().unregisterReceiver(mReceiver);
 //		}
-		
 		super.onPause();
 	}
 
@@ -333,6 +332,7 @@ public class WifiFragment extends MainFragment {
 //		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //		getActivity().registerReceiver(mReceiver, filter);
 //		mBroadcastRegistered = true;
+		
 		super.onResume();
 	}
 	
@@ -355,6 +355,10 @@ public class WifiFragment extends MainFragment {
 		
 		mWifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+				getActivity().registerReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver, filter);
+				mSupplicantBRRegisterd = true;
+				
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
