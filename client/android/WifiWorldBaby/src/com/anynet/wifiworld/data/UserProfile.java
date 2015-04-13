@@ -31,8 +31,8 @@ public class UserProfile extends BmobObject {
 	public String CustomPwd; //用于固定登录的密码
 	private int Sex; //性别，男女
 	public long Age; //年龄，用滴答数表示
-	public int Job; //职业
-	public int Interest; //兴趣
+	public String Job; //职业
+	public String Interest; //兴趣
 	public Bitmap Avatar; //头像 
 
 	public static final String[] SexArray = {"女的","男的","弯的","奇怪的"};

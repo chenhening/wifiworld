@@ -1,11 +1,14 @@
 package com.anynet.wifiworld.knock;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
@@ -23,7 +26,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 	BaseFragment[] mSetupFragment = new BaseFragment[4];
 	int currentIndex = 0;
 	private WifiQuestions mQuestions;
-	private boolean mAskOrAnswer = false; //true: ask, false: answer
+	private boolean mAskOrAnswer = false; // true: ask, false: answer
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 		isAnimation = false;
 		setContentView(R.layout.knock_step_setup);
 		super.onCreate(savedInstanceState);
-		
+
 		Intent intent = getIntent();
 		String whoami = intent.getStringExtra("whoami");
 		if (whoami != null && whoami.equals("WifiDetailsActivity")) {
@@ -77,10 +80,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 				next();
 			}
 		});
-		step1V = findViewById(R.id.iv_knock_step_1);
-		step2V = findViewById(R.id.iv_knock_step_2);
-		step3V = findViewById(R.id.iv_knock_step_3);
-		moveV = findViewById(R.id.iv_move33);
 	}
 
 	public void setTitleUI() {
@@ -98,14 +97,29 @@ public class KnockStepFirstActivity extends BaseActivity {
 	private void moveQbar(boolean right) {
 		synchronized (ACCESSIBILITY_SERVICE) {
 			TranslateAnimation translateAnimation;
+			step1V = findViewById(R.id.iv_knock_step_1);
+			step2V = findViewById(R.id.iv_knock_step_2);
+			step3V = findViewById(R.id.iv_knock_step_3);
+			moveV = findViewById(R.id.iv_move33);
 			float deltaX = 0;
+			Display display  = this.getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int width = size.x;
+			int height = size.y;
+			Log.e(TAG,
+					"Display:("+width+","+height+")step1V.left:" + step1V.getLeft() + " Right:" + step1V.getRight() + " with:" + step1V.getWidth()
+							+ "   step2V.left:" + step2V.getLeft() + " right:" + step2V.getRight() + " with:"
+							+ step2V.getWidth() + "   step3V.Left:" + step3V.getLeft() + " Right:" + step3V.getRight()
+							+ " with:" + step3V.getWidth() + "   moveV.Left:" + moveV.getLeft() + " Right:"
+							+ moveV.getRight() + " with:" + moveV.getWidth());
 			if (right) {
 				if (currentIndex == 0) {
 					deltaX = step2V.getRight() - moveV.getRight();
 				} else if (currentIndex == 1) {
 					deltaX = step3V.getRight() - moveV.getRight();
 				}
-				deltaX = DipPixelUtil.px2dip(this, deltaX);
+				// deltaX = DipPixelUtil.px2dip(this, deltaX);
 				translateAnimation = new TranslateAnimation(0, deltaX, 0, 0);
 			} else {
 				if (currentIndex == 2) {
@@ -113,12 +127,12 @@ public class KnockStepFirstActivity extends BaseActivity {
 				} else if (currentIndex == 1) {
 					deltaX = moveV.getRight() - step1V.getRight();
 				}
-				deltaX = DipPixelUtil.px2dip(this, deltaX);
+				// deltaX = DipPixelUtil.px2dip(this, deltaX);
 				translateAnimation = new TranslateAnimation(0, -deltaX, 0, 0);
 			}
 
-			final int toleft = right ? (int) (moveV.getLeft() + deltaX) : (int) (moveV.getLeft() - deltaX);
-			Log.e(TAG, "toleft:" + toleft + "deltaX:" + deltaX);
+			final int toRight = right ? (int) (moveV.getRight() + deltaX) : (int) (moveV.getRight() - deltaX);
+			Log.e(TAG, "toleft:" + toRight + "deltaX:" + deltaX);
 			translateAnimation.setDuration(500);
 			translateAnimation.setAnimationListener(new Animation.AnimationListener() {
 				@Override
@@ -136,7 +150,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 					int width = moveV.getWidth();
 					int height = moveV.getHeight();
 					moveV.clearAnimation();
-					moveV.layout(toleft, top, toleft + width, top + height);
+					moveV.layout(toRight - width, top, toRight, top + height);
 					isAnimation = false;
 				}
 
@@ -155,9 +169,10 @@ public class KnockStepFirstActivity extends BaseActivity {
 	public void next() {
 		if (isAnimation)
 			return;
-		
-		//提取数据
-		if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+
+		// 提取数据
+		if (!mAskOrAnswer
+				&& !((StepFragment) mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
 			showToast("问题的每一项都不能为空，请补全。");
 			return;
 		}
@@ -192,18 +207,19 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 	private void save() {
 		if (mAskOrAnswer) {
-			//验证答案并提交
+			// 验证答案并提交
 			for (int i = 0; i < 3; ++i) {
-				if (((AnswerFragment)mSetupFragment[i]).getRightAnswer() != 1) {
+				if (((AnswerFragment) mSetupFragment[i]).getRightAnswer() != 1) {
 					showToast("问题回答的不完全正确请稍后再试。");
 					break;
 				}
 			}
-			//保存敲门数据到本地
+			// 保存敲门数据到本地
 			if (mQuestions.MacAddr != null)
 				LoginHelper.getInstance(getApplicationContext()).mKnockList.add(mQuestions.MacAddr);
 		} else {
-			if (!mAskOrAnswer && !((StepFragment)mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
+			if (!mAskOrAnswer
+					&& !((StepFragment) mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {
 				showToast("问题的每一项都不能为空，请补全。");
 				return;
 			}
@@ -218,7 +234,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 				public void onFailed(String msg) {
 					showToast("当前网络不稳定，上传问题失败，请稍后再试。");
 				}
-				
+
 			});
 		}
 		finish();
