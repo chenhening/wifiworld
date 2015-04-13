@@ -154,23 +154,98 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 
-		
+		final SettingEditItemView email = (SettingEditItemView) findViewById(R.id.sev_email);
+		if (mUserProfile.Email == null || mUserProfile.Email.equals("")) {
+			email.setContent("");
+		} else {
+			email.setContent(mUserProfile.Email);
+		}
+		email.setClickEditButtonListener(new ClickEditButtonListener() {
 
-		((SettingEditItemView) findViewById(R.id.sev_email)).setClickButtonListener(new ClickButtonListener() {
+			@Override
+			public void onSave(CharSequence charSequence) {
+				// TODO Auto-generated method stub
+				mUserProfile.Email = charSequence.toString();
+				email.setContent(mUserProfile.Email);
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+
+			@Override
+			public void beforeEdit() {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		email.setClickButtonListener(new ClickButtonListener() {
 			@Override
 			public void onClick(CharSequence charSequence) {
-//				final EditText inputServer = new EditText(MyAccountActivity.this);
-//				AlertDialog.Builder builder = new AlertDialog.Builder(MyAccountActivity.this);
-//				builder.setTitle("Server").setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
-//						.setNegativeButton("Cancel", null);
-//				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//
-//					public void onClick(DialogInterface dialog, int which) {
-//						String value = inputServer.getText().toString();
-//						((SettingEditItemView) findViewById(R.id.sev_email)).setContent(value);
-//					}
-//				});
-//				builder.show();
+				// final EditText inputServer = new
+				// EditText(MyAccountActivity.this);
+				// AlertDialog.Builder builder = new
+				// AlertDialog.Builder(MyAccountActivity.this);
+				// builder.setTitle("Server").setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
+				// .setNegativeButton("Cancel", null);
+				// builder.setPositiveButton("Ok", new
+				// DialogInterface.OnClickListener() {
+				//
+				// public void onClick(DialogInterface dialog, int which) {
+				// String value = inputServer.getText().toString();
+				// ((SettingEditItemView)
+				// findViewById(R.id.sev_email)).setContent(value);
+				// }
+				// });
+				// builder.show();
+			}
+		});
+
+		final SettingEditItemView password = (SettingEditItemView) findViewById(R.id.sev_password);
+		if (mUserProfile.Password == null || mUserProfile.Password.equals("")) {
+			password.setContent("");
+		} else {
+			password.setContent(mUserProfile.Password);
+		}
+		password.setClickEditButtonListener(new ClickEditButtonListener() {
+
+			@Override
+			public void onSave(CharSequence charSequence) {
+				// TODO Auto-generated method stub
+				mUserProfile.Password = charSequence.toString();
+				password.setContent(mUserProfile.Password);
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+
+			@Override
+			public void beforeEdit() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 		((SettingEditItemView) findViewById(R.id.sev_password)).setClickButtonListener(new ClickButtonListener() {
@@ -180,11 +255,6 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 
-		((SettingEditItemView) findViewById(R.id.sev_sex)).setClickButtonListener(new ClickButtonListener() {
-			@Override
-			public void onClick(CharSequence charSequence) {
-			}
-		});
 		((SettingEditItemView) findViewById(R.id.sev_age)).setClickButtonListener(new ClickButtonListener() {
 			@Override
 			public void onClick(CharSequence charSequence) {
@@ -201,9 +271,83 @@ public class MyAccountActivity extends BaseActivity {
 				dialog.show();
 			}
 		});
+		
+		final SettingEditItemView job = (SettingEditItemView) findViewById(R.id.sev_job);
+		if (mUserProfile.Job == null || mUserProfile.Job.equals("")) {
+			job.setContent("");
+		} else {
+			job.setContent(mUserProfile.Job);
+		}
+		job.setClickEditButtonListener(new ClickEditButtonListener() {
+
+			@Override
+			public void onSave(CharSequence charSequence) {
+				// TODO Auto-generated method stub
+				mUserProfile.Job = charSequence.toString();
+				job.setContent(mUserProfile.Job);
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+
+			@Override
+			public void beforeEdit() {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		((SettingEditItemView) findViewById(R.id.sev_job)).setClickButtonListener(new ClickButtonListener() {
 			@Override
 			public void onClick(CharSequence charSequence) {
+			}
+		});
+		
+		final SettingEditItemView interest = (SettingEditItemView) findViewById(R.id.sev_interest);
+		if (mUserProfile.Interest == null || mUserProfile.Interest.equals("")) {
+			interest.setContent("");
+		} else {
+			interest.setContent(mUserProfile.Interest);
+		}
+		interest.setClickEditButtonListener(new ClickEditButtonListener() {
+
+			@Override
+			public void onSave(CharSequence charSequence) {
+				// TODO Auto-generated method stub
+				mUserProfile.Interest = charSequence.toString();
+				interest.setContent(mUserProfile.Interest);
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+
+			@Override
+			public void beforeEdit() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 		((SettingEditItemView) findViewById(R.id.sev_interest)).setClickButtonListener(new ClickButtonListener() {
