@@ -3,8 +3,8 @@
     android:id="@+id/wifi_square_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/wifi_speed_bg" >
+    android:background="@drawable/bg_menu"
+    android:orientation="vertical" >
     
     <include
         layout="@layout/wifi_popup_speed"

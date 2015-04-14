@@ -1,6 +1,5 @@
 package com.anynet.wifiworld.me;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
@@ -85,7 +83,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
+		mTitlebar.tvTitle.setText("Wi-Fi认证登记");
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -357,8 +355,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 32);
-		intent.putExtra("outputY", 32);
+		intent.putExtra("outputX", 64);
+		intent.putExtra("outputY", 64);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, RESULT_REQUEST_CODE);
 	}

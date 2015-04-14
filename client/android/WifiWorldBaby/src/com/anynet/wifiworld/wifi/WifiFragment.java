@@ -5,14 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.smssdk.app.NewAppReceiver;
-
-import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.WifiStatusReceiver.OnWifiStatusListener;
-
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -22,7 +14,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -30,27 +21,34 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.Settings;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.anynet.wifiworld.MainActivity;
+import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
+import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
+import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
@@ -76,6 +74,7 @@ public class WifiFragment extends MainFragment {
 	private WifiConnectDialog mWifiConnectDialog;
 	
 	private boolean mBroadcastRegistered;
+	private boolean mSupplicantBRRegisterd;
 	
 	private WifiInfo mWifiInfo = null;
 	private WifiInfoScanned mWifiItemClick;
@@ -99,7 +98,7 @@ public class WifiFragment extends MainFragment {
 				
 			};
 	
-	private WifiStatusReceiver.WifiMonitorService mWifiMonitorService;
+	private WifiBRService.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
 		
 		@Override
@@ -110,7 +109,7 @@ public class WifiFragment extends MainFragment {
 		
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			mWifiMonitorService = ((WifiStatusReceiver.WifiMonitorService.WifiStatusBinder)service).getService();
+			mWifiMonitorService = ((WifiBRService.WifiMonitorService.WifiStatusBinder)service).getService();
 			mWifiMonitorService.setOnWifiStatusListener(new OnWifiStatusListener() {
 
 				@Override
@@ -134,13 +133,11 @@ public class WifiFragment extends MainFragment {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
 					mWifiListHelper.fillWifiList();
-				}
-
-				@Override
-				public void onSupplicantChanged(String str) {
-					mWifiNameView.setText(str);
-					mWifiNameView.setTextColor(Color.BLACK);
 					
+					if (mSupplicantBRRegisterd) {
+						getActivity().unregisterReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver);
+						mSupplicantBRRegisterd = false;
+					}
 				}
 			});
 		}
@@ -195,7 +192,8 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		//WifiStatusReceiver.schedule(getActivity());
-		WifiStatusReceiver.bindWifiService(getActivity(), conn);
+		WifiBRService.bindWifiService(getActivity(), conn);
+		mSupplicantBRRegisterd = false;
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
@@ -291,12 +289,12 @@ public class WifiFragment extends MainFragment {
 		
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
-			WifiStatusReceiver.stopWifiService(getActivity());
+			WifiBRService.stopWifiService(getActivity());
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
-			WifiStatusReceiver.stopWifiService(getActivity());
+			WifiBRService.stopWifiService(getActivity());
 		}
 	}
 
@@ -317,7 +315,6 @@ public class WifiFragment extends MainFragment {
 //		if (mBroadcastRegistered) {
 //			getActivity().unregisterReceiver(mReceiver);
 //		}
-		
 		super.onPause();
 	}
 
@@ -333,6 +330,7 @@ public class WifiFragment extends MainFragment {
 //		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //		getActivity().registerReceiver(mReceiver, filter);
 //		mBroadcastRegistered = true;
+		
 		super.onResume();
 	}
 	
@@ -355,6 +353,10 @@ public class WifiFragment extends MainFragment {
 		
 		mWifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+				getActivity().registerReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver, filter);
+				mSupplicantBRRegisterd = true;
+				
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
@@ -473,9 +475,41 @@ public class WifiFragment extends MainFragment {
 			//create one pop-up window object
 			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			
+			//加速ui
 			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
 			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
 			
+			//shared ui
+			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
+			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝商户服务协议》</a>";
+			mTVLinkLicense.setText(Html.fromHtml(sText));
+			mTVLinkLicense.setClickable(true);
+			mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());
+			mTVLinkLicense.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterLicenseActivity.class);
+					startActivity(i);
+				}
+			});
+			TextView mAcceptTv = (TextView) mWifiShareLayout.findViewById(R.id.certify_button);
+			mAcceptTv.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					//如果用户未登陆提醒其登陆
+					if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+						showToast("需要登录之后才能认证。");
+						return;
+					}
+					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
+					startActivity(i);
+				}
+			});
+			
+			//评论ui
 			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
 			comment_edit.setOnClickListener(new OnClickListener() {
 				

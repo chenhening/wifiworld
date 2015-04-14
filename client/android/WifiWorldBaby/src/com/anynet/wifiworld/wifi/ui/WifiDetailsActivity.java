@@ -242,13 +242,13 @@ public class WifiDetailsActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
+		Log.d(TAG, "onDestroy");
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		Log.d(TAG, "onResume");
 		super.onResume();
 	}
 
@@ -256,6 +256,18 @@ public class WifiDetailsActivity extends BaseActivity {
 	protected void onPause() {
 		mUpdateViewHandler.removeCallbacks(mMonitorDataRunnable);
 		super.onPause();
+	}
+	
+	@Override
+	protected void onStart() {
+		Log.d(TAG, "onStart");
+		super.onStart();
+	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(TAG, "onSop");
+		super.onStop();
 	}
 	
 	private void pullDataFromDB() {

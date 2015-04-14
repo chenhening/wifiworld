@@ -17,8 +17,8 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
-public class WifiStatusReceiver {
-	private final static String TAG = WifiStatusReceiver.class.getName();
+public class WifiBRService {
+	private final static String TAG = WifiBRService.class.getName();
 	private static Intent mIntent = null;
 	
 	public static void schedule(final Context ctx) {
@@ -69,52 +69,7 @@ public class WifiStatusReceiver {
 		        			}
 		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 						}
-		        	}
-		        }
-		        if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
-		        	Log.i(TAG, "supplicant state changed action");
-		            WifiInfo info = WifiAdmin.getInstance(context).getWifiConnection();
-		            SupplicantState state = info.getSupplicantState();
-		            if (state == SupplicantState.ASSOCIATED){
-		                statusStr = "正在连接...";
-		            }
-		            //为了兼容4.0以下的设备，不要写成state == SupplicantState.AUTHENTICATING
-		            else if(state.toString().equals("AUTHENTICATING")){
-		                statusStr = "正在验证";
-		            }
-		            else if (state == SupplicantState.ASSOCIATING){
-		                statusStr = "正在连接...";
-		            } else if (state == SupplicantState.COMPLETED){
-		                //只是验证密码正确，并不代表连接成功
-		                statusStr = "正在获取ip地址";
-		            } else if (state == SupplicantState.DISCONNECTED){
-		                statusStr = "已断开";
-		            } else if (state == SupplicantState.DORMANT){
-		                statusStr = "暂停活动";
-		            } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE){
-		                statusStr = "正在连接...";
-		            } else if (state == SupplicantState.GROUP_HANDSHAKE){
-		                statusStr = "正在连接...";
-		            } else if (state == SupplicantState.INACTIVE){
-		                statusStr = "已断开";
-		            } else if (state == SupplicantState.INVALID){
-		                statusStr = "无效";
-		            } else if (state == SupplicantState.SCANNING){
-		                statusStr = "正在扫描...";
-		            } else if (state == SupplicantState.UNINITIALIZED){
-		                statusStr = "未初始化";
-		            }else{
-		                statusStr = "unkown";
-		            }
-		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
-		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
-		                //密码错误
-		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
-		            }
-		            if (onWifiStatusListener != null) {
-		            	onWifiStatusListener.onSupplicantChanged(statusStr);
-					}
-		            //Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+		        		}
 		        }
 		        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
 					Log.i(TAG, "wifi state changed action");
@@ -154,7 +109,6 @@ public class WifiStatusReceiver {
 			Log.i(TAG, "Create broadcast service");
 			mIntentFilter = new IntentFilter();
 			mIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-			mIntentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 			mIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 			registerReceiver(mBroadcastReceiver, mIntentFilter);
 		}
@@ -179,7 +133,6 @@ public class WifiStatusReceiver {
 	
 	public interface OnWifiStatusListener {
 		void onNetWorkChanged(String str);
-		void onSupplicantChanged(String str);
 		void onWifiStatChanged(boolean isEnabled);
 	}
 }

@@ -1,16 +1,22 @@
 package com.anynet.wifiworld.util;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.me.WifiProviderDetailActivity;
+import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 
 public class LoginHelper {
 
@@ -83,6 +89,7 @@ public class LoginHelper {
 				mUser = object;
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
+				getWifiProfile();
 			}
 
 			@Override
@@ -118,6 +125,7 @@ public class LoginHelper {
 					mUser = object;
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 					Log.d(TAG, "用户自动登陆成功。");
+					getWifiProfile();
 					// ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
 				} else {
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
@@ -172,4 +180,22 @@ public class LoginHelper {
 		return null;
 	}
 
+	private void getWifiProfile() {
+		// 去服务器上查询是否已经登记了自己的wifi
+		WifiProfile wifi = new WifiProfile();
+		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
+		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
+
+			@Override
+			public void onSuccess(List<WifiProfile> objects) {
+				if (objects.size() >= 1) {
+					mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
+				}
+			}
+
+			@Override
+			public void onFailed(String msg) {
+			}
+		});
+	}
 }
