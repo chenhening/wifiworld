@@ -169,15 +169,10 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				
-				if (wifiCfg != null) {
-					wifiRemark = "本地已保存, ";
-				} else {
-					wifiRemark = "未登陆过, ";
-				}
 				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
 					wifiRemark += "可直接使用";
 				} else {
-					wifiRemark += "敲门成功才能使用";
+					wifiRemark += "敲门成功就能使用";
 				}
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
@@ -196,7 +191,7 @@ public class WifiListHelper {
 			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
 				wifiRemark = "无密码, ";
 			}
-			wifiRemark += "本地已保存";
+			//wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
 			mWifiFree.add(wifiInfoScanned);
