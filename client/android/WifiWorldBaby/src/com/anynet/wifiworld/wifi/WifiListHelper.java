@@ -33,6 +33,7 @@ public class WifiListHelper {
 	private Context mContext;
 	private Handler mHandler;
 	private WifiAdmin mWifiAdmin;
+	private List<WifiInfoScanned> mWifiAuth; //认证wifi
 	private List<WifiInfoScanned> mWifiFree;
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private List<String> mWifiListUnique;
@@ -52,6 +53,7 @@ public class WifiListHelper {
 		mWifiAdmin = WifiAdmin.getInstance(context);
 		mWifiFree = new ArrayList<WifiInfoScanned>();
 		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
+		mWifiAuth = new ArrayList<WifiInfoScanned>();
 		mWifiListUnique = new ArrayList<String>();
 		mContext = context;
 		mHandler = handler;
@@ -66,6 +68,7 @@ public class WifiListHelper {
 	
 	private WifiListHelper(Context context) {
 		mWifiAdmin = WifiAdmin.getInstance(context);
+		mWifiAuth = new ArrayList<WifiInfoScanned>();
 		mWifiFree = new ArrayList<WifiInfoScanned>();
 		mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 		mWifiListUnique = new ArrayList<String>();
@@ -81,6 +84,7 @@ public class WifiListHelper {
 	}
 
 	public void clearListAndCloseWifi() {
+		mWifiAuth.clear();
 		mWifiFree.clear();
 		mWifiEncrypt.clear();
 		if (mWifiAdmin.openWifi()) {
@@ -89,8 +93,7 @@ public class WifiListHelper {
 	}
 
 	public void organizeWifiList(final List<ScanResult> wifiList) {
-		//readFile();
-		
+
 		List<String> macAddresses = new ArrayList<String>();
 		for (ScanResult scanResult : wifiList) {
 			macAddresses.add(scanResult.BSSID);
@@ -105,28 +108,12 @@ public class WifiListHelper {
 			public void onSuccess(List<WifiProfile> objects) {
 				Log.i(TAG, "Batch query by mac address success");
 				mWifiProfiles = objects;
+				mWifiAuth.clear();
 				mWifiFree.clear();
 				mWifiEncrypt.clear();
 				for (ScanResult hotspot : wifiList) {
 					//Check whether WiFi is stored local
 					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-//					int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
-//					if (idx != -1) {
-//						Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
-//						final String wifiName = hotspot.SSID;
-//						final String wifiMac = hotspot.BSSID;
-//						final String wifiPwd = objects.get(idx).Password;
-//						final String wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
-//						final Integer wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-//						final WifiInfoScanned wifiSharedTmp = new WifiInfoScanned(wifiName, wifiMac, wifiPwd, 
-//								wifiType, wifiStrength, null, "已认证");
-//						if (wifiCfg != null) {
-//							wifiSharedTmp.setRemark(wifiSharedTmp.getRemark() + ", 本地已保存");
-//						}
-//						mWifiFree.add(wifiSharedTmp);
-//					} else {
-//						refreashList(wifiCfg, hotspot, wifiInfo);
-//					}
 					refreashList(wifiCfg, hotspot, wifiInfo, objects);
 				}
 				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
@@ -135,6 +122,7 @@ public class WifiListHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.i(TAG, msg);
+				mWifiAuth.clear();
 				mWifiFree.clear();
 				mWifiEncrypt.clear();
 				for (ScanResult hotspot : wifiList) {
@@ -145,15 +133,6 @@ public class WifiListHelper {
 				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
 		});
-			
-//			String hotspotKey = hotspot.SSID + ":" + hotspot.BSSID + " " + hotspot.capabilities;
-//			if (!mWifiListUnique.contains(hotspotKey)) {
-//				mWifiListUnique.add(hotspotKey);
-//				//upload WIFI info to WIFI Unregistered
-//				Log.i(TAG, "upload to database: " + hotspotKey);
-//				WifiHandleDB.getInstance(mContext).updateWifiUnregistered(wifiInfoScanned);
-//			}
-		//writeFile();
 	}
 	
 	private void refreashList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
@@ -189,13 +168,20 @@ public class WifiListHelper {
 				wifiPwd = objects.get(idx).Password;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
-				wifiRemark = "已认证";
+				
 				if (wifiCfg != null) {
-					wifiRemark += ", 本地已保存";
+					wifiRemark = "本地已保存, ";
+				} else {
+					wifiRemark = "未登陆过, ";
+				}
+				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+					wifiRemark += "可直接使用";
+				} else {
+					wifiRemark += "敲门成功才能使用";
 				}
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
-				mWifiFree.add(wifiInfoScanned);
+				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}
 		}
@@ -338,6 +324,10 @@ public class WifiListHelper {
 		return mWifiAdmin;
 	}
 
+	public List<WifiInfoScanned> getWifiAuths() {
+		return mWifiAuth;
+	} 
+	
 	public List<WifiInfoScanned> getWifiFrees() {
 		return mWifiFree;
 	}

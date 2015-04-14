@@ -25,6 +25,7 @@ public class WifiListAdapter extends BaseAdapter {
 	private List<WifiInfoScanned> mWifiTags = new ArrayList<WifiInfoScanned>();
 	private int wifiFreeCnt = 0;
 	private int wifiEncryptCnt = 0;
+	private int wifiAuthCnt = 0; //表示平台认证的wifi
 	private Context mContext;
 //	private WifiHandleDB mWifiHandleDB;
 	
@@ -54,39 +55,31 @@ public class WifiListAdapter extends BaseAdapter {
 //		}
 //	};
 
-	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
+	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, 
+		List<WifiInfoScanned> wifiEncrypt) {
 		super();
 		this.mContext = context;
-		//mWifiHandleDB = WifiHandleDB.getInstance(context, mHandler);
 		
-		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
-		mWifiList.add(freeTag);
-		mWifiTags.add(freeTag);
-		wifiFreeCnt = wifiFree.size();
-		if (wifiFree.isEmpty()) {
-			WifiInfoScanned freeDeclare = new WifiInfoScanned("FreeDeclare");
-			wifiFree.add(freeDeclare);
-		}
-		for (int i = 0; i < wifiFree.size(); i++) {
-			mWifiList.add(wifiFree.get(i));
-		}
-		
-		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt");
-		mWifiList.add(encryptTag);
-		mWifiTags.add(encryptTag);
-		wifiEncryptCnt = wifiEncrypt.size();
-		if (wifiEncrypt.isEmpty()) {
-			WifiInfoScanned encryptDeclare = new WifiInfoScanned("EncryptDeclare");
-			wifiEncrypt.add(encryptDeclare);
-		}
-		for (int i = 0; i < wifiEncrypt.size(); i++) {
-			mWifiList.add(wifiEncrypt.get(i));
-		}
+		refreshWifiList(wifiAuth, wifiFree, wifiEncrypt);
 	}
 	
-	public void refreshWifiList(List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
+	public void refreshWifiList(List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		mWifiList.clear();
 		
+		//设置认证wifi的分界标志
+		WifiInfoScanned AuthTag = new WifiInfoScanned("Auth");
+		mWifiList.add(AuthTag);
+		mWifiTags.add(AuthTag);
+		wifiAuthCnt = wifiAuth.size();
+		if (wifiAuth.isEmpty()) {
+			WifiInfoScanned freeDeclare = new WifiInfoScanned("AuthDeclare");
+			wifiAuth.add(freeDeclare);
+		}
+		for (int i = 0; i < wifiAuth.size(); i++) {
+			mWifiList.add(wifiAuth.get(i));
+		}
+		
+		//设置免费的分界标志
 		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
@@ -99,6 +92,7 @@ public class WifiListAdapter extends BaseAdapter {
 			mWifiList.add(wifiFree.get(i));
 		}
 		
+		//设置加密分界标志
 		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt");
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
@@ -148,13 +142,20 @@ public class WifiListAdapter extends BaseAdapter {
         if(mWifiTags.contains(infoScanned)){
             view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_tag, null);
             textView = (TextView) view.findViewById(R.id.wifi_tag_text);
-            if ((infoScanned).getWifiName().equals("Free")) {
+            if ((infoScanned).getWifiName().equals("Auth")) {
+            	textView.setText("获取到" + wifiAuthCnt + "个认证WiFi");
+        	} else if ((infoScanned).getWifiName().equals("Free")) {
             	textView.setText("挖掘到" + wifiFreeCnt + "个免费WiFi");
 			} else if ((infoScanned).getWifiName().equals("Encrypt")) {
 				textView.setText("扫描到" + wifiEncryptCnt + "个需要密码的WiFi");
 			}
         } else {
-            if ((infoScanned).getWifiName() == "FreeDeclare") {
+        	if (infoScanned.getWifiName() == "AuthDeclare") {
+        		view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
+                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+				textView.setText("认证WiFi出现在这里");
+				textView.setTextColor(Color.GRAY);
+        	}else if ((infoScanned).getWifiName() == "FreeDeclare") {
             	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("免费WiFi出现在这里");
@@ -177,7 +178,7 @@ public class WifiListAdapter extends BaseAdapter {
 				}
 				
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-	            if (position >= (wifiFreeCnt + 2)) {
+	            if (position >= (wifiFreeCnt + 3)) {
 					imageView.setImageResource(R.drawable.icon_crack_failed);
 				} else {
 					imageView.setImageResource(R.drawable.icon_invalid);

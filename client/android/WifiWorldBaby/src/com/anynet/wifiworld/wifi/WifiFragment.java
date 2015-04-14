@@ -58,6 +58,7 @@ public class WifiFragment extends MainFragment {
 	private WifiAdmin mWifiAdmin;
 	private ListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
+	private List<WifiInfoScanned> mWifiAuth = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
@@ -86,10 +87,11 @@ public class WifiFragment extends MainFragment {
 					Log.i(TAG, "handle wifi list helper message");
 					int value = msg.what;
 					if (value == ((MainActivity)getActivity()).UPDATE_WIFI_LIST) {
+						mWifiAuth = mWifiListHelper.getWifiAuths();
 						mWifiFree = mWifiListHelper.getWifiFrees();
 						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 						if (mWifiListAdapter != null) {
-							mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
+							mWifiListAdapter.refreshWifiList(mWifiAuth, mWifiFree, mWifiEncrypt);
 						}
 						displayWifiSquare();
 					}
@@ -235,20 +237,19 @@ public class WifiFragment extends MainFragment {
 		
 		//WIFI list view display and operation
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_view);
-		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiFree, mWifiEncrypt);
+		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiAuth, mWifiFree, mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
 		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if (position < (mWifiFree.size() + 1)) {
-					mWifiItemClick = mWifiFree.get(position - 1);
-//					Intent intent = new Intent("com.farproc.wifi.connecter.action.CONNECT_WIFI_CONFIRM");
-//					Bundle bundle = new Bundle();
-//					bundle.putSerializable("WifiSelected", mWifiItemClick);
-//					intent.putExtras(bundle);
-//					startActivityForResult(intent, WIFI_CONNECT_CONFIRM);
+				int index_auth = (mWifiAuth.size() + 1);
+				if (position < index_auth) {
+					mWifiItemClick = mWifiAuth.get(position - 1);
+					showWifiConnectConfirmDialog(mWifiItemClick);
+				} else if (position < (index_auth + mWifiFree.size() + 1)) {
+					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
 					showWifiConnectConfirmDialog(mWifiItemClick);
 				}
 			}
