@@ -5,17 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.smssdk.app.NewAppReceiver;
-
-import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.me.WifiProviderRigisterActivity;
-import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
-import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
-
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,7 +14,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -33,29 +21,34 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.anynet.wifiworld.MainActivity;
+import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
+import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
+import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
@@ -506,7 +499,11 @@ public class WifiFragment extends MainFragment {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
+					//如果用户未登陆提醒其登陆
+					if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+						showToast("需要登录之后才能认证。");
+						return;
+					}
 					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 					startActivity(i);
 				}

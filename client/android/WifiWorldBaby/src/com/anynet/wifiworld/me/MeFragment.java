@@ -103,41 +103,25 @@ public class MeFragment extends MainFragment {
 				if (!checkIsLogined()) {
 					return;
 				}
-
-				// 去服务器上查询是否已经登记了自己的wifi
-				WifiProfile wifi = new WifiProfile();
-				wifi.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
-				wifi.QueryBySponser(getApplicationContext(), wifi.Sponser, new MultiDataCallback<WifiProfile>() {
-
-					@Override
-					public void onSuccess(List<WifiProfile> objects) {
-						if (objects.size() >= 1) {
-							mLoginHelper.mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
-							Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+				
+				if (mLoginHelper.mWifiProfile != null) {
+					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+					startActivity(i);
+				} else {
+					new AlertDialog.Builder(getActivity())
+					.setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")  
+					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+	
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mLoginHelper.mWifiProfile = new WifiProfile();
+							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 							startActivity(i);
-						} else {
-							new AlertDialog.Builder(getActivity())
-							.setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")  
-							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-			
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									mLoginHelper.mWifiProfile = new WifiProfile();
-									Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
-									startActivity(i);
-								}					
-							})  
-							.setNegativeButton("取消", null)
-							.show();
-						}
-					}
-
-					@Override
-					public void onFailed(String msg) {
-						// 查询失败进入到注册页面 TODO(binfei):不应该直接进入到注册页面
-						showToast("当前网络不稳定请稍后再试： " + msg);
-					}
-				});
+						}					
+					})  
+					.setNegativeButton("取消", null)
+					.show();
+				}
 			}
 		});
 		
