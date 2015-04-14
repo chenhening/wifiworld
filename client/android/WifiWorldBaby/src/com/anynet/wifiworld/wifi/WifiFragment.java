@@ -49,6 +49,9 @@ import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
@@ -56,7 +59,7 @@ public class WifiFragment extends MainFragment {
 	static final int WIFI_CONNECT_CONFIRM = 1;
 	
 	private WifiAdmin mWifiAdmin;
-	private ListView mWifiListView;
+	private PullToRefreshListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
 	private List<WifiInfoScanned> mWifiAuth = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
@@ -96,6 +99,7 @@ public class WifiFragment extends MainFragment {
 						displayWifiSquare();
 					}
 					super.handleMessage(msg);
+					mWifiListView.onRefreshComplete();
 				}
 				
 			};
@@ -236,7 +240,7 @@ public class WifiFragment extends MainFragment {
 		}
 		
 		//WIFI list view display and operation
-		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_view);
+		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiAuth, mWifiFree, mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
 		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
@@ -244,14 +248,21 @@ public class WifiFragment extends MainFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				int index_auth = (mWifiAuth.size() + 1);
+				int index_auth = (mWifiAuth.size() + 2);
 				if (position < index_auth) {
-					mWifiItemClick = mWifiAuth.get(position - 1);
+					mWifiItemClick = mWifiAuth.get(position - 2);
 					showWifiConnectConfirmDialog(mWifiItemClick);
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
 					showWifiConnectConfirmDialog(mWifiItemClick);
 				}
+			}
+		});
+		mWifiListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				mWifiListHelper.fillWifiList();
 			}
 		});
 		
@@ -422,7 +433,7 @@ public class WifiFragment extends MainFragment {
 //		
 //	};
 
-	BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {

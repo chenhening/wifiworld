@@ -150,24 +150,24 @@ public class WifiListAdapter extends BaseAdapter {
 				textView.setText("扫描到" + wifiEncryptCnt + "个需要密码的WiFi");
 			}
         } else {
-        	if (infoScanned.getWifiName() == "AuthDeclare") {
-        		view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
-                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
-				textView.setText("认证WiFi出现在这里");
-				textView.setTextColor(Color.GRAY);
-        	}else if ((infoScanned).getWifiName() == "FreeDeclare") {
-            	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
+	        	if (infoScanned.getWifiName() == "AuthDeclare") {
+	        		view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
+	                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+					textView.setText("认证WiFi出现在这里");
+					textView.setTextColor(Color.GRAY);
+	        	}else if ((infoScanned).getWifiName() == "FreeDeclare") {
+	            	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("免费WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
 			} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
 				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
-                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+                	textView = (TextView) view.findViewById(R.id.wifi_name_dec);
 				textView.setText("需要密码的WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
 			} else {
 				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
-	            textView = (TextView) view.findViewById(R.id.wifi_name);
+	            	textView = (TextView) view.findViewById(R.id.wifi_name);
 				textView.setText((infoScanned).getWifiName());
 				
 				TextView remarkText = (TextView) view.findViewById(R.id.wifi_remark);
