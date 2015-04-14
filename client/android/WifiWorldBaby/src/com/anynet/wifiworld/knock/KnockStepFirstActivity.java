@@ -105,10 +105,12 @@ public class KnockStepFirstActivity extends BaseActivity {
 			Display display  = this.getWindowManager().getDefaultDisplay();
 			Point size = new Point();
 			display.getSize(size);
-			int width = size.x;
+			int width = size.x +30;
 			int height = size.y;
+			//deltaX = width/3.0f;
+			int s = DipPixelUtil.dip2px(this, 16);
 			Log.e(TAG,
-					"Display:("+width+","+height+")step1V.left:" + step1V.getLeft() + " Right:" + step1V.getRight() + " with:" + step1V.getWidth()
+					"Display:("+DipPixelUtil.px2dip(this,width)+","+DipPixelUtil.px2dip(this,height)+")step1V.left:" + step1V.getLeft() + " Right:" + step1V.getRight() + " with:" + step1V.getWidth()
 							+ "   step2V.left:" + step2V.getLeft() + " right:" + step2V.getRight() + " with:"
 							+ step2V.getWidth() + "   step3V.Left:" + step3V.getLeft() + " Right:" + step3V.getRight()
 							+ " with:" + step3V.getWidth() + "   moveV.Left:" + moveV.getLeft() + " Right:"
@@ -117,7 +119,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 				if (currentIndex == 0) {
 					deltaX = step2V.getRight() - moveV.getRight();
 				} else if (currentIndex == 1) {
-					deltaX = step3V.getRight() - moveV.getRight();
+					deltaX = step3V.getRight()+s - moveV.getRight();
 				}
 				// deltaX = DipPixelUtil.px2dip(this, deltaX);
 				translateAnimation = new TranslateAnimation(0, deltaX, 0, 0);
