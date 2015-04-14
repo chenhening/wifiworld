@@ -289,12 +289,10 @@ public class WifiFragment extends MainFragment {
 		
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
-			WifiBRService.stopWifiService(getActivity());
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
 			if (mWifiItemClick != null) {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
-			WifiBRService.stopWifiService(getActivity());
 		}
 	}
 
@@ -438,7 +436,7 @@ public class WifiFragment extends MainFragment {
 	
 	private void displayWifiSquare() {
 		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
-		if (!wifiConnected.getSSID().equals("")) {
+		if (wifiConnected.getNetworkId() != -1) {
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			

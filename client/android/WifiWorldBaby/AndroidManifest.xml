@@ -279,7 +279,7 @@
         </activity>
 
         <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />
-        <service android:name="com.anynet.wifiworld.wifi.WifiStatusReceiver$WifiMonitorService" />
+        <service android:name="com.anynet.wifiworld.wifi.WifiBRService$WifiMonitorService" />
 
         <!-- Dianle provision -->
         <activity
