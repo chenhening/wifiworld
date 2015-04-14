@@ -3,8 +3,10 @@ package com.anynet.wifiworld;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +35,7 @@ import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengUpdateAgent;
+
 //import com.anynet.wifiworld.discover.DiscoverFragment;
 
 public class MainActivity extends BaseActivity implements MessageListener {
@@ -43,7 +46,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private Button[] mTabs;
 	private WifiFragment wifiFragment;
 	private MapFragment mapFragment;
-	//private DiscoverFragment discoverFragment;
+	// private DiscoverFragment discoverFragment;
 	private MeFragment meFragment;
 	private MainFragment[] fragments;
 	private int index;
@@ -56,13 +59,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	// global instance
 	private static LoginHelper mLoginHelper;
 	private LocationHelper mLocationHelper;
-	
+
 	private final static int TAB_COUNTS = 3;
 	private final static int CONNECT_TAB_IDX = 0;
 	private final static int NEARBY_TAB_IDX = 1;
-	//private final static int FIND_TAB_IDX = 2;
+	// private final static int FIND_TAB_IDX = 2;
 	private final static int MY_TAB_IDX = 2;
-	
+
 	public final static int UPDATE_WIFI_LIST = 99;
 	public final static int GET_WIFI_DETAILS = 98;
 
@@ -88,26 +91,35 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		dbHelper = DBHelper.getInstance(this);
 
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-		AVOSCloud.initialize(this, 
-			"0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as", "ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
+		AVOSCloud.initialize(this, "0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as",
+				"ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
 
-		Intent i = getIntent();
-		i.getBooleanExtra("isFromWelcomeActivity", false);
+		Intent intent = getIntent();
+		intent.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
 		initView();
 
-		wifiFragment = new WifiFragment();
-		mapFragment = new MapFragment();
-		//discoverFragment = new DiscoverFragment();
-		meFragment = new MeFragment();
+		if (wifiFragment == null)
+			wifiFragment = new WifiFragment();
+		if (mapFragment == null)
+			mapFragment = new MapFragment();
+		// discoverFragment = new DiscoverFragment();
+		if (meFragment == null)
+			meFragment = new MeFragment();
 
-		fragments = new MainFragment[] { wifiFragment, mapFragment, /*discoverFragment,*/ meFragment };
+		if (fragments == null || fragments.length < 2)
+			fragments = new MainFragment[] { wifiFragment, mapFragment, /*
+																		 * discoverFragment
+																		 * ,
+																		 */meFragment };
+		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, wifiFragment)
-				.add(R.id.fragment_container, mapFragment)/*.add(R.id.fragment_container, discoverFragment)*/
-				.add(R.id.fragment_container, meFragment).hide(mapFragment)/*.hide(discoverFragment)*/.hide(meFragment)
-				.show(wifiFragment).commit();
-
+		for (int i = 0; i < fragments.length; i++) {
+			if (!fragments[i].isAdded()) {
+				trx.add(R.id.fragment_container, fragments[i]).hide(fragments[i]);
+			}
+		}
+		trx.show(fragments[0]).commit();
 		// 友盟自动更新
 		UmengUpdateAgent.update(this);
 
@@ -117,15 +129,35 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mPushAgent.enable(mRegisterCallback);
 		String device_token = mPushAgent.getRegistrationId();
 		String appVersion = AppInfoUtil.getVersionName(this);
-/*		if (null != device_token && !device_token.equals("")) {
-			reportDeviceToken(appVersion, device_token);
-		}
-*/
+		/*
+		 * if (null != device_token && !device_token.equals("")) {
+		 * reportDeviceToken(appVersion, device_token); }
+		 */
 		// Dianle SDK provision
 		Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
 		Data.setCurrentUserID(this, "123456789");
 
 		changeToConnect();
+	}
+
+	@Override
+	public void onAttachFragment(Fragment fragment) {
+		// TODO Auto-generated method stub
+		super.onAttachFragment(fragment);
+		Log.e(TAG, "onAttachFragment");
+		if (wifiFragment == null && fragment instanceof WifiFragment) {
+			wifiFragment = (WifiFragment) fragment;
+			fragments[CONNECT_TAB_IDX] = wifiFragment;
+		}
+		if (mapFragment == null && fragment instanceof MapFragment) {
+			mapFragment = (MapFragment) fragment;
+			fragments[NEARBY_TAB_IDX] = mapFragment;
+		}
+		// discoverFragment = new DiscoverFragment();
+		if (meFragment == null && fragment instanceof MeFragment) {
+			meFragment = (MeFragment) fragment;
+			fragments[MY_TAB_IDX] = meFragment;
+		}
 	}
 
 	@Override
@@ -156,7 +188,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mTabs = new Button[TAB_COUNTS];
 		mTabs[CONNECT_TAB_IDX] = (Button) findViewById(R.id.btn_connect);
 		mTabs[NEARBY_TAB_IDX] = (Button) findViewById(R.id.btn_nearby);
-		//mTabs[FIND_TAB_IDX] = (Button) findViewById(R.id.btn_find);
+		// mTabs[FIND_TAB_IDX] = (Button) findViewById(R.id.btn_find);
 		mTabs[MY_TAB_IDX] = (Button) findViewById(R.id.btn_my);
 		ivMyNew = (ImageView) findViewById(R.id.iv_my_new);
 	}
@@ -172,10 +204,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		case R.id.btn_nearby:
 			chageToNearby();
 			break;
-//		case R.id.btn_find:
-//			chageToFind();
-//			ReportUtil.reportClickTabWithDraw(this);
-//			break;
+		// case R.id.btn_find:
+		// chageToFind();
+		// ReportUtil.reportClickTabWithDraw(this);
+		// break;
 		case R.id.btn_my:
 			chageToMy();
 			break;
@@ -195,11 +227,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	}
 
-//	private void chageToFind() {
-//		index = FIND_TAB_IDX;
-//		reflesh();
-//
-//	}
+	// private void chageToFind() {
+	// index = FIND_TAB_IDX;
+	// reflesh();
+	//
+	// }
 
 	private void chageToMy() {
 		index = MY_TAB_IDX;
@@ -207,13 +239,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	}
 
 	private void reflesh() {
+		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		if (currentTabIndex != index) {
-			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 			trx.hide(fragments[currentTabIndex]);
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			// fragments[index].onResume();
+			fragments[index].onResume();
 			trx.show(fragments[index]).commit();
 
 			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
@@ -265,6 +297,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			ivMyNew.setVisibility(View.INVISIBLE);
 		}
 		MobclickAgent.onPageStart("MainScreen"); // 统计页面
+		// reflesh();
 	}
 
 	@Override
