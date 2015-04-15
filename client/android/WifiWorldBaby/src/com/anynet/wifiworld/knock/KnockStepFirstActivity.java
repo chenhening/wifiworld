@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
@@ -213,12 +214,17 @@ public class KnockStepFirstActivity extends BaseActivity {
 			for (int i = 0; i < 3; ++i) {
 				if (((AnswerFragment) mSetupFragment[i]).getRightAnswer() != 1) {
 					showToast("问题回答的不完全正确请稍后再试。");
-					break;
+					finish();
 				}
 			}
 			// 保存敲门数据到本地
-			if (mQuestions.MacAddr != null)
+			if (mQuestions.MacAddr != null) {
 				LoginHelper.getInstance(getApplicationContext()).mKnockList.add(mQuestions.MacAddr);
+				showToast("恭喜敲门成功啦，可以上网啦！");
+				Intent i = new Intent();
+				i.setClass(this, MainActivity.class);
+				startActivity(i);
+			}
 		} else {
 			if (!mAskOrAnswer
 					&& !((StepFragment) mSetupFragment[currentIndex]).getData(mQuestions.Question.get(currentIndex))) {

@@ -15,6 +15,7 @@ import com.anynet.wifiworld.bean.Msg;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -169,8 +170,8 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				
-				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-					wifiRemark += "可直接使用";
+				if (LoginHelper.getInstance(mContext).mKnockList.contains(wifiMAC)) {
+					wifiRemark += "已经敲门成功可直接使用";
 				} else {
 					wifiRemark += "敲门成功就能使用";
 				}

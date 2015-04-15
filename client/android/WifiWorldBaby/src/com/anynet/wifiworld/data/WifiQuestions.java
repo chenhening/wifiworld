@@ -60,6 +60,7 @@ public class WifiQuestions extends BmobObject {
 		final WifiQuestions itself = this;
 		final BmobQuery<WifiQuestions> query = new BmobQuery<WifiQuestions>();
 		query.addWhereEqualTo("MacAddr", Mac);
+		itself.MacAddr = Mac;
 		new Thread(new Runnable() {
 
 			@Override
