@@ -45,6 +45,7 @@ import android.widget.ToggleButton;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -510,10 +511,19 @@ public class WifiFragment extends MainFragment {
 				@Override
 				public void onClick(View v) {
 					//如果用户未登陆提醒其登陆
-					if (!LoginHelper.getInstance(getApplicationContext()).getCurLoginStatus()) {
+					if (!checkIsLogined()) {
 						showToast("需要登录之后才能认证。");
 						return;
 					}
+					
+					//验证当前登录用户是否已经登记了wifi，目前只支持一人绑定一个wifi
+					WifiProfile wifi = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
+					if (wifi != null) {
+						showToast("你已经绑定了一个Wi-Fi，当前支持一个账号绑定一个Wi-Fi");
+						return;
+					}
+					
+					//TODO（binfei） 验证当前wifi是否已经被人绑定了，如果绑定可以提请申诉
 					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 					startActivity(i);
 				}

@@ -102,8 +102,12 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		
 		//获得sponser
 		mLoginHelper= LoginHelper.getInstance(getApplicationContext());
+		if (LoginHelper.getInstance(getApplicationContext()).mWifiProfile == null) {
+			LoginHelper.getInstance(getApplicationContext()).mWifiProfile = new WifiProfile();
+		}
+		LoginHelper.getInstance(getApplicationContext()).mWifiProfile.Sponser = 
+			mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
-		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
 		
 		//自动获取网络ssid
 		setSSIDUI();
