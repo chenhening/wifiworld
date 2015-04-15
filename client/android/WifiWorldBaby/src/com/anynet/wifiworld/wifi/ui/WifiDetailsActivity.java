@@ -129,14 +129,13 @@ public class WifiDetailsActivity extends BaseActivity {
 						public void onSuccess(WifiFollow object) {
 							Log.i(TAG, "Success to cancel follow current WiFi");
 							mFollowView.setText("收藏WiFi");
-							mFollowView.setBackgroundColor(color.orange);
+							//mFollowView.setBackgroundColor(color.orange);
 							mFollowed = null;
 						}
 
 						@Override
 						public void onFailed(String msg) {
 							Log.e(TAG, "Failed to cancel follow current WiFi");
-							
 						}
 						
 					});
@@ -152,14 +151,13 @@ public class WifiDetailsActivity extends BaseActivity {
 						public void onSuccess(WifiFollow object) {
 							Log.i(TAG, "Success to follow current WiFi");
 							mFollowView.setText("取消收藏");
-							mFollowView.setBackgroundColor(color.gray);
+							//mFollowView.setBackgroundColor(color.gray);
 							mFollowed = object;
 						}
 
 						@Override
 						public void onFailed(String msg) {
 							Log.e(TAG, "Failed to follow current WiFi");
-							
 						}
 						
 					});
@@ -333,17 +331,18 @@ public class WifiDetailsActivity extends BaseActivity {
 						public void onSuccess(WifiFollow object) {
 							Log.i(TAG, "Success to find wifi info from wifi follow table");
 							mFollowView.setText("取消收藏");
-							mFollowView.setBackgroundColor(color.gray);
+							//mFollowView.setBackgroundColor(color.gray);
 							mFollowed = object;
 							mFollowFlag = GET_DATA_SUCCESS;
 						}
 
 						@Override
 						public void onFailed(String msg) {
-							Log.e(TAG, "Failed to find wifi info from wifi follow table");
-							mFollowView.setText("收藏WiFi");
-							mFollowView.setBackgroundColor(color.orange);
-							mFollowFlag = GET_DATA_FAILED;
+							showToast("收藏或取消失败，请稍后再试");
+							//Log.e(TAG, "Failed to find wifi info from wifi follow table");
+							//mFollowView.setText("收藏WiFi");
+							//mFollowView.setBackgroundColor(color.orange);
+							//mFollowFlag = GET_DATA_FAILED;
 						}
 					});
 		} else {

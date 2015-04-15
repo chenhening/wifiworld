@@ -100,7 +100,7 @@ public class WifiDynamic extends BmobObject {
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
-		query.setLimit(10);//查询最大数量
+		query.setLimit(1000);//查询最大数量
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_user, Userid);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
@@ -124,26 +124,6 @@ public class WifiDynamic extends BmobObject {
 			}
 			
 		}).start();
-	}
-	
-	public void GetConnectedTime(final Context context, String macaddr,
-		DataCallback<Long> callback) {
-		final DataCallback<Long> _callback = callback;
-		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
-		query.addWhereEqualTo("MacAddr", macaddr);
-		query.count(context, WifiDynamic.class, new CountListener() {
-
-			@Override
-            public void onFailure(int arg0, String msg) {
-				_callback.onFailed("查询失败： " + msg);
-            }
-
-			@Override
-            public void onSuccess(int arg0) {
-				_callback.onSuccess((long) arg0);
-            }
-			
-		});
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<WifiDynamic> callback) {

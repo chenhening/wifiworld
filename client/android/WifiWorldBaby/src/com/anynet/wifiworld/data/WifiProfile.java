@@ -69,7 +69,7 @@ public class WifiProfile extends BmobObject {
 	public void QueryByMacAddress(final Context context, String Mac, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(unique_key, Mac);
 		Log.d("findObjects", "开始查询QueryByMacAddress");
 		new Thread(new Runnable() {
@@ -153,7 +153,6 @@ public class WifiProfile extends BmobObject {
 				
 				final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 				//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
-				// 先从缓存获取数据，再拉取网络数据更新
 				//query.addWhereWithinRadians("Geometry", center, radians);
 				//query.addWhereWithinKilometers("Geometry", center, radians);
 				//query.addWhereWithinMiles("Geometry", center, radians);

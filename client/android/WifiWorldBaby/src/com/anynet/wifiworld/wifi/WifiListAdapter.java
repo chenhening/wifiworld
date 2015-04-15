@@ -178,7 +178,7 @@ public class WifiListAdapter extends BaseAdapter {
 				}
 				
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-	            if (position >= (wifiFreeCnt + 3)) {
+	            if (position >= (wifiAuthCnt + wifiFreeCnt + 3)) {
 					imageView.setImageResource(R.drawable.icon_crack_failed);
 				} else {
 					imageView.setImageResource(R.drawable.icon_invalid);
@@ -196,6 +196,7 @@ public class WifiListAdapter extends BaseAdapter {
 					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon1);
 				}
 	            
+	            final int pos = position;
 	            Button wifiDetails = (Button)view.findViewById(R.id.wifi_details_btn);
 	            wifiDetails.setOnClickListener(new View.OnClickListener() {
 					
@@ -203,11 +204,20 @@ public class WifiListAdapter extends BaseAdapter {
 					public void onClick(View arg0) {
 						//mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
 						//getWifiProfiles(infoScanned);
-						Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-						Bundle wifiData = new Bundle();
-						wifiData.putSerializable("WifiSelected", infoScanned);
-						intent.putExtras(wifiData);
-						mContext.startActivity(intent);
+						if (pos < wifiAuthCnt + 1) {
+							Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+							Bundle wifiData = new Bundle();
+							wifiData.putSerializable("WifiSelected", infoScanned);
+							intent.putExtras(wifiData);
+							mContext.startActivity(intent);
+						} else {
+							Intent intent = new Intent();
+							intent.setClass(mContext, FindOwnerActivity.class);
+							Bundle wifiData = new Bundle();
+							wifiData.putSerializable("WifiSelected", infoScanned);
+							intent.putExtras(wifiData);
+							mContext.startActivity(intent);
+						}
 					}
 				});
 			}
