@@ -22,7 +22,15 @@ public class FindOwnerAdapter extends BaseAdapter {
         super();  
         this.context = context;  
         this.list = list;  
-    }  
+    } 
+    
+    public void addItem(Map<String, Object> item) {
+    	list.add(item);
+    }
+    
+    public List<Map<String, Object>> getList() {
+    	return list;
+    }
   
     @Override  
     public int getCount() {  
