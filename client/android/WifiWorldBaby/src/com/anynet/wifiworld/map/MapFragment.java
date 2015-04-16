@@ -92,7 +92,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private LatLng mMyPosition;
 	private RouteSearch routeSearch;
 	private PendingIntent mPendingIntent;
-	private Marker mGPSMarker;
+	private MarkerOptions markOptions;
 	private Circle mCircle;
 	
 	public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
@@ -181,10 +181,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
         this.getActivity().registerReceiver(mGeoFenceReceiver, fliter);
         Intent intent = new Intent(GEOFENCE_BROADCAST_ACTION);
         mPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-        MarkerOptions markOptions = new MarkerOptions();
+        markOptions = new MarkerOptions();
         markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                 .decodeResource(getResources(), R.drawable.location_marker)));
-        mGPSMarker = aMap.addMarker(markOptions);
         
 		return mPageRoot;
 	}
@@ -241,6 +240,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		aMap.setOnInfoWindowClickListener(this);
 		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
 		aMap.setOnMapClickListener(this);
+		
 		// centerMarker.setAnimationListener(this);
 		// locate.setOnClickListener(this);
 	}
@@ -264,7 +264,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			// 在定位结束后，在合适的生命周期调用destroy()方法
 			// 其中如果间隔时间为-1，则定位只定一次
 			// 在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求
-			mAMapLocationManager.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 3, this);
+			mAMapLocationManager.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 50, this);
 			mAMapLocationManager.setGpsEnable(false);
 		}
 	}
@@ -310,12 +310,13 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public void onLocationChanged(AMapLocation amapLocation) {
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
+				mListener.onLocationChanged(amapLocation);
 				aMap.clear();
-				//mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
 				
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
 				mMyPosition = new LatLng(Latitude, Longitude);
+				Marker mGPSMarker = aMap.addMarker(markOptions);
 				mGPSMarker.setPosition(mMyPosition);
 				CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
 				aMap.moveCamera(update);
@@ -327,9 +328,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		        mAMapLocationManager.addGeoFenceAlert(Latitude, Longitude, 50, 1000 * 60 * 30, mPendingIntent);
 		        // 将地理围栏添加到地图上显示
 		        CircleOptions circleOptions = new CircleOptions();
-		        circleOptions.center(mMyPosition).radius(50)
-		                .fillColor(Color.argb(180, 224, 171, 10))
-		                .strokeColor(Color.GRAY);
+		        circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(180, 224, 171, 10)).strokeColor(Color.GRAY);
 		        mCircle = aMap.addCircle(circleOptions);
 
 				LoginHelper loginHelper = LoginHelper.getInstance(getApplicationContext());
@@ -489,18 +488,18 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	// ---------------------------------------------------------------------------------------------
 	// for self-define functions
 	private void setUpMap() {
-		MyLocationStyle myLocationStyle = new MyLocationStyle();
+		//MyLocationStyle myLocationStyle = new MyLocationStyle();
 		// myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.gps));
-		myLocationStyle.strokeColor(Color.GRAY);
-		myLocationStyle.strokeWidth(1);
-		aMap.setMyLocationStyle(myLocationStyle);
+		//myLocationStyle.strokeColor(Color.GRAY);
+		//myLocationStyle.strokeWidth(1);
+		//aMap.setMyLocationStyle(myLocationStyle);
 
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 		// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		aMap.setMyLocationEnabled(true);
 		// 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
-		aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);
+		aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 	}
 
 	private void DisplayNearbyWifi(final List<WifiProfile> wifilist) {
