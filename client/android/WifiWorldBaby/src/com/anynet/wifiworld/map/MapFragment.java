@@ -311,6 +311,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
 				aMap.clear();
+				//mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+				
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
 				mMyPosition = new LatLng(Latitude, Longitude);
