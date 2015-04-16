@@ -190,7 +190,7 @@ public class WifiListHelper {
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
 			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-				wifiRemark = "无密码, ";
+				wifiRemark = "无密码";
 			}
 			//wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,

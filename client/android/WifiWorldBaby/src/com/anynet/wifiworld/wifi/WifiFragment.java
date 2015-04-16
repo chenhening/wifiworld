@@ -67,6 +67,7 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
+	private WifiBRService mWifiBRService;
 	
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
@@ -98,9 +99,7 @@ public class WifiFragment extends MainFragment {
 						if (mWifiListAdapter != null) {
 							mWifiListAdapter.refreshWifiList(mWifiAuth, mWifiFree, mWifiEncrypt);
 						}
-						displayWifiSquare();
 					}
-					super.handleMessage(msg);
 					mWifiListView.onRefreshComplete();
 				}
 				
@@ -125,10 +124,7 @@ public class WifiFragment extends MainFragment {
 					if (isEnabled) {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
-						if (mWifiListAdapter != null) {
-							Log.i(TAG, "start scan wifi list");
-							boolean success = mWifiListHelper.fillWifiList();
-						}
+						mWifiBRService.setWifiScannable(true);
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
@@ -141,6 +137,7 @@ public class WifiFragment extends MainFragment {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
 					mWifiListHelper.fillWifiList();
+					displayWifiSquare();
 					
 					if (mSupplicantBRRegisterd) {
 						getActivity().unregisterReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver);
@@ -199,8 +196,9 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
+		mWifiBRService = WifiBRService.getInstance(getActivity(), mWifiListHelper);
 		//WifiStatusReceiver.schedule(getActivity());
-		WifiBRService.bindWifiService(getActivity(), conn);
+		mWifiBRService.bindWifiService(getActivity(), conn);
 		mSupplicantBRRegisterd = false;
 		
 		IntentFilter filter = new IntentFilter();
@@ -290,6 +288,9 @@ public class WifiFragment extends MainFragment {
 			}
 		});
 		
+		mWifiListHelper.fillWifiList();
+		displayWifiSquare();
+		
 		//bind common title UI
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
@@ -333,7 +334,7 @@ public class WifiFragment extends MainFragment {
 	@Override
 	public void onResume() {
 //		if (mWifiListAdapter != null) {
-			mWifiListHelper.fillWifiList();
+//			mWifiListHelper.fillWifiList();
 //			mWifiFree = mWifiListHelper.getWifiFrees();
 //			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 //			updateWifiConMore(mWifiNameView);

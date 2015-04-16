@@ -128,7 +128,8 @@ public class WifiListAdapter extends BaseAdapter {
     public boolean isEnabled(int position) {
         if(mWifiTags.contains(getItem(position)) ||
         		((WifiInfoScanned)getItem(position)).getWifiName() == "FreeDeclare" ||
-        		((WifiInfoScanned)getItem(position)).getWifiName() == "EncryptDeclare"){
+        		((WifiInfoScanned)getItem(position)).getWifiName() == "EncryptDeclare" ||
+        		((WifiInfoScanned)getItem(position)).getWifiName() == "AuthDeclare"){
             return false;
         }
         return super.isEnabled(position);
