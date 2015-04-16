@@ -58,7 +58,7 @@ public class FindOwnerAdapter extends BaseAdapter {
         String titleStr = list.get(position).get("title").toString();  
         viewHolder.title.setText(titleStr);  
         String timestr = list.get(position).get("time").toString();  
-        viewHolder.time.setText(timestr);  
+        viewHolder.time.setText(timestr);
   
         return convertView;  
     }  

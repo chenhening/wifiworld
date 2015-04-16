@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.anynet.wifiworld.R;
@@ -19,10 +20,16 @@ public class FindOwnerActivity extends BaseActivity {
     private List<String> data ;  
     private FindOwnerAdapter timelineAdapter;  
   
+	private void bingdingTitleUI() {
+		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+		mTitlebar.tvTitle.setText("寻找Wi-Fi主人");
+	}
+    
     @Override  
-    protected void onCreate(Bundle savedInstanceState) {  
-        super.onCreate(savedInstanceState);  
-        setContentView(R.layout.activity_find_owner);  
+    protected void onCreate(Bundle savedInstanceState) {   
+        setContentView(R.layout.activity_find_owner);
+        super.onCreate(savedInstanceState); 
+        bingdingTitleUI();
   
         listView = (ListView) this.findViewById(R.id.lv_find_thread);  
         listView.setDividerHeight(0);  
