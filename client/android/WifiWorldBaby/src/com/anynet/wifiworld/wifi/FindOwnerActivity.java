@@ -77,7 +77,7 @@ public class FindOwnerActivity extends BaseActivity {
 					showToast("请输入线索。");
 					return;
 				}
-				mEdit.getText().clear();
+				mEdit.setText("");
 				//添加到列表中
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		        Date curDate = new Date(System.currentTimeMillis());//获取当前时间

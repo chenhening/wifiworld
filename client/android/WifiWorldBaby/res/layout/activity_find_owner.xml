@@ -60,8 +60,6 @@
                 android:textColor="@color/font_color_black"
                 android:textColorHint="@color/edt_hint_color"
                 android:textSize="@dimen/font_main_big" >
-
-                <requestFocus />
             </EditText>
 
             <LinearLayout

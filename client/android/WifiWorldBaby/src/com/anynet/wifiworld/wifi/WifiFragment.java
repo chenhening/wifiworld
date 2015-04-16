@@ -24,6 +24,7 @@ import android.os.Message;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -477,16 +478,20 @@ public class WifiFragment extends MainFragment {
 	private void initWifiSquarePopupView() {
 		if (mWifiSquarePopup == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
+			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
 			
 			mWifiSpeedLayout = (LinearLayout) popupView.findViewById(R.id.wifi_speed_layout);
 			mWifiShareLayout = (LinearLayout) popupView.findViewById(R.id.wifi_share_layout);
 			mWifiLouderLayout = (LinearLayout) popupView.findViewById(R.id.wifi_louder_layout);
 			
 			//create one pop-up window object
-			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
+			mWifiSquarePopup.setFocusable(false);
+			mWifiSquarePopup.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);  
+			//mWifiSquarePopup.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);  
+			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0); 
 			
-			//加速ui
+			//测速ui
 			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
 			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
 			
@@ -531,12 +536,17 @@ public class WifiFragment extends MainFragment {
 			
 			//评论ui
 			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
-			comment_edit.setOnClickListener(new OnClickListener() {
+			comment_edit.setFocusable(true);
+			popupView.findViewById(R.id.tv_button_sms).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
-					Toast.makeText(getActivity(), "dianjishit", Toast.LENGTH_LONG).show();
-					openInputMethod(comment_edit);
+					String message = comment_edit.getText().toString();
+					if (message.length() <= 0) {
+						showToast("请输入评论。");
+						return;
+					}
+					comment_edit.setText("");
 				}
 			});
 		}

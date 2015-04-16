@@ -3,6 +3,9 @@
     android:id="@+id/wifi_louder_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -41,7 +44,10 @@
     <FrameLayout
         android:id="@+id/wifi_comments_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
 
         <ListView
             android:id="@+id/wifi_list_comments"
@@ -58,6 +64,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/color_light_gray"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/dimen_3_dip"
@@ -71,7 +80,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="3"
-                android:background="@null"
                 android:drawablePadding="@dimen/dimen_10_dip"
                 android:gravity="center_vertical"
                 android:hint="输入评论"
