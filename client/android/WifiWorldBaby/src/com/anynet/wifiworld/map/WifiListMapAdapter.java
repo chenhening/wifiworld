@@ -26,6 +26,10 @@ public class WifiListMapAdapter extends BaseAdapter {
 		mWifiList = wifiList;
 	}
 	
+	public void setData(List<WifiInfoScanned> data) {
+		mWifiList = data;
+	}
+	
 	@Override
 	public int getCount() {
 		return mWifiList.size();

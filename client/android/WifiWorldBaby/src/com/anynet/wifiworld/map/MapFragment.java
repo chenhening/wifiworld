@@ -19,14 +19,21 @@ import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.FindOwnerActivity;
 import com.anynet.wifiworld.wifi.WifiHandleDB;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListHelper;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,18 +54,31 @@ import com.amap.api.maps.AMap.InfoWindowAdapter;
 import com.amap.api.maps.AMap.OnInfoWindowClickListener;
 import com.amap.api.maps.AMap.OnMapClickListener;
 import com.amap.api.maps.AMap.OnMarkerClickListener;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.Circle;
+import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.overlay.WalkRouteOverlay;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkPath;
+import com.amap.api.services.route.RouteSearch.FromAndTo;
+import com.amap.api.services.route.RouteSearch.OnRouteSearchListener;
+import com.amap.api.services.route.RouteSearch.WalkRouteQuery;
+import com.amap.api.services.route.WalkRouteResult;
 
 public class MapFragment extends MainFragment implements LocationSource, AMapLocationListener, OnMarkerClickListener,
-		OnInfoWindowClickListener, InfoWindowAdapter, OnMapClickListener {
+		OnInfoWindowClickListener, InfoWindowAdapter, OnMapClickListener, OnRouteSearchListener {
 
 	private MapView mapView;
 	private AMap aMap;
@@ -68,7 +88,14 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private ImageView mImageView;
 	private ListView mWifiListView;
 	private WifiListMapAdapter mWifiListMapAdapter;
-	Marker currentMarker;
+	private Marker currentMarker;
+	private LatLng mMyPosition;
+	private RouteSearch routeSearch;
+	private PendingIntent mPendingIntent;
+	private Marker mGPSMarker;
+	private Circle mCircle;
+	
+	public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
 
 	// ---------------------------------------------------------------------------------------------
 	// for Fragment
@@ -98,6 +125,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
 
+		//设置上拉显示按钮
 		SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
 		layout.setAnchorPoint(0.3f);
@@ -125,11 +153,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		});
 
 		List<WifiInfoScanned> wifiList = new ArrayList<WifiInfoScanned>();
-		WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
-		tempInfoScanned.mWifiDistance = 10;
-		tempInfoScanned.setWifiName("shit");
-		tempInfoScanned.setRemark("lalalalala");
-		wifiList.add(tempInfoScanned);
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
 		mWifiListMapAdapter = new WifiListMapAdapter(this.getActivity(), wifiList);
 		mWifiListView.setAdapter(mWifiListMapAdapter);
@@ -147,9 +170,43 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				mImageClickDown = !mImageClickDown;
 			}
 		});
-
+		
+		//初始化路径规划api
+		routeSearch = new RouteSearch(this.getActivity());
+		routeSearch.setRouteSearchListener(this);
+		
+		//设置地图围栏
+		IntentFilter fliter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        fliter.addAction(GEOFENCE_BROADCAST_ACTION);
+        this.getActivity().registerReceiver(mGeoFenceReceiver, fliter);
+        Intent intent = new Intent(GEOFENCE_BROADCAST_ACTION);
+        mPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+        MarkerOptions markOptions = new MarkerOptions();
+        markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                .decodeResource(getResources(), R.drawable.location_marker)));
+        mGPSMarker = aMap.addMarker(markOptions);
+        
 		return mPageRoot;
 	}
+	
+	private BroadcastReceiver mGeoFenceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 接受广播
+            if (intent.getAction().equals(GEOFENCE_BROADCAST_ACTION)) {
+                Bundle bundle = intent.getExtras();
+                // 根据广播的status来确定是在区域内还是在区域外
+                int status = bundle.getInt("status");
+                if (status == 0) {
+                    Toast.makeText(getApplicationContext(), "不在区域",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "在区域内",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
 	@Override
 	public void onPause() {
@@ -253,12 +310,26 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public void onLocationChanged(AMapLocation amapLocation) {
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
-				mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-				CameraUpdate update = CameraUpdateFactory.zoomBy(3);
-				aMap.moveCamera(update);
-
+				aMap.clear();
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
+				mMyPosition = new LatLng(Latitude, Longitude);
+				mGPSMarker.setPosition(mMyPosition);
+				CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
+				aMap.moveCamera(update);
+				mAMapLocationManager.removeGeoFenceAlert(mPendingIntent);
+		        if (mCircle != null) {
+		            mCircle.remove();
+		        }
+		        // 设置地理围栏，位置、半径、超时时间、处理事件
+		        mAMapLocationManager.addGeoFenceAlert(Latitude, Longitude, 50, 1000 * 60 * 30, mPendingIntent);
+		        // 将地理围栏添加到地图上显示
+		        CircleOptions circleOptions = new CircleOptions();
+		        circleOptions.center(mMyPosition).radius(50)
+		                .fillColor(Color.argb(180, 224, 171, 10))
+		                .strokeColor(Color.GRAY);
+		        mCircle = aMap.addCircle(circleOptions);
+
 				LoginHelper loginHelper = LoginHelper.getInstance(getApplicationContext());
 				loginHelper.setLongitude(Longitude);
 				loginHelper.setLatitude(Latitude);
@@ -274,6 +345,16 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								showToast("查询周围wifi成功：共" + objects.size() + "条数据。");
 								// add wifi label
 								DisplayNearbyWifi(objects);
+								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
+								for (WifiProfile item : objects) {
+									WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
+									tempInfoScanned.mWifiDistance = 10;
+									tempInfoScanned.setWifiName(item.Ssid + " | " + item.Alias);
+									tempInfoScanned.setRemark(item.ExtAddress);
+									data.add(tempInfoScanned);
+								}
+								mWifiListMapAdapter.setData(data);
+								mWifiListMapAdapter.notifyDataSetChanged();
 							}
 
 							@Override
@@ -319,9 +400,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public boolean onMarkerClick(Marker marker) {
 		// TODO Auto-generated method stub
 		currentMarker = marker;
-		WifiProfile mWP = (WifiProfile) marker.getObject();
-		if (mWP != null)
-			Log.e("marker", "Maker WifiProfile:" + mWP.toString());
 		marker.showInfoWindow();
 		return false;
 	}
@@ -356,37 +434,44 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private void render(Marker marker, View infoWindow) {
 		// TODO Auto-generated method stub
 		final WifiProfile mWP = (WifiProfile) marker.getObject();
-		Log.e("marker", "marker :getInfoWindow  " + marker.getId());
 		TextView disTV = (TextView) infoWindow.findViewById(R.id.distance);
-		TextView disExtTV = (TextView) infoWindow.findViewById(R.id.distance_ext);
+		TextView wifiAlias = (TextView) infoWindow.findViewById(R.id.tv_wifi_alias);
 		TextView wifiNameTV = (TextView) infoWindow.findViewById(R.id.wifi_name);
 		TextView wifiNameExtTV = (TextView) infoWindow.findViewById(R.id.wifi_name_ext);
-		TextView winExtTV = (TextView) infoWindow.findViewById(R.id.window_ext_info);
-		disTV.setText("20m");
-		disExtTV.setText("与我当前距离");
+		
+		//换算距离
+		final LatLng pos = new LatLng(mWP.Geometry.getLatitude(), mWP.Geometry.getLongitude());
+		float distance = AMapUtils.calculateLineDistance(mMyPosition, pos);
+		disTV.setText((int)distance + "米");
+		wifiAlias.setText(mWP.Alias);
 		wifiNameTV.setText(mWP.Ssid);
 		wifiNameExtTV.setText(mWP.ExtAddress);
-		winExtTV.setText("测试中……………………");
-		infoWindow.setOnClickListener(new OnClickListener() {
+		
+		infoWindow.findViewById(R.id.window_ext_info).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				LatLonPoint from_point = new LatLonPoint(pos.latitude, pos.longitude);
+				LatLonPoint to_point = new LatLonPoint(mMyPosition.latitude, mMyPosition.longitude);
+				FromAndTo fromAndTo = new RouteSearch.FromAndTo(from_point, to_point);
+				WalkRouteQuery query = new WalkRouteQuery(fromAndTo, RouteSearch.WalkDefault);
+				routeSearch.calculateWalkRouteAsyn(query);
+            }
+			
+		});
+		
+		infoWindow.findViewById(R.id.ll_map_infowindows_desc).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 				Bundle wifiData = new Bundle();
-				WifiListHelper mWifiListHelper = WifiListHelper.getInstance(getActivity());
-				List<WifiInfoScanned> list = mWifiListHelper.getWifiFrees();
-				list.addAll(mWifiListHelper.getWifiEncrypts());
-				for (WifiInfoScanned wifiInfoScanned : list) {
-					if (wifiInfoScanned.getWifiMAC().equals(mWP.MacAddr)) {
-						WifiHandleDB.getInstance(getActivity()).queryWifiProfile(wifiInfoScanned);
-						wifiData.putSerializable("WifiSelected", wifiInfoScanned);
-						intent.putExtras(wifiData);
-						getActivity().startActivity(intent);
-						return;
-					}
-				}
-				Toast.makeText(getActivity(), "Wifi信息有错！", Toast.LENGTH_LONG).show();
+				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
+				tempInfoScanned.setWifiName(mWP.Ssid);
+				tempInfoScanned.setWifiMAC(mWP.MacAddr);
+				wifiData.putSerializable("WifiSelected", tempInfoScanned);
+				intent.putExtras(wifiData);
+				startActivity(intent);
 			}
 		});
 	}
@@ -432,4 +517,32 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			}
 		});
 	}
+
+	@Override
+    public void onBusRouteSearched(BusRouteResult arg0, int arg1) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public void onDriveRouteSearched(DriveRouteResult arg0, int arg1) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public void onWalkRouteSearched(WalkRouteResult result, int rCode) {
+		if (rCode == 0) {
+			if (result != null && result.getPaths() != null
+					&& result.getPaths().size() > 0) {
+				WalkPath walkPath = result.getPaths().get(0);
+				aMap.clear();// 清理地图上的所有覆盖物
+				WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(this.getActivity(),
+						aMap, walkPath, result.getStartPos(), result.getTargetPos());
+				walkRouteOverlay.removeFromMap();
+				walkRouteOverlay.addToMap();
+				walkRouteOverlay.zoomToSpan();
+			}
+		}
+    }
 }
