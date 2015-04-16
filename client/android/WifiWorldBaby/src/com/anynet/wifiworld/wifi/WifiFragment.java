@@ -51,6 +51,7 @@ import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
+import com.avos.avoscloud.DeleteCallback;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -83,7 +84,8 @@ public class WifiFragment extends MainFragment {
 	private boolean mBroadcastRegistered;
 	private boolean mSupplicantBRRegisterd;
 	
-	private WifiInfo mWifiInfo = null;
+	private WifiInfo mLastWifiInfo = null;
+	private WifiInfoScanned mLastWifiInfoScanned = null;
 	private WifiInfoScanned mWifiItemClick;
 
 	private Handler mHandler = new Handler() {
@@ -456,7 +458,7 @@ public class WifiFragment extends MainFragment {
 			mWifiSwitch.setChecked(true);
 			
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
-			if (mWifiInfo == null || !mWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
+			if (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
 				WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiConnected);
 			}
 		} else {
@@ -465,7 +467,12 @@ public class WifiFragment extends MainFragment {
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		
-		mWifiInfo = wifiConnected;
+		if (mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
+			mWifiAdmin.forgetNetwork(mLastWifiInfo);
+		}
+		
+		mLastWifiInfo = wifiConnected;
+		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
 	
 	private void showPopupWindow(View view, PopupWindow popupWindow) {

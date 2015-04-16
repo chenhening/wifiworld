@@ -157,6 +157,11 @@ public class WifiListHelper {
 			wifiRemark = "当前连接WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
+			if (objects != null) {
+				int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+				boolean isAuthWifi = idx == -1 ? false : true;
+				mWifiInfoCur.setAuthWifi(isAuthWifi);
+			}
 			return;
 		}
 		

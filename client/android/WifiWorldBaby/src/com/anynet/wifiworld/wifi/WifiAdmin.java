@@ -512,8 +512,13 @@ public class WifiAdmin {
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {
-    	return mWifiManager.removeNetwork(wifiConfiguration.networkId)
-				&& mWifiManager.saveConfiguration();
+	    	return mWifiManager.removeNetwork(wifiConfiguration.networkId)
+					&& mWifiManager.saveConfiguration();
+    }
+    
+    public boolean forgetNetwork(WifiInfo wifiInfo) {
+	    	return mWifiManager.removeNetwork(wifiInfo.getNetworkId())
+					&& mWifiManager.saveConfiguration();
     }
     
     public WifiConfiguration getWifiConfiguration(final WifiInfoScanned hotspot) {

@@ -19,8 +19,11 @@ public class WifiInfoScanned implements Serializable {
 	private String mWifiPwd;
 	private String mWifiEncryptType;
 	private Integer mWifiStrength;
-	private String mRemark;
 	private BmobGeoPoint mGeometry;
+	private String mRemark;
+	
+	private boolean isAuthWifi = false;
+	
 	private Bitmap mWifiLogo;
 	
 	private float mRating;
@@ -32,6 +35,37 @@ public class WifiInfoScanned implements Serializable {
 	private List<String> mMessages = new ArrayList<String>();
 	
 	public int mWifiDistance;
+	
+	public WifiInfoScanned() {
+		mWifiName = null;
+		mWifiMAC = null;
+		mWifiPwd = null;
+		mWifiEncryptType = null;
+		mWifiStrength = 0;
+		mRemark = null;
+		mGeometry = null;
+	}
+	
+	public WifiInfoScanned(String name) {
+		mWifiName = name;
+		mWifiMAC = null;
+		mWifiPwd = null;
+		mWifiEncryptType = null;
+		mWifiStrength = 0;
+		mRemark = null;
+		mGeometry = null;
+	}
+	
+	public WifiInfoScanned(String name, String mac, String pwd, String type, Integer strength,
+			BmobGeoPoint geometry, String remark) {
+		mWifiName = name;
+		mWifiMAC = mac;
+		mWifiPwd = pwd;
+		mWifiEncryptType = type;
+		mWifiStrength = strength;
+		mGeometry = geometry;
+		mRemark = remark;
+	}
 	
 	public float getRating() {
 		return mRating;
@@ -63,37 +97,6 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setConnectedDuration(int connectedDuration) {
 		ConnectedDuration = connectedDuration;
-	}
-	
-	public WifiInfoScanned() {
-		mWifiName = null;
-		mWifiMAC = null;
-		mWifiPwd = null;
-		mWifiEncryptType = null;
-		mWifiStrength = 0;
-		mRemark = null;
-		mGeometry = null;
-	}
-	
-	public WifiInfoScanned(String name) {
-		mWifiName = name;
-		mWifiMAC = null;
-		mWifiPwd = null;
-		mWifiEncryptType = null;
-		mWifiStrength = 0;
-		mRemark = null;
-		mGeometry = null;
-	}
-	
-	public WifiInfoScanned(String name, String mac, String pwd, String type, Integer strenghth,
-			BmobGeoPoint geometry, String remark) {
-		mWifiName = name;
-		mWifiMAC = mac;
-		mWifiPwd = pwd;
-		mWifiEncryptType = type;
-		mWifiStrength = strenghth;
-		mGeometry = geometry;
-		mRemark = remark;
 	}
 
 	public String getWifiMAC() {
@@ -182,6 +185,14 @@ public class WifiInfoScanned implements Serializable {
 	
 	public void addMessage(String message) {
 		mMessages.add(message);
+	}
+
+	public boolean isAuthWifi() {
+		return isAuthWifi;
+	}
+
+	public void setAuthWifi(boolean isAuthWifi) {
+		this.isAuthWifi = isAuthWifi;
 	}
 	
 }
