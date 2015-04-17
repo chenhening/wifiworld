@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.knock;
 
+import im.yixin.algorithm.MD5;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +9,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.bean.SetupFragmentBean;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 
 public class AnswerFragment extends BaseFragment implements OnClickListener {
 	private SetupFragmentBean mSetupFragmentBean = new SetupFragmentBean();
@@ -35,8 +39,23 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 	private int mRightAnswer = 1;
 	private List<String> mData;
 
+	private int fragmentID;
+	private static int id= 1;
+	public int getFragmentID() {
+		return fragmentID;
+	}
+
+	public void setFragmentID(int fragmentID) {
+		this.fragmentID = fragmentID;
+	}
+
 	public AnswerFragment(List<String> data) {
+		this(data,id++);
+	}
+		
+	public AnswerFragment(List<String> data,int id) {
 		mData = data;
+		setFragmentID(id);
 	}
 	
 	public SetupFragmentBean getFragmentData() {

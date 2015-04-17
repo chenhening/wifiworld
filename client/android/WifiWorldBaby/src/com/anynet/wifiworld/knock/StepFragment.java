@@ -45,10 +45,27 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	private ImageButton a4_delete;
 	
 	private List<String> mData;
+	int fragmentID;
+	private static int id=0;
 	
-	public StepFragment(List<String> data) {
-		mData = data;
+	public int getFragmentID() {
+		
+		return fragmentID;
 	}
+
+	public void setFragmentID(int fragmentID) {
+		this.fragmentID = fragmentID;
+	}
+
+	public StepFragment(List<String> data) {
+		this(data,id++);
+	}
+		
+	public StepFragment(List<String> data,int id) {
+		mData = data;
+		setFragmentID(id);
+	}
+	
 
 	public SetupFragmentBean getFragmentData() {
 		return mSetupFragmentBean;

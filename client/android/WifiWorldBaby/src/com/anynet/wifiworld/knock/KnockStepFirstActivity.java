@@ -3,6 +3,7 @@ package com.anynet.wifiworld.knock;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
@@ -11,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
@@ -28,7 +30,8 @@ public class KnockStepFirstActivity extends BaseActivity {
 	int currentIndex = 0;
 	private WifiQuestions mQuestions;
 	private boolean mAskOrAnswer = false; // true: ask, false: answer
-
+	private int moveRight = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		currentIndex = 0;
@@ -42,13 +45,13 @@ public class KnockStepFirstActivity extends BaseActivity {
 			mAskOrAnswer = true;
 			mQuestions = (WifiQuestions) intent.getSerializableExtra("data");
 			for (int i = 0; i < 3; i++) {
-				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i));
+				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i),i);
 			}
 		} else {
 			mQuestions = new WifiQuestions();
 			mQuestions.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
 			for (int i = 0; i < 3; i++) {
-				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i));
+				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i),i);
 			}
 		}
 		initView();
@@ -81,6 +84,10 @@ public class KnockStepFirstActivity extends BaseActivity {
 				next();
 			}
 		});
+		step1V = findViewById(R.id.iv_knock_step_1);
+		step2V = findViewById(R.id.iv_knock_step_2);
+		step3V = findViewById(R.id.iv_knock_step_3);
+		moveV = findViewById(R.id.iv_move33);
 	}
 
 	public void setTitleUI() {
@@ -98,31 +105,14 @@ public class KnockStepFirstActivity extends BaseActivity {
 	private void moveQbar(boolean right) {
 		synchronized (ACCESSIBILITY_SERVICE) {
 			TranslateAnimation translateAnimation;
-			step1V = findViewById(R.id.iv_knock_step_1);
-			step2V = findViewById(R.id.iv_knock_step_2);
-			step3V = findViewById(R.id.iv_knock_step_3);
-			moveV = findViewById(R.id.iv_move33);
 			float deltaX = 0;
-			Display display  = this.getWindowManager().getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			int width = size.x +30;
-			int height = size.y;
-			//deltaX = width/3.0f;
 			int s = DipPixelUtil.dip2px(this, 16);
-			Log.e(TAG,
-					"Display:("+DipPixelUtil.px2dip(this,width)+","+DipPixelUtil.px2dip(this,height)+")step1V.left:" + step1V.getLeft() + " Right:" + step1V.getRight() + " with:" + step1V.getWidth()
-							+ "   step2V.left:" + step2V.getLeft() + " right:" + step2V.getRight() + " with:"
-							+ step2V.getWidth() + "   step3V.Left:" + step3V.getLeft() + " Right:" + step3V.getRight()
-							+ " with:" + step3V.getWidth() + "   moveV.Left:" + moveV.getLeft() + " Right:"
-							+ moveV.getRight() + " with:" + moveV.getWidth());
 			if (right) {
 				if (currentIndex == 0) {
 					deltaX = step2V.getRight() - moveV.getRight();
 				} else if (currentIndex == 1) {
-					deltaX = step3V.getRight()+s - moveV.getRight();
+					deltaX = step3V.getRight() + s - moveV.getRight();
 				}
-				// deltaX = DipPixelUtil.px2dip(this, deltaX);
 				translateAnimation = new TranslateAnimation(0, deltaX, 0, 0);
 			} else {
 				if (currentIndex == 2) {
@@ -130,12 +120,11 @@ public class KnockStepFirstActivity extends BaseActivity {
 				} else if (currentIndex == 1) {
 					deltaX = moveV.getRight() - step1V.getRight();
 				}
-				// deltaX = DipPixelUtil.px2dip(this, deltaX);
 				translateAnimation = new TranslateAnimation(0, -deltaX, 0, 0);
 			}
 
-			final int toRight = right ? (int) (moveV.getRight() + deltaX) : (int) (moveV.getRight() - deltaX);
-			Log.e(TAG, "toleft:" + toRight + "deltaX:" + deltaX);
+			moveRight = right ? (int) (moveV.getRight() + deltaX) : (int) (moveV.getRight() - deltaX);
+			Log.e(TAG, "toleft:" + moveRight + "deltaX:" + deltaX);
 			translateAnimation.setDuration(500);
 			translateAnimation.setAnimationListener(new Animation.AnimationListener() {
 				@Override
@@ -153,7 +142,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 					int width = moveV.getWidth();
 					int height = moveV.getHeight();
 					moveV.clearAnimation();
-					moveV.layout(toRight - width, top, toRight, top + height);
+					moveV.layout(moveRight - width, top, moveRight, top + height);
 					isAnimation = false;
 				}
 
@@ -322,21 +311,26 @@ public class KnockStepFirstActivity extends BaseActivity {
 		}
 		// fragments[index].onResume();
 		trx.show(mSetupFragment[currentIndex]).commit();
+	}
 
-		// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
-		// if (NetHelper.isNetworkAvailable(getApplicationContext())) {
-		//
-		// for (int i = 0; i < mSetupFragment.length; i++) {
-		// if (i == currentIndex) {
-		// mSetupFragment[i].startUpdte();
-		// } else {
-		// mSetupFragment[i].stopUpdte();
-		// }
-		// }
-		// }
-		// mSetupFragment[currentIndex].setSelected(false);
-		// // 把当前tab设为选中状态
-		// mSetupFragment[currentIndex].setSelected(true);
+	@Override
+	public void onAttachFragment(Fragment fragment) {
+		// TODO Auto-generated method stub
+
+		super.onAttachFragment(fragment);
+		Log.e(TAG, "onAttachFragment");
+		if (fragment instanceof AnswerFragment) {
+			int id = ((AnswerFragment) fragment).getFragmentID();
+			if (mSetupFragment[id] == null)
+				mSetupFragment[id] = (AnswerFragment) fragment;
+		}
+
+//		int top = moveV.getTop();
+//		int width = moveV.getWidth();
+//		int height = moveV.getHeight();
+//		Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
+//		if (!isAnimation)
+//			moveV.layout(moveRight - width, top, moveRight, top + height);
 	}
 
 	@Override
@@ -349,6 +343,11 @@ public class KnockStepFirstActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		int top = moveV.getTop();
+		int width = moveV.getWidth();
+		int height = moveV.getHeight();
+		Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
+		moveV.layout(moveRight - width, top, moveRight, top + height);
 	}
 
 	@Override
