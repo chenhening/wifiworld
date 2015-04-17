@@ -45,15 +45,15 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 
 				@Override
                 public void onClick(View arg0) {
-					mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
+					mWifiProfile = WifiProviderRigisterFirstActivity.mWifiProfile;
 					mWifiProfile.StoreRemote(getApplicationContext(), 
 						new DataCallback<WifiProfile>() {
 
 							@Override
                             public void onSuccess(WifiProfile object) {
 								showToast("WiFi信息登记成功。");
-								mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
-										MainActivity.class);
+								LoginHelper.getInstance(getApplicationContext()).mWifiProfile = object;
+								mIntent.setClass(WifiProviderRigisterCompleteActivity.this, MainActivity.class);
 								//mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(mIntent);
                             }

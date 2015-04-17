@@ -114,7 +114,7 @@ public class MeFragment extends MainFragment {
 	
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							mLoginHelper.mWifiProfile = new WifiProfile();
+							//mLoginHelper.mWifiProfile = new WifiProfile();
 							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 							startActivity(i);
 						}					

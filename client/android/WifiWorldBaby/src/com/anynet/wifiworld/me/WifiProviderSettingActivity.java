@@ -60,6 +60,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = null;
 							mIntent.setClass(getApplicationContext(), MainActivity.class);
 							startActivity(mIntent);
 						}
@@ -80,6 +81,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = null;
 							mIntent.setClass(getApplicationContext(), MainActivity.class);
 							startActivity(mIntent);
 						}
