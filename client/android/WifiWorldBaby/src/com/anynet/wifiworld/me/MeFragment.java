@@ -125,6 +125,7 @@ public class MeFragment extends MainFragment {
 			}
 		});
 		
+		//我用的wifi
 		mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -217,6 +218,35 @@ public class MeFragment extends MainFragment {
 				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
 				startActivity(i);
 			}
+		});
+		
+		//我的关注
+		mPageRoot.findViewById(R.id.attention_layout).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				// 查询是否登录
+				if (!checkIsLogined()) {
+					return;
+				}
+				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
+				startActivity(i); 
+            }
+			
+		});
+		//我的黑名单
+		mPageRoot.findViewById(R.id.blacklist_layout).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				// 查询是否登录
+				if (!checkIsLogined()) {
+					return;
+				}
+				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
+				startActivity(i); 
+            }
+			
 		});
 		
 		return mPageRoot;

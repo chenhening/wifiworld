@@ -55,6 +55,34 @@ public class WifiFollow extends BmobObject {
 		}).start();
 	}
 	
+	public void QueryWifiByUser(final Context context, final String PhoneNumber, 
+			MultiDataCallback<WifiFollow> callback) {
+		final MultiDataCallback<WifiFollow> _callback = callback;
+		final BmobQuery<WifiFollow> query = new BmobQuery<WifiFollow>();
+		query.addWhereEqualTo(USER_ID, PhoneNumber);
+		Log.d(TAG, "Start to query wifi follow table for: " + PhoneNumber);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiFollow>() {
+					@Override
+					public void onSuccess(List<WifiFollow> object) {
+						_callback.onSuccess(object);
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+					
+				});
+				Log.d(TAG, "Finish to query wifi messages");
+			}
+
+		}).start();
+	}
+	
 	public void FollowWifi(final Context context, DataCallback<WifiFollow> callback) {
 		final DataCallback<WifiFollow> _callback = callback;
 		final WifiFollow user = this;

@@ -179,8 +179,8 @@ public class WifiDetailsActivity extends BaseActivity {
 				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
 				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
 						.getCurLoginUserInfo().PhoneNumber;
-				wifiBlack.NotSafe = true;
-				wifiBlack.others = "shit, shit";
+				wifiBlack.BlackType = WifiBlack.Type.WrongPwd;
+				wifiBlack.Content = "shit, shit";
 				wifiBlack.MarkReportTime();
 
 				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
