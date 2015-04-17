@@ -403,7 +403,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		if (listProfiles != null) {
 			for (WifiProfile wifiProfile : listProfiles) {
 				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+					wifiInfoScanned.setWifiLogo(wifiProfile.getLogo());
 					break;
 				}
 			}
@@ -411,19 +411,4 @@ public class WifiDetailsActivity extends BaseActivity {
 			Log.i(TAG, "Wifi Profile table return null");
 		}
 	}
-	
-	private byte[] bitmap2Bytes(Bitmap bm) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		boolean convertFlag = bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		Log.i(TAG, "convert to png: " + convertFlag);
-		return baos.toByteArray();
-	}
-	
-	private Bitmap byte2Bitmap(byte[] b) {
-		if (b.length != 0) {
-			return BitmapFactory.decodeByteArray(b,  0, b.length);
-		}
-		return null;
-	}
-
 }

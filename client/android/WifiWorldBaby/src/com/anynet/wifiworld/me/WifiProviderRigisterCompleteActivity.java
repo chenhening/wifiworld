@@ -37,6 +37,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
 		setContentView(R.layout.wifi_provider_certify_complete);
+		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra("wifiprofile");
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
@@ -45,13 +46,14 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 
 				@Override
                 public void onClick(View arg0) {
-					mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
+					//mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
 					mWifiProfile.StoreRemote(getApplicationContext(), 
 						new DataCallback<WifiProfile>() {
 
 							@Override
                             public void onSuccess(WifiProfile object) {
 								showToast("WiFi信息登记成功。");
+								LoginHelper.getInstance(getApplicationContext()).mWifiProfile = mWifiProfile;
 								mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
 										MainActivity.class);
 								//mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

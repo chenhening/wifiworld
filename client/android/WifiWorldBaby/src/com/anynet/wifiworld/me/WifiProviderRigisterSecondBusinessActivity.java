@@ -6,23 +6,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
-	//IPC
+	// IPC
 	private Intent mIntent = null;
-	
+	WifiProfile mWifiProfile;
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				mIntent.setClass(WifiProviderRigisterSecondBusinessActivity.this,
@@ -39,11 +38,12 @@ public class WifiProviderRigisterSecondBusinessActivity extends BaseActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
 		setContentView(R.layout.wifi_provider_certify_second_home);
+		
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 	}
