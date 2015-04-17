@@ -39,7 +39,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("我关注的Wi-Fi");
+		mTitlebar.tvTitle.setText("我举报过的Wi-Fi");
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
@@ -72,7 +72,7 @@ public class WifiFollowListActivity extends BaseActivity {
             public void onFailed(String msg) {
 				Log.d("WifiUsedListActivity", "当前网络不稳定，请稍后再试：" + msg);
 	            showToast("当前网络不稳定，请稍后再试：" + msg);
-	            finish();
+	            //finish();
             }
 			
 		});

@@ -72,7 +72,7 @@ public class WifiBlackListActivity extends BaseActivity {
             public void onFailed(String msg) {
 				Log.d("WifiUsedListActivity", "当前网络不稳定，请稍后再试：" + msg);
 	            showToast("当前网络不稳定，请稍后再试：" + msg);
-	            finish();
+	            //finish();
             }
 			
 		});
