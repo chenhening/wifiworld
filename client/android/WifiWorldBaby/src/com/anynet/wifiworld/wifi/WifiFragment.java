@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.AlertDialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -46,7 +47,10 @@ import android.widget.ToggleButton;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -253,7 +257,40 @@ public class WifiFragment extends MainFragment {
 				int index_auth = (mWifiAuth.size() + 2);
 				if (position < index_auth) {
 					mWifiItemClick = mWifiAuth.get(position - 2);
-					showWifiConnectConfirmDialog(mWifiItemClick);
+					//判断是否敲门，没有敲门提醒其去敲门
+					if (LoginHelper.getInstance(getApplicationContext()).mKnockList.contains(mWifiItemClick.getWifiMAC())) {
+						showWifiConnectConfirmDialog(mWifiItemClick);
+					} else {
+						//弹出询问对话框
+						new AlertDialog.Builder(getActivity())
+						.setTitle("Wi-Fi敲门").setMessage("当前Wi-Fi的门没有敲开，是否去敲门？")  
+						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+		
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								//拉取敲门问题
+								WifiQuestions wifiQuestions = new WifiQuestions();
+								wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(), new DataCallback<WifiQuestions>() {
+									
+									@Override
+									public void onSuccess(WifiQuestions object) {
+										Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
+										i.putExtra("whoami", "WifiDetailsActivity");
+										i.putExtra("data", object);
+										startActivity(i);
+									}
+									
+									@Override
+									public void onFailed(String msg) {
+										showToast("获取敲门信息失败，请稍后重试:" + msg);
+									}
+								});
+							}					
+						})  
+						.setNegativeButton("取消", null)
+						.show();
+						
+					}
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
 					showWifiConnectConfirmDialog(mWifiItemClick);
