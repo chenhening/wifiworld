@@ -34,7 +34,7 @@ import com.umeng.socialize.yixin.controller.UMYXHandler;
 public class MeFragment extends MainFragment {
 	// for saved data
 	private LoginHelper mLoginHelper;
-
+	WifiProfile mWifiProfile;
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
 
 		@Override
@@ -62,6 +62,7 @@ public class MeFragment extends MainFragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mLoginHelper = LoginHelper.getInstance(getActivity());
+		mWifiProfile = mLoginHelper.mWifiProfile;
 		// 监听登录
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
@@ -104,7 +105,7 @@ public class MeFragment extends MainFragment {
 					return;
 				}
 				
-				if (mLoginHelper.mWifiProfile != null) {
+				if (mWifiProfile.isShared) {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
@@ -262,7 +263,7 @@ public class MeFragment extends MainFragment {
 	}
 
 	private void setLoginedUI(boolean isLogined) {
-		if (isLogined && mLoginHelper.isLogined()) {
+		if (isLogined && mLoginHelper.isLogined() && mLoginHelper.getCurLoginUserInfo()!=null) {
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.VISIBLE);

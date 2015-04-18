@@ -26,6 +26,7 @@ public class WifiProfile extends BmobObject {
 	public static final String table_name_wifiunregistered = "WifiUnregistered";
 	public static final String CryptoKey = "Wifi2Key";// 8bits
 
+	private boolean isShared = false;
 	public String MacAddr; // mac地址, 唯一键
 	public String Ssid; // wifi的ssid
 	public String Password; // wifi的密码，经过base64后保存
@@ -314,5 +315,15 @@ public class WifiProfile extends BmobObject {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 		return baos.toByteArray();
+	}
+	
+	
+	public boolean isShared() {
+		return isShared;
+	}
+
+	public void setShared(boolean shared) {
+		isShared = shared;
+		// Logo = logo;
 	}
 }

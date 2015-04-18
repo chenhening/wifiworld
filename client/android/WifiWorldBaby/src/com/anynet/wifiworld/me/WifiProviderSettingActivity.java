@@ -16,6 +16,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -25,7 +26,8 @@ public class WifiProviderSettingActivity extends BaseActivity {
 	//IPC
 	private Intent mIntent = null;
 	private Activity activity = this;
-	
+	LoginHelper mLoginHelper;
+	WifiProfile mWifiProfile;
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -47,7 +49,8 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		setContentView(R.layout.wifi_provider_setting);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		mWifiProfile = mLoginHelper.mWifiProfile;
 		//取消wifi
 		this.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
@@ -59,7 +62,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
+							mWifiProfile.setShared(false);
 							mIntent.setClass(getApplicationContext(), MainActivity.class);
 							startActivity(mIntent);
 						}

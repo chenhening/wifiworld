@@ -29,7 +29,7 @@ public class LoginHelper {
 	public static String LOGIN_SUCCESS = AUTO_LOGIN_SUCCESS;
 	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
 	public static String LOGIN_NEVERLOGIN = AUTO_LOGIN_NEVERLOGIN;
-	
+
 	private static String mUserprofileDataFile = "userprofile.conf";
 	private static String mAliasUser = "PhoneNumber";
 	private static String mAliasPwd = "Password";
@@ -39,12 +39,20 @@ public class LoginHelper {
 	private static LoginHelper mInstance = null;
 	private SharedPreferences mPreferences = null;
 	private Context globalContext = null;
-	
-	public WifiProfile mWifiProfile = null;
-	public Set<String> mKnockList = new HashSet<String>();//保存敲门历史到本地
-	
+	public Set<String> mKnockList = new HashSet<String>();// 保存敲门历史到本地
+
 	private double Longitude = 0.0;
 	private double Latitude = 0.0;
+
+	public WifiProfile mWifiProfile = new WifiProfile();
+
+	public WifiProfile getWifiProfile() {
+		return mWifiProfile;
+	}
+
+	public void setWifiProfile(WifiProfile mWifiProfile) {
+		this.mWifiProfile = mWifiProfile;
+	}
 
 	public double getLongitude() {
 		return Longitude;
@@ -72,8 +80,7 @@ public class LoginHelper {
 
 	public LoginHelper(Context context) {
 		this.globalContext = context;
-		mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile,
-			Context.MODE_PRIVATE);
+		mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
 	}
 
 	// ------------------------------------------------------------------------------------------------
@@ -89,7 +96,7 @@ public class LoginHelper {
 				mUser = object;
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
-				getWifiProfile();
+				pullWifiProfile();
 			}
 
 			@Override
@@ -125,7 +132,7 @@ public class LoginHelper {
 					mUser = object;
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 					Log.d(TAG, "用户自动登陆成功。");
-					getWifiProfile();
+					pullWifiProfile();
 					// ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
 				} else {
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
@@ -162,25 +169,25 @@ public class LoginHelper {
 		sharedata.putString(mAliasPwd, user.Password);
 		sharedata.commit();
 		Log.d(TAG, "用户密码本地保存成功。");
-		//ShowToast(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT);
+		// ShowToast(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT);
 	}
 
 	public boolean getCurLoginStatus() {
-		return mIsLogin &&  mUser!=null;
+		return mIsLogin && mUser != null;
 	}
 
-	public boolean isLogined(){
-		return mIsLogin &&  mUser!=null;
+	public boolean isLogined() {
+		return mIsLogin && mUser != null;
 	}
-	
+
 	public UserProfile getCurLoginUserInfo() {
-		if(mIsLogin){
+		if (mIsLogin) {
 			return mUser;
 		}
 		return null;
 	}
 
-	private void getWifiProfile() {
+	private void pullWifiProfile() {
 		// 去服务器上查询是否已经登记了自己的wifi
 		WifiProfile wifi = new WifiProfile();
 		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
@@ -189,7 +196,7 @@ public class LoginHelper {
 			@Override
 			public void onSuccess(List<WifiProfile> objects) {
 				if (objects.size() >= 1) {
-					mWifiProfile = objects.get(0); //TODO(binfei)目前一个账号才对应一个wifi
+					mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
 				}
 			}
 

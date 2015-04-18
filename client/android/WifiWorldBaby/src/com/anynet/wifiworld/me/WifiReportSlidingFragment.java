@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiReportSlidingFragment extends Fragment {
@@ -92,11 +93,14 @@ public class WifiReportSlidingFragment extends Fragment {
 	//private static long time8to12 = 12*60*60*1000;
 	//private static long time12to16 = 16*60*60*1000;
 	//private static long time16to20 = 20*60*60*1000;
-	
+	LoginHelper mLoginHelper ;
+	WifiProfile mWifiProfile;
 	private void AnalysizeData() {
 		//为了节省API调用一次性拉取一周数据下来
 		final WifiDynamic record = new WifiDynamic();
-        record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
+		mLoginHelper = LoginHelper.getInstance(getActivity());
+		mWifiProfile = mLoginHelper.mWifiProfile;
+        record.MacAddr = mWifiProfile.MacAddr;
         record.MarkLoginTime();
         //得到当前日期，取整到七天
         final int today = (int) (record.LoginTime / day1);
@@ -109,8 +113,8 @@ public class WifiReportSlidingFragment extends Fragment {
 				final long poscount[] = new long[4]; //暂时分东南西北四个方向
 				final long timecount[] = new long[5]; //暂时分5个时间段
 				Calendar calendar = new GregorianCalendar();
-				double router_x = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLatitude();
-				double router_y = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry.getLongitude();;
+				double router_x = mWifiProfile.Geometry.getLatitude();
+				double router_y = mWifiProfile.Geometry.getLongitude();;
 	            for (int i=0; i < objects.size(); ++i) {
 	            	WifiDynamic one = objects.get(i);
 	            	//分析时间段曲线
