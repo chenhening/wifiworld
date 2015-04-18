@@ -148,22 +148,22 @@ public class WifiProfile extends BmobObject {
 
 			@Override
 			public void run() {
-				// 先从leancloud上拉取数据
-				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
-				geo.setGeometry(center.getLatitude(), center.getLongitude());
-				List<String> result = geo.QueryInRadians(radians, 30);
-				if (result == null) {
-					_callback.onFailed("数据库中没有数据。");
-					return;
-				}
-
+				//先从leancloud上拉取数据
+				//GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
+				//geo.setGeometry(center.getLatitude(), center.getLongitude());
+				//List<String> result = geo.QueryInRadians(radians, 30);
+				//if (result == null) {
+				//	_callback.onFailed("数据库中没有数据。");
+				//	return;
+				//}
+				
 				final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-				// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
-				// query.addWhereWithinRadians("Geometry", center, radians);
-				// query.addWhereWithinKilometers("Geometry", center, radians);
-				// query.addWhereWithinMiles("Geometry", center, radians);
-				query.addWhereContainedIn(unique_key, result);
-				// query.addWhereNear("Geometry", center);
+				//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+				//query.addWhereWithinRadians("Geometry", center, radians);
+				//query.addWhereWithinKilometers("Geometry", center, radians);
+				query.addWhereWithinMiles("Geometry", center, radians);
+				//query.addWhereContainedIn(unique_key, result);
+				//query.addWhereNear("Geometry", center);
 				query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
 				Log.d("findObjects", "开始查询QueryInRadians");
 
@@ -234,7 +234,7 @@ public class WifiProfile extends BmobObject {
 				geo.setKey(MacAddr);
 				if(Geometry!=null)geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
 				if (!geo.StoreRemote()) {
-					return;
+					//return;
 				}
 				// 对密码进行加密
 				if (wifi.Password != null) {

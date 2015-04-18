@@ -44,7 +44,7 @@ public class LoginHelper {
 	private double Longitude = 0.0;
 	private double Latitude = 0.0;
 
-	public WifiProfile mWifiProfile = new WifiProfile();
+	public WifiProfile mWifiProfile = null;
 
 	public WifiProfile getWifiProfile() {
 		return mWifiProfile;
@@ -202,6 +202,7 @@ public class LoginHelper {
 
 			@Override
 			public void onFailed(String msg) {
+				Log.d(TAG, "用户还没有等级过wifi: " + msg);
 			}
 		});
 	}
