@@ -160,9 +160,9 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				if (!checkIsLogined()) {
-					return;
-				}
+				//if (!checkIsLogined()) {
+				//	return;
+				//}
 				/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
 				SocializeConstants.APPKEY = GlobalConfig.UMENG_SHARE_KEY;
 				com.umeng.socialize.utils.Log.LOG = true;
@@ -192,8 +192,8 @@ public class MeFragment extends MainFragment {
 				mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ,
 						SHARE_MEDIA.SINA, SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN,
 						SHARE_MEDIA.DOUBAN);
-				UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
-				mController.setShareContent(mUP.PhoneNumber + "邀请你使用：" + getString(R.string.app_name)
+				//UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
+				mController.setShareContent("您的朋友邀请你使用：" + getString(R.string.app_name)
 						+ "。闲置WIFI是不是很浪费？" + getString(R.string.app_name) + "可以利用闲置的WIFI给自己赚钱啦！");
 				mController.openShare(getActivity(), new SnsPostListener() {
 
