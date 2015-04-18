@@ -25,6 +25,7 @@ public class WifiInfoScanned implements Serializable {
 	private boolean isAuthWifi = false;
 	
 	private Bitmap mWifiLogo;
+	private String mBanner;
 	
 	private float mRating;
 	private int mRanking;
@@ -193,6 +194,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setAuthWifi(boolean isAuthWifi) {
 		this.isAuthWifi = isAuthWifi;
+	}
+
+	public String getBanner() {
+		return mBanner;
+	}
+
+	public void setBanner(String mBanner) {
+		this.mBanner = mBanner;
 	}
 	
 }

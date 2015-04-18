@@ -77,31 +77,6 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
                 android:orientation="vertical" >
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/attention_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_attention"
-                    item:label="好评支持一下"
-                    item:subLabel="和更多的朋友分享"
-                    item:showTopDivider="true" />
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/fensi_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/icon_person_center_fans"
-                    item:label="检查更新"
-                    item:showTopDivider="true" />
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/blacklist_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/ic_person_blacklist"
-                    item:label="关于网络宝"
-                    item:showTopDivider="true" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

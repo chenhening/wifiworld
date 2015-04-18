@@ -19,12 +19,17 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class WifiProfile extends BmobObject {
+	private final static String TAG = WifiProfile.class.getSimpleName();
 
 	private static final long serialVersionUID = 1L;
 	private static final String unique_key = "MacAddr";
 
 	public static final String table_name_wifiunregistered = "WifiUnregistered";
 	public static final String CryptoKey = "Wifi2Key";// 8bits
+	
+	public static final String LOGO = "Logo";
+	public static final String PASSWORD = "Password";
+	public static final String BANNER = "Banner";
 
 	private boolean isShared = false;
 	public String MacAddr; // mac地址, 唯一键
@@ -103,6 +108,43 @@ public class WifiProfile extends BmobObject {
 
 		}).start();
 	}
+	
+	public void QueryTagByMacAddr(final Context context, String Mac, String QueryTag, DataCallback<WifiProfile> callback) {
+		final DataCallback<WifiProfile> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+		// 先从缓存获取数据，再拉取网络数据更新
+		query.addQueryKeys("MacAddr" + "," + QueryTag);
+		query.addWhereEqualTo(unique_key, Mac);
+		Log.d(TAG, "开始查询QueryTagByMacAddr");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() == 1) {
+							WifiProfile returnProfile = object.get(0);
+							if (returnProfile.Password != null) {
+								returnProfile.Password = decryptPwd(returnProfile.Password);
+							}
+							_callback.onSuccess(returnProfile);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryTagByMacAddr");
+			}
+
+		}).start();
+	}
 
 	public void BatchQueryByMacAddress(final Context context, List<String> Macs, MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
@@ -148,22 +190,22 @@ public class WifiProfile extends BmobObject {
 
 			@Override
 			public void run() {
-				// 先从leancloud上拉取数据
-				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
-				geo.setGeometry(center.getLatitude(), center.getLongitude());
-				List<String> result = geo.QueryInRadians(radians, 30);
-				if (result == null) {
-					_callback.onFailed("数据库中没有数据。");
-					return;
-				}
-
+				//先从leancloud上拉取数据
+				//GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
+				//geo.setGeometry(center.getLatitude(), center.getLongitude());
+				//List<String> result = geo.QueryInRadians(radians, 30);
+				//if (result == null) {
+				//	_callback.onFailed("数据库中没有数据。");
+				//	return;
+				//}
+				
 				final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-				// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
-				// query.addWhereWithinRadians("Geometry", center, radians);
-				// query.addWhereWithinKilometers("Geometry", center, radians);
-				// query.addWhereWithinMiles("Geometry", center, radians);
-				query.addWhereContainedIn(unique_key, result);
-				// query.addWhereNear("Geometry", center);
+				//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+				//query.addWhereWithinRadians("Geometry", center, radians);
+				//query.addWhereWithinKilometers("Geometry", center, radians);
+				query.addWhereWithinMiles("Geometry", center, radians);
+				//query.addWhereContainedIn(unique_key, result);
+				//query.addWhereNear("Geometry", center);
 				query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
 				Log.d("findObjects", "开始查询QueryInRadians");
 
@@ -235,7 +277,7 @@ public class WifiProfile extends BmobObject {
 				if (Geometry != null)
 					geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
 				if (!geo.StoreRemote()) {
-					return;
+					//return;
 				}
 				// 对密码进行加密
 				if (wifi.Password != null) {
@@ -296,7 +338,10 @@ public class WifiProfile extends BmobObject {
 	}
 
 	public Bitmap getLogo() {
-		return Bytes2Bimap(Logo);
+		if (Logo != null)
+			return Bytes2Bimap(Logo);
+		else
+			return null;
 	}
 
 	public void setLogo(Bitmap logo) {

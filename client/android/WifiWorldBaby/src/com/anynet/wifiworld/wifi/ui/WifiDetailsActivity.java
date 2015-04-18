@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -56,6 +57,8 @@ public class WifiDetailsActivity extends BaseActivity {
 	private ProgressBar mProcessBar;
 	private TextView mRankText;
 	private TextView mRateText;
+	private ImageView mWifiLogo;
+	private TextView mWifiBanner;
 	private TextView mConnectedCnt;
 	private TextView mConnectedTime;
 	private TextView mWifiMessage;
@@ -65,6 +68,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	
 	private Handler mUpdateViewHandler = new Handler();
 	private Runnable mMonitorDataRunnable = null;
+	private int mProfileFlag = GET_DATA_DEFAULT;
 	private int mDynamicFlag = GET_DATA_DEFAULT;
 	private int mMessagesFlag = GET_DATA_DEFAULT;
 	private int mCommentsFlag = GET_DATA_DEFAULT;
@@ -86,7 +90,6 @@ public class WifiDetailsActivity extends BaseActivity {
 		//Get intent data
 		Intent intent = getIntent();
 		mWifiInfoScanned = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
-		getWifiProfiles(mWifiInfoScanned);
 		//Set title text and back button listener
 		mTitlebar.tvTitle.setText(mWifiInfoScanned.getWifiName());
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -103,11 +106,9 @@ public class WifiDetailsActivity extends BaseActivity {
 		mConnectedTime = (TextView)findViewById(R.id.wifi_connect_time_num);
 		
 		mWifiMessage = (TextView)findViewById(R.id.wifi_messages_content);
-		//Set WiFi logo image
-//		if (wifiSelected.getWifiLogo() != null) {
-//			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
-//			logo.setImageBitmap(wifiSelected.getWifiLogo());
-//		}
+		//WiFi logo image
+		mWifiLogo = (ImageView)findViewById(R.id.wifi_account_portral);
+		mWifiBanner = (TextView) findViewById(R.id.wifi_account_desc);
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		
@@ -266,6 +267,25 @@ public class WifiDetailsActivity extends BaseActivity {
 	}
 	
 	private void pullDataFromDB() {
+		WifiProfile wifiProfile = new WifiProfile();
+		String queryTag = WifiProfile.LOGO + "," + WifiProfile.BANNER;
+		wifiProfile.QueryTagByMacAddr(this, mWifiInfoScanned.getWifiMAC(), queryTag, new DataCallback<WifiProfile>() {
+			
+			@Override
+			public void onSuccess(WifiProfile object) {
+				Log.i(TAG, "Success to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
+				mWifiInfoScanned.setWifiLogo(object.getLogo());
+				mWifiInfoScanned.setBanner(object.Banner);
+				mProfileFlag = GET_DATA_SUCCESS;
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
+				mProfileFlag = GET_DATA_FAILED;
+			}
+		});
+		
 		WifiDynamic wifiDynamic = new WifiDynamic();
 		wifiDynamic.QueryConnectedTimes(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<Long>() {
 
@@ -369,23 +389,28 @@ public class WifiDetailsActivity extends BaseActivity {
 				
 				@Override
 				public void run() {
-					if (mCommentsFlag==GET_DATA_SUCCESS) {
+					if (mProfileFlag == GET_DATA_SUCCESS) {
+						mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
+						mWifiBanner.setText(mWifiInfoScanned.getBanner());
+					}
+					if (mCommentsFlag == GET_DATA_SUCCESS) {
 						mRankText.setText("排名：" + String.valueOf(mWifiInfoScanned.getRanking()));
 						mRateText.setText(String.valueOf(mWifiInfoScanned.getWifiStrength()));
 						mConnectedCnt.setText(String.valueOf(mWifiInfoScanned.getConnectedTimes()) + "次");
 						mConnectedTime.setText(String.valueOf(mWifiInfoScanned.getConnectedDuration()) + "小时");
 					}
-					if (mDynamicFlag==GET_DATA_SUCCESS) {
+					if (mDynamicFlag == GET_DATA_SUCCESS) {
 						if (mWifiInfoScanned.getMessages().size() > 0) {
 							mWifiMessage.setText(mWifiInfoScanned.getMessages().get(0));
 						}
 					}
-					if (mMessagesFlag==GET_DATA_SUCCESS) {
+					if (mMessagesFlag == GET_DATA_SUCCESS) {
 						List<String> comment_item = mWifiInfoScanned.getComments();
 						mListComments.setAdapter(new ArrayAdapter<String>(getBaseContext(), R.layout.list_view_item, comment_item));
 					}
 					if (mCommentsFlag != GET_DATA_DEFAULT && mDynamicFlag != GET_DATA_DEFAULT
-							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT) {
+							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT
+							&& mProfileFlag != GET_DATA_DEFAULT) {
 						mProcessBar.setVisibility(View.GONE);
 						mLayoutRoot.removeView(mProcessBar);
 						return;
@@ -395,20 +420,6 @@ public class WifiDetailsActivity extends BaseActivity {
 				}
 			};
 			mUpdateViewHandler.post(mMonitorDataRunnable);
-		}
-	}
-	
-	private void getWifiProfiles(WifiInfoScanned wifiInfoScanned) {
-		List<WifiProfile> listProfiles = WifiListHelper.getInstance(this).mWifiProfiles;
-		if (listProfiles != null) {
-			for (WifiProfile wifiProfile : listProfiles) {
-				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					wifiInfoScanned.setWifiLogo(wifiProfile.getLogo());
-					break;
-				}
-			}
-		} else {
-			Log.i(TAG, "Wifi Profile table return null");
 		}
 	}
 }

@@ -61,14 +61,15 @@ public class MeFragment extends MainFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		mLoginHelper = LoginHelper.getInstance(getActivity());
-		mWifiProfile = mLoginHelper.mWifiProfile;
+		
 		// 监听登录
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
 		filter.addAction(LoginHelper.LOGIN_FAIL);
 		filter.addAction(LoginHelper.LOGIN_OUT);
 		getActivity().registerReceiver(loginBR, filter);
+		
+		mLoginHelper = LoginHelper.getInstance(getActivity());
 	}
 
 	@Override
@@ -105,7 +106,8 @@ public class MeFragment extends MainFragment {
 					return;
 				}
 				
-				if (mWifiProfile.isShared()) {
+				mWifiProfile = mLoginHelper.mWifiProfile;
+				if (mWifiProfile != null) {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
@@ -222,7 +224,7 @@ public class MeFragment extends MainFragment {
 		});
 		
 		//我的关注
-		mPageRoot.findViewById(R.id.attention_layout).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_my_attention).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -236,7 +238,7 @@ public class MeFragment extends MainFragment {
 			
 		});
 		//我的黑名单
-		mPageRoot.findViewById(R.id.blacklist_layout).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_my_blacklist).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -247,6 +249,18 @@ public class MeFragment extends MainFragment {
 				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
 				startActivity(i); 
             }
+			
+		});
+		
+		//设置about
+		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent();
+				i.setClass(getApplicationContext(), AboutAppActivity.class);
+				startActivity(i);
+			}
 			
 		});
 		

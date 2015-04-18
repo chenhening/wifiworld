@@ -507,8 +507,10 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-        this.mWifiManager.disableNetwork(netId);
-        this.mWifiManager.disconnect();
+    		mWifiManager.enableNetwork(netId, false);
+    		mWifiManager.saveConfiguration();
+        mWifiManager.disableNetwork(netId);
+        mWifiManager.disconnect();
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {

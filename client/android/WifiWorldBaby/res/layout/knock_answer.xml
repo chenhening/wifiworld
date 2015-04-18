@@ -43,6 +43,7 @@
             android:orientation="vertical" >
 
            <LinearLayout
+               android:id="@+id/ll_knock_answer1"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:layout_marginLeft="8dp"
@@ -79,6 +80,7 @@
                android:background="@drawable/default_divider" />
 
             <LinearLayout
+                android:id="@+id/ll_knock_answer2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -115,6 +117,7 @@
                 android:background="@drawable/default_divider" />
 
             <LinearLayout
+                android:id="@+id/ll_knock_answer3"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -151,6 +154,7 @@
                 android:background="@drawable/default_divider" />
 
             <LinearLayout
+                android:id="@+id/ll_knock_answer4"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"

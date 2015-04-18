@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -78,18 +79,26 @@ public class AnswerFragment extends BaseFragment implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
+		this.findViewById(R.id.ll_knock_answer1).setBackgroundColor(Color.WHITE);
+		this.findViewById(R.id.ll_knock_answer2).setBackgroundColor(Color.WHITE);
+		this.findViewById(R.id.ll_knock_answer3).setBackgroundColor(Color.WHITE);
+		this.findViewById(R.id.ll_knock_answer4).setBackgroundColor(Color.WHITE);
 		switch (v.getId()) {
 		case R.id.answer1:
 			mRightAnswer = mindex1;
+			this.findViewById(R.id.ll_knock_answer1).setBackgroundColor(Color.YELLOW);
 			break;
 		case R.id.answer2:
 			mRightAnswer = mindex2;
+			this.findViewById(R.id.ll_knock_answer2).setBackgroundColor(Color.YELLOW);
 			break;
 		case R.id.answer3:
 			mRightAnswer = mindex3;
+			this.findViewById(R.id.ll_knock_answer3).setBackgroundColor(Color.YELLOW);
 			break;
 		case R.id.answer4:
 			mRightAnswer = mindex4;
+			this.findViewById(R.id.ll_knock_answer4).setBackgroundColor(Color.YELLOW);
 			break;
 		}
 	}
