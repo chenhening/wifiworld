@@ -9,7 +9,11 @@
 package com.anynet.wifiworld.map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -89,10 +93,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private ListView mWifiListView;
 	private WifiListMapAdapter mWifiListMapAdapter;
 	private Marker currentMarker;
+	private Map<String, Marker> allMarkers = new HashMap<String, Marker>();
 	private LatLng mMyPosition;
 	private RouteSearch routeSearch;
 	private PendingIntent mPendingIntent;
 	private MarkerOptions markOptions;
+	private CircleOptions circleOptions;
 	private Circle mCircle;
 	
 	public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
@@ -154,7 +160,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 		List<WifiInfoScanned> wifiList = new ArrayList<WifiInfoScanned>();
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
-		mWifiListMapAdapter = new WifiListMapAdapter(this.getActivity(), wifiList);
+		mWifiListMapAdapter = new WifiListMapAdapter(this, wifiList);
 		mWifiListView.setAdapter(mWifiListMapAdapter);
 		
 		mImageView = (ImageView) mPageRoot.findViewById(R.id.brought_by);
@@ -184,6 +190,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
         markOptions = new MarkerOptions();
         markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                 .decodeResource(getResources(), R.drawable.location_marker)));
+        circleOptions = new CircleOptions();
         
 		return mPageRoot;
 	}
@@ -311,25 +318,10 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
 				mListener.onLocationChanged(amapLocation);
-				aMap.clear();
-				
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
 				mMyPosition = new LatLng(Latitude, Longitude);
-				Marker mGPSMarker = aMap.addMarker(markOptions);
-				mGPSMarker.setPosition(mMyPosition);
-				CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
-				aMap.moveCamera(update);
-				mAMapLocationManager.removeGeoFenceAlert(mPendingIntent);
-		        if (mCircle != null) {
-		            mCircle.remove();
-		        }
-		        // 设置地理围栏，位置、半径、超时时间、处理事件
-		        mAMapLocationManager.addGeoFenceAlert(Latitude, Longitude, 50, 1000 * 60 * 30, mPendingIntent);
-		        // 将地理围栏添加到地图上显示
-		        CircleOptions circleOptions = new CircleOptions();
-		        circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(180, 224, 171, 10)).strokeColor(Color.GRAY);
-		        mCircle = aMap.addCircle(circleOptions);
+				reDisplayCenter();
 
 				LoginHelper loginHelper = LoginHelper.getInstance(getApplicationContext());
 				loginHelper.setLongitude(Longitude);
@@ -349,9 +341,10 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
 								for (WifiProfile item : objects) {
 									WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
-									tempInfoScanned.mWifiDistance = 10;
+									//tempInfoScanned.mWifiDistance = 10;
 									tempInfoScanned.setWifiName(item.Ssid + " | " + item.Alias);
 									tempInfoScanned.setRemark(item.ExtAddress);
+									tempInfoScanned.setWifiMAC(item.MacAddr);
 									data.add(tempInfoScanned);
 								}
 								mWifiListMapAdapter.setData(data);
@@ -506,6 +499,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				allMarkers.clear();
 				for (int i = 0; i < wifilist.size(); ++i) {
 					WifiProfile wifi = wifilist.get(i);
 					LatLng llwifi1 = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
@@ -513,7 +507,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 					Marker mM = aMap.addMarker(mMO.position(llwifi1).title(wifi.Alias)
 							.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo)).draggable(true));
 					mM.setObject(wifi);
-					mM.showInfoWindow();
+					allMarkers.put(wifi.MacAddr, mM);
+					//mM.showInfoWindow();
 				}
 			}
 		});
@@ -546,4 +541,23 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			}
 		}
     }
+	
+	private void reDisplayCenter() {
+		aMap.clear();
+		Marker mGPSMarker = aMap.addMarker(markOptions);
+		mGPSMarker.setPosition(mMyPosition);
+		CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
+		aMap.moveCamera(update);
+		mAMapLocationManager.removeGeoFenceAlert(mPendingIntent);
+		if (mCircle != null)
+			mCircle.remove();
+		mAMapLocationManager.addGeoFenceAlert(mMyPosition.latitude, mMyPosition.longitude, 50, 1000 * 60 * 30, mPendingIntent);
+		circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(180, 224, 171, 10)).strokeColor(Color.GRAY);
+		mCircle = aMap.addCircle(circleOptions);
+	}
+	
+	public void zoomAndDisplay(String Mac) {
+		reDisplayCenter();
+		allMarkers.get(Mac).showInfoWindow();
+	}
 }

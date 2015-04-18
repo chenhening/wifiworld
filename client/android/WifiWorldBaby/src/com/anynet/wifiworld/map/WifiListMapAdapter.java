@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -18,9 +19,9 @@ public class WifiListMapAdapter extends BaseAdapter {
 	private final static String TAG = WifiListMapAdapter.class.getSimpleName();
 
 	private List<WifiInfoScanned> mWifiList = new ArrayList<WifiInfoScanned>();
-	private Context context;
+	private MapFragment context;
 
-	public WifiListMapAdapter(Context context, List<WifiInfoScanned> wifiList) {
+	public WifiListMapAdapter(MapFragment context, List<WifiInfoScanned> wifiList) {
 		super();
 		this.context = context;
 		mWifiList = wifiList;
@@ -57,7 +58,16 @@ public class WifiListMapAdapter extends BaseAdapter {
 			return view;
 		}
 		final WifiInfoScanned infoScanned = (WifiInfoScanned)getItem(position);
-		view = LayoutInflater.from(this.context).inflate(R.layout.wifi_item_map, null);
+		view = LayoutInflater.from(context.getActivity()).inflate(R.layout.wifi_item_map, null);
+		view.findViewById(R.id.wifi_layout).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				context.zoomAndDisplay(infoScanned.getWifiMAC());
+			}
+			
+		});
+		
 	    TextView textView = (TextView) view.findViewById(R.id.wifi_name);
 		textView.setText((infoScanned).getWifiName());
 		
@@ -71,9 +81,10 @@ public class WifiListMapAdapter extends BaseAdapter {
 		ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 		imageView.setImageResource(R.drawable.icon_invalid);
 	    
-	    int wifiDistance = (infoScanned).mWifiDistance;
+	    //int wifiDistance = (infoScanned).mWifiDistance;
 	    TextView distanceView = (TextView) view.findViewById(R.id.wifi_dis_digit);
-	    distanceView.setText(String.valueOf(wifiDistance));
+	    //distanceView.setText(String.valueOf(wifiDistance));
+	    distanceView.setVisibility(View.GONE);
 	    
         return view;
 	}
