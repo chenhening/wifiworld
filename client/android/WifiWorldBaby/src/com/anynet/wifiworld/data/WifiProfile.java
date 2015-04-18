@@ -19,12 +19,17 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class WifiProfile extends BmobObject {
+	private final static String TAG = WifiProfile.class.getSimpleName();
 
 	private static final long serialVersionUID = 1L;
 	private static final String unique_key = "MacAddr";
 
 	public static final String table_name_wifiunregistered = "WifiUnregistered";
 	public static final String CryptoKey = "Wifi2Key";// 8bits
+	
+	public static final String LOGO = "Logo";
+	public static final String PASSWORD = "Password";
+	public static final String BANNER = "Banner";
 
 	private boolean isShared = false;
 	public String MacAddr; // mac地址, 唯一键
@@ -99,6 +104,43 @@ public class WifiProfile extends BmobObject {
 					}
 				});
 				Log.d("findObjects", "结束查询QueryByMacAddress");
+			}
+
+		}).start();
+	}
+	
+	public void QueryTagByMacAddr(final Context context, String Mac, String QueryTag, DataCallback<WifiProfile> callback) {
+		final DataCallback<WifiProfile> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+		// 先从缓存获取数据，再拉取网络数据更新
+		query.addQueryKeys("MacAddr" + "," + QueryTag);
+		query.addWhereEqualTo(unique_key, Mac);
+		Log.d(TAG, "开始查询QueryTagByMacAddr");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() == 1) {
+							WifiProfile returnProfile = object.get(0);
+							if (returnProfile.Password != null) {
+								returnProfile.Password = decryptPwd(returnProfile.Password);
+							}
+							_callback.onSuccess(returnProfile);
+						} else {
+							_callback.onFailed("数据库中没有数据。");
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("findObjects", "结束查询QueryTagByMacAddr");
 			}
 
 		}).start();
