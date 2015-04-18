@@ -224,7 +224,7 @@ public class MeFragment extends MainFragment {
 		});
 		
 		//我的关注
-		mPageRoot.findViewById(R.id.attention_layout).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.service_declare).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {

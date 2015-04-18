@@ -80,8 +80,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+		
+		// 友盟自动更新
+		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
+		AVOSCloud.initialize(this, "0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as",
+				"ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
+		UmengUpdateAgent.update(this);
 
 		mLoginHelper = LoginHelper.getInstance(this);
 		mLoginHelper.getClass();
@@ -89,10 +94,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mLocationHelper = LocationHelper.getInstance(this);
 		mLocationHelper.getClass();
 		dbHelper = DBHelper.getInstance(this);
-
-		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-		AVOSCloud.initialize(this, "0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as",
-				"ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
 
 		Intent intent = getIntent();
 		intent.getBooleanExtra("isFromWelcomeActivity", false);
@@ -120,8 +121,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			}
 		}
 		trx.show(fragments[0]).commit();
-		// 友盟自动更新
-		UmengUpdateAgent.update(this);
 
 		// 打开友盟推送
 		mPushAgent = PushAgent.getInstance(this);

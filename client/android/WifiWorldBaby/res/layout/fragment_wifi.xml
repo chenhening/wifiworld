@@ -103,7 +103,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="测一测" />
+                android:text="测一测"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
 
             <View
                 android:layout_width="2dp"
@@ -116,7 +118,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="认证" />
+                android:text="认证"
+                android:textColor="@color/white" />
 
             <View
                 android:layout_width="2dp"
@@ -129,7 +132,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="互动" />
+                android:text="互动"
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
         <View

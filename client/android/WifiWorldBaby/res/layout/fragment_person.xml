@@ -334,7 +334,7 @@
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/attention_layout"
+                    android:id="@+id/service_declare"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/icon_person_center_attention"
