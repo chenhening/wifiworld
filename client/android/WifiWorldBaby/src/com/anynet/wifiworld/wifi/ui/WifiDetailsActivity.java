@@ -403,7 +403,8 @@ public class WifiDetailsActivity extends BaseActivity {
 		if (listProfiles != null) {
 			for (WifiProfile wifiProfile : listProfiles) {
 				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					wifiInfoScanned.setWifiLogo(wifiProfile.getLogo());
+					if (wifiProfile.getLogo() != null)
+						wifiInfoScanned.setWifiLogo(wifiProfile.getLogo());
 					break;
 				}
 			}

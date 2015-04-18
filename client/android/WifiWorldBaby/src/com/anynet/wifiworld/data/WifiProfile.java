@@ -295,7 +295,10 @@ public class WifiProfile extends BmobObject {
 	}
 
 	public Bitmap getLogo() {
-		return Bytes2Bimap(Logo);
+		if (Logo != null)
+			return Bytes2Bimap(Logo);
+		else
+			return null;
 	}
 
 	public void setLogo(Bitmap logo) {

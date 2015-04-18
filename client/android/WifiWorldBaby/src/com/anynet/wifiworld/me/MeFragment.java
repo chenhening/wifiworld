@@ -61,14 +61,15 @@ public class MeFragment extends MainFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		mLoginHelper = LoginHelper.getInstance(getActivity());
-		mWifiProfile = mLoginHelper.mWifiProfile;
+		
 		// 监听登录
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
 		filter.addAction(LoginHelper.LOGIN_FAIL);
 		filter.addAction(LoginHelper.LOGIN_OUT);
 		getActivity().registerReceiver(loginBR, filter);
+		
+		mLoginHelper = LoginHelper.getInstance(getActivity());
 	}
 
 	@Override
@@ -105,7 +106,8 @@ public class MeFragment extends MainFragment {
 					return;
 				}
 				
-				if (mWifiProfile.isShared()) {
+				mWifiProfile = mLoginHelper.mWifiProfile;
+				if (mWifiProfile != null) {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
