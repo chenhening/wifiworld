@@ -20,6 +20,7 @@ import com.anynet.wifiworld.util.LoginHelper;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -250,6 +251,45 @@ public class WifiListHelper {
 			}
 		}
 
+		return null;
+	}
+	
+	public Bitmap getWifiLogo(String wifiMac) {
+		if (mWifiProfiles != null) {
+			for (WifiProfile wifiProfile : mWifiProfiles) {
+				if (wifiProfile.MacAddr.equals(wifiMac)) {
+					return wifiProfile.getLogo();
+				}
+			}
+		} else {
+			Log.i(TAG, "Wifi Profile table return null");
+		}
+		return null;
+	}
+	
+	public Bitmap getWifiLogo(WifiInfoScanned wifiInfoScanned) {
+		if (mWifiProfiles != null) {
+			for (WifiProfile wifiProfile : mWifiProfiles) {
+				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
+					return wifiProfile.getLogo();
+				}
+			}
+		} else {
+			Log.i(TAG, "Wifi Profile table return null");
+		}
+		return null;
+	}
+	
+	public String getWifiBnner(WifiInfoScanned wifiInfoScanned) {
+		if (mWifiProfiles != null) {
+			for (WifiProfile wifiProfile : mWifiProfiles) {
+				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
+					return wifiProfile.Banner;
+				}
+			}
+		} else {
+			Log.i(TAG, "Wifi Profile table return null");
+		}
 		return null;
 	}
 	

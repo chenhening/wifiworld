@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -86,7 +87,6 @@ public class WifiDetailsActivity extends BaseActivity {
 		//Get intent data
 		Intent intent = getIntent();
 		mWifiInfoScanned = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
-		getWifiProfiles(mWifiInfoScanned);
 		//Set title text and back button listener
 		mTitlebar.tvTitle.setText(mWifiInfoScanned.getWifiName());
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -104,10 +104,14 @@ public class WifiDetailsActivity extends BaseActivity {
 		
 		mWifiMessage = (TextView)findViewById(R.id.wifi_messages_content);
 		//Set WiFi logo image
-//		if (wifiSelected.getWifiLogo() != null) {
-//			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
-//			logo.setImageBitmap(wifiSelected.getWifiLogo());
-//		}
+		Bitmap wifiLogo = WifiListHelper.getInstance(mContext).getWifiLogo(mWifiInfoScanned);
+		if (wifiLogo != null) {
+			ImageView logo = (ImageView)findViewById(R.id.wifi_account_portral);
+			logo.setImageBitmap(wifiLogo);
+		}
+		String wifiBnner = WifiListHelper.getInstance(mContext).getWifiBnner(mWifiInfoScanned);
+		TextView banner = (TextView) findViewById(R.id.wifi_account_desc);
+		banner.setText(wifiBnner);
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		
@@ -395,21 +399,6 @@ public class WifiDetailsActivity extends BaseActivity {
 				}
 			};
 			mUpdateViewHandler.post(mMonitorDataRunnable);
-		}
-	}
-	
-	private void getWifiProfiles(WifiInfoScanned wifiInfoScanned) {
-		List<WifiProfile> listProfiles = WifiListHelper.getInstance(this).mWifiProfiles;
-		if (listProfiles != null) {
-			for (WifiProfile wifiProfile : listProfiles) {
-				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
-					if (wifiProfile.getLogo() != null)
-						wifiInfoScanned.setWifiLogo(wifiProfile.getLogo());
-					break;
-				}
-			}
-		} else {
-			Log.i(TAG, "Wifi Profile table return null");
 		}
 	}
 }

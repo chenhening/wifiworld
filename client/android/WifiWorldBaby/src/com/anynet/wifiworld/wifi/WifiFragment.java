@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -37,6 +38,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -91,6 +93,8 @@ public class WifiFragment extends MainFragment {
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
 	private WifiInfoScanned mWifiItemClick;
+	
+	private ImageView mNaica;
 
 	private Handler mHandler = new Handler() {
 		
@@ -104,6 +108,12 @@ public class WifiFragment extends MainFragment {
 						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 						if (mWifiListAdapter != null) {
 							mWifiListAdapter.refreshWifiList(mWifiAuth, mWifiFree, mWifiEncrypt);
+						}
+						WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
+						if (wifiConnected.getNetworkId() != -1) {
+							Log.i(TAG, "wifi mac address is: " + wifiConnected.getBSSID());
+							Bitmap tempBitmap = WifiListHelper.getInstance(getActivity()).getWifiLogo(wifiConnected.getBSSID());
+							mNaica.setImageBitmap(tempBitmap);
 						}
 					}
 					mWifiListView.onRefreshComplete();
@@ -599,6 +609,9 @@ public class WifiFragment extends MainFragment {
 					comment_edit.setText("");
 				}
 			});
+			
+			//Set Image View Test
+			mNaica = (ImageView) popupView.findViewById(R.id.wifi_louder_image);
 		}
 	}
 	
