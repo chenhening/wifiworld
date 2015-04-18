@@ -259,7 +259,7 @@ public class WifiFragment extends MainFragment {
 					mWifiItemClick = mWifiAuth.get(position - 2);
 					//判断是否敲门，没有敲门提醒其去敲门
 					if (LoginHelper.getInstance(getApplicationContext()).mKnockList.contains(mWifiItemClick.getWifiMAC())) {
-						showWifiConnectConfirmDialog(mWifiItemClick);
+						showWifiConnectConfirmDialog(mWifiItemClick, true);
 					} else {
 						//弹出询问对话框
 						new AlertDialog.Builder(getActivity())
@@ -293,7 +293,7 @@ public class WifiFragment extends MainFragment {
 					}
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
-					showWifiConnectConfirmDialog(mWifiItemClick);
+					showWifiConnectConfirmDialog(mWifiItemClick, false);
 				}
 			}
 		});
@@ -396,10 +396,15 @@ public class WifiFragment extends MainFragment {
 		}
 	}
 
-	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned) {
+	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned, boolean beAuth) {
 		mWifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
 		mWifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
-		mWifiConnectDialog.setSecurity(wifiInfoScanned.getEncryptType());
+		if (beAuth) {
+			mWifiConnectDialog.setSecurity("该WiFi已经认证，请放心愉快的使用！");
+		} else {
+			mWifiConnectDialog.setSecurity("该WiFi未经认证，请谨慎使用！");
+		}
+		
 		mWifiConnectDialog.setLeftBtnStr("取消");
 		mWifiConnectDialog.setRightBtnStr("确定");
 		
