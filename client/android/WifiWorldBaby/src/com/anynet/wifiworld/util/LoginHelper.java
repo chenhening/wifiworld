@@ -42,7 +42,7 @@ public class LoginHelper {
 	
 	public WifiProfile mWifiProfile = null;
 	public Set<String> mKnockList = new HashSet<String>();//保存敲门历史到本地
-
+	
 	private double Longitude = 0.0;
 	private double Latitude = 0.0;
 

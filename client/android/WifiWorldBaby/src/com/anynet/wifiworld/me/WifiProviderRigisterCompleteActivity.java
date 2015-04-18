@@ -15,14 +15,14 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderRigisterCompleteActivity extends BaseActivity {
-	//IPC
+	// IPC
 	private Intent mIntent = null;
 	private WifiProfile mWifiProfile = null;
-	
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
@@ -32,7 +32,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
@@ -40,35 +40,37 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra("wifiprofile");
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		
-		this.findViewById(R.id.btn_wifi_provider_register).setOnClickListener(
-			new OnClickListener() {
 
-				@Override
-                public void onClick(View arg0) {
-					//mWifiProfile = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
-					mWifiProfile.StoreRemote(getApplicationContext(), 
-						new DataCallback<WifiProfile>() {
+		this.findViewById(R.id.btn_wifi_provider_register).setOnClickListener(new OnClickListener() {
 
-							@Override
-                            public void onSuccess(WifiProfile object) {
-								showToast("WiFi信息登记成功。");
-								LoginHelper.getInstance(getApplicationContext()).mWifiProfile = mWifiProfile;
-								mIntent.setClass(WifiProviderRigisterCompleteActivity.this,
-										MainActivity.class);
-								//mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(mIntent);
-                            }
+			@Override
+			public void onClick(View arg0) {
+				// mWifiProfile =
+				// LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
+				if (mWifiProfile != null) {
+					mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
 
-							@Override
-                            public void onFailed(String msg) {
-								showToast("WiFi信息登记失败： " + msg);
-                            }
-						
+						@Override
+						public void onSuccess(WifiProfile object) {
+							showToast("WiFi信息登记成功。");
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = mWifiProfile;
+							mIntent.setClass(WifiProviderRigisterCompleteActivity.this, MainActivity.class);
+							// mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(mIntent);
+						}
+
+						@Override
+						public void onFailed(String msg) {
+							showToast("WiFi信息登记失败： " + msg);
+						}
+
 					});
+				} else {
+
 				}
-				
-			});
+			}
+
+		});
 	}
 
 	@Override

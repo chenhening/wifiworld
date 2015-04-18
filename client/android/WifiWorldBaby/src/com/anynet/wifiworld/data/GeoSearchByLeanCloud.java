@@ -10,7 +10,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.LogUtil.log;
 
 //因为bmob地理位置查询的不稳定性，采用结合leancloud的方式查询地理位置，然后再根据情况做数据迁移到服务更好的baas
-public class GeoSearchByLeanCloud {
+public class GeoSearchByLeanCloud{
 	private String TAG = "GeoSearchByLeanCloud";
 	private final static String key_geo = "Geometry";
 	private final static String key_key = "key";

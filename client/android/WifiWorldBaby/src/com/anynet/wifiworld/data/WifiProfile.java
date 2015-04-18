@@ -231,7 +231,7 @@ public class WifiProfile extends BmobObject {
 				// 先保存到leancloud去，不成功就失败
 				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
 				geo.setKey(MacAddr);
-				geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
+				if(Geometry!=null)geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
 				if (!geo.StoreRemote()) {
 					return;
 				}
