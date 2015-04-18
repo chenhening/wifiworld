@@ -19,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
@@ -32,8 +30,6 @@ public class UserLoginActivity extends BaseActivity {
 	public static final String FILTER_NAME = "f";
 	// for SMS verify
 	private String mPhone_code = "86"; // 目前只支持中国区
-	private int mVerifyTime = 60;
-	private EventHandler mEventHandler;
 	private TimerTask mTask;
 	private LoginHelper mLoginHelper;
 	private EditText mET_Account; // account input
@@ -43,21 +39,20 @@ public class UserLoginActivity extends BaseActivity {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
-	
-    public static void start(BaseActivity ctx)
-    {
-        Intent intent = new Intent(ctx, UserLoginActivity.class);
-        ctx.startActivity(intent);
-    }
-	
+
+	public static void start(BaseActivity ctx) {
+		Intent intent = new Intent(ctx, UserLoginActivity.class);
+		ctx.startActivity(intent);
+	}
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -74,8 +69,7 @@ public class UserLoginActivity extends BaseActivity {
 			}
 		});
 	}
-	
-	
+
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
 
 		@Override
@@ -84,99 +78,82 @@ public class UserLoginActivity extends BaseActivity {
 
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
-				Toast.makeText(getApplicationContext(), "登录失败!",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
-				Toast.makeText(getApplicationContext(), "登录成功!",
-						Toast.LENGTH_LONG).show();
-				UserLoginActivity.this.finish();				
+				Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
+				UserLoginActivity.this.finish();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
-				Toast.makeText(getApplicationContext(), "自动登录失败!",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();
+			} else if (action.equals(LoginService.LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE)) {
+				UserProfile user = new UserProfile();
+				user.PhoneNumber = mPhoneNumber;
+				user.Password = mSmsCode;
+				mLoginHelper.Login(user);
+				((Activity) getActivity()).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						showToast("服务器验证成功，正在登陆......");
+						// setLoginedUI(false);
+					}
+				});
+			} else if (action.equals(LoginService.LOGIN_SERVICE_EVENT_GET_VERIFICATION_CODE)) {
+				// 获取验证码成功
+				// TODO(binfei): 将类似的函数整理成一个公共函数
+				((Activity) getActivity()).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						showToast("获取验证码成功，请输入验证码点击登陆.");
+						mET_Account.setEnabled(false);
+						mLL_Login.setEnabled(true);
+					}
+				});
+			} else if (action.equals(LoginService.LOGIN_SERVICE_EVENT_ERROR)) {
+				((Activity) getActivity()).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						showToast("验证失败，请重新操作.");
+						ResetLoginUI();
+					}
+				});
 			}
 
 		}
 	};
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		setContentView(R.layout.user_login);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		
+
 		mLoginHelper = LoginHelper.getInstance(getActivity());
 		// 初始化 Bmob SDK
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
 		// initialize sms
-		SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY,
-				GlobalConfig.SMSSDK_SECRECT);
-		mEventHandler = new EventHandler() {
-			public void afterEvent(int event, int result, Object data) {
-				if (result == SMSSDK.RESULT_COMPLETE) {
-					// 回调完成
-					if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-						// 提交验证码成功
-						// TODO(binfei): 将类似的函数整理成一个公共函数
-						// 通过bmob保存到服务器，以便于做数据验证
-						UserProfile user = new UserProfile();
-						user.PhoneNumber = mPhoneNumber;
-						user.Password = mSmsCode;
-						mLoginHelper.Login(user);
-						((Activity) getActivity()).runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								showToast("服务器验证成功，正在登陆......");
-								
-								//setLoginedUI(false);
-							}
-						});
-					} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-						// 获取验证码成功
-						// TODO(binfei): 将类似的函数整理成一个公共函数
-						((Activity) getActivity()).runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								showToast("获取验证码成功，请输入验证码点击登陆.");
-								mET_Account.setEnabled(false);
-								mLL_Login.setEnabled(true);
-							}
-						});
-					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
-						// 返回支持发送验证码的国家列表
-					}
-				} else {
-					((Throwable) data).printStackTrace();
-					// TODO(binfei): 将类似的函数整理成一个公共函数
-					((Activity) getActivity()).runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							showToast("验证失败，请重新操作.");
-							ResetLoginUI();
-						}
-					});
-				}
-			}
-		};
-		// 注册回调监听接口
-		SMSSDK.registerEventHandler(mEventHandler);
+
 		setUIEvent();
 		ResetLoginUI();
+		Intent intent = new Intent(this, LoginService.class);
+		intent.putExtra(LoginService.LOGIN_SERVICE_KEY, LoginService.LOGIN_SERVICE_INIT);
+		startService(intent);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.AUTO_LOGIN_SUCCESS);
 		filter.addAction(LoginHelper.AUTO_LOGIN_FAIL);
+		filter.addAction(LoginService.LOGIN_SERVICE_EVENT_GET_VERIFICATION_CODE);
+		filter.addAction(LoginService.LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE);
+		filter.addAction(LoginService.LOGIN_SERVICE_EVENT_ERROR);
 		getActivity().registerReceiver(loginBR, filter);
 	}
 
-	private void setUIEvent(){
-		
+	private void setUIEvent() {
+
 		mLL_Verify = (LinearLayout) findViewById(R.id.button_sms);
 		mLL_Verify.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mET_Account = (EditText)findViewById(R.id.tv_login_account);
+				mET_Account = (EditText) findViewById(R.id.tv_login_account);
 				mPhoneNumber = mET_Account.getText().toString().trim();
 				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
 				if (!pattern.matcher(mPhoneNumber).find()) {
@@ -185,8 +162,13 @@ public class UserLoginActivity extends BaseActivity {
 				}
 
 				// 发送验证码
-				SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
-
+				// SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
+				Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
+				intent.putExtra(LoginService.LOGIN_SERVICE_KEY,
+						LoginService.LOGIN_SERVICE_GET_VERIFICODE);
+				intent.putExtra("phone", mPhoneNumber);
+				intent.putExtra("code", mPhone_code);
+				UserLoginActivity.this.startService(intent);
 				// 按钮进入60秒倒计时
 				mTV_Verify = (TextView) findViewById(R.id.tv_button_sms);
 				mLL_Verify.setEnabled(false);
@@ -198,56 +180,59 @@ public class UserLoginActivity extends BaseActivity {
 						((Activity) getActivity()).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								if (mVerifyTime <= 0) {
+								if (LoginService.CountDown <= 0) {
 									mET_Account.setEnabled(true);
 									mLL_Verify.setEnabled(true);
 									mTV_Verify.setText("点击再次发送");
 									mLL_Login.setEnabled(true);
 									mTask.cancel();
 								} else {
-									mTV_Verify.setText("验证码" + "("
-											+ mVerifyTime + ")");
+									mTV_Verify.setText("验证码" + "(" + LoginService.CountDown + ")");
 								}
-								--mVerifyTime;
 							}
 						});
 					}
 				};
-				mVerifyTime = 60;
 				timer.schedule(mTask, 0, 1000);
 			}
 		});
 
 		// login
-		mLL_Login = (Button)findViewById(R.id.button_login);
+		mLL_Login = (Button) findViewById(R.id.button_login);
 		mLL_Login.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mLL_Login.setEnabled(false);
-				mET_SMS = ((EditText)findViewById(R.id.tv_login_sms));
+				mET_SMS = ((EditText) findViewById(R.id.tv_login_sms));
 				mSmsCode = mET_SMS.getText().toString().trim();
 				Pattern pattern = Pattern.compile("^[0-9]{4}$");
 				if (!pattern.matcher(mSmsCode).find()) {
 					showToast("请输入正确的4位验证码.");
 					return;
 				}
-
-				SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
-						mSmsCode);
+				Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
+				intent.putExtra(LoginService.LOGIN_SERVICE_KEY,
+						LoginService.LOGIN_SERVICE_SUMBIT_VERIFICODE);
+				intent.putExtra("phone", mPhoneNumber);
+				intent.putExtra("code", mPhone_code);
+				intent.putExtra("smscode", mSmsCode);
+				UserLoginActivity.this.startService(intent);
+				// SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
+				// mSmsCode);
 			}
 		});
 		mLL_Login.setEnabled(false);
 	}
-	
+
 	private void ResetLoginUI() {
 		if (mET_SMS != null)
 			mET_SMS.setEnabled(true);
 		if (mLL_Login != null)
 			mLL_Login.setEnabled(true);
 	}
-	
+
 	private Context getActivity() {
 		// TODO Auto-generated method stub
 		return this;
@@ -268,9 +253,11 @@ public class UserLoginActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		SMSSDK.unregisterEventHandler(mEventHandler);
 		unregisterReceiver(loginBR);
 		super.onDestroy();
+		Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
+		intent.putExtra(LoginService.LOGIN_SERVICE_KEY, LoginService.LOGIN_SERVICE_DESTORY);
+		UserLoginActivity.this.stopService(intent);
 	}
 
 	@Override

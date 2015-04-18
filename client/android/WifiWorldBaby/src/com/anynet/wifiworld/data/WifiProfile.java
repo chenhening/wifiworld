@@ -232,7 +232,8 @@ public class WifiProfile extends BmobObject {
 				// 先保存到leancloud去，不成功就失败
 				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
 				geo.setKey(MacAddr);
-				if(Geometry!=null)geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
+				if (Geometry != null)
+					geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
 				if (!geo.StoreRemote()) {
 					return;
 				}
@@ -304,7 +305,7 @@ public class WifiProfile extends BmobObject {
 	}
 
 	public Bitmap Bytes2Bimap(byte[] b) {
-		if (b.length != 0) {
+		if (b != null && b.length != 0) {
 			return BitmapFactory.decodeByteArray(b, 0, b.length);
 		} else {
 			return null;
@@ -312,12 +313,14 @@ public class WifiProfile extends BmobObject {
 	}
 
 	public byte[] Bitmap2Bytes(Bitmap bm) {
+		if (bm == null) {
+			return null;
+		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 		return baos.toByteArray();
 	}
-	
-	
+
 	public boolean isShared() {
 		return isShared;
 	}
