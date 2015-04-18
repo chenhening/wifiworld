@@ -275,23 +275,32 @@
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_my_setting"
+                    android:id="@+id/slv_my_attention"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_msg"
-                    item:label="@string/person_my_setting"
+                    item:icon="@drawable/icon_person_center_attention"
+                    item:label="@string/person_center_attention"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/setiing_share_layout"
+                    android:id="@+id/fensi_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_share"
-                    item:label="邀请好友"
-                    item:subLabel="奖联币"
-                    item:subLabelVisibility="visible" />
+                    android:visibility="gone"
+                    item:icon="@drawable/icon_person_center_fans"
+                    item:label="@string/person_center_fensi"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
 
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_my_blacklist"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/ic_person_blacklist"
+                    item:label="@string/person_center_blacklist"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
             <LinearLayout
@@ -334,30 +343,34 @@
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/service_declare"
+                    android:id="@+id/slv_my_setting"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_attention"
-                    item:label="@string/person_center_attention"
-                    item:showTopDivider="true" />
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="@string/person_my_setting"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/fensi_layout"
+                    android:id="@+id/setiing_share_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    android:visibility="gone"
-                    item:icon="@drawable/icon_person_center_fans"
-                    item:label="@string/person_center_fensi"
-                    item:showTopDivider="true" />
+                    item:icon="@drawable/icon_person_center_share"
+                    item:label="邀请好友"
+                    item:subLabel="奖联币"
+                    item:subLabelVisibility="visible" >
+                </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/blacklist_layout"
+                    android:id="@+id/slv_about_app"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_48_dip"
+                    android:layout_height="@dimen/dimen_45_dip"
                     item:icon="@drawable/ic_person_blacklist"
-                    item:label="@string/person_center_blacklist"
-                    item:showTopDivider="true" />
+                    item:label="关于网络宝"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

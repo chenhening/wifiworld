@@ -37,17 +37,6 @@ public class MySettingActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
-		//设置about
-		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent();
-				i.setClass(getApplicationContext(), AboutAppActivity.class);
-				startActivity(i);
-			}
-			
-		});
 	}
 
 	@Override

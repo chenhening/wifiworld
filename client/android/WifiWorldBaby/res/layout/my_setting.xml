@@ -77,14 +77,6 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:background="@drawable/bg_person_cener_item"
                 android:orientation="vertical" >
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_about_app"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/ic_person_blacklist"
-                    item:label="关于网络宝"
-                    item:showTopDivider="true" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -224,7 +224,7 @@ public class MeFragment extends MainFragment {
 		});
 		
 		//我的关注
-		mPageRoot.findViewById(R.id.service_declare).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_my_attention).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -238,7 +238,7 @@ public class MeFragment extends MainFragment {
 			
 		});
 		//我的黑名单
-		mPageRoot.findViewById(R.id.blacklist_layout).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.slv_my_blacklist).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -249,6 +249,18 @@ public class MeFragment extends MainFragment {
 				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
 				startActivity(i); 
             }
+			
+		});
+		
+		//设置about
+		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent();
+				i.setClass(getApplicationContext(), AboutAppActivity.class);
+				startActivity(i);
+			}
 			
 		});
 		
