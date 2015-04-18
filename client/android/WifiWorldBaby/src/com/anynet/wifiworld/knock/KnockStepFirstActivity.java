@@ -347,7 +347,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 		int top = moveV.getTop();
 		int width = moveV.getWidth();
 		int height = moveV.getHeight();
-		Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
 		moveV.layout(moveRight - width, top, moveRight, top + height);
 	}
 

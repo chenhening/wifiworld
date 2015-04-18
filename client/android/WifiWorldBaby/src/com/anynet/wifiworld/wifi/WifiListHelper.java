@@ -101,8 +101,6 @@ public class WifiListHelper {
 			macAddresses.add(scanResult.BSSID);
 		}
 		
-		final WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
-		
 		WifiProfile wifiProfile = new WifiProfile();
 		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, new MultiDataCallback<WifiProfile>() {
 			
@@ -110,34 +108,32 @@ public class WifiListHelper {
 			public void onSuccess(List<WifiProfile> objects) {
 				Log.i(TAG, "Batch query by mac address success");
 				mWifiProfiles = objects;
-				mWifiAuth.clear();
-				mWifiFree.clear();
-				mWifiEncrypt.clear();
-				for (ScanResult hotspot : wifiList) {
-					//Check whether WiFi is stored local
-					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-					refreashList(wifiCfg, hotspot, wifiInfo, objects);
-				}
-				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
+				refreshListUI(wifiList);
 			}
 			
 			@Override
 			public void onFailed(String msg) {
 				Log.i(TAG, msg);
-				mWifiAuth.clear();
-				mWifiFree.clear();
-				mWifiEncrypt.clear();
-				for (ScanResult hotspot : wifiList) {
-					//Check whether WiFi is stored local
-					final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
-					refreashList(wifiCfg, hotspot, wifiInfo, null);
-				}
-				mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
 			}
 		});
+		
+		refreshListUI(wifiList);
 	}
 	
-	private void refreashList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
+	private void refreshListUI(List<ScanResult> wifiList) {
+		mWifiAuth.clear();
+		mWifiFree.clear();
+		mWifiEncrypt.clear();
+		WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
+		for (ScanResult hotspot : wifiList) {
+			//Check whether WiFi is stored local
+			final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
+			verifyList(wifiCfg, hotspot, wifiInfo, mWifiProfiles);
+		}
+		mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
+	}
+	
+	private void verifyList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
 		String wifiName;
 		String wifiPwd;
 		String wifiType;
@@ -170,7 +166,11 @@ public class WifiListHelper {
 			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
 			if (idx != -1) {
 				Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
-				wifiName = hotspot.SSID;
+				WifiProfile wifi = objects.get(idx);
+				if (wifi.Alias != null && wifi.Alias.length() > 0)
+					wifiName = hotspot.SSID + "( " + wifi.Alias + " )";
+				else 
+					wifiName = hotspot.SSID;
 				wifiMAC = hotspot.BSSID;
 				wifiPwd = objects.get(idx).Password;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);

@@ -11,6 +11,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class WifiMessages extends BmobObject {
 	private final static String TAG = WifiMessages.class.getSimpleName();
@@ -24,23 +25,58 @@ public class WifiMessages extends BmobObject {
 	
 	public void StoreRemote(final Context context, DataCallback<WifiMessages> callback) {
 		final DataCallback<WifiMessages> _callback = callback;
-		final WifiMessages user = this;
-		user.save(context, new SaveListener() {
-			
-			@Override
-			public void onSuccess() {
-				_callback.onSuccess(user);
-			}
+		final WifiMessages wifi = this;
+
+		new Thread(new Runnable() {
 
 			@Override
-			public void onFailure(int code, String msg) {
-				_callback.onFailed(msg);
+			public void run() {
+
+				// 先查询，如果有数据就更新，否则增加一条新记录
+				QueryByMacAddress(context, MacAddr, new DataCallback<WifiMessages>() {
+
+					@Override
+					public void onSuccess(final WifiMessages object) {
+						wifi.setObjectId(object.getObjectId());
+						wifi.update(context, new UpdateListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int arg0, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						wifi.save(context, new SaveListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int code, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
+					}
+
+				});
+
 			}
-		});
+
+		}).start();
 	}
 	
-	public void QueryByMacAddress(final Context context, final String Mac, MultiDataCallback<WifiMessages> callback) {
-		final MultiDataCallback<WifiMessages> _callback = callback;
+	public void QueryByMacAddress(final Context context, final String Mac, DataCallback<WifiMessages> callback) {
+		final DataCallback<WifiMessages> _callback = callback;
 		final BmobQuery<WifiMessages> query = new BmobQuery<WifiMessages>();
 		query.addWhereEqualTo(MACADDR_TAG, Mac);
 		Log.d(TAG, "Start to query wifi messages table for:" + Mac);
@@ -51,7 +87,11 @@ public class WifiMessages extends BmobObject {
 				query.findObjects(context, new FindListener<WifiMessages>() {
 					@Override
 					public void onSuccess(List<WifiMessages> object) {
-						_callback.onSuccess(object);
+						if (object.size() >= 1) {
+							_callback.onSuccess(object.get(0));
+						} else {
+							_callback.onFailed("没有最新动态。");
+						}
 					}
 
 					@Override
