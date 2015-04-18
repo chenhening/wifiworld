@@ -40,7 +40,6 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra("wifiprofile");
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-
 		this.findViewById(R.id.btn_wifi_provider_register).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -53,7 +52,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 						@Override
 						public void onSuccess(WifiProfile object) {
 							showToast("WiFi信息登记成功。");
-							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = mWifiProfile;
+							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = object;
 							mIntent.setClass(WifiProviderRigisterCompleteActivity.this, MainActivity.class);
 							// mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(mIntent);
@@ -63,6 +62,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 						public void onFailed(String msg) {
 							showToast("WiFi信息登记失败： " + msg);
 						}
+
 
 					});
 				} else {

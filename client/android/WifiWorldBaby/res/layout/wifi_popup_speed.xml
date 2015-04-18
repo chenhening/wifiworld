@@ -23,11 +23,12 @@
 
         <ImageView
             android:id="@+id/wifi_speed_needle"
-            android:layout_width="110dp"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/wifi_speed_heart"
             android:layout_alignRight="@+id/wifi_speed_heart"
             android:layout_marginBottom="11dp"
+            android:layout_marginRight="11dp"
             android:scaleType="centerCrop"
             android:contentDescription="@null"
             android:src="@drawable/wifi_speed_pointer" />

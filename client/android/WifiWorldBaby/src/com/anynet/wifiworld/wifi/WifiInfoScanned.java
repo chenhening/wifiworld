@@ -34,7 +34,7 @@ public class WifiInfoScanned implements Serializable {
 	private List<String> mComments = new ArrayList<String>();
 	private List<String> mMessages = new ArrayList<String>();
 	
-	public int mWifiDistance;
+	//public int mWifiDistance;
 	
 	public WifiInfoScanned() {
 		mWifiName = null;

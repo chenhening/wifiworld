@@ -105,7 +105,7 @@ public class MeFragment extends MainFragment {
 					return;
 				}
 				
-				if (mWifiProfile.isShared) {
+				if (mWifiProfile.isShared()) {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
@@ -115,6 +115,7 @@ public class MeFragment extends MainFragment {
 	
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							//mLoginHelper.mWifiProfile = new WifiProfile();
 							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 							startActivity(i);
 						}					

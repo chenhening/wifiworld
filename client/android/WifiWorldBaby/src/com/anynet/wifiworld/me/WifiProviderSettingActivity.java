@@ -23,11 +23,12 @@ import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderSettingActivity extends BaseActivity {
 
-	//IPC
+	// IPC
 	private Intent mIntent = null;
 	private Activity activity = this;
 	LoginHelper mLoginHelper;
 	WifiProfile mWifiProfile;
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -35,14 +36,14 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
 	}
-    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
@@ -51,48 +52,48 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		bingdingTitleUI();
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 		mWifiProfile = mLoginHelper.mWifiProfile;
-		//取消wifi
+		// 取消wifi
 		this.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity)
-					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")   
-					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
+						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							mWifiProfile.setShared(false);
-							mIntent.setClass(getApplicationContext(), MainActivity.class);
-							startActivity(mIntent);
-						}
-						
-					})  
-					.setNegativeButton("取消", null)
-					.show();
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								mWifiProfile.setShared(false);
+
+								mWifiProfile.update(getApplicationContext());
+								mLoginHelper.mWifiProfile = mWifiProfile;
+
+								mIntent.setClass(getApplicationContext(), MainActivity.class);
+								startActivity(mIntent);
+							}
+
+						}).setNegativeButton("取消", null).show();
 			}
 		});
 		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity)
-					.setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")  
-					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-	
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							LoginHelper.getInstance(getApplicationContext()).mWifiProfile.deleteRemote(getApplicationContext());
-							mIntent.setClass(getApplicationContext(), MainActivity.class);
-							startActivity(mIntent);
-						}
-						
-					})  
-					.setNegativeButton("取消", null)
-					.show();
+				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
+						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mWifiProfile.deleteRemote(getApplicationContext());
+								mLoginHelper.mWifiProfile = null;
+								mIntent.setClass(getApplicationContext(), MainActivity.class);
+								startActivity(mIntent);
+							}
+
+						}).setNegativeButton("取消", null).show();
 			}
 		});
-		
+
 		findViewById(R.id.tv_setting_knock).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -118,7 +119,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 			}
 		});
-		
+
 		findViewById(R.id.rl_setting_message).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -131,8 +132,8 @@ public class WifiProviderSettingActivity extends BaseActivity {
 				} else {
 					ksCB.setChecked(true);
 					findViewById(R.id.ll_wifi_message).setVisibility(View.VISIBLE);
-					//提交和重置
-					final EditText edit = (EditText)findViewById(R.id.ec_wifi_message_content);
+					// 提交和重置
+					final EditText edit = (EditText) findViewById(R.id.ec_wifi_message_content);
 					findViewById(R.id.btn_wifi_message_send).setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -157,23 +158,23 @@ public class WifiProviderSettingActivity extends BaseActivity {
 								public void onFailed(String msg) {
 									showToast("提交动态信息失败。");
 								}
-								
+
 							});
-						}	
+						}
 					});
-					
+
 					findViewById(R.id.btn_wifi_message_clear).setOnClickListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
 							edit.getText().clear();
 						}
-						
+
 					});
 				}
 
 			}
-		});	
+		});
 	}
 
 	@Override
@@ -197,7 +198,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		
+
 		super.onResume();
 	}
 

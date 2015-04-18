@@ -38,7 +38,6 @@ import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	public WifiProfile mWifiProfile = null;
-
 	private WifiListHelper mWifiHelper = null;
 	private LoginHelper mLoginHelper = null;
 	private LocationHelper mLocationHelper = null;
