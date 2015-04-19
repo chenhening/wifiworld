@@ -166,11 +166,7 @@ public class WifiListHelper {
 			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
 			if (idx != -1) {
 				Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
-				WifiProfile wifi = objects.get(idx);
-				if (wifi.Alias != null && wifi.Alias.length() > 0)
-					wifiName = hotspot.SSID + "( " + wifi.Alias + " )";
-				else 
-					wifiName = hotspot.SSID;
+				wifiName = hotspot.SSID;
 				wifiMAC = hotspot.BSSID;
 				wifiPwd = objects.get(idx).Password;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
@@ -183,6 +179,9 @@ public class WifiListHelper {
 				}
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
+				WifiProfile wifi = objects.get(idx);
+				if (wifi.Alias != null && wifi.Alias.length() > 0)
+					wifiInfoScanned.setAlias(wifi.Alias);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}

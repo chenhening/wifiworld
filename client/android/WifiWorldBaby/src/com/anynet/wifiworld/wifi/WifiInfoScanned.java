@@ -21,6 +21,7 @@ public class WifiInfoScanned implements Serializable {
 	private Integer mWifiStrength;
 	private BmobGeoPoint mGeometry;
 	private String mRemark;
+	private String Alias;
 	
 	private boolean isAuthWifi = false;
 	
@@ -202,6 +203,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setBanner(String mBanner) {
 		this.mBanner = mBanner;
+	}
+
+	public String getAlias() {
+		return Alias;
+	}
+
+	public void setAlias(String alias) {
+		Alias = alias;
 	}
 	
 }

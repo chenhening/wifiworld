@@ -191,18 +191,13 @@ public class WifiFragment extends MainFragment {
 		
 		//handle WIFI square view
 		mWifiSquareLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_square);
+		setWifiSquareListener(mWifiSquareLayout);
 		//initial WIFI square pop-up view
 		initWifiSquarePopupView();
-		//set click listener for WIFI square view
-		setWifiSquareListener(mWifiSquareLayout);
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
-//		mWifiListHelper.fillWifiList();
-//		mWifiFree = mWifiListHelper.getWifiFrees();
-//		mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//		updateWifiConMore(mWifiNameView);
-		
-		if (mWifiAdmin.getWifiNameConnection() != "") {
+		String connected_name = mWifiAdmin.getWifiNameConnection();
+		if (!connected_name.equals("") && !connected_name.equals("0x")) {
 			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
 			mWifiNameView.setTextColor(Color.BLACK);
 		}
@@ -380,8 +375,10 @@ public class WifiFragment extends MainFragment {
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
 					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), false);
+					Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
+					Log.d(TAG, "reconnect wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				}
 				dialog.dismiss();
 				if (connResult) {
