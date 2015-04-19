@@ -82,13 +82,13 @@ public class WifiBRService {
 			        		if(isConnected){
 			        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
 			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(statusStr);
+					            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
 			        			}
 			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 			        		} else if(isDisconnected) {
 			        			statusStr = "已断开连接";
 			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(statusStr);
+					            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
 			        			}
 			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 							}
@@ -160,7 +160,7 @@ public class WifiBRService {
 	}
 	
 	public interface OnWifiStatusListener {
-		void onNetWorkChanged(String str);
+		void onNetWorkChanged(boolean isSuccess, String str);
 		void onWifiStatChanged(boolean isEnabled);
 	}
 }

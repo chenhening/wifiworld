@@ -18,6 +18,7 @@ import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.dao.DBHelper;
+import com.anynet.wifiworld.data.DataListenerHelper;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
@@ -90,10 +91,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		UmengUpdateAgent.update(this);
 
 		mLoginHelper = LoginHelper.getInstance(this);
-		mLoginHelper.getClass();
 		mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
-		mLocationHelper.getClass();
 		dbHelper = DBHelper.getInstance(this);
 
 		Intent intent = getIntent();

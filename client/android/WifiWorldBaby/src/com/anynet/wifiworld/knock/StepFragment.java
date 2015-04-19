@@ -94,6 +94,7 @@ public class StepFragment extends BaseFragment implements OnClickListener, OnFoc
 	private void setupUI() {
 		questionET = (EditText) findViewById(R.id.question);
 		questionET.setText(mData.get(0));
+		questionET.setOnFocusChangeListener(this);
 		
 		btn_question_delete = (ImageButton) findViewById(R.id.btn_question_delete);
 		btn_question_delete.setOnClickListener(this);
@@ -206,6 +207,9 @@ public class StepFragment extends BaseFragment implements OnClickListener, OnFoc
 			return;
 		
 		switch (v.getId()) {
+		case R.id.question: {
+			mData.set(0, questionET.getText().toString());
+		}
 		case R.id.answer1: {
 			mData.set(1, answer1.getText().toString());
 			break;

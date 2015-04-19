@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONObject;
+
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -47,6 +49,8 @@ import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.DataListenerHelper;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
@@ -126,18 +130,14 @@ public class WifiFragment extends MainFragment {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
 						mWifiBRService.setWifiScannable(true);
-						
-						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
-						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnection().getBSSID();
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
 					}
-					
 				}
 
 				@Override
-				public void onNetWorkChanged(String str) {
+				public void onNetWorkChanged(boolean isSuccess, String str) {
 					mWifiNameView.setText(str);
 					mWifiNameView.setTextColor(Color.BLACK);
 					mWifiListHelper.fillWifiList();
@@ -147,6 +147,36 @@ public class WifiFragment extends MainFragment {
 					if (mSupplicantBRRegisterd) {
 						getActivity().unregisterReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver);
 						mSupplicantBRRegisterd = false;
+					}
+					
+					if (isSuccess) {
+						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
+						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnection().getBSSID();
+						WifiProfile data_listener = new WifiProfile();
+						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", 
+							WifiProfile.unique_key, CurMac, DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
+
+							@Override
+							public void onFailed(String msg) {
+								Log.d(TAG, msg);
+							}
+
+							@Override
+							public void onSuccess(WifiProfile object) {
+								//通知下线
+								if (!object.isShared()) {
+									getActivity().runOnUiThread(new Runnable() {
+
+										@Override
+										public void run() {
+											showToast("对不起，此网络主人停止了网络分享，请保存数据退出网络。");
+											WifiAdmin.getInstance(getApplicationContext()).disConnectionWifi(
+												mWifiAdmin.getWifiConnection().getNetworkId());
+										}
+									});
+								}
+							}
+						});
 					}
 				}
 			});

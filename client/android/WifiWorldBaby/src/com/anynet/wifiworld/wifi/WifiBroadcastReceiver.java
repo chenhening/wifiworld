@@ -53,7 +53,7 @@ public class WifiBroadcastReceiver {
 	                statusStr = "正在连接...";
 	            } else if (state == SupplicantState.COMPLETED){
 	                //只是验证密码正确，并不代表连接成功
-	                statusStr = "正在获取ip地址";
+	                statusStr = "正在获取IP地址";
 	            } else if (state == SupplicantState.DISCONNECTED){
 	                statusStr = "已断开";
 	            } else if (state == SupplicantState.DORMANT){
