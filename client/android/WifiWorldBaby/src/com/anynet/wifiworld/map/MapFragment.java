@@ -445,8 +445,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 			@Override
             public void onClick(View v) {
-				LatLonPoint from_point = new LatLonPoint(pos.latitude, pos.longitude);
-				LatLonPoint to_point = new LatLonPoint(mMyPosition.latitude, mMyPosition.longitude);
+				LatLonPoint to_point = new LatLonPoint(pos.latitude, pos.longitude);
+				LatLonPoint from_point = new LatLonPoint(mMyPosition.latitude, mMyPosition.longitude);
 				FromAndTo fromAndTo = new RouteSearch.FromAndTo(from_point, to_point);
 				WalkRouteQuery query = new WalkRouteQuery(fromAndTo, RouteSearch.WalkDefault);
 				routeSearch.calculateWalkRouteAsyn(query);
