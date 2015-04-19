@@ -126,6 +126,9 @@ public class WifiFragment extends MainFragment {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
 						mWifiBRService.setWifiScannable(true);
+						
+						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
+						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnection().getBSSID();
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);

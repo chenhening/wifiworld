@@ -159,7 +159,7 @@ public class WifiListAdapter extends BaseAdapter {
 	        	}else if ((infoScanned).getWifiName() == "FreeDeclare") {
 	            	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
                 textView = (TextView) view.findViewById(R.id.wifi_name_dec);
-				textView.setText("免费WiFi出现在这里");
+				textView.setText("不需要密码WiFi出现在这里");
 				textView.setTextColor(Color.GRAY);
 			} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
 				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
@@ -169,7 +169,7 @@ public class WifiListAdapter extends BaseAdapter {
 			} else {
 				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
 	            	textView = (TextView) view.findViewById(R.id.wifi_name);
-	            if (infoScanned.getAlias() != null)
+	            if (infoScanned.getAlias() != null)//TODO(binfei): 这个显示太丑了，要改
 	            	textView.setText((infoScanned).getWifiName() + "( " + infoScanned.getAlias() + " )");
 	            else
 	            	textView.setText((infoScanned).getWifiName());

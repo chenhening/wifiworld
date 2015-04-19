@@ -27,6 +27,7 @@ import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.PreferenceHelper;
+import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.wifi.WifiFragment;
 import com.avos.avoscloud.AVOSCloud;
 import com.dlnetwork.Data;

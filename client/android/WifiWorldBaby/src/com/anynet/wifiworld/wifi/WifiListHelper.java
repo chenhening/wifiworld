@@ -97,6 +97,7 @@ public class WifiListHelper {
 	public void organizeWifiList(final List<ScanResult> wifiList) {
 
 		List<String> macAddresses = new ArrayList<String>();
+		macAddresses.add("ec:26:ca:62:46:06");
 		for (ScanResult scanResult : wifiList) {
 			macAddresses.add(scanResult.BSSID);
 		}
