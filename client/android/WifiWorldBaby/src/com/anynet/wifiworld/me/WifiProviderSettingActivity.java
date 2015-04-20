@@ -63,11 +63,11 @@ public class WifiProviderSettingActivity extends BaseActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 
-								mWifiProfile.setShared(false);
+								//mWifiProfile.setShared(false);
 
-								mWifiProfile.update(getApplicationContext());
-								mLoginHelper.mWifiProfile = mWifiProfile;
-
+								//mWifiProfile.update(getApplicationContext());
+								mWifiProfile.deleteRemote(getApplicationContext());
+								mLoginHelper.mWifiProfile = mWifiProfile = null;
 								mIntent.setClass(getApplicationContext(), MainActivity.class);
 								startActivity(mIntent);
 							}
@@ -85,7 +85,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								mWifiProfile.deleteRemote(getApplicationContext());
-								mLoginHelper.mWifiProfile = null;
+								mLoginHelper.mWifiProfile = mWifiProfile = null;
 								mIntent.setClass(getApplicationContext(), MainActivity.class);
 								startActivity(mIntent);
 							}
@@ -152,6 +152,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 								@Override
 								public void onSuccess(WifiMessages object) {
 									showToast("提交动态信息成功。");
+									edit.setText("");
 								}
 
 								@Override

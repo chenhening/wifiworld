@@ -204,6 +204,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 				if (((AnswerFragment) mSetupFragment[i]).getRightAnswer() != 1) {
 					showToast("问题回答的不完全正确请稍后再试。");
 					finish();
+					return;
 				}
 			}
 			// 保存敲门数据到本地
@@ -346,7 +347,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 		int top = moveV.getTop();
 		int width = moveV.getWidth();
 		int height = moveV.getHeight();
-		Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
 		moveV.layout(moveRight - width, top, moveRight, top + height);
 	}
 

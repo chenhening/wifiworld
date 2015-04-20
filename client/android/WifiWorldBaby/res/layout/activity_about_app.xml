@@ -70,7 +70,7 @@
         </com.anynet.wifiworld.view.SettingItemView>
 
         <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/fensi_layout"
+            android:id="@+id/slv_click_update"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             app:icon="@drawable/icon_person_center_fans"

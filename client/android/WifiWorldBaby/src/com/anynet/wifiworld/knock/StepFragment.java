@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,7 +21,7 @@ import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.bean.SetupFragmentBean;
 
-public class StepFragment extends BaseFragment implements OnClickListener {
+public class StepFragment extends BaseFragment implements OnClickListener, OnFocusChangeListener {
 
 	private SetupFragmentBean mSetupFragmentBean = new SetupFragmentBean();
 
@@ -93,6 +94,7 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 	private void setupUI() {
 		questionET = (EditText) findViewById(R.id.question);
 		questionET.setText(mData.get(0));
+		questionET.setOnFocusChangeListener(this);
 		
 		btn_question_delete = (ImageButton) findViewById(R.id.btn_question_delete);
 		btn_question_delete.setOnClickListener(this);
@@ -104,31 +106,34 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 		check1 = (CheckBox) findViewById(R.id.check1);
 		answer1 = (EditText) findViewById(R.id.answer1);
 		answer1.setText(mData.get(1));
+		answer1.setOnFocusChangeListener(this);
 		a1_delete = (ImageButton) findViewById(R.id.a1_delete);
 		a1_delete.setOnClickListener(this);
 		
 		check2 = (CheckBox) findViewById(R.id.check2);
 		answer2 = (EditText) findViewById(R.id.answer2);
 		answer2.setText(mData.get(2));
+		answer2.setOnFocusChangeListener(this);
 		a2_delete = (ImageButton) findViewById(R.id.a2_delete);
 		a2_delete.setOnClickListener(this);
 		
 		check3 = (CheckBox) findViewById(R.id.check3);
 		answer3 = (EditText) findViewById(R.id.answer3);
 		answer3.setText(mData.get(3));
+		answer3.setOnFocusChangeListener(this);
 		a3_delete = (ImageButton) findViewById(R.id.a3_delete);
 		a3_delete.setOnClickListener(this);
 		
 		check4 = (CheckBox) findViewById(R.id.check4);
 		answer4 = (EditText) findViewById(R.id.answer4);
 		answer4.setText(mData.get(4));
+		answer4.setOnFocusChangeListener(this);
 		a4_delete = (ImageButton) findViewById(R.id.a4_delete);
 		a4_delete.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.question: {
 			break;
@@ -191,6 +196,34 @@ public class StepFragment extends BaseFragment implements OnClickListener {
 		}
 		case R.id.a4_delete: {
 			answer4.setText("");
+			break;
+		}
+		}
+	}
+	
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		if (hasFocus)
+			return;
+		
+		switch (v.getId()) {
+		case R.id.question: {
+			mData.set(0, questionET.getText().toString());
+		}
+		case R.id.answer1: {
+			mData.set(1, answer1.getText().toString());
+			break;
+		}
+		case R.id.answer2: {
+			mData.set(2, answer2.getText().toString());
+			break;
+		}
+		case R.id.answer3: {
+			mData.set(3, answer3.getText().toString());
+			break;
+		}
+		case R.id.answer4: {
+			mData.set(4, answer4.getText().toString());
 			break;
 		}
 		}

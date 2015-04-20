@@ -20,8 +20,10 @@ import android.widget.TextView;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.skyfishjy.library.RippleBackground;
 
@@ -128,6 +130,26 @@ public class WifiOnlineSlidingFragment extends Fragment {
 		} else {
 			StartDisaplay();
 		}
+		
 		bOnAnimating = !bOnAnimating;
+		
+		WifiProfile wifi = new WifiProfile();
+		wifi.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
+		wifi.setShared(bOnAnimating);
+		wifi.StoreRemote(getActivity(), new DataCallback<WifiProfile>() {
+
+			@Override
+			public void onSuccess(WifiProfile object) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onFailed(String msg) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 }

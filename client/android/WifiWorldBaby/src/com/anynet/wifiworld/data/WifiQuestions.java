@@ -3,11 +3,14 @@ package com.anynet.wifiworld.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.anynet.wifiworld.util.StringCrypto;
+
 import android.content.Context;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class WifiQuestions extends BmobObject {
 
@@ -40,19 +43,54 @@ public class WifiQuestions extends BmobObject {
 	
 	public void StoreRemote(final Context context, DataCallback<WifiQuestions> callback) {
 		final DataCallback<WifiQuestions> _callback = callback;
-		final WifiQuestions itself = this;
-		itself.save(context, new SaveListener() {
-			
-			@Override
-			public void onSuccess() {
-				_callback.onSuccess(itself);
-			}
+		final WifiQuestions wifi = this;
+
+		new Thread(new Runnable() {
 
 			@Override
-			public void onFailure(int code, String msg) {
-				_callback.onFailed(msg);
+			public void run() {
+
+				// 先查询，如果有数据就更新，否则增加一条新记录
+				QueryByMacAddress(context, MacAddr, new DataCallback<WifiQuestions>() {
+
+					@Override
+					public void onSuccess(final WifiQuestions object) {
+						wifi.setObjectId(object.getObjectId());
+						wifi.update(context, new UpdateListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int arg0, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						wifi.save(context, new SaveListener() {
+
+							@Override
+							public void onSuccess() {
+								_callback.onSuccess(wifi);
+							}
+
+							@Override
+							public void onFailure(int code, String msg) {
+								_callback.onFailed(msg);
+							}
+						});
+					}
+
+				});
+
 			}
-		});
+
+		}).start();
 	}
 	
 	public void QueryByMacAddress(final Context context, final String Mac, DataCallback<WifiQuestions> callback) {

@@ -240,7 +240,6 @@
                 android:background="@drawable/default_divider" />
 
             <RelativeLayout
-                android:id="@+id/relative_4"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/settings_item_angle_bg_selector"

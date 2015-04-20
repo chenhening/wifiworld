@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
@@ -40,12 +41,12 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra("wifiprofile");
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		this.findViewById(R.id.btn_wifi_provider_register).setOnClickListener(new OnClickListener() {
+		final Button btncommit = (Button) this.findViewById(R.id.btn_wifi_provider_register);
+		btncommit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// mWifiProfile =
-				// LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
+				btncommit.setEnabled(false); //防止重复点击重复上传信息
 				if (mWifiProfile != null) {
 					mWifiProfile.setShared(true);
 					mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
@@ -62,15 +63,11 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 						@Override
 						public void onFailed(String msg) {
 							showToast("WiFi信息登记失败： " + msg);
+							btncommit.setEnabled(true);
 						}
-
-
 					});
-				} else {
-
 				}
 			}
-
 		});
 	}
 

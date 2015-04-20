@@ -14,7 +14,6 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiType;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiHandleDB {
@@ -58,7 +57,7 @@ public class WifiHandleDB {
 		mWifiProfile.Alias = "逗比";
 		mWifiProfile.Password = infoScanned.getWifiPwd();
 		mWifiProfile.Banner = null;
-		mWifiProfile.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+		mWifiProfile.Type = WifiProfile.WifiType.WIFI_SUPPLY_BY_UNKNOWN;
 		mWifiProfile.Sponser = "无名氏";
 		mWifiProfile.Geometry = infoScanned.getGeometry();
 		mWifiProfile.Income = 0.0f;
@@ -90,7 +89,7 @@ public class WifiHandleDB {
 				wifi.Alias = null;
 				wifi.Password = infoScanned.getWifiPwd();
 				wifi.Banner = null;
-				wifi.Type = WifiType.WIFI_SUPPLY_BY_HOME;
+				wifi.Type = WifiProfile.WifiType.WIFI_SUPPLY_BY_HOME;
 				wifi.Sponser = null;
 				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;
@@ -118,7 +117,7 @@ public class WifiHandleDB {
 				wifi.Alias = null;
 				wifi.Password = infoScanned.getWifiPwd();
 				wifi.Banner = null;
-				wifi.Type = WifiType.WIFI_SUPPLY_BY_UNKNOWN;
+				wifi.Type = WifiProfile.WifiType.WIFI_SUPPLY_BY_UNKNOWN;
 				wifi.Sponser = null;
 				wifi.Geometry = infoScanned.getGeometry();
 				wifi.Income = 0.0f;

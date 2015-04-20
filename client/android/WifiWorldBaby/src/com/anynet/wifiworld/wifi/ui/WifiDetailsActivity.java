@@ -304,14 +304,14 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiMessages wifiMessages = new WifiMessages();
-		wifiMessages.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiMessages>() {
+		wifiMessages.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<WifiMessages>() {
 			
 			@Override
-			public void onSuccess(List<WifiMessages> object) {
-				Log.i(TAG, "Success to query wifi messages from server:" + object.size());
-				for (WifiMessages wifiMessages : object) {
-					mWifiInfoScanned.addMessage(wifiMessages.Message);
-				}
+			public void onSuccess(WifiMessages object) {
+				//Log.i(TAG, "Success to query wifi messages from server:" + object.size());
+				//for (WifiMessages wifiMessages : object) {
+					mWifiInfoScanned.addMessage(object.Message);
+				//}
 				mMessagesFlag = GET_DATA_SUCCESS;
 			}
 			

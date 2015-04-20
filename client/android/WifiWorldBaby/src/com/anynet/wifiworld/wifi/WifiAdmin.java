@@ -507,8 +507,8 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-    		mWifiManager.enableNetwork(netId, false);
-    		mWifiManager.saveConfiguration();
+    	mWifiManager.enableNetwork(netId, false);
+    	mWifiManager.saveConfiguration();
         mWifiManager.disableNetwork(netId);
         mWifiManager.disconnect();
     }

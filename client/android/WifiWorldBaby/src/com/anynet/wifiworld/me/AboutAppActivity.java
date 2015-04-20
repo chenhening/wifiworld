@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.util.AppInfoUtil;
+import com.umeng.update.UmengUpdateAgent;
 
 public class AboutAppActivity extends BaseActivity {
 	//IPC
@@ -20,7 +21,7 @@ public class AboutAppActivity extends BaseActivity {
 			mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 			mTitlebar.llFinish.setVisibility(View.VISIBLE);
 			mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-			mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+			mTitlebar.tvTitle.setText("关于网络宝");
 			mTitlebar.ivMySetting.setVisibility(View.GONE);
 			mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 				
@@ -41,6 +42,16 @@ public class AboutAppActivity extends BaseActivity {
 			//设置系统版本
 			TextView version = (TextView) this.findViewById(R.id.tv_app_version);
 			version.setText(AppInfoUtil.getVersionName(this));
+			
+			//点击设置自动更新按钮
+			this.findViewById(R.id.slv_click_update).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					UmengUpdateAgent.forceUpdate(getApplicationContext());
+				}
+				
+			});
 		}
 
 		@Override

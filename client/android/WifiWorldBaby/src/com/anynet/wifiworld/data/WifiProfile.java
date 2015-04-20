@@ -3,7 +3,9 @@ package com.anynet.wifiworld.data;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import com.anynet.wifiworld.util.StringCrypto;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,18 +13,22 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobQuery.CachePolicy;
+import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.FindCallback;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.ValueEventListener;
+
+import com.anynet.wifiworld.data.DataListenerHelper.Type;
+import com.anynet.wifiworld.util.StringCrypto;
 
 public class WifiProfile extends BmobObject {
 	private final static String TAG = WifiProfile.class.getSimpleName();
 
 	private static final long serialVersionUID = 1L;
-	private static final String unique_key = "MacAddr";
+	public static final String unique_key = "MacAddr";
 
 	public static final String table_name_wifiunregistered = "WifiUnregistered";
 	public static final String CryptoKey = "Wifi2Key";// 8bits
@@ -51,6 +57,13 @@ public class WifiProfile extends BmobObject {
 	// public int ConnectedTimes;
 	// public int ConnectedDuration;
 	// ------------------------------------------------------------------------------------------------
+	public static class WifiType {
+		public static int WIFI_SUPPLY_BY_UNKNOWN = 0; //未知wifi
+		public static int WIFI_SUPPLY_BY_PUBLIC = 1; //公共场所WiFi，如家，kfc
+		public static int WIFI_SUPPLY_BY_BUSINESS = 2; //商户提供的WiFi
+		public static int WIFI_SUPPLY_BY_HOME = 3; //家庭提供wifi
+	}
+	
 	public WifiProfile() {
 	}
 
@@ -151,7 +164,7 @@ public class WifiProfile extends BmobObject {
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
-		query.addQueryKeys("MacAddr,Password");
+		query.addQueryKeys("MacAddr,Password,Alias");
 		query.addWhereContainedIn(unique_key, Macs);
 		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
 		new Thread(new Runnable() {
@@ -271,22 +284,13 @@ public class WifiProfile extends BmobObject {
 
 			@Override
 			public void run() {
-				// 先保存到leancloud去，不成功就失败
+				// 先保存到leancloud去
 				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
 				geo.setKey(MacAddr);
 				if (Geometry != null)
 					geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
 				if (!geo.StoreRemote()) {
 					//return;
-				}
-				// 对密码进行加密
-				if (wifi.Password != null) {
-					try {
-						wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
-					} catch (Exception e) {
-						_callback.onFailed("无法保存数据: " + e.getMessage());
-						return;
-					}
 				}
 
 				// 先查询，如果有数据就更新，否则增加一条新记录
@@ -311,6 +315,15 @@ public class WifiProfile extends BmobObject {
 
 					@Override
 					public void onFailed(String msg) {
+						// 只需要第一次保存的时候对密码进行加密
+						if (wifi.Password != null) {
+							try {
+								wifi.Password = StringCrypto.encryptDES(wifi.Password, CryptoKey);
+							} catch (Exception e) {
+								_callback.onFailed("无法保存数据: " + e.getMessage());
+								return;
+							}
+						}
 						wifi.save(context, new SaveListener() {
 
 							@Override
@@ -373,5 +386,60 @@ public class WifiProfile extends BmobObject {
 	public void setShared(boolean shared) {
 		isShared = shared;
 		// Logo = logo;
+	}
+	
+	//设置监听数据
+	public void startListenRowUpdate(final Context context, final String tablename, final String fieldname, 
+		final String fieldvalue, final Type type, final DataCallback<WifiProfile> callback) {
+		final WifiProfile itslef = this;
+		final BmobRealTimeData mBrtd = new BmobRealTimeData();
+		mBrtd.start(context, new ValueEventListener() {
+		    @Override
+		    public void onDataChange(JSONObject data) {
+		        Log.e(TAG, "("+data.optString("action")+")"+"数据："+data);
+		        
+		        itslef.isShared = data.optJSONObject("data").optBoolean("isShared");
+		        callback.onSuccess(itslef);
+		    }
+
+		    @Override
+		    public void onConnectCompleted() {
+		        Log.e(TAG, "连接成功:"+mBrtd.isConnected());
+		      //先去数据库中查询
+				BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+				query.addQueryKeys("objectId");
+				query.addWhereEqualTo(fieldname, fieldvalue);
+				query.findObjects(context, new FindListener<WifiProfile>() {
+
+					@Override
+					public void onError(int arg0, String msg) {
+						callback.onFailed("无法查询到要监听的数据：" + msg);
+					}
+
+					@Override
+					public void onSuccess(List<WifiProfile> objects) {
+						if (objects.size() <= 0) {
+							callback.onFailed("数据库中没有您要监听的数据");
+							Log.d(TAG, "监听失败:数据库没有对应数据");
+						} else {
+							//查询成功后，设置监听
+							for (int i=0; i < objects.size(); ++i) {
+								WifiProfile item = objects.get(i);
+								String id = item.getObjectId();
+								switch(type) {
+								case UPDATE:
+									mBrtd.subRowUpdate(tablename, id);
+									break;
+								case DELETE:
+									mBrtd.subRowDelete(tablename, id);
+								}
+								Log.d(TAG, "监听成功:" + id);
+							}
+						}
+					}
+					
+				});
+		    }
+		});
 	}
 }
