@@ -27,7 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/view_0"
         android:layout_below="@+id/view_1"
-        android:background="@color/sandybrown"
+        android:background="@drawable/btn_notice_go_normal"
         android:maxLines="2"
         android:text="测试数据"
         android:textSize="12dp" />
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_0"
         android:layout_toRightOf="@+id/image"
-        android:background="@drawable/bg_edit_hotpoit_default"
+        android:background="@drawable/btn_green_press"
         android:padding="1dp" >
 
         <TextView
@@ -58,9 +58,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/image_1"
             android:layout_toRightOf="@+id/image_1"
-            android:ellipsize="end"
+            android:maxLength="60"
             android:maxLines="4"
-            android:paddingLeft="5dp"
+            android:paddingLeft="1dp"
             android:singleLine="true"
             android:text="测试数据"
             android:textSize="12sp" />
@@ -80,6 +80,8 @@
             android:layout_alignLeft="@+id/image_1"
             android:layout_alignRight="@+id/title"
             android:layout_below="@+id/title"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:maxLines="2"
             android:text="地点："
             android:textSize="10sp"
