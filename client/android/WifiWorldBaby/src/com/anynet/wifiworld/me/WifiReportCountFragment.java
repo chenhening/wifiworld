@@ -43,7 +43,7 @@ public class WifiReportCountFragment extends Fragment {
         mlistview = (ListView) view.findViewById(R.id.lv_wifi_report_2);
         mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, mdescriptions));
         mDataMin = WifiDataAnalyseHelper.getInstance(getActivity());
-        mDataMin.Start(new DataCallback<WifiDataAnalyseHelper>() {
+        mDataMin.Start(true, new DataCallback<WifiDataAnalyseHelper>() {
 
 			@Override
             public void onSuccess(WifiDataAnalyseHelper object) {
@@ -56,8 +56,7 @@ public class WifiReportCountFragment extends Fragment {
 				        mdescriptions.add("分析报告如下：");
 				        mdescriptions.add("您的WiFi一周总共开放了：    小时");
 				        mdescriptions.add("您的WiFi一周总共被使用了：    小时");
-				        mdescriptions.add("您的用户主要在东南角上网，建议您将WiFi向东北角移动");
-				        mdescriptions.add("您的用户主要在18-24上网，建议您在这些时段开放网络");
+				        mdescriptions.add("您的网络主要在周末两天被频繁使用，建议在这些时间开放。");
 				        mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), 
 				        	R.layout.list_view_item, mdescriptions));
                     }

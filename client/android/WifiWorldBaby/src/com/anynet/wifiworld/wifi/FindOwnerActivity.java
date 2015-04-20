@@ -18,6 +18,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiFindHistory;
+import com.anynet.wifiworld.util.LocationHelper;
 
 public class FindOwnerActivity extends BaseActivity {  
 	  
@@ -54,12 +55,11 @@ public class FindOwnerActivity extends BaseActivity {
 
 			@Override
             public void onFailed(String msg) {
-	            // TODO Auto-generated method stub
-	            
             }
 
 			@Override
             public void onSuccess(WifiFindHistory object) {
+				timelineAdapter.clear();
 				for (Map<String, Object> item : object.Clues)
 					timelineAdapter.addItem(item);
 				timelineAdapter.notifyDataSetChanged();
@@ -85,6 +85,7 @@ public class FindOwnerActivity extends BaseActivity {
 				Map<String, Object> map = new HashMap<String, Object>();
 		        map.put("title", message);
 		        map.put("time", time);
+		        map.put("location", LocationHelper.getInstance(getApplicationContext()).getLocalDescription());
 		        timelineAdapter.addItem(map);
 		        timelineAdapter.notifyDataSetChanged();
 				//添加到数据库中
@@ -110,15 +111,12 @@ public class FindOwnerActivity extends BaseActivity {
     }  
   
     private List<Map<String, Object>> getData() {  
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();  
-  
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        String time = formatter.format(curDate);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         
         Map<String, Object> map = new HashMap<String, Object>();  
-        map.put("title", "好像他是我的隔壁小区的");
-        map.put("time", time);
+        map.put("title", "发现新大陆啦，赶快来留下你的线索一起来寻找主人吧！");
+        map.put("time", "侏罗纪一亿五千万年前");
+        map.put("location", "新大陆");
         list.add(map);
         
         return list;  

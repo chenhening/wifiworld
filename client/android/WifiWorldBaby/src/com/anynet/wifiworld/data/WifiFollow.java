@@ -39,7 +39,7 @@ public class WifiFollow extends BmobObject {
 						if (object.size() == 1) {
 							_callback.onSuccess(object.get(0));
 						} else {
-							_callback.onFailed("数据库中没有数据。");
+						//	_callback.onFailed("数据库中没有数据。");
 						}
 					}
 

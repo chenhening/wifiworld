@@ -27,6 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/view_0"
         android:layout_below="@+id/view_1"
+        android:background="@color/sandybrown"
         android:maxLines="2"
         android:text="测试数据"
         android:textSize="12dp" />
@@ -46,17 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_0"
         android:layout_toRightOf="@+id/image"
-        android:background="@drawable/device_state_pause"
-        android:padding="10dp" >
-
-        <ImageView
-            android:id="@+id/image_1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/about_icon_privacy" />
+        android:background="@drawable/bg_edit_hotpoit_default"
+        android:padding="1dp" >
 
         <TextView
             android:id="@+id/title"
@@ -67,17 +59,38 @@
             android:layout_alignTop="@+id/image_1"
             android:layout_toRightOf="@+id/image_1"
             android:ellipsize="end"
-            android:maxEms="40"
+            android:maxLines="4"
             android:paddingLeft="5dp"
             android:singleLine="true"
             android:text="测试数据"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/image_1"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/about_icon_privacy" />
+
+        <TextView
+            android:id="@+id/tv_clues_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/image_1"
+            android:layout_alignRight="@+id/title"
+            android:layout_below="@+id/title"
+            android:maxLines="2"
+            android:text="地点："
+            android:textSize="10sp"
+            android:textStyle="italic" />
+
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_alignLeft="@+id/view_0"
         android:layout_alignTop="@+id/show_time"
         android:background="@drawable/cryatal_notice_trumpet" />
