@@ -86,6 +86,7 @@ public class WifiFragment extends MainFragment {
 	private LinearLayout mWifiLouderLayout;
 	
 	private WifiConnectDialog mWifiConnectDialog;
+	private WifiConnectDialog mWifiConnectPwdDialog;
 	
 	private boolean mSupplicantBRRegisterd;
 	
@@ -206,7 +207,8 @@ public class WifiFragment extends MainFragment {
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
 		getActivity().registerReceiver(mLoginReceiver, filter);
 		
-		mWifiConnectDialog = new WifiConnectDialog(getActivity());
+		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
+		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
 	}
 
 	@Override
@@ -284,6 +286,9 @@ public class WifiFragment extends MainFragment {
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
 					showWifiConnectConfirmDialog(mWifiItemClick, false);
+				} else {
+					mWifiItemClick = mWifiEncrypt.get(position - 2 - mWifiFree.size() - index_auth);
+					showWifiConnectPwdConfirmDialog(mWifiItemClick, mWifiConnectPwdDialog);
 				}
 			}
 		});
@@ -431,6 +436,49 @@ public class WifiFragment extends MainFragment {
 		});
 
 		mWifiConnectDialog.show();
+	}
+	
+	private void showWifiConnectPwdConfirmDialog(final WifiInfoScanned wifiInfoScanned, final WifiConnectDialog wifiConnectDialog) {
+		wifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
+		wifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
+		
+		wifiConnectDialog.setLeftBtnStr("取消");
+		wifiConnectDialog.setRightBtnStr("确定");
+		wifiConnectDialog.clearPwdEditText();
+		
+		wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {				
+				boolean connResult = false;
+				String inputedPwd = wifiConnectDialog.getPwdContent();
+				if (inputedPwd == "") {
+					Toast.makeText(getActivity(), "Password can not be null", Toast.LENGTH_LONG).show();
+					dialog.dismiss();
+				}
+				
+				final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+				getActivity().registerReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver, filter);
+				mSupplicantBRRegisterd = true;
+				
+				wifiInfoScanned.setWifiPwd(inputedPwd);
+				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
+				dialog.dismiss();
+				if (connResult) {
+					mWifiListHelper.fillWifiList();
+				} else {
+					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+
+				dialog.dismiss();
+
+			}
+		});
+
+		wifiConnectDialog.show();
 	}
 	
 //	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
