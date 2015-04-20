@@ -1,28 +1,39 @@
 package com.anynet.wifiworld.me;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.LoginHelper;
-import com.desarrollodroide.libraryfragmenttransactionextended.FragmentTransactionExtended;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
-	private android.app.Fragment mFirstFragment = null;
-    private float start_x = 0;
-    private float end_x = 0;
+	private ViewPager viewPager;//页卡内容
+	private ImageView imageView;// 动画图片
+	private TextView textView1,textView2,textView3,textView4;
+	private int offset = 0;// 动画图片偏移量
+	private int currIndex = 0;// 当前页卡编号
+	private int bmpW;// 动画图片宽度
+	private List<Fragment> fragments = new ArrayList<Fragment>();
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -51,72 +62,103 @@ public class WifiProviderDetailActivity extends BaseActivity {
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mIntent = getIntent();
 		setContentView(R.layout.wifi_provider_detail);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
-		//Add first fragment
-        mFirstFragment = new WifiOnlineSlidingFragment();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_place, mFirstFragment);
-        fragmentTransaction.commit();
-        
-        this.findViewById(R.id.fragment_place).setOnTouchListener(new OnTouchListener() {
-
-        	@Override
-            public boolean onTouch(View v, MotionEvent event) {
-        		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-        			start_x = event.getRawX();
-        		}
-        		else if (event.getAction() == MotionEvent.ACTION_UP) {
-        			end_x = event.getRawX();
-        			if (Math.abs(start_x - end_x) > 100) {
-        				if (getFragmentManager().getBackStackEntryCount()==0) {
-        		            Fragment secondFragment = new WifiReportSlidingFragment();
-        		            FragmentManager fm = getFragmentManager();
-        		            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        		            FragmentTransactionExtended fragmentTransactionExtended = new FragmentTransactionExtended(
-        		            	getApplicationContext(), fragmentTransaction, mFirstFragment, secondFragment, R.id.fragment_place);
-        		            fragmentTransactionExtended.addTransition(FragmentTransactionExtended.SLIDE_HORIZONTAL);
-        		            fragmentTransactionExtended.commit();
-        		        }else{
-        		            getFragmentManager().popBackStack();
-        		        }
-        			}
-                }  
-        	    return true;
-            }
-        	
-        });
-        
-			
-		/*(if (cordView == null) {
-			Config.init(this);
-			Whitelist mWhitelist = new Whitelist();
-			cordView = (CordovaWebView) findViewById(R.id.cwv_provider_detail_view);
-			cordView.init(this, new CordovaWebViewClient((CordovaInterface) this, cordView), new CordovaChromeClient(this, cordView),
-		            Config.getPluginEntries(), Config.getWhitelist(), Config.getExternalWhitelist(), Config.getPreferences());
-		}
-		cordView.loadUrl("file:///android_asset/www/index.html");
-		cordView.removeAllViews();*/
+		//Add fragment
+		Fragment f1 = (Fragment)new WifiReportOnlineFragment();
+		Fragment f2 = (Fragment)new WifiReportCountFragment();
+		Fragment f3 = (Fragment)new WifiReportGeoFragment();
+		Fragment f4 = (Fragment)new WifiReportTimerFragment();
+		fragments.add(f1);
+		fragments.add(f2);
+		fragments.add(f3);
+		fragments.add(f4);
 		
-		//当前在线用户展示图
-		/*displayUserOnlineMap(savedInstanceState);
-		
-		RelativeLayout chartLayout = (RelativeLayout)
-			this.findViewById(R.id.rl_wifi_provider_line_chart);
-		//图表显示范围在占屏幕大小的90%的区域内	   
-		int scrWidth = chartLayout.getLayoutParams().width; 	
-		int scrHeight = chartLayout.getLayoutParams().height; 			   		
-		RelativeLayout.LayoutParams layoutParams = 
-			new RelativeLayout.LayoutParams(scrWidth, scrHeight);	
-		//居中显示
-		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		mLineChart = new WifiProviderLineChartView(this);
-        chartLayout.addView(mLineChart, layoutParams);*/
+		InitImageView();
+		InitTextView();
+		InitViewPager();
 	}
+
+	private void InitViewPager() {
+		viewPager = (ViewPager) findViewById(R.id.viewpager);
+		viewPager.setAdapter(new MyViewPagerAdapter(getSupportFragmentManager()));
+		viewPager.setCurrentItem(0);
+		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
+	}
+
+	private void InitTextView() {
+		textView1 = (TextView) findViewById(R.id.text1);
+		textView2 = (TextView) findViewById(R.id.text2);
+		textView3 = (TextView) findViewById(R.id.text3);
+		textView4 = (TextView) findViewById(R.id.text4);
+
+		textView1.setOnClickListener(new MyOnClickListener(0));
+		textView2.setOnClickListener(new MyOnClickListener(1));
+		textView3.setOnClickListener(new MyOnClickListener(2));
+		textView4.setOnClickListener(new MyOnClickListener(3));
+	}
+	
+	private void InitImageView() {
+		imageView= (ImageView) findViewById(R.id.cursor);
+		bmpW = BitmapFactory.decodeResource(getResources(), R.drawable.view_page_tab_line).getWidth();// 获取图片宽度
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int screenW = dm.widthPixels;// 获取分辨率宽度
+		offset = (screenW / 4 - bmpW) / 2;// 计算偏移量
+		Matrix matrix = new Matrix();
+		matrix.postTranslate(offset, 0);
+		imageView.setImageMatrix(matrix);// 设置动画初始位置
+	}
+
+	private class MyOnClickListener implements OnClickListener{
+        private int index=0;
+        public MyOnClickListener(int i){
+        	index=i;
+        }
+		public void onClick(View v) {
+			viewPager.setCurrentItem(index);			
+		}
+		
+	}
+	
+	public class MyViewPagerAdapter extends FragmentPagerAdapter {
+		
+		public MyViewPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+        public Fragment getItem(int arg0) {
+	        return fragments.get(arg0);
+        }
+
+		@Override
+        public int getCount() {
+	        return fragments.size();
+        }
+	}
+
+    public class MyOnPageChangeListener implements OnPageChangeListener{
+
+    	int one = offset * 2 + bmpW;// 页卡1 -> 页卡2 偏移量
+		int two = one * 2;// 页卡1 -> 页卡3 偏移量
+		public void onPageScrollStateChanged(int arg0) {		
+		}
+
+		public void onPageScrolled(int arg0, float arg1, int arg2) {	
+		}
+
+		public void onPageSelected(int arg0) {
+			Animation animation = new TranslateAnimation(one*currIndex, one*arg0, 0, 0);
+			currIndex = arg0;
+			animation.setFillAfter(true);// True:图片停在动画结束位置
+			animation.setDuration(300);
+			imageView.startAnimation(animation);
+		}
+    	
+    }
 
 	@Override
 	protected void onStart() {
@@ -160,30 +202,4 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
-	
-	// ---------------------------------------------------------------------------------------------
-	/*private void displayUserOnlineMap(Bundle savedInstanceState) {
-		mapView = (MapView) this.findViewById(R.id.user_online_map);
-		mapView.onCreate(savedInstanceState);
-		aMap = mapView.getMap();
-		MyLocationStyle myLocationStyle = new MyLocationStyle();
-		myLocationStyle.strokeColor(Color.BLACK);
-		myLocationStyle.strokeWidth(5);
-		aMap.setMyLocationStyle(myLocationStyle);
-		//获取到注册wifi的地理位置
-		WifiProfile wifi = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.class.getName());
-		LatLng point = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
-		CameraUpdate update = CameraUpdateFactory.newLatLngZoom(point, (float) 20);
-		aMap.moveCamera(update);
-		aMap.addMarker(
-			new MarkerOptions().position(point).title(wifi.Alias)
-				.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo))
-				.draggable(true)).showInfoWindow();
-		updateUserOnline();
-	}
-	
-	//查询正在使用wifi的用户
-	private void updateUserOnline() {
-		
-	}*/
 }
