@@ -337,26 +337,24 @@ public class WifiAdmin {
 	public boolean checkWifiPwd(String pwd) {
 		WifiInfoScanned wifiInfoCur = WifiListHelper.getInstance(mContext).mWifiInfoCur;
 		if (wifiInfoCur != null) {
-			WifiConfiguration config = new WifiConfiguration();
-			config.SSID = convertToQuotedString(wifiInfoCur.getWifiName());
-			config.BSSID = wifiInfoCur.getWifiMAC();
+			WifiConfiguration config = getExistWifiConf(convertToQuotedString(wifiInfoCur.getWifiName()), wifiInfoCur.getWifiMAC());
 			wifiInfoCur.setWifiPwd(pwd);
 			ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
 			
 			int id = -1;
 			try {
-				id = mWifiManager.addNetwork(config);
+				id = mWifiManager.updateNetwork(config);
 			} catch(NullPointerException e) {
 				Log.e(TAG, "Weird!! Really!! What's wrong??", e);
-				// Weird!! Really!!
-				// This exception is reported by user to Android Developer Console(https://market.android.com/publish/Home)
+				return false;
 			}
+			
 			if(id == -1) {
 				Log.e(TAG, "Failed to add config to network");
 				return false;
 			}
 			
-			if(!mWifiManager.enableNetwork(config.networkId, false)) {
+			if(!mWifiManager.enableNetwork(config.networkId, true)) {
 				Log.e(TAG, "Failed to enable current network");
 				return false;
 			}
@@ -585,6 +583,21 @@ public class WifiAdmin {
 		return null;
 	}
 	
+    //获取存在的wifi配置
+    public WifiConfiguration getExistWifiConf(String SSID, String BSSID) {
+
+		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
+		for(final WifiConfiguration config : configurations) {
+			if(config.SSID == null || !SSID.equals(config.SSID)) {
+				continue;
+			}
+			if(config.BSSID == null || BSSID == null || BSSID.equals(config.BSSID)) {
+				return config;
+			}
+		}
+		return null;
+	}
+    
 	public WifiConfiguration getWifiConfiguration(final WifiConfiguration configToFind, String security) {
 		final String ssid = configToFind.SSID;
 		if(ssid.length() == 0) {
