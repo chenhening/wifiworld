@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -15,8 +13,6 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.me.WifiProviderDetailActivity;
-import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 
 public class LoginHelper {
 
@@ -26,6 +22,7 @@ public class LoginHelper {
 	public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	public static String AUTO_LOGIN_NEVERLOGIN = "com.anynet.wifiworld.autologin.neverlogin";
 	public static String LOGIN_OUT = "com.anynet.wifiworld.login.out";
+	
 	public static String LOGIN_SUCCESS = AUTO_LOGIN_SUCCESS;
 	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
 	public static String LOGIN_NEVERLOGIN = AUTO_LOGIN_NEVERLOGIN;

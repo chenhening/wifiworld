@@ -47,6 +47,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 				// mWifiProfile =
 				// LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
 				if (mWifiProfile != null) {
+					mWifiProfile.setShared(true);
 					mWifiProfile.StoreRemote(getApplicationContext(), new DataCallback<WifiProfile>() {
 
 						@Override
