@@ -79,15 +79,15 @@ public class WifiBRService {
 		        			if (onWifiStatusListener != null) {
 				            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
 		        			}
-		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+		        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 		        		} else if(isDisconnected) {
 		        			statusStr = "已断开连接";
 		        			if (onWifiStatusListener != null) {
 				            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
 		        			}
-		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+		        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 						}
-		        		}
+		        	}
 		        }
 		        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
 					Log.i(TAG, "wifi state changed action");
