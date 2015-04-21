@@ -59,7 +59,7 @@ public class WifiBRService {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				String action = intent.getAction();
-		        if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
+			        if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
 			        	Log.i(TAG, "network state changed action");
 			        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 			        	if (null != parcelableExtra) {
@@ -72,13 +72,13 @@ public class WifiBRService {
 			        			if (onWifiStatusListener != null) {
 					            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
 			        			}
-			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+			        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 			        		} else if(isDisconnected) {
 			        			statusStr = "已断开连接";
 			        			if (onWifiStatusListener != null) {
 					            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
 			        			}
-			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+			        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 						}
 			        	}
 		        }

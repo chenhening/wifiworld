@@ -298,26 +298,30 @@ public class WifiAdmin {
 			            WifiInfo info = getWifiConnecting();
 			            SupplicantState state = info.getSupplicantState();
 			            if (state == SupplicantState.COMPLETED){
+			            	int id = info.getNetworkId();
+			            	if (id != config.networkId)
+			            		return;
 			            	if (callback != null) {
+			            		//验证当前网络登录的网络是否是测试网络
 			            		mContext.unregisterReceiver(this);
-			            		callback.onSuccess(true);
 			            		//验证成功也要恢复之前的配置
 			            		mWifiManager.removeNetwork(config.networkId);
 			            		mWifiManager.enableNetwork(old_conf.networkId, true);
 			            		mWifiManager.reassociate();
 			            		mWifiManager.saveConfiguration();
+			            		callback.onSuccess(true);
 			            	}
 			            } else {
 			            	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 			            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 			            		if (callback != null) {
-			            			callback.onFailed("密码验证失败，当前网络不稳定或密码不正确");
 			            			mContext.unregisterReceiver(this);
 			            			//验证失败恢复之前的配置
 				            		mWifiManager.removeNetwork(config.networkId);
 				            		mWifiManager.enableNetwork(old_conf.networkId, true);
 				            		mWifiManager.reassociate();
 				            		mWifiManager.saveConfiguration();
+			            			callback.onFailed("密码验证失败，当前网络不稳定或密码不正确");
 			            		}
 			            	}
 			            }
