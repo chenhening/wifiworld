@@ -195,35 +195,29 @@ public class LoginHelper {
 
 	private void pullWifiProfile() {
 		// 去服务器上查询是否已经登记了自己的wifi
-		final Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
+		WifiProfile wifi = new WifiProfile();
+		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
+		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
+	
 			@Override
-            public void run() {
-				final TimerTask itself = this;
-				WifiProfile wifi = new WifiProfile();
-				wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
-				wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
-			
-					@Override
-					public void onSuccess(List<WifiProfile> objects) {
-						if (objects.size() >= 1) {
-							mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
-						}
-						timer.cancel();
-					}
-			
-					@Override
-					public void onFailed(String msg) {
-						Log.d(TAG, "查询登记的wifi失败，正在重试: " + msg);
-						timer.schedule(itself, 0);
-					}
-				});
-            }
-		};
-		timer.schedule(task, 0);
+			public void onSuccess(List<WifiProfile> objects) {
+				if (objects.size() >= 1) {
+					mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
+				}
+			}
+	
+			@Override
+			public void onFailed(String msg) {
+				Log.d(TAG, "查询登记的wifi失败，正在重试: " + msg);
+				pullWifiProfile();//TODO(binfei)这样做有可能造成堆栈溢出
+			}
+		});
 	}
 	
 	public void updateWifiDynamic() {
+		if (WifiListHelper.getInstance(globalContext).mWifiInfoCur == null)
+			return;
+		
 		WifiDynamic record = new WifiDynamic();
 		record.MacAddr = WifiListHelper.getInstance(globalContext).mWifiInfoCur.getWifiMAC();
 		double lat = LocationHelper.getInstance(globalContext).getLatitude();
