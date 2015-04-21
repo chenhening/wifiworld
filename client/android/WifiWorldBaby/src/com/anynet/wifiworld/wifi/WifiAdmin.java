@@ -298,11 +298,10 @@ public class WifiAdmin {
 			            WifiInfo info = getWifiConnecting();
 			            SupplicantState state = info.getSupplicantState();
 			            if (state == SupplicantState.COMPLETED){
-			            	int id = info.getNetworkId();
+			            	int id = info.getNetworkId();//验证当前网络登录的网络是否是测试网络
 			            	if (id != config.networkId)
 			            		return;
 			            	if (callback != null) {
-			            		//验证当前网络登录的网络是否是测试网络
 			            		mContext.unregisterReceiver(this);
 			            		//验证成功也要恢复之前的配置
 			            		mWifiManager.removeNetwork(config.networkId);
