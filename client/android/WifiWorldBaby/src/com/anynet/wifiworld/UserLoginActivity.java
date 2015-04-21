@@ -203,8 +203,6 @@ public class UserLoginActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mLL_Login.setEnabled(false);
 				mET_SMS = ((EditText) findViewById(R.id.tv_login_sms));
 				mSmsCode = mET_SMS.getText().toString().trim();
 				Pattern pattern = Pattern.compile("^[0-9]{4}$");
@@ -212,6 +210,7 @@ public class UserLoginActivity extends BaseActivity {
 					showToast("请输入正确的4位验证码.");
 					return;
 				}
+				mLL_Login.setEnabled(false);
 				Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
 				intent.putExtra(LoginService.LOGIN_SERVICE_KEY,
 						LoginService.LOGIN_SERVICE_SUMBIT_VERIFICODE);
