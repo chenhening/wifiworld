@@ -26,8 +26,10 @@ public class WifiSpeedTester implements OnClickListener {
 	
 	private DownloadedFileParams mDownloadedFileParams;
 	private boolean mTestFlag;
+	private boolean mManualStopFlag;
+	private final int UPDATE_STOP = 2;
 	private final int UPDATE_SPEED = 1;// 进行中
-	private final int UPDATE_DNOE = 0;// 完成下载
+	private final int UPDATE_DONE = 0;// 完成下载
 	private int mStartAngle;
 	
 	private View mContext;
@@ -43,6 +45,7 @@ public class WifiSpeedTester implements OnClickListener {
 	public WifiSpeedTester(View context) {
 		mContext = context;
 		mTestFlag = false;
+		mManualStopFlag = false;
 		
 		mNeedleView = (ImageView) mContext.findViewById(R.id.wifi_speed_needle);
 		mSpeedAvgView = (TextView) mContext.findViewById(R.id.wifi_speed_avg_num);
@@ -80,6 +83,25 @@ public class WifiSpeedTester implements OnClickListener {
 		
 	}
 	
+	public void stopSpeedTest() {
+		mTestFlag = false;
+		mSpeedStart.setText("测速");
+		if (mSpeedTester != null) {
+			mSpeedTester.stopDownload();
+			mSpeedTester.interrupt();
+			mSpeedTester = null;
+		}
+		if (mUpdateMeter != null) {
+			mUpdateMeter.stopUpdateMeter();
+			mUpdateMeter.interrupt();
+			mUpdateMeter = null;
+		}
+		mManualStopFlag = true;
+		mSpeedCurView.setText("0 kb/s");
+		mSpeedAvgView.setText("0 kb/s");
+		startAnimation(0.0);
+	}
+	
 	protected void startAnimation(double d) {
 		AnimationSet animationSet = new AnimationSet(true);
 		/**
@@ -112,7 +134,6 @@ public class WifiSpeedTester implements OnClickListener {
 		long curSpeed = 0;
 		long avgSpeed = 0;
 		long numberTotal = 0;
-		List<Long> speedList = new ArrayList<Long>();
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -120,18 +141,18 @@ public class WifiSpeedTester implements OnClickListener {
 			switch (value) {
 			case UPDATE_SPEED:
 				curSpeed = mDownloadedFileParams.speed / 1024;
-				speedList.add(curSpeed);
+				mSpeedList.add(curSpeed);
 				Log.i(TAG, "Current Network Speed: " + curSpeed);
-				for (Long numberLong : speedList) {
+				for (Long numberLong : mSpeedList) {
 					numberTotal += numberLong;
 				}
-				avgSpeed = numberTotal / speedList.size();
+				avgSpeed = numberTotal / mSpeedList.size();
 				numberTotal = 0;
 				mSpeedCurView.setText(curSpeed + " kb/s");
 				mSpeedAvgView.setText(avgSpeed + " kb/s");
 				startAnimation(Double.parseDouble(curSpeed+""));
 				break;
-			case UPDATE_DNOE:
+			case UPDATE_DONE:
 				mSpeedStart.setText("测速");
 				if (mSpeedTester != null) {
 					mSpeedTester.stopDownload();
@@ -146,7 +167,16 @@ public class WifiSpeedTester implements OnClickListener {
 				curSpeed = 0;
 				avgSpeed = 0;
 				numberTotal = 0;
-				speedList.clear();
+				mSpeedList.clear();
+				break;
+			case UPDATE_STOP:
+				mSpeedCurView.setText("0 kb/s");
+				mSpeedAvgView.setText("0 kb/s");
+				startAnimation(0.0);
+				curSpeed = 0;
+				avgSpeed = 0;
+				numberTotal = 0;
+				mSpeedList.clear();
 			default:
 				break;
 			}
@@ -177,8 +207,12 @@ public class WifiSpeedTester implements OnClickListener {
 				handler.sendEmptyMessage(UPDATE_SPEED);
 				yield();
 			}
+			if (mManualStopFlag) {
+				handler.sendEmptyMessage(UPDATE_STOP);
+				mManualStopFlag = false;
+			}
 			if (mParams.downloadedBytes == mParams.totalBytes) {
-				handler.sendEmptyMessage(UPDATE_DNOE);
+				handler.sendEmptyMessage(UPDATE_DONE);
 			}
 			super.run();
 		}

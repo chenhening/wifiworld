@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -71,7 +72,10 @@ public class WifiFragment extends MainFragment {
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
+	
 	private LinearLayout mWifiSquareLayout;
+	private View mPopupView;
+	private WifiSpeedTester mWifiSpeedTester;
 	private PopupWindow mWifiSquarePopup;
 	private LinearLayout mWifiSpeedLayout;
 	private LinearLayout mWifiShareLayout;
@@ -418,7 +422,7 @@ public class WifiFragment extends MainFragment {
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
-					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), false);
+					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
@@ -523,22 +527,31 @@ public class WifiFragment extends MainFragment {
 	private void initWifiSquarePopupView() {
 		if (mWifiSquarePopup == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
+			mPopupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
 			
-			mWifiSpeedLayout = (LinearLayout) popupView.findViewById(R.id.wifi_speed_layout);
-			mWifiShareLayout = (LinearLayout) popupView.findViewById(R.id.wifi_share_layout);
-			mWifiLouderLayout = (LinearLayout) popupView.findViewById(R.id.wifi_louder_layout);
+			mWifiSpeedLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_speed_layout);
+			mWifiShareLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_share_layout);
+			mWifiLouderLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_louder_layout);
 			
 			//create one pop-up window object
-			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
+			mWifiSquarePopup = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
 			mWifiSquarePopup.setFocusable(false);
 			mWifiSquarePopup.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);  
 			//mWifiSquarePopup.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);  
-			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0); 
+			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0);
 			
 			//测速ui
-			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
-			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
+			mWifiSpeedTester = new WifiSpeedTester(mPopupView);
+			Button testBtn = (Button) mPopupView.findViewById(R.id.start_button);
+			testBtn.setOnClickListener(mWifiSpeedTester);
+			mWifiSquarePopup.setOnDismissListener(new OnDismissListener() {
+				
+				@Override
+				public void onDismiss() {
+					Log.i(TAG, "on popup window dismiss");
+					mWifiSpeedTester.stopSpeedTest();
+				}
+			});
 			
 			//shared ui
 			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
@@ -580,9 +593,9 @@ public class WifiFragment extends MainFragment {
 			});
 			
 			//评论ui
-			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
+			final EditText comment_edit = (EditText) mPopupView.findViewById(R.id.wifi_input_frame);
 			comment_edit.setFocusable(true);
-			popupView.findViewById(R.id.tv_button_sms).setOnClickListener(new OnClickListener() {
+			mPopupView.findViewById(R.id.tv_button_sms).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
