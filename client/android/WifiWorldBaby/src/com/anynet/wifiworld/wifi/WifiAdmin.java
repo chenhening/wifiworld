@@ -8,18 +8,34 @@ import java.util.List;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.DataListenerHelper;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
+import android.os.IBinder;
+import android.os.Parcel;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 public class WifiAdmin {
 	private static final String TAG = WifiAdmin.class.getSimpleName();
@@ -47,109 +63,6 @@ public class WifiAdmin {
         mNumOpenNetworksKept =  Settings.Secure.getInt(context.getContentResolver(),
 	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
     }
-    
-//    public boolean Connect(String SSID, String Password, WifiCipherType Type) {
-//       if (!this.openWifi()) {
-//            return false;
-//       }
-//       
-//       while (this.mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
-//    	   try {
-//    		   Thread.currentThread();
-//    		   Thread.sleep(100);
-//           } catch (InterruptedException ie) {
-//        	   
-//           }
-//       }
-//       
-//       WifiConfiguration wifiConfig = null;
-//       boolean isExisted = false;
-//       int networkId = -1;
-//       for (int i = this.mWifiConfigurations.size() - 1; i >= 0; i--)
-//       {
-//    	   wifiConfig = mWifiConfigurations.get(i);
-//    	   String wifiSSID = wifiConfig.SSID;
-//           if (wifiSSID.substring(1, wifiSSID.length()-1).equals(SSID)) {
-//               networkId = wifiConfig.networkId;
-//               isExisted = true;
-//               break;
-//           }
-//       }
-//       if (!isExisted) {
-//    	   wifiConfig = this.CreateWifiInfo(SSID, Password, Type);
-//           if (wifiConfig == null) {
-//        	   Log.i(TAG, "Failed to create wifi configuration info");
-//        	   return false;  
-//           }
-//           networkId = mWifiManager.addNetwork(wifiConfig);
-//           if (networkId != -1)
-//           {
-//        	   mWifiManager.saveConfiguration();
-//           }
-//       } else {
-//    	   this.mWifiInfo = mWifiManager.getConnectionInfo();
-//           if (this.mWifiInfo != null && SSID.equals(this.mWifiInfo.getSSID())) {
-//        	   Log.i(TAG, "Have connect wifi: " + SSID);
-//               return true;
-//           }
-//           
-//           int encryptionType = getKeyMgmtType(Type);
-//           wifiConfig.allowedKeyManagement.set(encryptionType);
-////           if (encryptionType != 0)
-////           {
-////        	   wifiConfig.preSharedKey = Password;
-////           }
-//           mWifiManager.updateNetwork(wifiConfig);
-//       }
-//       
-//       boolean bRet = false;
-//       if (networkId != -1) {
-//           mWifiManager.disconnect();
-//           bRet = mWifiManager.enableNetwork(networkId, true);
-//       }
-//         
-//       return bRet;
-//    }
-//    
-//    private WifiConfiguration CreateWifiInfo(String SSID, String Password, WifiCipherType Type) {
-//    	WifiConfiguration config = new WifiConfiguration();
-//        config.allowedAuthAlgorithms.clear();
-//        config.allowedGroupCiphers.clear();
-//        config.allowedKeyManagement.clear();
-//        config.allowedPairwiseCiphers.clear();
-//        config.allowedProtocols.clear();
-//        config.SSID = "\"" + SSID + "\"";
-//        if(Type == WifiCipherType.WIFICIPHER_NOPASS) {
-//        	config.wepKeys[0] = "";
-//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-//            config.wepTxKeyIndex = 0;
-//       } else if(Type == WifiCipherType.WIFICIPHER_WEP) {
-//           config.preSharedKey = "\""+Password+"\"";
-//           config.hiddenSSID = true;
-//           config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
-//           config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-//           config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-//           config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-//           config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
-//           config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-//           config.wepTxKeyIndex = 0;
-//       } else if(Type == WifiCipherType.WIFICIPHER_WPA) {
-//    	   config.preSharedKey = Password;
-//    	   config.hiddenSSID = true;
-//    	   config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-//    	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-//    	   config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-//    	   config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-//    	   config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-//    	   //maybe for WiFi AP
-////    	   config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-////         config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-//    	   config.status = WifiConfiguration.Status.ENABLED;
-//       } else {
-//           return null;
-//       }
-//       return config;
-//    }
 
     private int getMaxPriority(final WifiManager wifiManager) {
 		final List<WifiConfiguration> configurations = wifiManager.getConfiguredNetworks();
@@ -333,17 +246,25 @@ public class WifiAdmin {
 		
 		return true;
 	}
-	
-	public boolean checkWifiPwd(String pwd) {
+
+	//----------------------------------------------------------------------
+	public boolean checkWifiPwd(String pwd, final DataCallback<Boolean> callback) {
 		WifiInfoScanned wifiInfoCur = WifiListHelper.getInstance(mContext).mWifiInfoCur;
 		if (wifiInfoCur != null) {
-			WifiConfiguration config = getExistWifiConf(convertToQuotedString(wifiInfoCur.getWifiName()), wifiInfoCur.getWifiMAC());
-			wifiInfoCur.setWifiPwd(pwd);
-			ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
+			//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
+			final WifiConfiguration old_conf = getExistWifiConf(
+				convertToQuotedString(wifiInfoCur.getWifiName()), wifiInfoCur.getWifiMAC());
+			final WifiConfiguration config = new WifiConfiguration();
+			config.SSID = old_conf.SSID;
+			config.BSSID = old_conf.BSSID;
+			config.preSharedKey = "\"" + pwd + "\"";
+			//wifiInfoCur.setWifiPwd(pwd);
+			//ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
 			
 			int id = -1;
 			try {
-				id = mWifiManager.updateNetwork(config);
+				id = mWifiManager.addNetwork(config);
+				config.networkId = id;
 			} catch(NullPointerException e) {
 				Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 				return false;
@@ -359,7 +280,52 @@ public class WifiAdmin {
 				return false;
 			}
 			
-			return mWifiManager.reconnect();
+			if (!mWifiManager.reassociate()) {
+				Log.e(TAG, "Failed to reassociate network");
+				return false;
+			}
+			
+			//监听密码是否成功
+			final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+			mContext.registerReceiver(new BroadcastReceiver() {
+
+				@Override
+                public void onReceive(Context context, Intent intent) {
+					String action = intent.getAction();
+					
+					if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
+			        	Log.i(TAG, "supplicant state changed action");
+			            WifiInfo info = getWifiConnection();
+			            SupplicantState state = info.getSupplicantState();
+			            if (state == SupplicantState.COMPLETED){
+			            	if (callback != null) {
+			            		mContext.unregisterReceiver(this);
+			            		callback.onSuccess(true);
+			            		//验证成功也要恢复之前的配置
+			            		mWifiManager.removeNetwork(config.networkId);
+			            		mWifiManager.enableNetwork(old_conf.networkId, true);
+			            		mWifiManager.reassociate();
+			            		mWifiManager.saveConfiguration();
+			            	}
+			            } else {
+			            	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+			            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
+			            		if (callback != null) {
+			            			callback.onFailed("密码验证失败，当前网络不稳定或密码不正确");
+			            			mContext.unregisterReceiver(this);
+			            			//验证失败恢复之前的配置
+				            		mWifiManager.removeNetwork(config.networkId);
+				            		mWifiManager.enableNetwork(old_conf.networkId, true);
+				            		mWifiManager.reassociate();
+				            		mWifiManager.saveConfiguration();
+			            		}
+			            	}
+			            }
+			        }
+                }
+				
+			}, filter);
+			return true;
 		} else {
 			Log.e(TAG, "Not connect to any wifi");
 			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();

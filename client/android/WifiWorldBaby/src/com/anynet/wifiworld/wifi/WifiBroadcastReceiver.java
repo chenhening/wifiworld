@@ -76,13 +76,12 @@ public class WifiBroadcastReceiver {
 	            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 	            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 	                //密码错误
-	            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
+	            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 	            }
 	            if (mTextView != null) {
-	            		mTextView.setText(statusStr);
-	            		mTextView.setTextColor(Color.BLACK);
+            		mTextView.setText(statusStr);
+            		mTextView.setTextColor(Color.BLACK);
 				}
-	            //Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 	        }
 		}
 		

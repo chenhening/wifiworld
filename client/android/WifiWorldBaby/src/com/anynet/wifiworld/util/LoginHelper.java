@@ -199,7 +199,7 @@ public class LoginHelper {
 
 			@Override
 			public void onFailed(String msg) {
-				Log.d(TAG, "用户还没有等级过wifi: " + msg);
+				Log.d(TAG, "用户还没有登记过wifi: " + msg);
 			}
 		});
 	}

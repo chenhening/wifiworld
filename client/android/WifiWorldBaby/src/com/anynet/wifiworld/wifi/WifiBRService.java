@@ -1,7 +1,5 @@
 package com.anynet.wifiworld.wifi;
 
-import java.util.ArrayList;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,11 +8,8 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.util.Log;
@@ -72,27 +67,27 @@ public class WifiBRService {
 			public void onReceive(Context context, Intent intent) {
 				String action = intent.getAction();
 		        if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
-			        	Log.i(TAG, "network state changed action");
-			        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-			        	if (null != parcelableExtra) {
-			        		NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
-			        		State state = networkInfo.getState();
-			        		boolean isConnected = state==State.CONNECTED;
-			        		boolean isDisconnected = state==State.DISCONNECTED;
-			        		if(isConnected){
-			        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
-			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
-			        			}
-			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
-			        		} else if(isDisconnected) {
-			        			statusStr = "已断开连接";
-			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
-			        			}
-			        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
-							}
-			        		}
+		        	Log.i(TAG, "network state changed action");
+		        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+		        	if (null != parcelableExtra) {
+		        		NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
+		        		State state = networkInfo.getState();
+		        		boolean isConnected = state==State.CONNECTED;
+		        		boolean isDisconnected = state==State.DISCONNECTED;
+		        		if(isConnected){
+		        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
+		        			if (onWifiStatusListener != null) {
+				            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
+		        			}
+		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+		        		} else if(isDisconnected) {
+		        			statusStr = "已断开连接";
+		        			if (onWifiStatusListener != null) {
+				            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
+		        			}
+		        			Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
+						}
+		        		}
 		        }
 		        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
 					Log.i(TAG, "wifi state changed action");
