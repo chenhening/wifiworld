@@ -32,7 +32,7 @@ public class WifiDataAnalyseHelper {
 		if (!reload && mReady == 1) {
 			callback.onSuccess(mInstance);
 		} else {
-			if (reload || mReady == 2)
+			if (reload || mReady != 2)
 				downloadData();
 			mCcallback = callback;
 		}
@@ -48,12 +48,6 @@ public class WifiDataAnalyseHelper {
 
 			@Override
             public void run() {
-				for (int i=0; i<7; ++i)
-					headcount[i] = 0;
-				for (int i=0; i<4; ++i)
-					poscount[i] = 0;
-				for (int i=0; i<5; ++i)
-					timecount[i] = 0;
 				//为了节省API调用一次性拉取一周数据下来
 				final WifiDynamic record = new WifiDynamic();
 				LoginHelper mLoginHelper = LoginHelper.getInstance(mContext);
@@ -67,6 +61,13 @@ public class WifiDataAnalyseHelper {
 
 					@Override
 		            public void onSuccess(List<WifiDynamic> objects) {
+						for (int i=0; i<7; ++i)
+							headcount[i] = 0;
+						for (int i=0; i<4; ++i)
+							poscount[i] = 0;
+						for (int i=0; i<5; ++i)
+							timecount[i] = 0;
+						
 						Calendar calendar = new GregorianCalendar();
 						double router_x = mWifiProfile.Geometry.getLatitude();
 						double router_y = mWifiProfile.Geometry.getLongitude();;

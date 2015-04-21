@@ -43,7 +43,7 @@ public class WifiReportCountFragment extends Fragment {
         mlistview = (ListView) view.findViewById(R.id.lv_wifi_report_2);
         mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_view_item, mdescriptions));
         mDataMin = WifiDataAnalyseHelper.getInstance(getActivity());
-        mDataMin.Start(true, new DataCallback<WifiDataAnalyseHelper>() {
+        mDataMin.Start(false, new DataCallback<WifiDataAnalyseHelper>() {
 
 			@Override
             public void onSuccess(WifiDataAnalyseHelper object) {

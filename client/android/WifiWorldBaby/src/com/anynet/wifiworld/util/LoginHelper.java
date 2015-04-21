@@ -3,6 +3,8 @@ package com.anynet.wifiworld.util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.Intent;
@@ -193,22 +195,32 @@ public class LoginHelper {
 
 	private void pullWifiProfile() {
 		// 去服务器上查询是否已经登记了自己的wifi
-		WifiProfile wifi = new WifiProfile();
-		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
-		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
-
+		final Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
 			@Override
-			public void onSuccess(List<WifiProfile> objects) {
-				if (objects.size() >= 1) {
-					mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
-				}
-			}
-
-			@Override
-			public void onFailed(String msg) {
-				Log.d(TAG, "用户还没有登记过wifi: " + msg);
-			}
-		});
+            public void run() {
+				final TimerTask itself = this;
+				WifiProfile wifi = new WifiProfile();
+				wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
+				wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
+			
+					@Override
+					public void onSuccess(List<WifiProfile> objects) {
+						if (objects.size() >= 1) {
+							mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
+						}
+						timer.cancel();
+					}
+			
+					@Override
+					public void onFailed(String msg) {
+						Log.d(TAG, "查询登记的wifi失败，正在重试: " + msg);
+						timer.schedule(itself, 0);
+					}
+				});
+            }
+		};
+		timer.schedule(task, 0);
 	}
 	
 	public void updateWifiDynamic() {

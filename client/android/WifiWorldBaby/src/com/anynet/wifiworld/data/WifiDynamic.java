@@ -71,7 +71,7 @@ public class WifiDynamic extends BmobObject {
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setLimit(1000);//查询最大数量
-		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
+		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(key_wifi, MacAddr);
 		query.addWhereGreaterThanOrEqualTo(key_login, time - weekmillis);
 		Log.d("findObjects", "开始查询QueryUserInOneWeek");
