@@ -55,6 +55,7 @@ import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
+import com.anynet.wifiworld.wifi.WifiSupplicant.SupplicantCallback;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -71,7 +72,6 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
-	private WifiBRService mWifiBRService;
 	
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
@@ -86,6 +86,8 @@ public class WifiFragment extends MainFragment {
 	private WifiConnectDialog mWifiConnectPwdDialog;
 	
 	private boolean mSupplicantBRRegisterd;
+	private BroadcastReceiver mSupplicantReceiver;
+	private WifiSupplicant mWifiSupplicant;
 	
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
@@ -115,6 +117,7 @@ public class WifiFragment extends MainFragment {
 		
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
+			
 		}
 		
 		@Override
@@ -127,7 +130,7 @@ public class WifiFragment extends MainFragment {
 					if (isEnabled) {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
-						mWifiBRService.setWifiScannable(true);
+						WifiBRService.setWifiScannable(true);
 					} else {
 						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
@@ -135,21 +138,13 @@ public class WifiFragment extends MainFragment {
 				}
 
 				@Override
-				public void onNetWorkChanged(boolean isSuccess, String str) {
-					mWifiNameView.setText(str);
-					mWifiNameView.setTextColor(Color.BLACK);
-					mWifiListHelper.fillWifiList();
-					displayWifiSquare();
-					
-					//一旦网络连接上后停止监听服务
-					if (mSupplicantBRRegisterd) {
-						getActivity().unregisterReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver);
-						mSupplicantBRRegisterd = false;
-					}
-					
-					if (isSuccess) {
+				public void onNetWorkChanged(boolean isConnected, String str) {
+					if (isConnected) {
+						//一旦网络状态发生变化后停止监听服务
+						WifiBRService.setWifiSupplicant(false);
+						
 						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
-						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnection().getBSSID();
+						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected().getBSSID();
 						WifiProfile data_listener = new WifiProfile();
 						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", 
 							WifiProfile.unique_key, CurMac, DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
@@ -169,13 +164,34 @@ public class WifiFragment extends MainFragment {
 										public void run() {
 											showToast("对不起，此网络主人停止了网络分享，请保存数据退出网络。");
 											WifiAdmin.getInstance(getApplicationContext()).disConnectionWifi(
-												mWifiAdmin.getWifiConnection().getNetworkId());
+												mWifiAdmin.getWifiConnected().getNetworkId());
 										}
 									});
 								}
 							}
 						});
 					}
+					
+					//refresh WiFi list and WiFi title info
+					mWifiListHelper.fillWifiList();
+					refreshWifiTitleInfo();
+				}
+
+				@Override
+				public void onScannableChanged() {
+					mWifiListHelper.fillWifiList();
+				}
+
+				@Override
+				public void onSupplicantChanged(String statusStr) {
+					mWifiNameView.setText(statusStr);
+					mWifiNameView.setTextColor(Color.BLACK);
+				}
+
+				@Override
+				public void onSupplicantDisconnected(String statusStr) {
+					// TODO Auto-generated method stub
+					
 				}
 			});
 		}
@@ -195,14 +211,16 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		mWifiBRService = WifiBRService.getInstance(getActivity(), mWifiListHelper);
-		//WifiStatusReceiver.schedule(getActivity());
-		mWifiBRService.bindWifiService(getActivity(), conn);
-		mSupplicantBRRegisterd = false;
+		mWifiSupplicant = WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
+			
+			@Override
+			public void onSupplicantChanged(String str) {
+				mWifiNameView.setText(str);
+			}
+		});
 		
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(LoginHelper.LOGIN_SUCCESS);
-		getActivity().registerReceiver(mLoginReceiver, filter);
+		//WifiStatusReceiver.schedule(getActivity());
+		WifiBRService.bindWifiService(getActivity(), conn);
 		
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
@@ -228,11 +246,11 @@ public class WifiFragment extends MainFragment {
 		initWifiSquarePopupView();
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
-		String connected_name = mWifiAdmin.getWifiNameConnection();
-		if (!connected_name.equals("") && !connected_name.equals("0x")) {
-			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
-			mWifiNameView.setTextColor(Color.BLACK);
-		}
+//		String connected_name = mWifiAdmin.getWifiNameConnection();
+//		if (!connected_name.equals("") && !connected_name.equals("0x")) {
+//			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
+//			mWifiNameView.setTextColor(Color.BLACK);
+//		}
 		
 		//WIFI list view display and operation
 		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
@@ -312,15 +330,17 @@ public class WifiFragment extends MainFragment {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
 				if (!isChecked) {
-					WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
-					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+					WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+					if (wifiInfo != null) {
+						mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+					}
 				}
 				
 			}
 		});
 		
 		mWifiListHelper.fillWifiList();
-		displayWifiSquare();
+		refreshWifiTitleInfo();
 		
 		//bind common title UI
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -350,30 +370,31 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onDestroy() {
-		getActivity().unregisterReceiver(mLoginReceiver);
 		super.onDestroy();
 	}
 
 	@Override
 	public void onPause() {
-//		if (mBroadcastRegistered) {
-//			getActivity().unregisterReceiver(mReceiver);
+//		if (mSupplicantBRRegisterd) {
+//			getActivity().unregisterReceiver(mSupplicantReceiver);
 //		}
+		
+		getActivity().unregisterReceiver(mLoginReceiver);
+		
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-//		if (mWifiListAdapter != null) {
-//			mWifiListHelper.fillWifiList();
-//			mWifiFree = mWifiListHelper.getWifiFrees();
-//			mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//			updateWifiConMore(mWifiNameView);
-//			mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-//		}
-//		final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-//		getActivity().registerReceiver(mReceiver, filter);
-//		mBroadcastRegistered = true;
+//		mSupplicantReceiver = mWifiSupplicant.mReceiver;
+//		
+//		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+//		getActivity().registerReceiver(mSupplicantReceiver, filter);
+//		mSupplicantBRRegisterd = true;
+		
+		IntentFilter loginFilter = new IntentFilter();
+		loginFilter.addAction(LoginHelper.LOGIN_SUCCESS);
+		getActivity().registerReceiver(mLoginReceiver, loginFilter);
 		
 		super.onResume();
 	}
@@ -402,9 +423,7 @@ public class WifiFragment extends MainFragment {
 		
 		mWifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-				getActivity().registerReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver, filter);
-				mSupplicantBRRegisterd = true;
+				WifiBRService.setWifiSupplicant(true);
 				
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
@@ -452,9 +471,7 @@ public class WifiFragment extends MainFragment {
 					dialog.dismiss();
 				}
 				
-				final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-				getActivity().registerReceiver(WifiBroadcastReceiver.getInstance(getActivity(), mWifiNameView).mSupplicantReceiver, filter);
-				mSupplicantBRRegisterd = true;
+				WifiBRService.setWifiSupplicant(true);
 				
 				wifiInfoScanned.setWifiPwd(inputedPwd);
 				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
@@ -524,33 +541,43 @@ public class WifiFragment extends MainFragment {
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.LOGIN_SUCCESS)) {
 				if (mWifiAdmin.getWifiNameConnection() != "") {
-					WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnection());
+					WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnected());
 				}
 			}
 		}
 	};
 	
-	private void displayWifiSquare() {
-		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
-		if (wifiConnected.getNetworkId() != -1) {
+	private void refreshWifiTitleInfo() {
+		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
+		
+		//update WiFi title info
+		if (wifiCurInfo != null) {
+			mWifiNameView.setText("已连接" + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
+			mWifiNameView.setTextColor(Color.BLACK);
+			
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
-			
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
-			if (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiConnected.getMacAddress())) {
-				WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiConnected);
-			}
 		} else {
+			mWifiNameView.setText("未连接任何WiFi");
+			mWifiNameView.setTextColor(Color.GRAY);
+			
 			mWifiSwitch.setVisibility(View.GONE);
 			mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		
+		//update WifiDynamic table[upload current WiFi info] when connected a different WiFi
+		if (wifiCurInfo != null
+			&& (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiCurInfo.getMacAddress()))) {
+			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiCurInfo);
+		}
+		mLastWifiInfo = wifiCurInfo;
+		
+		//forget last WiFi connected configuration info
 		if (mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
 			mWifiAdmin.forgetNetwork(mLastWifiInfo);
 		}
-		
-		mLastWifiInfo = wifiConnected;
 		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
 	

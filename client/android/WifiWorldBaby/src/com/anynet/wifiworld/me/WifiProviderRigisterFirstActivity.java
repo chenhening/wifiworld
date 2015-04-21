@@ -155,7 +155,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	// ---------------------------------------------------------------------------------------------
 	private void setSSIDUI() {
 		mWifiHelper = WifiListHelper.getInstance(getApplicationContext());
-		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnection().getBSSID();
+		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnected().getBSSID();
 		String ssid = mWifiHelper.getWifiAdmin().getWifiNameConnection();
 		if (ssid.equals("")) {
 			showToast("WiFi SSID获取失败，请确认是否连接上WiFI。");

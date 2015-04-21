@@ -295,7 +295,7 @@ public class WifiAdmin {
 					
 					if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
 			        	Log.i(TAG, "supplicant state changed action");
-			            WifiInfo info = getWifiConnection();
+			            WifiInfo info = getWifiConnecting();
 			            SupplicantState state = info.getSupplicantState();
 			            if (state == SupplicantState.COMPLETED){
 			            	if (callback != null) {
@@ -457,12 +457,24 @@ public class WifiAdmin {
         return WifiManager.calculateSignalLevel(level, 5) + 1;
     }
     
-    public WifiInfo getWifiConnection() {
-    	return mWifiManager.getConnectionInfo();
+    public WifiInfo getWifiConnecting() {
+    		return mWifiManager.getConnectionInfo();
+    }
+    
+    public WifiInfo getWifiConnected() {
+    		if (mWifiManager.getConnectionInfo() != null
+    			&& mWifiManager.getConnectionInfo().getNetworkId() != -1) {
+    			return mWifiManager.getConnectionInfo();
+    		}
+    		return null;
     }
     
     public String getWifiNameConnection() {
-    	return mWifiManager.getConnectionInfo().getSSID();
+    		if (mWifiManager.getConnectionInfo() != null
+			&& mWifiManager.getConnectionInfo().getNetworkId() != -1) {
+			return mWifiManager.getConnectionInfo().getSSID();
+		}
+    		return null;
     }
     
     public void connectWifi(WifiConfiguration configuration) {
@@ -471,10 +483,10 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-    	mWifiManager.enableNetwork(netId, false);
-    	mWifiManager.saveConfiguration();
-        mWifiManager.disableNetwork(netId);
-        mWifiManager.disconnect();
+    		mWifiManager.enableNetwork(netId, false);
+    		mWifiManager.saveConfiguration();
+    		mWifiManager.disableNetwork(netId);
+    		mWifiManager.disconnect();
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {

@@ -124,7 +124,8 @@ public class WifiListHelper {
 		mWifiAuth.clear();
 		mWifiFree.clear();
 		mWifiEncrypt.clear();
-		WifiInfo wifiInfo = mWifiAdmin.getWifiConnection();
+		mWifiInfoCur = null;
+		WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
 		for (ScanResult hotspot : wifiList) {
 			//Check whether WiFi is stored local
 			final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
