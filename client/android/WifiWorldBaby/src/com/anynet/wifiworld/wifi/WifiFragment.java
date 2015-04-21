@@ -567,12 +567,13 @@ public class WifiFragment extends MainFragment {
 			&& (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiCurInfo.getMacAddress()))) {
 			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiCurInfo);
 		}
-		mLastWifiInfo = wifiCurInfo;
 		
 		//forget last WiFi connected configuration info
-		if (mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
+		if (mLastWifiInfo != null
+			&& mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
 			mWifiAdmin.forgetNetwork(mLastWifiInfo);
 		}
+		mLastWifiInfo = wifiCurInfo;
 		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
 	
