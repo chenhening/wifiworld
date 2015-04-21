@@ -7,12 +7,19 @@ import java.util.Set;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
 import android.util.Log;
+
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.wifi.DeviceUID;
+import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class LoginHelper {
 
@@ -124,7 +131,7 @@ public class LoginHelper {
 
 			@Override
 			public void onSuccess(UserProfile object) {
-				if (object.Password.equals(mUser.Password)) {
+ 				if (object.Password.equals(mUser.Password)) {
 					mIsLogin = true;
 					mUser = object;
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
@@ -141,7 +148,7 @@ public class LoginHelper {
 
 			@Override
 			public void onFailed(String msg) {
-				Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
+				Log.d(TAG, "当前网络不稳定，请稍后再试。");
 				// ShowToast(globalContext,
 				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
 			}
@@ -200,6 +207,32 @@ public class LoginHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.d(TAG, "用户还没有登记过wifi: " + msg);
+			}
+		});
+	}
+	
+	public void updateWifiDynamic() {
+		WifiDynamic record = new WifiDynamic();
+		record.MacAddr = WifiListHelper.getInstance(globalContext).mWifiInfoCur.getWifiMAC();
+		double lat = LocationHelper.getInstance(globalContext).getLatitude();
+		double lng = LocationHelper.getInstance(globalContext).getLongitude();
+		record.Geometry = new BmobGeoPoint(lng, lat);
+		record.MarkLoginTime();
+		if (mUser.PhoneNumber != null) {
+			record.Userid = mUser.PhoneNumber;
+		} else {
+			record.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(globalContext);
+		}
+		record.StoreRemote(globalContext, new DataCallback<WifiDynamic>() {
+
+			@Override
+			public void onSuccess(WifiDynamic object) {
+				Log.i(TAG, "Success to store wifi dynamic info to server");
+			}
+
+			@Override
+			public void onFailed(String msg) {
+				Log.i(TAG, "Failed to store wifi dynamic info to server:" + msg);
 			}
 		});
 	}

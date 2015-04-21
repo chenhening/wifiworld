@@ -2,12 +2,9 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +14,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -84,10 +79,6 @@ public class WifiFragment extends MainFragment {
 	
 	private WifiConnectDialog mWifiConnectDialog;
 	private WifiConnectDialog mWifiConnectPwdDialog;
-	
-	private boolean mSupplicantBRRegisterd;
-	private BroadcastReceiver mSupplicantReceiver;
-	private WifiSupplicant mWifiSupplicant;
 	
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
@@ -210,7 +201,7 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		mWifiSupplicant = WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
+		WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
 			
 			@Override
 			public void onSupplicantChanged(String str) {
@@ -378,7 +369,7 @@ public class WifiFragment extends MainFragment {
 //			getActivity().unregisterReceiver(mSupplicantReceiver);
 //		}
 		
-		getActivity().unregisterReceiver(mLoginReceiver);
+		//getActivity().unregisterReceiver(mLoginReceiver);
 		
 		super.onPause();
 	}
@@ -393,7 +384,7 @@ public class WifiFragment extends MainFragment {
 		
 		IntentFilter loginFilter = new IntentFilter();
 		loginFilter.addAction(LoginHelper.LOGIN_SUCCESS);
-		getActivity().registerReceiver(mLoginReceiver, loginFilter);
+		//getActivity().registerReceiver(mLoginReceiver, loginFilter);
 		
 		super.onResume();
 	}
@@ -490,58 +481,6 @@ public class WifiFragment extends MainFragment {
 		wifiConnectDialog.show();
 	}
 	
-//	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-//		
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			final String action = intent.getAction();
-//			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-//				new Thread() {
-//					@Override
-//					public void run() {
-//						try {
-//							sleep(5000);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//						mWifiListHelper.fillWifiList();
-//						mWifiFree = mWifiListHelper.getWifiFrees();
-//						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//						handler.sendEmptyMessage(UPDATE_VIEW);
-//					}
-//				}.start();
-//			}
-//		}
-//	};
-//
-//	private Handler handler = new Handler() {
-//
-//		@Override
-//		public void handleMessage(Message msg) {
-//			int value = msg.what;
-//			if (value == UPDATE_VIEW) {
-//				displayWifiConnected(mWifiNameView);
-//				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-//			}
-//			super.handleMessage(msg);
-//		}
-//		
-//	};
-
-	private BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (action.equals(LoginHelper.LOGIN_SUCCESS)) {
-				if (mWifiAdmin.getWifiNameConnection() != "") {
-					WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnected());
-				}
-			}
-		}
-	};
-	
 	private void refreshWifiTitleInfo() {
 		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
 		
@@ -562,11 +501,7 @@ public class WifiFragment extends MainFragment {
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		
-		//update WifiDynamic table[upload current WiFi info] when connected a different WiFi
-		if (wifiCurInfo != null
-			&& (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiCurInfo.getMacAddress()))) {
-			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiCurInfo);
-		}
+		mLastWifiInfo = wifiCurInfo;
 		
 		//forget last WiFi connected configuration info
 		if (mLastWifiInfo != null
@@ -704,19 +639,5 @@ public class WifiFragment extends MainFragment {
 		
 		TextView wifiLouder = (TextView) wifiTasteLayout.findViewById(R.id.wifi_louder);
 		wifiLouder.setOnClickListener(mSquareClickListener);
-	}
-	
-	private void openInputMethod(final EditText editText) {
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				InputMethodManager inputManager = (InputMethodManager) editText.getContext()
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.showSoftInput(editText, 0);
-				
-			}
-		}, 200);
 	}
 }

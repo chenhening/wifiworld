@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		UmengUpdateAgent.update(this);
 
 		mLoginHelper = LoginHelper.getInstance(this);
-		mLoginHelper.AutoLogin();
+		//mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
 		dbHelper = DBHelper.getInstance(this);
 

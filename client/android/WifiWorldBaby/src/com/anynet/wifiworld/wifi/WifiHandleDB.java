@@ -3,7 +3,6 @@ package com.anynet.wifiworld.wifi;
 import org.apache.cordova.LOG;
 
 import android.content.Context;
-import android.net.wifi.WifiInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -11,10 +10,8 @@ import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.data.DataCallback;
-import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiHandleDB {
 	private final static String TAG = WifiHandleDB.class.getSimpleName();
@@ -23,8 +20,6 @@ public class WifiHandleDB {
 	private Handler mHandler;
 	private WifiProfile mWifiProfile;
 	private static WifiHandleDB wifiHandleDB = null;
-	
-	private WifiDynamic mWifiDynamic;
 	
 	public static WifiHandleDB getInstance(Context context) {
 		if (wifiHandleDB == null) {
@@ -202,33 +197,6 @@ public class WifiHandleDB {
 			@Override
 			public void onFailed(String msg) {
 				Log.e(TAG, "Failed to query wifi dynamic from server" + infoScanned.getWifiMAC());
-				
-			}
-		});
-	}
-	
-	public void updateWifiDynamic(WifiInfo wifiInfo) {
-		mWifiDynamic = new WifiDynamic();
-		mWifiDynamic.MacAddr = wifiInfo.getBSSID();
-		mWifiDynamic.Geometry = WifiAdmin.getWifiGeometry(mContext, wifiInfo.getRssi());
-		mWifiDynamic.MarkLoginTime();
-		UserProfile user;
-		if ((user = LoginHelper.getInstance(mContext).getCurLoginUserInfo()) != null) {
-			mWifiDynamic.Userid = user.PhoneNumber;
-		} else {
-			mWifiDynamic.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(mContext);
-		}
-		mWifiDynamic.StoreRemote(mContext, new DataCallback<WifiDynamic>() {
-
-			@Override
-			public void onSuccess(WifiDynamic object) {
-				Log.i(TAG, "Success to store wifi dynamic info to server");
-				
-			}
-
-			@Override
-			public void onFailed(String msg) {
-				Log.i(TAG, "Failed to store wifi dynamic info to server:" + msg);
 				
 			}
 		});
