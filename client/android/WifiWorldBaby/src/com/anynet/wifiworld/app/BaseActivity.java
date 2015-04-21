@@ -9,6 +9,7 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DialerFilter;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.anynet.wifiworld.broadcast.GlobalBroadcast;
 import com.anynet.wifiworld.broadcast.NetworkStateListener;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 import com.anynet.wifiworld.dialog.XLWaitingDialog;
+import com.anynet.wifiworld.me.MyAccountActivity;
 import com.anynet.wifiworld.util.ActivityUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;

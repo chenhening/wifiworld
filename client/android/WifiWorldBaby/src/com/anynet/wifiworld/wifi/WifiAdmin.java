@@ -498,7 +498,8 @@ public class WifiAdmin {
     }
     
     public String getWifiNameConnection() {
-    	return mWifiManager.getConnectionInfo().getSSID();
+    	WifiInfo wifiinfo = getWifiConnection();
+    	return wifiinfo == null?null:wifiinfo.getSSID();
     }
     
     public void connectWifi(WifiConfiguration configuration) {

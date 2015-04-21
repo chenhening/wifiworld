@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 
 public class MySettingActivity extends BaseActivity {
 
-	//IPC
+	// IPC
 	private Intent mIntent = null;
 	private Activity activity = this;
-	
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -22,21 +23,21 @@ public class MySettingActivity extends BaseActivity {
 		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
 	}
-    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
 		setContentView(R.layout.my_setting);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		
+
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class MySettingActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		
+
 		super.onResume();
 	}
 
@@ -68,6 +69,11 @@ public class MySettingActivity extends BaseActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		InputMethodManager imm = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
+		View v = getCurrentFocus();
+		if (imm != null && v != null) {
+			imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 	}
 
 	@Override

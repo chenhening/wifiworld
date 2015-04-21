@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -276,6 +277,12 @@ public class UserLoginActivity extends BaseActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		InputMethodManager imm = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
+		View v = getCurrentFocus();
+		if (imm != null && v != null){
+			imm.hideSoftInputFromWindow(v.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 	}
 
 }

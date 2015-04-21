@@ -487,7 +487,7 @@ public class WifiFragment extends MainFragment {
 	
 	private void displayWifiSquare() {
 		WifiInfo wifiConnected = mWifiAdmin.getWifiConnection();
-		if (wifiConnected.getNetworkId() != -1) {
+		if (wifiConnected != null && wifiConnected.getNetworkId() != -1) {
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			

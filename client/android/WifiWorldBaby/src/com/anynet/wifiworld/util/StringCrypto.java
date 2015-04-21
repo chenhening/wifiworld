@@ -25,6 +25,9 @@ public class StringCrypto {
 	private static byte[] iv = { 1, 2, 3, 4, 5, 6, 7, 8 };
 
 	public static String encryptDES(String encryptString, String encryptKey) throws Exception {
+		if(encryptString == null || encryptString.equals("")){
+			throw new Exception("encryptString Cound not be null!");
+		}
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		SecretKeySpec key = new SecretKeySpec(encryptKey.getBytes(), "DES");
@@ -36,6 +39,9 @@ public class StringCrypto {
 	}
 
 	public static String decryptDES(String decryptString, String decryptKey) throws Exception {
+		if(decryptString == null || decryptString.equals("")){
+			throw new Exception("decryptString Cound not be null!");
+		}
 		byte[] byteMi = Base64.decode(decryptString, Base64.DEFAULT);
 		IvParameterSpec zeroIv = new IvParameterSpec(iv);
 		// IvParameterSpec zeroIv = new IvParameterSpec(new byte[8]);
@@ -48,6 +54,9 @@ public class StringCrypto {
 	}
 
 	public static String encrypt(String seed, String cleartext) throws Exception {
+		if((seed == null || seed.equals("")) ||(cleartext == null || cleartext.equals("") )){
+			throw new Exception("decryptString Cound not be null!");
+		}
 		byte[] rawKey = getRawKey(seed.getBytes());
 		byte[] result = encrypt(rawKey, cleartext.getBytes());
 		return toHex(result);

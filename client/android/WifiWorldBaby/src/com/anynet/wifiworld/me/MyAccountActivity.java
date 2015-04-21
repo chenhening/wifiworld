@@ -1,21 +1,13 @@
 package com.anynet.wifiworld.me;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.format.DateFormat;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +50,7 @@ public class MyAccountActivity extends BaseActivity {
 		setContentView(R.layout.activity_user_homepage);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 		mUserProfile = mLoginHelper.getCurLoginUserInfo();
 		if (mUserProfile == null) {
@@ -271,7 +264,7 @@ public class MyAccountActivity extends BaseActivity {
 				dialog.show();
 			}
 		});
-		
+
 		final SettingEditItemView job = (SettingEditItemView) findViewById(R.id.sev_job);
 		if (mUserProfile.Job == null || mUserProfile.Job.equals("")) {
 			job.setContent("");
@@ -313,7 +306,7 @@ public class MyAccountActivity extends BaseActivity {
 			public void onClick(CharSequence charSequence) {
 			}
 		});
-		
+
 		final SettingEditItemView interest = (SettingEditItemView) findViewById(R.id.sev_interest);
 		if (mUserProfile.Interest == null || mUserProfile.Interest.equals("")) {
 			interest.setContent("");
