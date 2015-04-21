@@ -190,8 +190,7 @@ public class WifiFragment extends MainFragment {
 
 				@Override
 				public void onSupplicantDisconnected(String statusStr) {
-					// TODO Auto-generated method stub
-					
+					mWifiListHelper.fillWifiList();
 				}
 			});
 		}
@@ -334,8 +333,8 @@ public class WifiFragment extends MainFragment {
 					if (wifiInfo != null) {
 						mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
 					}
+					refreshWifiTitleInfo();
 				}
-				
 			}
 		});
 		
@@ -435,9 +434,7 @@ public class WifiFragment extends MainFragment {
 					//Log.d(TAG, "reconnect wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				}
 				dialog.dismiss();
-				if (connResult) {
-					mWifiListHelper.fillWifiList();
-				} else {
+				if (!connResult) {
 					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
 				}
 			}
@@ -476,9 +473,7 @@ public class WifiFragment extends MainFragment {
 				wifiInfoScanned.setWifiPwd(inputedPwd);
 				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
 				dialog.dismiss();
-				if (connResult) {
-					mWifiListHelper.fillWifiList();
-				} else {
+				if (!connResult) {
 					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
 				}
 			}
