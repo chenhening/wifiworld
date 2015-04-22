@@ -137,6 +137,12 @@ public class WifiFragment extends MainFragment {
 					if (isConnected) {
 						//一旦网络状态发生变化后停止监听服务
 						WifiBRService.setWifiSupplicant(false);
+					}
+					//refresh WiFi list and WiFi title info
+					mWifiListHelper.fillWifiList();
+					refreshWifiTitleInfo();
+					
+					if (isConnected) {
 						
 						WifiInfo curwifi = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected();
 						if (curwifi == null)
@@ -178,10 +184,6 @@ public class WifiFragment extends MainFragment {
 							}
 						});
 					}
-					
-					//refresh WiFi list and WiFi title info
-					mWifiListHelper.fillWifiList();
-					refreshWifiTitleInfo();
 				}
 
 				@Override
