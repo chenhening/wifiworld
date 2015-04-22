@@ -3,15 +3,11 @@ package com.anynet.wifiworld.util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
 import android.util.Log;
-
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.data.DataCallback;
@@ -20,7 +16,6 @@ import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.wifi.DeviceUID;
-import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class LoginHelper {
@@ -31,6 +26,7 @@ public class LoginHelper {
 	public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	public static String AUTO_LOGIN_NEVERLOGIN = "com.anynet.wifiworld.autologin.neverlogin";
 	public static String LOGIN_OUT = "com.anynet.wifiworld.login.out";
+	public static String LOGIN_OFF = "com.anynet.wifiworld.login.off";
 	
 	public static String LOGIN_SUCCESS = AUTO_LOGIN_SUCCESS;
 	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
@@ -166,6 +162,12 @@ public class LoginHelper {
 		sharedata.commit();
 		Log.d(TAG, "用户退出成功");
 	}
+	
+	//掉线
+	public void logoff() {
+		globalContext.sendBroadcast(new Intent(LOGIN_OFF));
+		mIsLogin = false;
+	}
 
 	private void SaveProfileLocal(UserProfile user) {
 		// 保存账号密码到本地用于下次登陆
@@ -194,6 +196,9 @@ public class LoginHelper {
 	}
 
 	private void pullWifiProfile() {
+		if (!mIsLogin)
+			return;
+		
 		// 去服务器上查询是否已经登记了自己的wifi
 		WifiProfile wifi = new WifiProfile();
 		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
