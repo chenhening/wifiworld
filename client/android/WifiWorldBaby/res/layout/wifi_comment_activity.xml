@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.anynet.wifiworld.wifi.ui.ResizeRelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="8dp" >
+
+    <EditText
+        android:id="@+id/menu_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/menu_send"
+        android:layout_marginBottom="8dp"
+        android:background="#ffffffff"
+        android:enabled="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="top|left"
+        android:inputType="none"
+        android:padding="8dp"
+        android:textSize="18sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/menu_send"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="#ff0f0f0f"
+        android:gravity="center"
+        android:text="发送"
+        android:textColor="#ffFF6004"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+</com.anynet.wifiworld.wifi.ui.ResizeRelativeLayout>

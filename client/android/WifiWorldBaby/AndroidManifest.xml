@@ -281,6 +281,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.wifi.ui.WifiCommentActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode = "adjustResize" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.wifi.ui.WIFI_COMMENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.wifi.WifiConnectConfirmActivity"
             android:excludeFromRecents="true"
             android:launchMode="standard"

@@ -612,17 +612,12 @@ public class WifiFragment extends MainFragment {
 			
 			//评论ui
 			final EditText comment_edit = (EditText) mPopupView.findViewById(R.id.wifi_input_frame);
-			comment_edit.setFocusable(true);
-			mPopupView.findViewById(R.id.tv_button_sms).setOnClickListener(new OnClickListener() {
+			mPopupView.findViewById(R.id.wifi_input_frame).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
-					String message = comment_edit.getText().toString();
-					if (message.length() <= 0) {
-						showToast("请输入评论。");
-						return;
-					}
-					comment_edit.setText("");
+					Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
+					startActivity(intent);
 				}
 			});
 		}
