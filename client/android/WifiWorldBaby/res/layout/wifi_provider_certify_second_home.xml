@@ -196,17 +196,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_merchant_qualification_example" />
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_10_dip"
-                android:paddingLeft="@dimen/dimen_14_dip"
-                android:paddingRight="@dimen/dimen_15_dip"
-                android:paddingTop="@dimen/dimen_5_dip"
-                android:text="如商家名称和营业执照名称不一致（如品牌加盟等情况），需提交相关文件（品牌加盟协议或授权使用书等） 。\n如果您上传的是证照的复印件，复印件上必须盖有清晰的红章。"
-                android:textColor="@color/color_gray"
-                android:textSize="@dimen/font_main_small" />
         </LinearLayout>
     </ScrollView>
 

@@ -138,8 +138,20 @@ public class WifiFragment extends MainFragment {
 						//一旦网络状态发生变化后停止监听服务
 						WifiBRService.setWifiSupplicant(false);
 						
+						WifiInfo curwifi = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected();
+						if (curwifi == null)
+							return;
+						boolean isExist = false;
+						for (WifiInfoScanned item : mWifiAuth) {
+							if (item.getWifiName().equals(curwifi.getSSID())) {
+								isExist = true;
+							}
+						}//发现wifi未认证不做数据监听
+						if (!isExist)
+							return;
+						
 						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
-						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected().getBSSID();
+						String CurMac = curwifi.getBSSID();
 						WifiProfile data_listener = new WifiProfile();
 						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", 
 							WifiProfile.unique_key, CurMac, DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
