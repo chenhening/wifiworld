@@ -68,6 +68,7 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
+	private LoginHelper mLoginHelper = null;
 	
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
@@ -232,6 +233,8 @@ public class WifiFragment extends MainFragment {
 		
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
+		
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}
 
 	@Override
@@ -273,7 +276,8 @@ public class WifiFragment extends MainFragment {
 				if (position < index_auth) {
 					mWifiItemClick = mWifiAuth.get(position - 2);
 					//判断是否敲门，没有敲门提醒其去敲门
-					if (LoginHelper.getInstance(getApplicationContext()).mKnockList.contains(mWifiItemClick.getWifiMAC())) {
+					if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || 
+						mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())) {
 						showWifiConnectConfirmDialog(mWifiItemClick, true);
 					} else {
 						//弹出询问对话框

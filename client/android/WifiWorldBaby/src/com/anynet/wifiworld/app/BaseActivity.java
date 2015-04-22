@@ -88,12 +88,22 @@ public class BaseActivity extends FragmentActivity {
 				LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
             }
 			
-		}, 2000);
+		}, 200);
 	}
 
 	/** 网络断开时的操作 */
 	protected void doDisNetworkConnected() {
-		
+		new Timer().schedule(new TimerTask() {
+
+			@Override
+            public void run() {
+				//自动登录
+				LoginHelper.getInstance(getApplicationContext()).logoff();
+				//记录掉线时间
+				LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
+            }
+			
+		}, 0);
 	}
 
 	private void showNetworkDisconnectedDialog() {

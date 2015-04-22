@@ -229,7 +229,7 @@ public class LoginHelper {
 		double lng = LocationHelper.getInstance(globalContext).getLongitude();
 		record.Geometry = new BmobGeoPoint(lng, lat);
 		record.MarkLoginTime();
-		if (mUser.PhoneNumber != null) {
+		if (mUser.PhoneNumber != null && !mUser.PhoneNumber.equals("")) {
 			record.Userid = mUser.PhoneNumber;
 		} else {
 			record.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(globalContext);
@@ -246,5 +246,11 @@ public class LoginHelper {
 				Log.i(TAG, "Failed to store wifi dynamic info to server:" + msg);
 			}
 		});
+	}
+	
+	public boolean canAccessDirectly(String MacAddr) {
+		if (mWifiProfile != null && mWifiProfile.MacAddr.equals(MacAddr))
+			return true;
+		return false;
 	}
 }

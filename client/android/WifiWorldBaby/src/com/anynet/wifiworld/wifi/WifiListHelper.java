@@ -159,6 +159,7 @@ public class WifiListHelper {
 				int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
 				boolean isAuthWifi = idx == -1 ? false : true;
 				mWifiInfoCur.setAuthWifi(isAuthWifi);
+				//mWifiInfoCur.setSponser(objects.get(idx).Sponser);
 			}
 			return;
 		}
@@ -183,6 +184,7 @@ public class WifiListHelper {
 				WifiProfile wifi = objects.get(idx);
 				if (wifi.Alias != null && wifi.Alias.length() > 0)
 					wifiInfoScanned.setAlias(wifi.Alias);
+				//wifiInfoScanned.setSponser(objects.get(idx).Sponser);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}
