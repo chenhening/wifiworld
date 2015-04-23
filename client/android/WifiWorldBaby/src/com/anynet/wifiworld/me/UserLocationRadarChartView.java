@@ -27,7 +27,6 @@ public class UserLocationRadarChartView extends ChartView implements Runnable {
 	//标签集合
 	private LinkedList<String> labels = new LinkedList<String>();
 	private LinkedList<PieData> chartData = new LinkedList<PieData>();
-	private LinkedList<Double> mdataSeries = new LinkedList<Double>();
 	
 	public UserLocationRadarChartView(Context context) {
 		super(context);
@@ -101,7 +100,6 @@ public class UserLocationRadarChartView extends ChartView implements Runnable {
 	}
 	
 	public void DisplayOneWeek(long poscount[], int size) {
-		mdataSeries.clear();
 		chartData.clear();
 		labels.clear();
 		chart.setTitle("一周WiFi使用者位置统计");

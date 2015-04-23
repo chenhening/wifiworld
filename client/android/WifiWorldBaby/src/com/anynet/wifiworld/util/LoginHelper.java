@@ -8,11 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.wifi.DeviceUID;
+import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class LoginHelper {
 
@@ -22,6 +26,7 @@ public class LoginHelper {
 	public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	public static String AUTO_LOGIN_NEVERLOGIN = "com.anynet.wifiworld.autologin.neverlogin";
 	public static String LOGIN_OUT = "com.anynet.wifiworld.login.out";
+	public static String LOGIN_OFF = "com.anynet.wifiworld.login.off";
 	
 	public static String LOGIN_SUCCESS = AUTO_LOGIN_SUCCESS;
 	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
@@ -94,6 +99,7 @@ public class LoginHelper {
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 				pullWifiProfile();
+				updateWifiDynamic();
 			}
 
 			@Override
@@ -124,7 +130,7 @@ public class LoginHelper {
 
 			@Override
 			public void onSuccess(UserProfile object) {
-				if (object.Password.equals(mUser.Password)) {
+ 				if (object.Password.equals(mUser.Password)) {
 					mIsLogin = true;
 					mUser = object;
 					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
@@ -141,7 +147,7 @@ public class LoginHelper {
 
 			@Override
 			public void onFailed(String msg) {
-				Log.d(TAG, "用户自动登陆失败，用户未登陆过。");
+				Log.d(TAG, "当前网络不稳定，请稍后再试。");
 				// ShowToast(globalContext,
 				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
 			}
@@ -156,6 +162,12 @@ public class LoginHelper {
 		sharedata.clear();
 		sharedata.commit();
 		Log.d(TAG, "用户退出成功");
+	}
+	
+	//掉线
+	public void logoff() {
+		globalContext.sendBroadcast(new Intent(LOGIN_OFF));
+		mIsLogin = false;
 	}
 
 	private void SaveProfileLocal(UserProfile user) {
@@ -185,22 +197,61 @@ public class LoginHelper {
 	}
 
 	private void pullWifiProfile() {
+		if (!mIsLogin)
+			return;
+		
 		// 去服务器上查询是否已经登记了自己的wifi
 		WifiProfile wifi = new WifiProfile();
 		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
 		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
-
+	
 			@Override
 			public void onSuccess(List<WifiProfile> objects) {
 				if (objects.size() >= 1) {
 					mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
 				}
 			}
+	
+			@Override
+			public void onFailed(String msg) {
+				Log.d(TAG, "查询登记的wifi失败，正在重试: " + msg);
+				pullWifiProfile();//TODO(binfei)这样做有可能造成堆栈溢出
+			}
+		});
+	}
+	
+	public void updateWifiDynamic() {
+		if (WifiListHelper.getInstance(globalContext).mWifiInfoCur == null)
+			return;
+		
+		WifiDynamic record = new WifiDynamic();
+		record.MacAddr = WifiListHelper.getInstance(globalContext).mWifiInfoCur.getWifiMAC();
+		double lat = LocationHelper.getInstance(globalContext).getLatitude();
+		double lng = LocationHelper.getInstance(globalContext).getLongitude();
+		record.Geometry = new BmobGeoPoint(lng, lat);
+		record.MarkLoginTime();
+		if (mUser.PhoneNumber != null && !mUser.PhoneNumber.equals("")) {
+			record.Userid = mUser.PhoneNumber;
+		} else {
+			record.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(globalContext);
+		}
+		record.StoreRemote(globalContext, new DataCallback<WifiDynamic>() {
+
+			@Override
+			public void onSuccess(WifiDynamic object) {
+				Log.i(TAG, "Success to store wifi dynamic info to server");
+			}
 
 			@Override
 			public void onFailed(String msg) {
-				Log.d(TAG, "用户还没有登记过wifi: " + msg);
+				Log.i(TAG, "Failed to store wifi dynamic info to server:" + msg);
 			}
 		});
+	}
+	
+	public boolean canAccessDirectly(String MacAddr) {
+		if (mWifiProfile != null && mWifiProfile.MacAddr.equals(MacAddr))
+			return true;
+		return false;
 	}
 }

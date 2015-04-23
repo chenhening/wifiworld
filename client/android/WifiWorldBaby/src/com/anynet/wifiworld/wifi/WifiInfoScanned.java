@@ -22,6 +22,7 @@ public class WifiInfoScanned implements Serializable {
 	private BmobGeoPoint mGeometry;
 	private String mRemark;
 	private String Alias;
+	private String Sponser;
 	
 	private boolean isAuthWifi = false;
 	
@@ -212,5 +213,13 @@ public class WifiInfoScanned implements Serializable {
 	public void setAlias(String alias) {
 		Alias = alias;
 	}
+
+	public String getSponser() {
+	    return Sponser;
+    }
+
+	public void setSponser(String sponser) {
+	    Sponser = sponser;
+    }
 	
 }

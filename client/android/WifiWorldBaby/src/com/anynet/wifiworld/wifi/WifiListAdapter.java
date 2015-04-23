@@ -142,16 +142,19 @@ public class WifiListAdapter extends BaseAdapter {
 			} else {
 				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
 	            	textView = (TextView) view.findViewById(R.id.wifi_name);
-	            if (infoScanned.getAlias() != null)//TODO(binfei): 这个显示太丑了，要改
-	            	textView.setText((infoScanned).getWifiName() + "( " + infoScanned.getAlias() + " )");
-	            else
-	            	textView.setText((infoScanned).getWifiName());
+	            if (infoScanned.getAlias() != null) {
+	            		textView.setText(infoScanned.getAlias());
+	            		TextView nameTextView = (TextView) view.findViewById(R.id.wifi_alias);
+	            		nameTextView.setText("[" + infoScanned.getWifiName() + "]");
+	            } else {
+	            		textView.setText((infoScanned).getWifiName());
+				}
 				
 				TextView remarkText = (TextView) view.findViewById(R.id.wifi_remark);
-				if ((infoScanned).getRemark() != null) {
-					remarkText.setText((infoScanned).getRemark());
-				} else {
+				if (infoScanned.getRemark() == null || infoScanned.getRemark() == "") {
 					remarkText.setVisibility(View.GONE);
+				} else {
+					remarkText.setText((infoScanned).getRemark());
 				}
 				
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);

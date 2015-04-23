@@ -2,8 +2,6 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
@@ -17,7 +15,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -39,6 +35,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -72,11 +69,15 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiFree = new ArrayList<WifiInfoScanned>();
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
+	private LoginHelper mLoginHelper = null;
 	
 	private TextView mWifiNameView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
+	
 	private LinearLayout mWifiSquareLayout;
+	private View mPopupView;
+	private WifiSpeedTester mWifiSpeedTester;
 	private PopupWindow mWifiSquarePopup;
 	private LinearLayout mWifiSpeedLayout;
 	private LinearLayout mWifiShareLayout;
@@ -84,10 +85,6 @@ public class WifiFragment extends MainFragment {
 	
 	private WifiConnectDialog mWifiConnectDialog;
 	private WifiConnectDialog mWifiConnectPwdDialog;
-	
-	private boolean mSupplicantBRRegisterd;
-	private BroadcastReceiver mSupplicantReceiver;
-	private WifiSupplicant mWifiSupplicant;
 	
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
@@ -142,9 +139,27 @@ public class WifiFragment extends MainFragment {
 					if (isConnected) {
 						//一旦网络状态发生变化后停止监听服务
 						WifiBRService.setWifiSupplicant(false);
+					}
+					//refresh WiFi list and WiFi title info
+					mWifiListHelper.fillWifiList();
+					refreshWifiTitleInfo();
+					
+					if (isConnected) {
+						
+						WifiInfo curwifi = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected();
+						if (curwifi == null)
+							return;
+						boolean isExist = false;
+						for (WifiInfoScanned item : mWifiAuth) {
+							if (item.getWifiName().equals(curwifi.getSSID())) {
+								isExist = true;
+							}
+						}//发现wifi未认证不做数据监听
+						if (!isExist)
+							return;
 						
 						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
-						String CurMac = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected().getBSSID();
+						String CurMac = curwifi.getBSSID();
 						WifiProfile data_listener = new WifiProfile();
 						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", 
 							WifiProfile.unique_key, CurMac, DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
@@ -171,10 +186,6 @@ public class WifiFragment extends MainFragment {
 							}
 						});
 					}
-					
-					//refresh WiFi list and WiFi title info
-					mWifiListHelper.fillWifiList();
-					refreshWifiTitleInfo();
 				}
 
 				@Override
@@ -210,7 +221,7 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		mWifiSupplicant = WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
+		WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
 			
 			@Override
 			public void onSupplicantChanged(String str) {
@@ -223,6 +234,8 @@ public class WifiFragment extends MainFragment {
 		
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
+		
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}
 
 	@Override
@@ -264,7 +277,8 @@ public class WifiFragment extends MainFragment {
 				if (position < index_auth) {
 					mWifiItemClick = mWifiAuth.get(position - 2);
 					//判断是否敲门，没有敲门提醒其去敲门
-					if (LoginHelper.getInstance(getApplicationContext()).mKnockList.contains(mWifiItemClick.getWifiMAC())) {
+					if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || 
+						mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())) {
 						showWifiConnectConfirmDialog(mWifiItemClick, true);
 					} else {
 						//弹出询问对话框
@@ -378,7 +392,7 @@ public class WifiFragment extends MainFragment {
 //			getActivity().unregisterReceiver(mSupplicantReceiver);
 //		}
 		
-		getActivity().unregisterReceiver(mLoginReceiver);
+		//getActivity().unregisterReceiver(mLoginReceiver);
 		
 		super.onPause();
 	}
@@ -393,7 +407,7 @@ public class WifiFragment extends MainFragment {
 		
 		IntentFilter loginFilter = new IntentFilter();
 		loginFilter.addAction(LoginHelper.LOGIN_SUCCESS);
-		getActivity().registerReceiver(mLoginReceiver, loginFilter);
+		//getActivity().registerReceiver(mLoginReceiver, loginFilter);
 		
 		super.onResume();
 	}
@@ -427,7 +441,7 @@ public class WifiFragment extends MainFragment {
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
-					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), false);
+					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
@@ -490,57 +504,6 @@ public class WifiFragment extends MainFragment {
 		wifiConnectDialog.show();
 	}
 	
-//	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-//		
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			final String action = intent.getAction();
-//			if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-//				new Thread() {
-//					@Override
-//					public void run() {
-//						try {
-//							sleep(5000);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//						mWifiListHelper.fillWifiList();
-//						mWifiFree = mWifiListHelper.getWifiFrees();
-//						mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
-//						handler.sendEmptyMessage(UPDATE_VIEW);
-//					}
-//				}.start();
-//			}
-//		}
-//	};
-//
-//	private Handler handler = new Handler() {
-//
-//		@Override
-//		public void handleMessage(Message msg) {
-//			int value = msg.what;
-//			if (value == UPDATE_VIEW) {
-//				displayWifiConnected(mWifiNameView);
-//				mWifiListAdapter.refreshWifiList(mWifiFree, mWifiEncrypt);
-//			}
-//			super.handleMessage(msg);
-//		}
-//		
-//	};
-
-	private BroadcastReceiver mLoginReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (action.equals(LoginHelper.LOGIN_SUCCESS)) {
-				if (mWifiAdmin.getWifiNameConnection() != "") {
-					WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(mWifiAdmin.getWifiConnected());
-				}
-			}
-		}
-	};
 	
 
 	private void refreshWifiTitleInfo() {
@@ -563,17 +526,14 @@ public class WifiFragment extends MainFragment {
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		
-		//update WifiDynamic table[upload current WiFi info] when connected a different WiFi
-		if (wifiCurInfo != null
-			&& (mLastWifiInfo == null || !mLastWifiInfo.getMacAddress().equals(wifiCurInfo.getMacAddress()))) {
-			WifiHandleDB.getInstance(getActivity()).updateWifiDynamic(wifiCurInfo);
-		}
 		mLastWifiInfo = wifiCurInfo;
 		
 		//forget last WiFi connected configuration info
-		if (mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
+		if (mLastWifiInfo != null
+			&& mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
 			mWifiAdmin.forgetNetwork(mLastWifiInfo);
 		}
+		mLastWifiInfo = wifiCurInfo;
 		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
 	
@@ -588,22 +548,31 @@ public class WifiFragment extends MainFragment {
 	private void initWifiSquarePopupView() {
 		if (mWifiSquarePopup == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
+			mPopupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
 			
-			mWifiSpeedLayout = (LinearLayout) popupView.findViewById(R.id.wifi_speed_layout);
-			mWifiShareLayout = (LinearLayout) popupView.findViewById(R.id.wifi_share_layout);
-			mWifiLouderLayout = (LinearLayout) popupView.findViewById(R.id.wifi_louder_layout);
+			mWifiSpeedLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_speed_layout);
+			mWifiShareLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_share_layout);
+			mWifiLouderLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_louder_layout);
 			
 			//create one pop-up window object
-			mWifiSquarePopup = new PopupWindow(popupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
+			mWifiSquarePopup = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
 			mWifiSquarePopup.setFocusable(false);
 			mWifiSquarePopup.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);  
 			//mWifiSquarePopup.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);  
-			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0); 
+			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0);
 			
 			//测速ui
-			Button testBtn = (Button) popupView.findViewById(R.id.start_button);
-			testBtn.setOnClickListener(new WifiSpeedTester(popupView));
+			mWifiSpeedTester = new WifiSpeedTester(mPopupView);
+			Button testBtn = (Button) mPopupView.findViewById(R.id.start_button);
+			testBtn.setOnClickListener(mWifiSpeedTester);
+			mWifiSquarePopup.setOnDismissListener(new OnDismissListener() {
+				
+				@Override
+				public void onDismiss() {
+					Log.i(TAG, "on popup window dismiss");
+					mWifiSpeedTester.stopSpeedTest();
+				}
+			});
 			
 			//shared ui
 			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
@@ -645,18 +614,13 @@ public class WifiFragment extends MainFragment {
 			});
 			
 			//评论ui
-			final EditText comment_edit = (EditText) popupView.findViewById(R.id.wifi_input_frame);
-			comment_edit.setFocusable(true);
-			popupView.findViewById(R.id.tv_button_sms).setOnClickListener(new OnClickListener() {
+			final EditText comment_edit = (EditText) mPopupView.findViewById(R.id.wifi_input_frame);
+			mPopupView.findViewById(R.id.wifi_input_frame).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
-					String message = comment_edit.getText().toString();
-					if (message.length() <= 0) {
-						showToast("请输入评论。");
-						return;
-					}
-					comment_edit.setText("");
+					Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
+					startActivity(intent);
 				}
 			});
 		}
@@ -704,19 +668,5 @@ public class WifiFragment extends MainFragment {
 		
 		TextView wifiLouder = (TextView) wifiTasteLayout.findViewById(R.id.wifi_louder);
 		wifiLouder.setOnClickListener(mSquareClickListener);
-	}
-	
-	private void openInputMethod(final EditText editText) {
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				InputMethodManager inputManager = (InputMethodManager) editText.getContext()
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.showSoftInput(editText, 0);
-				
-			}
-		}, 200);
 	}
 }

@@ -3,7 +3,7 @@
     android:id="@+id/wifi_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="horizontal"
     android:paddingBottom="6dp"
     android:paddingLeft="9dip"
@@ -19,16 +19,36 @@
 	    android:id="@+id/wifi_name_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
+	    android:gravity="center"
 	    android:paddingLeft="15dp"
 	    android:orientation="vertical" >
 	    
-	    <TextView
-	        android:id="@+id/wifi_name"
+	    <LinearLayout
+	        android:id="@+id/wifi_name_content"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical"
-	        android:textColor="@color/black"
-	        android:textSize="22sp" />
+	        android:orientation="horizontal" >
+	        <TextView
+                android:id="@+id/wifi_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/wifi_alias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/gray"
+                android:textSize="10sp" />
+
+	    </LinearLayout>
+	    
+	    
 
 	    <TextView
 	        android:id="@+id/wifi_remark"

@@ -1,5 +1,8 @@
 package com.anynet.wifiworld.app;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -75,14 +78,34 @@ public class BaseActivity extends FragmentActivity {
 		}
 	};
 
-	/** 网络断开时的操作 */
+	/** 网络重连时的操作 */
 	protected void doNetworkConnected() {
+		new Timer().schedule(new TimerTask() {
 
+			@Override
+            public void run() {
+				//自动登录
+				LoginHelper.getInstance(getApplicationContext()).AutoLogin();
+				//自动上传上网记录
+				LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
+            }
+			
+		}, 200);
 	}
 
-	/** 网络重连时的操作 */
+	/** 网络断开时的操作 */
 	protected void doDisNetworkConnected() {
+		new Timer().schedule(new TimerTask() {
 
+			@Override
+            public void run() {
+				//自动登录
+				LoginHelper.getInstance(getApplicationContext()).logoff();
+				//记录掉线时间
+				LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
+            }
+			
+		}, 0);
 	}
 
 	private void showNetworkDisconnectedDialog() {

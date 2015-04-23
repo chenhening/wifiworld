@@ -70,7 +70,6 @@ public class UserProfile extends BmobObject {
 		final Context context, String number, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
 		final BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
-		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(unique_key, number);
 		Log.d("findObjects", "开始查询QueryByPhoneNumber");
 		new Thread(new Runnable() {

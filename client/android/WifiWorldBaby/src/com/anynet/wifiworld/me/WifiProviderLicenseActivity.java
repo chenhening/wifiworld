@@ -1,12 +1,13 @@
-package com.anynet.wifiworld;
+package com.anynet.wifiworld.me;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class BussessPartnerLicenseActivity extends BaseActivity {
+public class WifiProviderLicenseActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
