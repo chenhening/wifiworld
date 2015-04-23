@@ -29,7 +29,7 @@ public class WifiProviderRigisterThirdActivity extends BaseActivity {
 				startActivity(mIntent);
 			}
 		});
-		mTitlebar.tvTitle.setText(getString(R.string.merchant_certify));
+		mTitlebar.tvTitle.setText("Wi-Fi认证登记");
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override

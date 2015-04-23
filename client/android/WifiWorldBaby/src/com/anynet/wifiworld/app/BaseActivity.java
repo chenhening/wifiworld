@@ -64,7 +64,7 @@ public class BaseActivity extends FragmentActivity {
 
 				doDisNetworkConnected();
 				// 展示对话框
-				showNetworkDisconnectedDialog();
+				//showNetworkDisconnectedDialog();
 			} else {
 				doNetworkConnected();
 				if (networkConfirm != null) {

@@ -6,11 +6,82 @@
 
     <include layout="@layout/header_setting" />
 
-    <com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout
-        android:id="@+id/fragment_place"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:background="@color/aliceblue" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1.0"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="实时"
+            android:textColor="#000000"
+            android:textSize="20.0dip" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1.0"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="统计"
+            android:textColor="#000000"
+            android:textSize="20.0dip" />
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1.0"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="分析"
+            android:textColor="#000000"
+            android:textSize="20.0dip" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1.0"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="分析"
+            android:textColor="#000000"
+            android:textSize="20.0dip" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="6dp"
+        android:background="@color/orange"
+        android:orientation="vertical" >
 
-    </com.desarrollodroide.libraryfragmenttransactionextended.SlidingRelativeLayout>
+        <ImageView
+            android:id="@+id/cursor"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scaleType="matrix"
+            android:src="@drawable/view_page_tab_line" />
 
+    </LinearLayout>
+    
+	<android.support.v4.view.ViewPager  
+	    android:id="@+id/viewpager"  
+	    android:layout_width="wrap_content"  
+	    android:layout_height="wrap_content"  
+	    android:layout_gravity="center" >  
+	</android.support.v4.view.ViewPager>  
+    
 </LinearLayout>

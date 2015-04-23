@@ -3,6 +3,8 @@ package com.anynet.wifiworld.wifi;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.datatype.BmobGeoPoint;
+
 import com.anynet.wifiworld.R;
 
 import android.content.Context;
@@ -23,6 +25,11 @@ public class FindOwnerAdapter extends BaseAdapter {
         this.context = context;  
         this.list = list;  
     } 
+    
+    public void clear() {
+    	list.clear();
+    	notifyDataSetChanged();
+    }
     
     public void addItem(Map<String, Object> item) {
     	list.add(item);
@@ -58,21 +65,26 @@ public class FindOwnerAdapter extends BaseAdapter {
   
             viewHolder.title = (TextView) convertView.findViewById(R.id.title); 
             viewHolder.time = (TextView) convertView.findViewById(R.id.show_time);
+            viewHolder.location = (TextView) convertView.findViewById(R.id.tv_clues_location);
             convertView.setTag(viewHolder);  
         } else {  
             viewHolder = (ViewHolder) convertView.getTag();  
         }  
-          
-        String titleStr = list.get(position).get("title").toString();  
+        
+        Map<String, Object> object = list.get(position);
+        String titleStr = object.get("title").toString();  
         viewHolder.title.setText(titleStr);  
-        String timestr = list.get(position).get("time").toString();  
+        String timestr = object.get("time").toString();  
         viewHolder.time.setText(timestr);
+        String locationstr = object.get("location").toString();  
+        viewHolder.location.setText("标记地点： " + locationstr);
   
         return convertView;  
     }  
   
     static class ViewHolder {  
         public TextView time;  
-        public TextView title;  
+        public TextView title; 
+        public TextView location;
     }  
 }  

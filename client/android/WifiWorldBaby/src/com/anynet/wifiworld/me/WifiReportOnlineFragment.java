@@ -1,22 +1,17 @@
 package com.anynet.wifiworld.me;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-import android.app.Fragment;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
@@ -27,7 +22,7 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.skyfishjy.library.RippleBackground;
 
-public class WifiOnlineSlidingFragment extends Fragment {
+public class WifiReportOnlineFragment extends Fragment {
 	private View mRootView = null;
 	private boolean bOnAnimating = false;
 	private RippleBackground rippleBackground = null;
@@ -38,22 +33,21 @@ public class WifiOnlineSlidingFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		mRootView = inflater.inflate(R.layout.sliding_fragment_layout_left, container, false);
+		mRootView = inflater.inflate(R.layout.fragment_report_online, container, false);
         rippleBackground = (RippleBackground)mRootView.findViewById(R.id.content);
         StartDisaplay();
         bOnAnimating = true;
         
         //得到wifi上传的logo信息展示
+        tv_online = (TextView)mRootView.findViewById(R.id.tv_online_count);
         center_image = (ImageView)mRootView.findViewById(R.id.centerImage);
-        center_image.setOnClickListener(new OnClickListener() {
+        /*center_image.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				SetOpenOrCloseStatus();
 			}
-        });
-        
-        tv_online = (TextView)mRootView.findViewById(R.id.tv_online_count);
+        });*/
         
         return mRootView;
     }

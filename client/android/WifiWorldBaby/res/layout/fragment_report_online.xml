@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/crystal_uncollected_ring" >
+
+    <LinearLayout
+        android:id="@+id/ll_two_chart"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/wifi_account_desc"
+            android:layout_width="96dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_grey_normal"
+            android:gravity="center"
+            android:text="当前在线人数" />
+
+        <TextView
+            android:id="@+id/tv_online_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_grey_normal"
+            android:gravity="center"
+            android:hint="0人"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_below="@+id/ll_two_chart"
+        android:layout_marginTop="2dp" >
+
+        <com.skyfishjy.library.RippleBackground
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/centerImage"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/icon_router" />
+
+        </com.skyfishjy.library.RippleBackground>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="32dp" >
+
+            <TextView
+                android:id="@+id/tv_wifi_used_ssid"
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_grey_normal"
+                android:gravity="center"
+                android:text="关闭当前网络" />
+
+            <ToggleButton
+                android:id="@+id/tb_open_close_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/auth_cb"
+                android:text="ToggleButton" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_wifi_used_addr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bottom_text_color_normal"
+            android:text="当前WiFi网络实时在线统计，方位信息是通过用户的位置定位模拟出来，可能有一定的误差。您可以根据实际情况实时的关闭您提供的网络，并且有权将在线用户踢出下线。" />
+
+    </LinearLayout>
+
+</RelativeLayout>

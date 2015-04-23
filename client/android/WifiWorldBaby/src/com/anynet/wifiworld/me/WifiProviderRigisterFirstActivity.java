@@ -70,7 +70,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// 如果第一页有未填写字段，则提示填写
-				if (!checkRequiredFields() && mWifiProfile == null) {
+				if (!checkRequiredFields() || mWifiProfile == null) {
 					return;
 				}
 
@@ -155,7 +155,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	// ---------------------------------------------------------------------------------------------
 	private void setSSIDUI() {
 		mWifiHelper = WifiListHelper.getInstance(getApplicationContext());
-		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnection().getBSSID();
+		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnected().getBSSID();
 		String ssid = mWifiHelper.getWifiAdmin().getWifiNameConnection();
 		if (ssid.equals("")) {
 			showToast("WiFi SSID获取失败，请确认是否连接上WiFI。");
@@ -176,46 +176,57 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 					return;
 				String password = met_password.getText().toString();
 				if (password.length() >= 8) { // 现在wifi的密码都要求8位以上
-					showToast("正在验证WiFi密码......");
 					// 首先尝试登陆路由器
-					boolean result = mWifiHelper.getWifiAdmin().checkWifiPwd(password);
+					boolean result = mWifiHelper.getWifiAdmin().checkWifiPwd(password, new DataCallback<Boolean>() {
+
+						@Override
+                        public void onSuccess(Boolean object) {
+							// 然后查询数据库此wifi是否被占用
+							mWifiProfile.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr,
+								new DataCallback<WifiProfile>() {
+
+									@Override
+									public void onSuccess(WifiProfile object) {
+										met_password.post(new Runnable() {
+
+											@Override
+											public void run() {
+												showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
+												// TODO(buffer):需要调到wifi申请找回仲裁
+												return;
+											}
+
+										});
+									}
+
+									@Override
+									public void onFailed(String msg) {
+										met_password.post(new Runnable() {
+
+											@Override
+											public void run() {
+												showToast("验证密码成功，请继续填写其他项目。");
+												met_password.setEnabled(false);
+												mWifiVerfied = true;
+												mWifiProfile.Password = met_password.getText().toString();
+											}
+										});
+									}
+
+								});
+                        }
+
+						@Override
+                        public void onFailed(String msg) {
+							showToast("后台验证失败，" + msg);
+                        }
+						
+					});
 					if (!result) {
 						showToast("您输入的WiFi密码验证不通过，请重新输入");
-						// return;
+						return;
 					}
-					// 然后查询数据库此wifi是否被占用
-					mWifiProfile.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr,
-							new DataCallback<WifiProfile>() {
-
-								@Override
-								public void onSuccess(WifiProfile object) {
-									met_password.post(new Runnable() {
-
-										@Override
-										public void run() {
-											showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
-											// TODO(buffer):需要调到wifi申请找回仲裁
-											return;
-										}
-
-									});
-								}
-
-								@Override
-								public void onFailed(String msg) {
-									met_password.post(new Runnable() {
-
-										@Override
-										public void run() {
-											showToast("WiFi验证成功，请继续填写其他项目。");
-											met_password.setEnabled(false);
-											mWifiVerfied = true;
-											mWifiProfile.Password = met_password.getText().toString();
-										}
-									});
-								}
-
-							});
+					showToast("正在后台验证密码，请继续填写其他项目。");
 				}
 			}
 

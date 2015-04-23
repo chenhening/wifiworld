@@ -27,33 +27,6 @@ public class WifiListAdapter extends BaseAdapter {
 	private int wifiEncryptCnt = 0;
 	private int wifiAuthCnt = 0; //表示平台认证的wifi
 	private Context mContext;
-//	private WifiHandleDB mWifiHandleDB;
-	
-//	private Handler mHandler = new Handler() {
-//		
-//		@Override
-//		public void handleMessage(Message msg) {
-//			Log.i(TAG, "handle display wifi details message");
-//			int value = msg.what;
-//			if (value == ((MainActivity)mContext).GET_WIFI_DETAILS) {
-////				WifiProfile wifiProfile = (WifiProfile)msg.obj;
-////				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
-////				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
-////				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
-//				WifiInfoScanned wifiInfoScanned = (WifiInfoScanned)msg.obj;
-////				WifiInfoScanned wifiInfoScanned = new WifiInfoScanned();
-////				wifiInfoScanned.setWifiName(wifiProfile.Ssid);
-////				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
-//				Log.i(TAG, "wifi connect count:" + wifiInfoScanned.getConnectedTimes());
-//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-//				Bundle wifiData = new Bundle();
-//				wifiData.putSerializable("WifiSelected", wifiInfoScanned);
-//				intent.putExtras(wifiData);
-//				mContext.startActivity(intent);
-//			}
-//			super.handleMessage(msg);
-//		}
-//	};
 
 	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, 
 		List<WifiInfoScanned> wifiEncrypt) {

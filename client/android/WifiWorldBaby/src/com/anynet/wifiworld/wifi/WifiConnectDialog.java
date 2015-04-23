@@ -3,12 +3,19 @@ package com.anynet.wifiworld.wifi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.mapcore.util.r;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.dialog.XLBaseDialog;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
@@ -25,11 +32,14 @@ public class WifiConnectDialog extends XLBaseDialog {
 	private TextView mRightBtn;
 	private ImageView mLeftIcon;
 	private Object mUserData;
+	
+	private ChangingAwareEditText mPassword;
+	private CheckBox mPwdCheckBox;
 
-	public WifiConnectDialog(Context context) {
+	public WifiConnectDialog(Context context, boolean showPwd) {
 		super(context, R.style.bt_dialog);// 透明背景对话框
 		mContext = context;
-		initUI();
+		initUI(showPwd);
 	}
 
 	public void setUserData(Object userData) {
@@ -225,8 +235,16 @@ public class WifiConnectDialog extends XLBaseDialog {
 			}
 		});
 	}
+	
+	public String getPwdContent() {
+		return mPassword.getText().toString();
+	}
+	
+	public void clearPwdEditText() {
+		mPassword.setText("");
+	}
 
-	private void initUI() {
+	private void initUI(boolean showPwd) {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.wifi_connect_dialog, null);
 
 		mTitle = (TextView)dlgView.findViewById(R.id.wifi_title);
@@ -234,6 +252,23 @@ public class WifiConnectDialog extends XLBaseDialog {
 		mSignalView = (TextView)dlgView.findViewById(R.id.signal_strength_text);
 		mRightBtn = (TextView)dlgView.findViewById(R.id.btn_connect);
 		mLeftBtn = (TextView)dlgView.findViewById(R.id.btn_cancel);
+		
+		LinearLayout pwdLayout = (LinearLayout) dlgView.findViewById(R.id.Password);
+		if (showPwd) {
+			pwdLayout.setVisibility(View.VISIBLE);
+		}
+		mPassword = (ChangingAwareEditText)dlgView.findViewById(R.id.Password_EditText);
+		mPwdCheckBox = (CheckBox)dlgView.findViewById(R.id.ShowPassword_CheckBox);
+		mPwdCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mPassword.setInputType(InputType.TYPE_CLASS_TEXT |
+									  (isChecked ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+									  :InputType.TYPE_TEXT_VARIATION_PASSWORD));
+				
+			}
+		});
 
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 

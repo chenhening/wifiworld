@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/crystal_collect_btn_normal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_report_timer"
+        android:layout_width="match_parent"
+        android:layout_height="240dp" >
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_wifi_report_2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+    </ListView>
+
+</LinearLayout>
