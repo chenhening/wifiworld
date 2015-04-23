@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderDetailActivity extends BaseActivity {
 
@@ -40,7 +41,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+		mTitlebar.tvTitle.setText(LoginHelper.getInstance(this).mWifiProfile.Alias);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override

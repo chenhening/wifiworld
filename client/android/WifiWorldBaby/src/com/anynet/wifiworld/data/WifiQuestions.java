@@ -109,7 +109,7 @@ public class WifiQuestions extends BmobObject {
 						if (object.size() >= 1) {
 							_callback.onSuccess(object.get(0));
 						} else {
-							_callback.onSuccess(itself);
+							_callback.onFailed("数据库还没有相关数据。");
 						}
 					}
 

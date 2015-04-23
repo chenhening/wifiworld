@@ -230,7 +230,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 				@Override
 				public void onFailed(String msg) {
-					showToast("当前网络不稳定，上传问题失败，请稍后再试。");
+					showToast("当前网络不稳定，上传问题失败，请稍后再试: " + msg);
 				}
 
 			});

@@ -159,12 +159,14 @@ public class WifiProfile extends BmobObject {
 		}).start();
 	}
 
-	public void BatchQueryByMacAddress(final Context context, List<String> Macs, MultiDataCallback<WifiProfile> callback) {
+	public void BatchQueryByMacAddress(final Context context, List<String> Macs, 
+		boolean allkeys, MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
-		query.addQueryKeys("MacAddr,Password,Alias");
+		if (!allkeys)
+			query.addQueryKeys("MacAddr,Password,Alias");
 		query.addWhereContainedIn(unique_key, Macs);
 		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
 		new Thread(new Runnable() {

@@ -1,10 +1,14 @@
 package com.anynet.wifiworld.me;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -18,8 +22,10 @@ import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -30,7 +36,8 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 public class WifiUsedListActivity extends BaseActivity {
 
 	//IPC
-	private List<WifiDynamic> mListData;
+	private List<Map<String,String>> mListData = new ArrayList<Map<String,String>>();
+	//private List<WifiDynamic> mListData;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
 	
@@ -38,7 +45,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(getString(R.string.wifi_provider));
+		mTitlebar.tvTitle.setText("我用过的Wi-Fi");
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
@@ -64,7 +71,7 @@ public class WifiUsedListActivity extends BaseActivity {
 			@Override
             public void onSuccess(List<WifiDynamic> objects) {
 	            //分析一周的上网记录
-				mListData = objects;
+				analyseList(objects);
 				displayList();
             }
 
@@ -121,6 +128,34 @@ public class WifiUsedListActivity extends BaseActivity {
 		super.onRestart();
 	}
 	
+	private void analyseList(List<WifiDynamic> objects) {
+		//先去重
+		Map<String, Long> order = new HashMap<String, Long>();
+		for (WifiDynamic item : objects) {
+			order.put(item.MacAddr, order.get(item.MacAddr) + 1);
+		}
+		//再查询 TODO(binfei):这里的查询调用的api可能过多，需要优化
+		List<String> items = new ArrayList<String>();
+		for (String item : order.keySet()) {
+			items.add(item);
+		}
+		WifiProfile wifi = new WifiProfile();
+		wifi.BatchQueryByMacAddress(getApplicationContext(), items, true, new MultiDataCallback<WifiProfile>() {
+
+			@Override
+            public void onFailed(String msg) {
+                // TODO Auto-generated method stub
+                
+            }
+
+			@Override
+            public void onSuccess(List<WifiProfile> objects) {
+				Map<String, Long> item = new HashMap<String, Long>();
+            }
+			
+		});
+	}
+	
 	private void displayList() {
 		mListView = (SwipeMenuListView) findViewById(R.id.listView);
 		mAdapter = new ListAdapter();
@@ -164,7 +199,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				WifiDynamic item = mListData.get(position);
+				Map<String, String> item = mListData.get(position);
 				switch (index) {
 				case 0:
 					break;
@@ -208,7 +243,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		}
 
 		@Override
-		public WifiDynamic getItem(int position) {
+		public Map<String, String> getItem(int position) {
 			return mListData.get(position);
 		}
 
@@ -224,7 +259,7 @@ public class WifiUsedListActivity extends BaseActivity {
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-			WifiDynamic item = getItem(position);
+			Map<String, String> item = getItem(position);
 			//holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
 			holder.tv_wifi_name.setText("employeehost");
 			holder.tv_wifi_alias.setText("王思聪家的wifi");
