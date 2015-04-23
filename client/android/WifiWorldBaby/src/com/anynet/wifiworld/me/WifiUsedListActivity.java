@@ -36,7 +36,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 public class WifiUsedListActivity extends BaseActivity {
 
 	//IPC
-	private List<Map<String,String>> mListData = new ArrayList<Map<String,String>>();
+	private List<WifiProfile> mListData = new ArrayList<WifiProfile>();
 	//private List<WifiDynamic> mListData;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
@@ -72,7 +72,6 @@ public class WifiUsedListActivity extends BaseActivity {
             public void onSuccess(List<WifiDynamic> objects) {
 	            //分析一周的上网记录
 				analyseList(objects);
-				displayList();
             }
 
 			@Override
@@ -132,6 +131,9 @@ public class WifiUsedListActivity extends BaseActivity {
 		//先去重
 		Map<String, Long> order = new HashMap<String, Long>();
 		for (WifiDynamic item : objects) {
+			if (!order.containsKey(item.MacAddr)) {
+				order.put(item.MacAddr, (long) 0);
+			}
 			order.put(item.MacAddr, order.get(item.MacAddr) + 1);
 		}
 		//再查询 TODO(binfei):这里的查询调用的api可能过多，需要优化
@@ -150,7 +152,8 @@ public class WifiUsedListActivity extends BaseActivity {
 
 			@Override
             public void onSuccess(List<WifiProfile> objects) {
-				Map<String, Long> item = new HashMap<String, Long>();
+				mListData = objects;
+				displayList();
             }
 			
 		});
@@ -199,7 +202,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				Map<String, String> item = mListData.get(position);
+				WifiProfile item = mListData.get(position);
 				switch (index) {
 				case 0:
 					break;
@@ -243,7 +246,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		}
 
 		@Override
-		public Map<String, String> getItem(int position) {
+		public WifiProfile getItem(int position) {
 			return mListData.get(position);
 		}
 
@@ -259,11 +262,11 @@ public class WifiUsedListActivity extends BaseActivity {
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-			Map<String, String> item = getItem(position);
+			WifiProfile item = getItem(position);
 			//holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
-			holder.tv_wifi_name.setText("employeehost");
-			holder.tv_wifi_alias.setText("王思聪家的wifi");
-			holder.tv_wifi_addr.setText("武汉市江汉区xxx小区");
+			holder.tv_wifi_name.setText(item.Ssid);
+			holder.tv_wifi_alias.setText(item.Alias);
+			holder.tv_wifi_addr.setText(item.ExtAddress);
 			holder.tv_connect_count.setText("已连接46次");
 			holder.tv_connect_time.setText("已连接17小时");
 			return convertView;
