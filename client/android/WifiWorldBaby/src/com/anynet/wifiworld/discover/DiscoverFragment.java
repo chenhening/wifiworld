@@ -3,21 +3,18 @@ package com.anynet.wifiworld.discover;
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
-
-import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.R;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.ContactsContract.Contacts.Data;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.dlnetwork.Data;
+import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R;
 
 public class DiscoverFragment extends MainFragment {
 	private static String ADKey = "f5dca10991ec3c4e";
@@ -54,7 +51,7 @@ public class DiscoverFragment extends MainFragment {
             @Override
             public void onClick(View v)
             {
-                Data.showOffers(v.getContext());
+                //Data.showOffers(v.getContext());
             }
         });
 
@@ -65,7 +62,7 @@ public class DiscoverFragment extends MainFragment {
             @Override
             public void onClick(View v)
             {
-                Data.showOffers(v.getContext());
+                //Data.showOffers(v.getContext());
             }
         });
 
@@ -76,7 +73,7 @@ public class DiscoverFragment extends MainFragment {
             @Override
             public void onClick(View v)
             {
-                Data.showOffers(v.getContext());
+               // Data.showOffers(v.getContext());
             }
         });
 
@@ -87,7 +84,7 @@ public class DiscoverFragment extends MainFragment {
             @Override
             public void onClick(View v)
             {
-                Data.showOffers(v.getContext());
+                //Data.showOffers(v.getContext());
             }
         });
 

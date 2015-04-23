@@ -16,9 +16,7 @@ import cn.bmob.v3.Bmob;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.config.GlobalConfig;
-import com.anynet.wifiworld.constant.Const;
 import com.anynet.wifiworld.dao.DBHelper;
-import com.anynet.wifiworld.data.DataListenerHelper;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
@@ -27,11 +25,8 @@ import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
-import com.anynet.wifiworld.util.PreferenceHelper;
-import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.wifi.WifiFragment;
 import com.avos.avoscloud.AVOSCloud;
-import com.dlnetwork.Data;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -133,8 +128,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		 * reportDeviceToken(appVersion, device_token); }
 		 */
 		// Dianle SDK provision
-		Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
-		Data.setCurrentUserID(this, "123456789");
+		//Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
+		//Data.setCurrentUserID(this, "123456789");
 
 		changeToConnect();
 	}

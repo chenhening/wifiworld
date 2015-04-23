@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -155,15 +156,16 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	// ---------------------------------------------------------------------------------------------
 	private void setSSIDUI() {
 		mWifiHelper = WifiListHelper.getInstance(getApplicationContext());
-		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnected().getBSSID();
-		String ssid = mWifiHelper.getWifiAdmin().getWifiNameConnection();
-		if (ssid.equals("")) {
+		WifiInfo info = mWifiHelper.getWifiAdmin().getWifiConnected();
+		if (info == null) {
 			showToast("WiFi SSID获取失败，请确认是否连接上WiFI。");
+			finish();
 			return;
 		}
-		mWifiProfile.Ssid = ssid;
+		mWifiProfile.MacAddr = info.getMacAddress();
+		mWifiProfile.Ssid = info.getSSID();;
 		TextView tv_ssid = (TextView) this.findViewById(R.id.et_wifi_provider_ssid);
-		tv_ssid.setText(ssid);
+		tv_ssid.setText(mWifiProfile.Ssid);
 	}
 
 	private void setPasswordUI() {
