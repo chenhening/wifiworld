@@ -28,6 +28,7 @@ import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.wifi.WifiFragment;
 import com.avos.avoscloud.AVOSCloud;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.fb.FeedbackAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
 import com.umeng.message.PushAgent;
@@ -84,6 +85,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		AVOSCloud.initialize(this, "0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as",
 				"ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
 		UmengUpdateAgent.update(this);
+		FeedbackAgent agent = new FeedbackAgent(this);
+		agent.sync();
 
 		mLoginHelper = LoginHelper.getInstance(this);
 		//mLoginHelper.AutoLogin();
