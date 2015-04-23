@@ -99,6 +99,7 @@ public class LoginHelper {
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 				pullWifiProfile();
+				updateWifiDynamic();
 			}
 
 			@Override
