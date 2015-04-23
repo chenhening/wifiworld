@@ -19,7 +19,8 @@ public class WifiComments extends BmobObject {
 	private static final long serialVersionUID = 1L;
 	
 	public String MacAddr; //wifi的唯一标识
-	public String Comment; //这里指的是蹭网的用户id
+	public String Comment; //评论的内容
+	public String UserId;  //评论的用户账号
 	public long SendTime; //用户登陆网络的时间
 	
 	public void StoreRemote(final Context context, DataCallback<WifiComments> callback) {
