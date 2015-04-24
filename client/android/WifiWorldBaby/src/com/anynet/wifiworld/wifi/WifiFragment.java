@@ -585,7 +585,7 @@ public class WifiFragment extends MainFragment {
 			
 			//shared ui
 			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
-			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝商户服务协议》</a>";
+			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
 			mTVLinkLicense.setText(Html.fromHtml(sText));
 			mTVLinkLicense.setClickable(true);
 			mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());
