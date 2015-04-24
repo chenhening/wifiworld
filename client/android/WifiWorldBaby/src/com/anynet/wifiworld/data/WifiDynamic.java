@@ -3,6 +3,8 @@ package com.anynet.wifiworld.data;
 import java.sql.Time;
 import java.util.List;
 
+import com.anynet.wifiworld.util.NetHelper;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -39,6 +41,12 @@ public class WifiDynamic extends BmobObject {
 // ------------------------------------------------------------------------------------------------
 	public void QueryUserCurrent(
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新
@@ -68,6 +76,12 @@ public class WifiDynamic extends BmobObject {
 	
 	public void QueryUserInOneWeek(
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setLimit(1000);//查询最大数量
@@ -98,6 +112,12 @@ public class WifiDynamic extends BmobObject {
 	
 	public void QueryWiFiInOneWeek(
 		final Context context, long time, MultiDataCallback<WifiDynamic> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final MultiDataCallback<WifiDynamic> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setLimit(1000);//查询最大数量
@@ -127,6 +147,12 @@ public class WifiDynamic extends BmobObject {
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<WifiDynamic> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final DataCallback<WifiDynamic> _callback = callback;
 		final WifiDynamic user = this;
 		user.save(context, new SaveListener() {
@@ -144,6 +170,12 @@ public class WifiDynamic extends BmobObject {
 	}
 	
 	public void QueryConnectedTimes(final Context context, String Mac, DataCallback<Long> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final DataCallback<Long> _callback = callback;
 		final BmobQuery<WifiDynamic> query = new BmobQuery<WifiDynamic>();
 		query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); // 先从缓存获取数据，再拉取网络数据更新

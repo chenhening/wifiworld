@@ -124,12 +124,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mPushAgent = PushAgent.getInstance(this);
 		mPushAgent.onAppStart();
 		mPushAgent.enable(mRegisterCallback);
-		String device_token = mPushAgent.getRegistrationId();
-		String appVersion = AppInfoUtil.getVersionName(this);
-		/*
-		 * if (null != device_token && !device_token.equals("")) {
-		 * reportDeviceToken(appVersion, device_token); }
-		 */
 		// Dianle SDK provision
 		//Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
 		//Data.setCurrentUserID(this, "123456789");

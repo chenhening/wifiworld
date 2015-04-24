@@ -148,7 +148,7 @@ public class LoginHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.d(TAG, "当前网络不稳定，请稍后再试。");
-				AutoLogin();
+				//AutoLogin();
 				// ShowToast(globalContext,
 				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
 			}
