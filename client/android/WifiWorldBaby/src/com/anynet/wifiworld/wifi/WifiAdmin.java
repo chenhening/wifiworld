@@ -271,7 +271,7 @@ public class WifiAdmin {
 			old_conf.priority = getMaxPriority(mWifiManager) + 1;
 			id = mWifiManager.addNetwork(old_conf);
 			old_conf.networkId = id;
-			//mWifiManager.saveConfiguration();
+			mWifiManager.saveConfiguration();
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
