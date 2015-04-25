@@ -247,7 +247,7 @@ public class LoginHelper {
 		double lng = LocationHelper.getInstance(globalContext).getLongitude();
 		record.Geometry = new BmobGeoPoint(lng, lat);
 		record.MarkLoginTime();
-		if (mUser.PhoneNumber != null && !mUser.PhoneNumber.equals("")) {
+		if (mUser != null && mUser.PhoneNumber != null && !mUser.PhoneNumber.equals("")) {
 			record.Userid = mUser.PhoneNumber;
 		} else {
 			record.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(globalContext);

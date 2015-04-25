@@ -267,25 +267,30 @@ public class WifiAdmin {
 	//----------------------------------------------------------------------
 	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
 		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
-		final WifiConfiguration old_conf = getExistWifiConf(ssid, bssid);
-		final WifiConfiguration updated_conf = old_conf;
+		WifiConfiguration conf = getExistWifiConf(ssid, bssid);
 		try {
-			//mWifiManager.removeNetwork(old_conf.networkId);
-			updated_conf.preSharedKey = "\"" + pwd + "\"";
-			updated_conf.priority = getMaxPriority(mWifiManager) + 1;
-			updated_conf.networkId = mWifiManager.updateNetwork(updated_conf);
+			if (conf != null) {
+				mWifiManager.removeNetwork(conf.networkId);
+			} else {
+				conf = new WifiConfiguration();
+				conf.SSID = convertToQuotedString(ssid);
+				conf.BSSID = bssid;
+			}
+			conf.preSharedKey = "\"" + pwd + "\"";
+			conf.priority = getMaxPriority(mWifiManager) + 1;
+			conf.networkId = mWifiManager.addNetwork(conf);
 			//mWifiManager.saveConfiguration();
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
 		}
 		
-		if(updated_conf.networkId == -1) {
+		if(conf.networkId == -1) {
 			Log.e(TAG, "Failed to add config to network");
 			return false;
 		}
 		
-		if(!mWifiManager.enableNetwork(updated_conf.networkId, true)) {
+		if(!mWifiManager.enableNetwork(conf.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network");
 			return false;
 		}
@@ -296,6 +301,7 @@ public class WifiAdmin {
 		}
 		
 		//监听密码是否成功
+		final WifiConfiguration _conf = conf;
 		final Timer timer = new Timer();
 		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 		final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -310,18 +316,16 @@ public class WifiAdmin {
 	            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 	            		if (callback != null) {
 	            			timer.cancel();
+	            			mWifiManager.removeNetwork(_conf.networkId);
 	            			mContext.unregisterReceiver(this);
 	            			callback.onFailed("密码验证失败，请重新输入密码。");
-	            			
-	            			
-	            			
 	            			return;
 	            		}
 	            	}
 	            	
 		            WifiInfo info = getWifiConnecting();
 		            SupplicantState state = info.getSupplicantState();
-		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == old_conf.networkId){ //验证当前网络登录的网络是否是测试网络
+		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId){ //验证当前网络登录的网络是否是测试网络
 		            	if (callback != null) {
 		            		timer.cancel();
 		            		mContext.unregisterReceiver(this);
@@ -337,6 +341,7 @@ public class WifiAdmin {
 
 			@Override
 			public void run() {
+				mWifiManager.removeNetwork(_conf.networkId);
 				mContext.unregisterReceiver(receiver);
     			callback.onFailed("密码验证失败，请重新输入密码。");
 			}

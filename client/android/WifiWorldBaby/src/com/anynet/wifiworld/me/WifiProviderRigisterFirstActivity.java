@@ -71,6 +71,11 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (!mWifiVerfied) {
+					verifyPassword();
+					mTitlebar.tvHeaderRight.setEnabled(false);
+					return;
+				}
 				// 如果第一页有未填写字段，则提示填写
 				if (!checkRequiredFields() || mWifiProfile == null) {
 					return;
@@ -212,42 +217,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus)
 					return;
-				String password = met_password.getText().toString();
-				if (password.length() >= 8) { // 现在wifi的密码都要求8位以上
-					// 首先尝试登陆路由器
-					boolean result = WifiAdmin.getInstance(getApplicationContext()).checkWifiPwd(mWifiProfile.Ssid, 
-						mWifiProfile.MacAddr, password, new DataCallback<Boolean>() {
-
-						@Override
-                        public void onSuccess(Boolean object) {
-							getActivity().runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									showToast("验证密码成功，请继续填写其他项目。");
-									met_password.setEnabled(false);
-									mWifiVerfied = true;
-									mWifiProfile.Password = met_password.getText().toString();
-								}
-							});
-                        }
-
-						@Override
-                        public void onFailed(final String msg) {
-							getActivity().runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									showToast(msg);
-								}
-							});
-                        }
-						
-					});
-					if (!result) {
-						showToast("您输入的WiFi密码验证不通过，请重新输入");
-						return;
-					}
-					showToast("正在后台验证密码，请继续填写其他项目。");
-				}
+				verifyPassword();
 			}
 
 		});
@@ -406,13 +376,13 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 		EditText et_alias = (EditText) this.findViewById(R.id.et_wifi_provider_alias);
 		mWifiProfile.Alias = et_alias.getText().toString();
-		if (mWifiProfile.Alias == "") {
+		if (mWifiProfile.Alias.equals("")) {
 			showToast("请务必填写WiFi别名。");
 			return false;
 		}
 
 		mWifiProfile.ExtAddress = mtv_location.getText().toString();
-		if (mWifiProfile.ExtAddress == "") {
+		if (mWifiProfile.ExtAddress.equals("") || mWifiProfile.ExtAddress.startsWith("未能自动识别")) {
 			showToast("获取地理位置失败，请重新点击获取地理位置");
 			return false;
 		}
@@ -423,6 +393,48 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		EditText et_desc = (EditText) this.findViewById(R.id.et_wifi_provider_desc_content);
 		mWifiProfile.Banner = et_desc.getText().toString();
 
+		return true;
+	}
+	
+	private boolean verifyPassword() {
+		String password = met_password.getText().toString();
+		if (password.length() >= 8) { // 现在wifi的密码都要求8位以上
+			// 首先尝试登陆路由器
+			boolean result = WifiAdmin.getInstance(getApplicationContext()).checkWifiPwd(mWifiProfile.Ssid, 
+				mWifiProfile.MacAddr, password, new DataCallback<Boolean>() {
+
+				@Override
+                public void onSuccess(Boolean object) {
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							showToast("验证密码成功，请继续填写其他项目。");
+							met_password.setEnabled(false);
+							mTitlebar.tvHeaderRight.setEnabled(true);
+							mWifiVerfied = true;
+							mWifiProfile.Password = met_password.getText().toString();
+						}
+					});
+                }
+
+				@Override
+                public void onFailed(final String msg) {
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							showToast(msg);
+						}
+					});
+                }
+				
+			});
+			if (!result) {
+				showToast("您输入的WiFi密码验证不通过，请重新输入");
+				return false;
+			}
+			showToast("正在后台验证密码，请继续填写其他项目。");
+		}
+		
 		return true;
 	}
 }
