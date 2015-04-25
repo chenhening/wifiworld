@@ -11,6 +11,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.StringCrypto;
 //import cn.bmob.v3.BmobQuery.CachePolicy;
 
@@ -30,7 +31,7 @@ public class UserProfile extends BmobObject {
 	public String Email; //用于找回账号的邮箱
 	public String CustomPwd; //用于固定登录的密码
 	private int Sex; //性别，男女
-	public long Age; //年龄，用滴答数表示
+	public String Age; //年龄，用滴答数表示
 	public String Job; //职业
 	public String Interest; //兴趣
 	public Bitmap Avatar; //头像 
@@ -69,6 +70,13 @@ public class UserProfile extends BmobObject {
 	public void QueryByPhoneNumber(
 		final Context context, String number, DataCallback<UserProfile> callback) {
 		final DataCallback<UserProfile> _callback = callback;
+		
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
 		query.addWhereEqualTo(unique_key, number);
 		Log.d("findObjects", "开始查询QueryByPhoneNumber");
@@ -98,6 +106,12 @@ public class UserProfile extends BmobObject {
 	}
 	
 	public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
 		final DataCallback<UserProfile> _callback = callback;
 		final UserProfile user = this;
 		//对密码进行加密

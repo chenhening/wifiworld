@@ -102,7 +102,7 @@ public class WifiListHelper {
 		}
 		
 		WifiProfile wifiProfile = new WifiProfile();
-		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, new MultiDataCallback<WifiProfile>() {
+		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, false, new MultiDataCallback<WifiProfile>() {
 			
 			@Override
 			public void onSuccess(List<WifiProfile> objects) {
@@ -144,7 +144,8 @@ public class WifiListHelper {
 		BmobGeoPoint wifiGeometry;
 		WifiInfoScanned wifiInfoScanned;
 		
-		if (wifiInfo != null &&  wifiInfo.getSSID().equals(WifiAdmin.convertToQuotedString(hotspot.SSID))) {
+		if (wifiInfo != null && (wifiInfo.getSSID().equals(WifiAdmin.convertToQuotedString(hotspot.SSID))
+				|| wifiInfo.getSSID().equals(hotspot.SSID))) {
 			Log.i(TAG, hotspot.SSID + " is the current connected wifi");
 			wifiName = hotspot.SSID;
 			wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);

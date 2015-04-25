@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +36,7 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
@@ -102,24 +105,66 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		setContentView(R.layout.wifi_provider_certify_first);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-
-		// 获得sponser
-		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
-		if (mWifiProfile == null) {
-			mWifiProfile = new WifiProfile();
+		
+		//立刻去查询当前wifi的共享情况，如果已经被人共享，提示并退出
+		WifiInfo curwifi = WifiAdmin.getInstance(this).getWifiConnected();
+		if (curwifi == null) {
+			showToast("当前网络不稳定，请稍后再试。");
+			finish();
 		}
-		mWifiProfile.Sponser = mLoginHelper.getCurLoginUserInfo().PhoneNumber;
+		
+		mWifiProfile = new WifiProfile();
+		mWifiProfile.MacAddr = curwifi.getMacAddress();
+		mWifiProfile.VerfyIsShared(this, mWifiProfile.MacAddr, new DataCallback<Boolean>() {
 
-		// 自动获取网络ssid
-		setSSIDUI();
-		// 处理登陆密码
-		setPasswordUI();
-		// 点击地理位置按钮，自动获取地理位置
-		setLocationUI();
-		// 点击选择类型
-		setNetTypeUI();
-		// 点击获取设置LOGO
-		setLogoUI();
+				@Override
+				public void onSuccess(final Boolean object) {
+					getActivity().runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							if (object) {
+								showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
+								// TODO(buffer):需要调到wifi申请找回仲裁
+							} else {
+								// 获得sponser
+								mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+								mWifiProfile.Sponser = mLoginHelper.getUserid();
+
+								// 自动获取网络ssid
+								setSSIDUI();
+								// 处理登陆密码
+								setPasswordUI();
+								// 点击地理位置按钮，自动获取地理位置
+								setLocationUI();
+								// 点击选择类型
+								setNetTypeUI();
+								// 点击获取设置LOGO
+								setLogoUI();
+							}
+							return;
+						}
+
+					});
+				}
+
+				@Override
+				public void onFailed(String msg) {
+					getActivity().runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							showToast("当前网络不稳定，请稍后再试。");
+							finish();
+						}
+					});
+				}
+
+			});
+	}
+
+	protected Activity getActivity() {
+		return this;
 	}
 
 	@Override
@@ -155,15 +200,16 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	// ---------------------------------------------------------------------------------------------
 	private void setSSIDUI() {
 		mWifiHelper = WifiListHelper.getInstance(getApplicationContext());
-		mWifiProfile.MacAddr = mWifiHelper.getWifiAdmin().getWifiConnected().getBSSID();
-		String ssid = mWifiHelper.getWifiAdmin().getWifiNameConnection();
-		if (ssid.equals("")) {
+		WifiInfo info = mWifiHelper.getWifiAdmin().getWifiConnected();
+		if (info == null) {
 			showToast("WiFi SSID获取失败，请确认是否连接上WiFI。");
+			finish();
 			return;
 		}
-		mWifiProfile.Ssid = ssid;
+		mWifiProfile.MacAddr = info.getMacAddress();
+		mWifiProfile.Ssid = info.getSSID();;
 		TextView tv_ssid = (TextView) this.findViewById(R.id.et_wifi_provider_ssid);
-		tv_ssid.setText(ssid);
+		tv_ssid.setText(mWifiProfile.Ssid);
 	}
 
 	private void setPasswordUI() {
@@ -181,44 +227,25 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 						@Override
                         public void onSuccess(Boolean object) {
-							// 然后查询数据库此wifi是否被占用
-							mWifiProfile.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr,
-								new DataCallback<WifiProfile>() {
-
-									@Override
-									public void onSuccess(WifiProfile object) {
-										met_password.post(new Runnable() {
-
-											@Override
-											public void run() {
-												showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
-												// TODO(buffer):需要调到wifi申请找回仲裁
-												return;
-											}
-
-										});
-									}
-
-									@Override
-									public void onFailed(String msg) {
-										met_password.post(new Runnable() {
-
-											@Override
-											public void run() {
-												showToast("验证密码成功，请继续填写其他项目。");
-												met_password.setEnabled(false);
-												mWifiVerfied = true;
-												mWifiProfile.Password = met_password.getText().toString();
-											}
-										});
-									}
-
-								});
+							getActivity().runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									showToast("验证密码成功，请继续填写其他项目。");
+									met_password.setEnabled(false);
+									mWifiVerfied = true;
+									mWifiProfile.Password = met_password.getText().toString();
+								}
+							});
                         }
 
 						@Override
-                        public void onFailed(String msg) {
-							showToast("后台验证失败，" + msg);
+                        public void onFailed(final String msg) {
+							getActivity().runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									showToast(msg);
+								}
+							});
                         }
 						
 					});

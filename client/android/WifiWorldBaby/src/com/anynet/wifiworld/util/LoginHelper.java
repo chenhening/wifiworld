@@ -120,7 +120,7 @@ public class LoginHelper {
 	}
 
 	public void AutoLogin() {
-		mIsLogin = false;
+		//mIsLogin = false;
 		// 读取本地保存的账号密码文件
 		mUser = new UserProfile();
 		mUser.PhoneNumber = mPreferences.getString(mAliasUser, "");
@@ -157,6 +157,7 @@ public class LoginHelper {
 			@Override
 			public void onFailed(String msg) {
 				Log.d(TAG, "当前网络不稳定，请稍后再试。");
+				//AutoLogin();
 				// ShowToast(globalContext,
 				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
 			}
@@ -202,6 +203,13 @@ public class LoginHelper {
 		if (mIsLogin) {
 			return mUser;
 		}
+		return null;
+	}
+	
+	//只要用户登录过就会有一个id，不管它 在线不在线
+	public String getUserid() {
+		if (mUser != null)
+			return mUser.PhoneNumber;
 		return null;
 	}
 

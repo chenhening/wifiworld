@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.util.AppInfoUtil;
+import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 public class AboutAppActivity extends BaseActivity {
@@ -50,6 +51,17 @@ public class AboutAppActivity extends BaseActivity {
 				public void onClick(View v) {
 					UmengUpdateAgent.forceUpdate(getApplicationContext());
 				}
+				
+			});
+			
+			//问题反馈按钮
+			this.findViewById(R.id.slv_feedback).setOnClickListener(new OnClickListener() {
+
+				@Override
+                public void onClick(View v) {
+					FeedbackAgent agent = new FeedbackAgent(activity);
+					agent.startFeedbackActivity();
+                }
 				
 			});
 		}

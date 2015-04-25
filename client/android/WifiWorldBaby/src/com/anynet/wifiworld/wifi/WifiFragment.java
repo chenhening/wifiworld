@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +30,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -45,6 +43,8 @@ import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.DataListenerHelper;
+import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
@@ -52,8 +52,8 @@ import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
-import com.anynet.wifiworld.wifi.WifiSupplicant.SupplicantCallback;
-import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
+import com.anynet.wifiworld.wifi.ui.WifiCommentsAdapter;
+import com.anynet.wifiworld.wifi.ui.WifiCommentActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -62,6 +62,7 @@ public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 	
 	static final int WIFI_CONNECT_CONFIRM = 1;
+	static final int WIFI_COMMENT = 2;
 	
 	private WifiAdmin mWifiAdmin;
 	private PullToRefreshListView mWifiListView;
@@ -90,6 +91,9 @@ public class WifiFragment extends MainFragment {
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
 	private WifiInfoScanned mWifiItemClick;
+	
+	private WifiCommentsAdapter mWifiCommentsAdapter;
+	private List<String> mWifiCommentsList = new ArrayList<String>();
 
 	private Handler mHandler = new Handler() {
 		
@@ -222,17 +226,8 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		WifiSupplicant.getInstance(getActivity(), new SupplicantCallback() {
-			
-			@Override
-			public void onSupplicantChanged(String str) {
-				mWifiNameView.setText(str);
-			}
-		});
 		
-		//WifiStatusReceiver.schedule(getActivity());
-		WifiBRService.bindWifiService(getActivity(), conn);
-		
+		WifiBRService.bindWifiService(getActivity(), conn);	
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
 		
@@ -376,6 +371,12 @@ public class WifiFragment extends MainFragment {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
 		}
+		
+		if (requestCode == WIFI_COMMENT && resultCode == android.app.Activity.RESULT_OK) {
+			String commentStr = data.getStringExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
+			mWifiCommentsList.add(commentStr);
+			mWifiCommentsAdapter.refreshCommentsList();
+		}
 	}
 
 	@Override
@@ -444,7 +445,7 @@ public class WifiFragment extends MainFragment {
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
-					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), true);
+					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), cfgSelected, true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
@@ -452,7 +453,9 @@ public class WifiFragment extends MainFragment {
 				}
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 准备重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
+					mWifiAdmin.closeWifi();
+					mWifiAdmin.openWifi();
 				}
 			}
 		});
@@ -486,12 +489,13 @@ public class WifiFragment extends MainFragment {
 				}
 				
 				WifiBRService.setWifiSupplicant(true);
-				
 				wifiInfoScanned.setWifiPwd(inputedPwd);
 				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 准备重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
+					mWifiAdmin.closeWifi();
+					mWifiAdmin.openWifi();
 				}
 			}
 		});
@@ -579,7 +583,7 @@ public class WifiFragment extends MainFragment {
 			
 			//shared ui
 			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
-			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝商户服务协议》</a>";
+			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
 			mTVLinkLicense.setText(Html.fromHtml(sText));
 			mTVLinkLicense.setClickable(true);
 			mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());
@@ -617,16 +621,44 @@ public class WifiFragment extends MainFragment {
 			});
 			
 			//评论ui
-			final EditText comment_edit = (EditText) mPopupView.findViewById(R.id.wifi_input_frame);
-			mPopupView.findViewById(R.id.wifi_input_frame).setOnClickListener(new OnClickListener() {
+			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.tv_button_sms);
+			send_btn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
+//					if (!LoginHelper.getInstance(getActivity()).isLogined()) {
+//						UserLoginActivity.start((BaseActivity) getActivity());
+//						return;
+//					}
 					Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
-					startActivity(intent);
+					startActivityForResult(intent, WIFI_COMMENT);
 				}
 			});
 		}
+	}
+	
+	private void loadWifiComments(View popupView) {
+		WifiInfoScanned wifiInfoScanned = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
+		
+		final ListView commentsListView = (ListView)popupView.findViewById(R.id.wifi_list_comments);
+		WifiComments wifiComments = new WifiComments();
+		wifiComments.QueryByMacAddress(getActivity(), wifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
+			
+			@Override
+			public void onSuccess(List<WifiComments> objects) {
+				mWifiCommentsList.clear();
+				for (WifiComments obj : objects) {
+					mWifiCommentsList.add(obj.Comment);
+				}
+				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
+				commentsListView.setAdapter(mWifiCommentsAdapter);
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, msg + ". Failed to pull wifi comments");
+			}
+		});
 	}
 	
 	private int curSquareIdx = R.id.wifi_speed;
@@ -649,6 +681,8 @@ public class WifiFragment extends MainFragment {
 				mWifiSpeedLayout.setVisibility(View.GONE);
 				mWifiShareLayout.setVisibility(View.GONE);
 				mWifiLouderLayout.setVisibility(View.VISIBLE);
+				//WiFi comments list
+				loadWifiComments(mPopupView);
 				break;
 			default:
 				break;

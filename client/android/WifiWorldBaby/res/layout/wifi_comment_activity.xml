@@ -8,7 +8,7 @@
     android:padding="8dp" >
 
     <EditText
-        android:id="@+id/menu_edit"
+        android:id="@+id/comment_edit"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/menu_send"
@@ -26,7 +26,7 @@
     </EditText>
 
     <TextView
-        android:id="@+id/menu_send"
+        android:id="@+id/comment_send"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"

@@ -248,6 +248,12 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 
+		final SettingEditItemView age = (SettingEditItemView) findViewById(R.id.sev_age);
+		if (mUserProfile.Age == null || mUserProfile.Age.equals("")) {
+			age.setContent("");
+		} else {
+			age.setContent(mUserProfile.Age);
+		}
 		((SettingEditItemView) findViewById(R.id.sev_age)).setClickButtonListener(new ClickButtonListener() {
 			@Override
 			public void onClick(CharSequence charSequence) {
@@ -257,8 +263,25 @@ public class MyAccountActivity extends BaseActivity {
 							@Override
 							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 								c.set(year, monthOfYear, dayOfMonth);
-								((SettingEditItemView) findViewById(R.id.sev_age)).setContent(DateFormat.format(
-										"yyy-MM-dd", c).toString());
+								String content  = DateFormat.format("yyy-MM-dd", c).toString();
+								age.setContent(content);
+								
+								mUserProfile.Age = content;
+								mUserProfile.update(getApplicationContext(), new UpdateListener() {
+
+									@Override
+									public void onSuccess() {
+										// TODO Auto-generated method stub
+										Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+									}
+
+									@Override
+									public void onFailure(int arg0, String arg1) {
+										// TODO Auto-generated method stub
+										Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+												.show();
+									}
+								});
 							}
 						}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				dialog.show();
