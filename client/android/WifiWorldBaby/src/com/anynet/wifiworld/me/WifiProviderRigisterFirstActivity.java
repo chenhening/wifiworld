@@ -41,7 +41,6 @@ import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	public WifiProfile mWifiProfile = null;
-	private WifiListHelper mWifiHelper = null;
 	private LoginHelper mLoginHelper = null;
 	private LocationHelper mLocationHelper = null;
 
@@ -114,7 +113,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		}
 		
 		mWifiProfile = new WifiProfile();
-		mWifiProfile.MacAddr = curwifi.getMacAddress();
+		mWifiProfile.Ssid = curwifi.getSSID();
+		mWifiProfile.MacAddr = curwifi.getBSSID();
 		mWifiProfile.VerfyIsShared(this, mWifiProfile.MacAddr, new DataCallback<Boolean>() {
 
 				@Override
@@ -124,7 +124,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 						@Override
 						public void run() {
 							if (object) {
-								showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请点击申请。");
+								showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请申请二级仲裁。");
+								finish();
 								// TODO(buffer):需要调到wifi申请找回仲裁
 							} else {
 								// 获得sponser
@@ -199,15 +200,6 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 	// ---------------------------------------------------------------------------------------------
 	private void setSSIDUI() {
-		mWifiHelper = WifiListHelper.getInstance(getApplicationContext());
-		WifiInfo info = mWifiHelper.getWifiAdmin().getWifiConnected();
-		if (info == null) {
-			showToast("WiFi SSID获取失败，请确认是否连接上WiFI。");
-			finish();
-			return;
-		}
-		mWifiProfile.MacAddr = info.getMacAddress();
-		mWifiProfile.Ssid = info.getSSID();;
 		TextView tv_ssid = (TextView) this.findViewById(R.id.et_wifi_provider_ssid);
 		tv_ssid.setText(mWifiProfile.Ssid);
 	}
@@ -223,7 +215,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 				String password = met_password.getText().toString();
 				if (password.length() >= 8) { // 现在wifi的密码都要求8位以上
 					// 首先尝试登陆路由器
-					boolean result = mWifiHelper.getWifiAdmin().checkWifiPwd(password, new DataCallback<Boolean>() {
+					boolean result = WifiAdmin.getInstance(getApplicationContext()).checkWifiPwd(mWifiProfile.Ssid, 
+						mWifiProfile.MacAddr, password, new DataCallback<Boolean>() {
 
 						@Override
                         public void onSuccess(Boolean object) {

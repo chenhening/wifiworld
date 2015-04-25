@@ -5,6 +5,8 @@ import java.util.BitSet;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -185,7 +187,7 @@ public class WifiAdmin {
 	 * @param numOpenNetworksKept Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT
 	 * @return
 	 */
-	public boolean connectToConfiguredNetwork(final Context ctx, WifiConfiguration config, boolean reassociate) {
+	public boolean connectToConfiguredNetwork(Context ctx, WifiConfiguration config, boolean reassociate) {
 		final String security = ConfigSec.getWifiConfigurationSecurity(config);
 		
 		int oldPri = config.priority;
@@ -247,91 +249,84 @@ public class WifiAdmin {
 	}
 
 	//----------------------------------------------------------------------
-	public boolean checkWifiPwd(String pwd, final DataCallback<Boolean> callback) {
-		WifiInfoScanned wifiInfoCur = WifiListHelper.getInstance(mContext).mWifiInfoCur;
-		if (wifiInfoCur != null) {
-			//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
-			final WifiConfiguration old_conf = getExistWifiConf(
-				convertToQuotedString(wifiInfoCur.getWifiName()), wifiInfoCur.getWifiMAC());
-			final WifiConfiguration config = new WifiConfiguration();
-			config.SSID = old_conf.SSID;
-			config.BSSID = old_conf.BSSID;
-			config.preSharedKey = "\"" + pwd + "\"";
-			//wifiInfoCur.setWifiPwd(pwd);
-			//ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
-			
-			int id = -1;
-			try {
-				id = mWifiManager.addNetwork(config);
-				config.networkId = id;
-			} catch(NullPointerException e) {
-				Log.e(TAG, "Weird!! Really!! What's wrong??", e);
-				return false;
-			}
-			
-			if(id == -1) {
-				Log.e(TAG, "Failed to add config to network");
-				return false;
-			}
-			
-			//监听密码是否成功
-			final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-			mContext.registerReceiver(new BroadcastReceiver() {
-
-				@Override
-                public void onReceive(Context context, Intent intent) {
-					String action = intent.getAction();
-					
-					if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
-			        	Log.i(TAG, "supplicant state changed action");
-			            WifiInfo info = getWifiConnecting();
-			            SupplicantState state = info.getSupplicantState();
-			            if (state == SupplicantState.COMPLETED && info.getNetworkId() == config.networkId){ //验证当前网络登录的网络是否是测试网络
-			            	if (callback != null) {
-			            		mContext.unregisterReceiver(this);
-			            		//验证成功也要恢复之前的配置
-			            		mWifiManager.removeNetwork(config.networkId);
-			            		mWifiManager.enableNetwork(old_conf.networkId, true);
-			            		mWifiManager.reassociate();
-			            		mWifiManager.saveConfiguration();
-			            		callback.onSuccess(true);
-			            	}
-			            } else {
-			            	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
-			            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
-			            		if (callback != null) {
-			            			mContext.unregisterReceiver(this);
-			            			//验证失败恢复之前的配置
-				            		mWifiManager.removeNetwork(config.networkId);
-				            		mWifiManager.enableNetwork(old_conf.networkId, true);
-				            		mWifiManager.reassociate();
-				            		mWifiManager.saveConfiguration();
-			            			callback.onFailed("密码验证失败，当前网络不稳定或密码不正确");
-			            		}
-			            	}
-			            }
-			            Log.e(TAG, state.toString());
-			        }
-                }
-				
-			}, filter);
-			
-			if(!mWifiManager.enableNetwork(config.networkId, true)) {
-				Log.e(TAG, "Failed to enable current network");
-				return false;
-			}
-			
-			if (!mWifiManager.reassociate()) {
-				Log.e(TAG, "Failed to reassociate network");
-				return false;
-			}
-			
-			return true;
-		} else {
-			Log.e(TAG, "Not connect to any wifi");
-			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();
+	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
+		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
+		final WifiConfiguration old_conf = getExistWifiConf(ssid, bssid);
+		int id = -1;
+		try {
+			mWifiManager.removeNetwork(old_conf.networkId);
+			old_conf.preSharedKey = "\"" + pwd + "\"";
+			old_conf.priority = getMaxPriority(mWifiManager) + 1;
+			id = mWifiManager.addNetwork(old_conf);
+			old_conf.networkId = id;
+			//mWifiManager.saveConfiguration();
+		} catch(NullPointerException e) {
+			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
 		}
+		
+		if(id == -1) {
+			Log.e(TAG, "Failed to add config to network");
+			return false;
+		}
+		
+		if(!mWifiManager.enableNetwork(old_conf.networkId, true)) {
+			Log.e(TAG, "Failed to enable current network");
+			return false;
+		}
+		
+		if (!mWifiManager.reassociate()) {
+			Log.e(TAG, "Failed to reassociate network");
+			return false;
+		}
+		
+		//监听密码是否成功
+		final Timer timer = new Timer();
+		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+		final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+			@Override
+            public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				
+				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
+		        	Log.i(TAG, "supplicant state changed action");
+		        	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+	            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
+	            		if (callback != null) {
+	            			timer.cancel();
+	            			mContext.unregisterReceiver(this);
+	            			callback.onFailed("密码验证失败，请重新输入密码。");
+	            			return;
+	            		}
+	            	}
+	            	
+		            WifiInfo info = getWifiConnecting();
+		            SupplicantState state = info.getSupplicantState();
+		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == old_conf.networkId){ //验证当前网络登录的网络是否是测试网络
+		            	if (callback != null) {
+		            		timer.cancel();
+		            		mContext.unregisterReceiver(this);
+		            		callback.onSuccess(true);
+		            	}
+		            } 
+		            Log.e(TAG, state.toString());
+		        }
+            }
+		};
+		
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				mContext.unregisterReceiver(receiver);
+    			callback.onFailed("密码验证失败，请重新输入密码。");
+			}
+			
+		}, 10000);
+		
+		mContext.registerReceiver(receiver, filter);
+		return true;
 	}
     
     private int parseBitSet(BitSet kmtBitSet) {
@@ -562,13 +557,10 @@ public class WifiAdmin {
 	
     //获取存在的wifi配置
     public WifiConfiguration getExistWifiConf(String SSID, String BSSID) {
-
 		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
 		for(final WifiConfiguration config : configurations) {
-			if(config.SSID == null || !SSID.equals(config.SSID)) {
-				continue;
-			}
-			if(config.BSSID == null || BSSID == null || BSSID.equals(config.BSSID)) {
+			if(config.SSID != null && SSID.equals(config.SSID) &&
+				config.BSSID != null && BSSID.equals(config.BSSID)) {
 				return config;
 			}
 		}
