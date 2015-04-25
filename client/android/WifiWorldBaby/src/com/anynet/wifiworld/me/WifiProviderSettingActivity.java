@@ -2,6 +2,7 @@ package com.anynet.wifiworld.me;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,7 +111,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							KnockStepFirstActivity.start(WifiProviderSettingActivity.this, null, null);
+							KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), null, null);
 						}
 					});
 				}
@@ -174,6 +175,11 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 			}
 		});
+	}
+
+	protected Context getActivity() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 	@Override

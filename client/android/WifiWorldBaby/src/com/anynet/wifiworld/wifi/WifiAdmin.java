@@ -135,7 +135,7 @@ public class WifiAdmin {
 	 * @param password Password for secure network or is ignored.
 	 * @return
 	 */
-	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned) {
+	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned, boolean reassociate) {
 		
 		if(ConfigSec.isOpenNetwork(wifiInfoScanned.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
@@ -148,7 +148,9 @@ public class WifiAdmin {
 		
 		int id = -1;
 		try {
+			config.priority = getMaxPriority(mWifiManager) + 1;
 			id = mWifiManager.addNetwork(config);
+			config.networkId = id;
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
@@ -158,18 +160,28 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		if(!mWifiManager.saveConfiguration()) {
-			Log.e(TAG, "Failed to save config");
+		//if(!mWifiManager.saveConfiguration()) {
+		//	Log.e(TAG, "Failed to save config");
+		//	return false;
+		//}
+		
+		//config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
+		//if(config == null) {
+		//	Log.e(TAG, "Failed to get config from local configed wifi list");
+		//	return false;
+		//}
+		if(!mWifiManager.enableNetwork(config.networkId, true)) {
+			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
 		}
 		
-		config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
-		if(config == null) {
-			Log.e(TAG, "Failed to get config from local configed wifi list");
+		final boolean connect = reassociate ? mWifiManager.reassociate() : mWifiManager.reconnect();
+		if(!connect) {
+			Log.e(TAG, "Failed to reassociate or reconnect");
 			return false;
 		}
 		
-		return connectToConfiguredNetwork(ctx, config, true);
+		return connect;
 	}
     
     //connect WiFi which is configurated
@@ -188,47 +200,47 @@ public class WifiAdmin {
 	 * @return
 	 */
 	public boolean connectToConfiguredNetwork(Context ctx, WifiConfiguration config, boolean reassociate) {
-		final String security = ConfigSec.getWifiConfigurationSecurity(config);
+		//final String security = ConfigSec.getWifiConfigurationSecurity(config);
 		
-		int oldPri = config.priority;
+		//int oldPri = config.priority;
 		// Make it the highest priority.
-		int newPri = getMaxPriority(mWifiManager) + 1;
-		if(newPri > MAX_PRIORITY) {
-			newPri = shiftPriorityAndSave(mWifiManager);
-			config = getWifiConfiguration(config, security);
-			if(config == null) {
-				Log.e(TAG, "Failed to find configed wifi under local wificonfiguration list");
-				return false;
-			}
-		}
+		//if(newPri > MAX_PRIORITY) {
+		//	newPri = shiftPriorityAndSave(mWifiManager);
+		//	config = getWifiConfiguration(config, security);
+		//	if(config == null) {
+		//		Log.e(TAG, "Failed to find configed wifi under local wificonfiguration list");
+		//		return false;
+		//	}
+		//}
 		
 		// Set highest priority to this configured network
-		config.priority = newPri;
+		config.priority = getMaxPriority(mWifiManager) + 1;
 		int networkId = mWifiManager.updateNetwork(config);
+		config.networkId = networkId;
 		if(networkId == -1) {
 			Log.e(TAG, "Unable to update new priority info to network");
 			return false;
 		}
 		
 		// Do not disable others
-		if(!mWifiManager.enableNetwork(config.networkId, false)) {
-			config.priority = oldPri;
-			Log.e(TAG, "Failed to enable current select network");
-			return false;
-		}
+		//if(!mWifiManager.enableNetwork(config.networkId, false)) {
+		//	config.priority = oldPri;
+		//	Log.e(TAG, "Failed to enable current select network");
+		//	return false;
+		//}
 		
-		if(!mWifiManager.saveConfiguration()) {
-			config.priority = oldPri;
-			Log.e(TAG, "Failed to save current configuration to local");
-			return false;
-		}
+		//if(!mWifiManager.saveConfiguration()) {
+		//	config.priority = oldPri;
+		//	Log.e(TAG, "Failed to save current configuration to local");
+		//	return false;
+		//}
 		
 		// We have to retrieve the WifiConfiguration after save.
-		config = getWifiConfiguration(config, security);
-		if(config == null) {
-			Log.e(TAG, "Failed to retrieve current wifi configuration");
-			return false;
-		}
+		//config = getWifiConfiguration(config, security);
+		//if(config == null) {
+		//	Log.e(TAG, "Failed to retrieve current wifi configuration");
+		//	return false;
+		//}
 		
 		//WifiReenable.schedule(ctx);
 		
@@ -477,10 +489,11 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-    		mWifiManager.enableNetwork(netId, false);
-    		mWifiManager.saveConfiguration();
+    		//mWifiManager.enableNetwork(netId, false);
+    		//mWifiManager.saveConfiguration();
     		mWifiManager.disableNetwork(netId);
     		mWifiManager.disconnect();
+    		mWifiManager.removeNetwork(netId);
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {

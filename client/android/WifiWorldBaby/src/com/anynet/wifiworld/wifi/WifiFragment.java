@@ -54,6 +54,7 @@ import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.ui.WifiCommentsAdapter;
 import com.anynet.wifiworld.wifi.ui.WifiCommentActivity;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -294,7 +295,7 @@ public class WifiFragment extends MainFragment {
 //										i.putExtra("whoami", "WifiDetailsActivity");
 //										i.putExtra("data", object);
 //										startActivity(i);
-										KnockStepFirstActivity.start(getApplicationContext(), "WifiDetailsActivity", object);
+										KnockStepFirstActivity.start(getActivity(), "WifiDetailsActivity", object);
 										
 									}
 									
@@ -448,7 +449,7 @@ public class WifiFragment extends MainFragment {
 					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), cfgSelected, true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
-					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
+					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true);
 					//Log.d(TAG, "reconnect wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				}
 				dialog.dismiss();
@@ -483,17 +484,17 @@ public class WifiFragment extends MainFragment {
 			public void onClick(DialogInterface dialog, int which) {				
 				boolean connResult = false;
 				String inputedPwd = wifiConnectDialog.getPwdContent();
-				if (inputedPwd == "") {
-					Toast.makeText(getActivity(), "Password can not be null", Toast.LENGTH_LONG).show();
-					dialog.dismiss();
+				if (inputedPwd.equals("")) {
+					Toast.makeText(getActivity(), "请输入密码。", Toast.LENGTH_LONG).show();
+					return;
 				}
 				
 				WifiBRService.setWifiSupplicant(true);
 				wifiInfoScanned.setWifiPwd(inputedPwd);
-				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
+				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true);
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 准备重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 正在重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
 					mWifiAdmin.closeWifi();
 					mWifiAdmin.openWifi();
 				}

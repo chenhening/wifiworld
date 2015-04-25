@@ -224,7 +224,7 @@ public class WifiDetailsActivity extends BaseActivity {
 //							i.putExtra("whoami", "WifiDetailsActivity");
 //							i.putExtra("data", object);
 //							startActivity(i);
-							KnockStepFirstActivity.start(WifiDetailsActivity.this, "WifiDetailsActivity", object);
+							KnockStepFirstActivity.start(WifiDetailsActivity.this.getActivity(), "WifiDetailsActivity", object);
 						}
 						
 						@Override
@@ -236,6 +236,10 @@ public class WifiDetailsActivity extends BaseActivity {
 				
 			});
 		}
+	}
+
+	protected Context getActivity() {
+		return this;
 	}
 
 	@Override
