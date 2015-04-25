@@ -149,8 +149,7 @@ public class WifiAdmin {
 			id = mWifiManager.addNetwork(config);
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
-			// Weird!! Really!!
-			// This exception is reported by user to Android Developer Console(https://market.android.com/publish/Home)
+			return false;
 		}
 		if(id == -1) {
 			Log.e(TAG, "Failed to add config to network");
@@ -210,7 +209,7 @@ public class WifiAdmin {
 		}
 		
 		// Do not disable others
-		if(!mWifiManager.enableNetwork(networkId, false)) {
+		if(!mWifiManager.enableNetwork(config.networkId, false)) {
 			config.priority = oldPri;
 			Log.e(TAG, "Failed to enable current select network");
 			return false;
@@ -229,7 +228,7 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		WifiReenable.schedule(ctx);
+		//WifiReenable.schedule(ctx);
 		
 		// Disable others, but do not save.
 		// Just to force the WifiManager to connect to it.
@@ -275,16 +274,6 @@ public class WifiAdmin {
 				return false;
 			}
 			
-			if(!mWifiManager.enableNetwork(config.networkId, true)) {
-				Log.e(TAG, "Failed to enable current network");
-				return false;
-			}
-			
-			if (!mWifiManager.reassociate()) {
-				Log.e(TAG, "Failed to reassociate network");
-				return false;
-			}
-			
 			//监听密码是否成功
 			final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 			mContext.registerReceiver(new BroadcastReceiver() {
@@ -297,10 +286,7 @@ public class WifiAdmin {
 			        	Log.i(TAG, "supplicant state changed action");
 			            WifiInfo info = getWifiConnecting();
 			            SupplicantState state = info.getSupplicantState();
-			            if (state == SupplicantState.COMPLETED){
-			            	int id = info.getNetworkId();//验证当前网络登录的网络是否是测试网络
-			            	if (id != config.networkId)
-			            		return;
+			            if (state == SupplicantState.COMPLETED && info.getNetworkId() == config.networkId){ //验证当前网络登录的网络是否是测试网络
 			            	if (callback != null) {
 			            		mContext.unregisterReceiver(this);
 			            		//验证成功也要恢复之前的配置
@@ -324,10 +310,22 @@ public class WifiAdmin {
 			            		}
 			            	}
 			            }
+			            Log.e(TAG, state.toString());
 			        }
                 }
 				
 			}, filter);
+			
+			if(!mWifiManager.enableNetwork(config.networkId, true)) {
+				Log.e(TAG, "Failed to enable current network");
+				return false;
+			}
+			
+			if (!mWifiManager.reassociate()) {
+				Log.e(TAG, "Failed to reassociate network");
+				return false;
+			}
+			
 			return true;
 		} else {
 			Log.e(TAG, "Not connect to any wifi");
@@ -364,17 +362,17 @@ public class WifiAdmin {
     //open WIFI
     public Boolean openWifi() {
     	Boolean bRet = true;
-        if (!this.mWifiManager.isWifiEnabled()) {
+        //if (!this.mWifiManager.isWifiEnabled()) {
             bRet = this.mWifiManager.setWifiEnabled(true);
-        }
+        //}
         return bRet;
     }
     
     //close WIFI
     public void closeWifi() {
-        if (!this.mWifiManager.isWifiEnabled()) {
+        //if (!this.mWifiManager.isWifiEnabled()) {
             this.mWifiManager.setWifiEnabled(false);
-        }
+        //}
     }
     
     //check WIFI status
@@ -500,8 +498,8 @@ public class WifiAdmin {
 					&& mWifiManager.saveConfiguration();
     }
     
-    public WifiConfiguration getWifiConfiguration(final WifiInfoScanned hotspot) {
-		final String ssid = convertToQuotedString(hotspot.getWifiName());
+    public WifiConfiguration getWifiConfiguration(WifiInfoScanned hotspot) {
+		String ssid = convertToQuotedString(hotspot.getWifiName());
 		if(ssid.length() == 0) {
 			return null;
 		}
@@ -511,16 +509,16 @@ public class WifiAdmin {
 			return null;
 		}
 		
-		final List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
+		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
 		if(configurations == null) {
 			return null;
 		}
 
-		for(final WifiConfiguration config : configurations) {
+		for(WifiConfiguration config : configurations) {
 			if(config.SSID == null || !ssid.equals(config.SSID)) {
 				continue;
 			}
-			final String configSecurity = ConfigSec.getWifiConfigurationSecurity(config);
+			String configSecurity = ConfigSec.getWifiConfigurationSecurity(config);
 			if(hotspotSecurity.equals(configSecurity)) {
 				return config;
 			}

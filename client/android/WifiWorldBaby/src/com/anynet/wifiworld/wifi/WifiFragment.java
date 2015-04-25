@@ -232,9 +232,7 @@ public class WifiFragment extends MainFragment {
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 		
-		//WifiStatusReceiver.schedule(getActivity());
-		WifiBRService.bindWifiService(getActivity(), conn);
-		
+		WifiBRService.bindWifiService(getActivity(), conn);	
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
 		
@@ -450,7 +448,7 @@ public class WifiFragment extends MainFragment {
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
-					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), mWifiAdmin.getWifiConfiguration(wifiInfoScanned), true);
+					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), cfgSelected, true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
@@ -458,7 +456,9 @@ public class WifiFragment extends MainFragment {
 				}
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 准备重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
+					mWifiAdmin.closeWifi();
+					mWifiAdmin.openWifi();
 				}
 			}
 		});
@@ -492,12 +492,13 @@ public class WifiFragment extends MainFragment {
 				}
 				
 				WifiBRService.setWifiSupplicant(true);
-				
 				wifiInfoScanned.setWifiPwd(inputedPwd);
 				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned);
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(getActivity(), "Failed to connect to " + wifiInfoScanned.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 准备重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
+					mWifiAdmin.closeWifi();
+					mWifiAdmin.openWifi();
 				}
 			}
 		});

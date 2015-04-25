@@ -43,14 +43,14 @@ public class MeFragment extends MainFragment {
 			boolean isLogined = false;
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
-				Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				isLogined = true;
-				Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
-				Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.LOGIN_OUT)) {
-				Toast.makeText(getApplicationContext(), "退出登录!", Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "退出登录!", Toast.LENGTH_LONG).show();
 				isLogined = false;
 			}
 			setLoginedUI(isLogined);

@@ -149,6 +149,7 @@ public class WifiBRService {
 		            }else{
 		                statusStr = "unkown";
 		            }
+		            Log.e(TAG, state.toString());
 		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();

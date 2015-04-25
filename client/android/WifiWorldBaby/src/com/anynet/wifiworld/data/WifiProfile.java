@@ -122,6 +122,41 @@ public class WifiProfile extends BmobObject {
 		}).start();
 	}
 	
+	public void VerfyIsShared(final Context context, String Mac, DataCallback<Boolean> callback) {
+		final DataCallback<Boolean> _callback = callback;
+		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
+		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
+		// 先从缓存获取数据，再拉取网络数据更新
+		query.addWhereEqualTo(unique_key, Mac);
+		Log.d("VerfyIsShared", "开始查询VerfyIsShared");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				query.findObjects(context, new FindListener<WifiProfile>() {
+					@Override
+					public void onSuccess(List<WifiProfile> object) {
+						if (object.size() == 1) {
+							WifiProfile returnProfile = object.get(0);
+							returnProfile.Password = decryptPwd(returnProfile.Password);
+							_callback.onSuccess(true);
+						} else {
+							_callback.onSuccess(false);
+						}
+					}
+
+					@Override
+					public void onError(int code, String msg) {
+						_callback.onFailed(msg);
+					}
+				});
+				Log.d("VerfyIsShared", "结束查询VerfyIsShared");
+			}
+
+		}).start();
+	}
+	
+	
 	public void QueryTagByMacAddr(final Context context, String Mac, String QueryTag, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();

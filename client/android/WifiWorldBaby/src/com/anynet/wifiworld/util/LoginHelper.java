@@ -196,6 +196,13 @@ public class LoginHelper {
 		}
 		return null;
 	}
+	
+	//只要用户登录过就会有一个id，不管它 在线不在线
+	public String getUserid() {
+		if (mUser != null)
+			return mUser.PhoneNumber;
+		return null;
+	}
 
 	private void pullWifiProfile() {
 		if (!mIsLogin)
