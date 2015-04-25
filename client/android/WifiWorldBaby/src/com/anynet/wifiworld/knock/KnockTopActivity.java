@@ -66,8 +66,7 @@ public class KnockTopActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							Intent i = new Intent(KnockTopActivity.this, KnockStepFirstActivity.class);
-							startActivity(i);
+							KnockStepFirstActivity.start(KnockTopActivity.this, null, null);
 						}
 					});
 				}

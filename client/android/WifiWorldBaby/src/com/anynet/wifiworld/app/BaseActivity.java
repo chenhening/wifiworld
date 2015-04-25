@@ -149,42 +149,42 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	private void updateLoginState(int loginStatus) {
-		// if (!ActivityUtil.isRunningForeground(this)){
-		// return;
-		// }
-		//
-		// if (loginStatus == LoginHelper.LOGOUT_KICKOUT)
-		// {
-		// Log.d("login",this.getLocalClassName() + "  LOGOUT_KICKOUT");
-		// showOneButtonDialog(getString(R.string.sessoin_fail_for_kickout));
-		//
-		// }
-		// else if (loginStatus == LoginHelper.LOGOUT_TIMEOUT)
-		// {
-		// Log.d("login",this.getLocalClassName() + "  LOGOUT_TIMEOUT");
-		//
-		// showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
-		//
-		// }
-		// else if (loginStatus == LoginHelper.STATUS_LOGOUT)
-		// {
-		// Log.d("login",this.getLocalClassName() + "  STATUS_LOGOUT");
-		//
-		// showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
-		//
-		// }
-		// else if (loginStatus == LoginHelper.LOGOUT_BY_USER)
-		// {
-		//
-		// //用户自己登出， 不需要处理，在登出的时候处理
-		//
-		// }
-		// else
-		// {
-		// Log.d("login",this.getLocalClassName() + "  other logout");
-		//
-		// showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
-		// }
+		 if (!ActivityUtil.isRunningForeground(this)){
+		 return;
+		 }
+		
+		 if (loginStatus == LoginHelper.LOGOUT_KICKOUT)
+		 {
+		 Log.d("login",this.getLocalClassName() + "  LOGOUT_KICKOUT");
+		 showOneButtonDialog(getString(R.string.sessoin_fail_for_kickout));
+		
+		 }
+		 else if (loginStatus == LoginHelper.LOGOUT_TIMEOUT)
+		 {
+		 Log.d("login",this.getLocalClassName() + "  LOGOUT_TIMEOUT");
+		
+		 showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
+		
+		 }
+		 else if (loginStatus == LoginHelper.STATUS_LOGOUT)
+		 {
+		 Log.d("login",this.getLocalClassName() + "  STATUS_LOGOUT");
+		
+		 showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
+		
+		 }
+		 else if (loginStatus == LoginHelper.LOGOUT_BY_USER)
+		 {
+		
+		 //用户自己登出， 不需要处理，在登出的时候处理
+		
+		 }
+		 else
+		 {
+		 Log.d("login",this.getLocalClassName() + "  other logout");
+		
+		 showOneButtonDialog(getString(R.string.sessoin_fail_for_timeout));
+		 }
 
 	}
 

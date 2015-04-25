@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.knock;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -31,6 +33,16 @@ public class KnockStepFirstActivity extends BaseActivity {
 	private WifiQuestions mQuestions;
 	private boolean mAskOrAnswer = false; // true: ask, false: answer
 	private int moveRight = 0;
+	
+	public static void start(Context context, String whoami,WifiQuestions data){
+		Intent i = new Intent(context, KnockStepFirstActivity.class);
+		if(whoami != null){
+			i.putExtra("whoami", whoami);
+			if(data != null)i.putExtra("data", data);
+		}		
+		context.startActivity(i);
+		((Activity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);  
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -325,13 +337,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 			if (mSetupFragment[id] == null)
 				mSetupFragment[id] = (AnswerFragment) fragment;
 		}
-
-//		int top = moveV.getTop();
-//		int width = moveV.getWidth();
-//		int height = moveV.getHeight();
-//		Toast.makeText(this, "moveRight:" + moveRight, Toast.LENGTH_LONG).show();
-//		if (!isAnimation)
-//			moveV.layout(moveRight - width, top, moveRight, top + height);
 	}
 
 	@Override

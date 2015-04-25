@@ -20,6 +20,15 @@ import com.anynet.wifiworld.wifi.WifiListHelper;
 
 public class LoginHelper {
 
+	public static final int LOGOUT_KICKOUT = 0;
+
+	public static final int LOGOUT_TIMEOUT = 1;
+
+
+	public static final int STATUS_LOGOUT = 2;
+
+	public static final int LOGOUT_BY_USER = 3;
+	
 	private final String TAG = LoginHelper.class.getSimpleName();
 
 	public static String AUTO_LOGIN_SUCCESS = "com.anynet.wifiworld.autologin.success";
@@ -33,8 +42,8 @@ public class LoginHelper {
 	public static String LOGIN_NEVERLOGIN = AUTO_LOGIN_NEVERLOGIN;
 
 	private static String mUserprofileDataFile = "userprofile.conf";
-	private static String mAliasUser = "PhoneNumber";
 	private static String mAliasPwd = "Password";
+	private static String mAliasUser = "PhoneNumber";
 	private UserProfile mUser = null;
 	private boolean mIsLogin = false;
 

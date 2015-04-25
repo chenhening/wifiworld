@@ -18,7 +18,6 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
-import com.anynet.wifiworld.knock.KnockTopActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiProviderSettingActivity extends BaseActivity {
@@ -111,8 +110,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-							startActivity(i);
+							KnockStepFirstActivity.start(WifiProviderSettingActivity.this, null, null);
 						}
 					});
 				}

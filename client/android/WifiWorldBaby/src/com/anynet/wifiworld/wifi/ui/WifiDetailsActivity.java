@@ -18,6 +18,7 @@ import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
+import com.anynet.wifiworld.me.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListHelper;
@@ -219,10 +220,11 @@ public class WifiDetailsActivity extends BaseActivity {
 						
 						@Override
 						public void onSuccess(WifiQuestions object) {
-							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-							i.putExtra("whoami", "WifiDetailsActivity");
-							i.putExtra("data", object);
-							startActivity(i);
+//							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
+//							i.putExtra("whoami", "WifiDetailsActivity");
+//							i.putExtra("data", object);
+//							startActivity(i);
+							KnockStepFirstActivity.start(WifiDetailsActivity.this, "WifiDetailsActivity", object);
 						}
 						
 						@Override

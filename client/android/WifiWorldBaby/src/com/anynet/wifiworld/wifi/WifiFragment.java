@@ -53,6 +53,7 @@ import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.WifiSupplicant.SupplicantCallback;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -294,10 +295,12 @@ public class WifiFragment extends MainFragment {
 									
 									@Override
 									public void onSuccess(WifiQuestions object) {
-										Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-										i.putExtra("whoami", "WifiDetailsActivity");
-										i.putExtra("data", object);
-										startActivity(i);
+//										Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
+//										i.putExtra("whoami", "WifiDetailsActivity");
+//										i.putExtra("data", object);
+//										startActivity(i);
+										KnockStepFirstActivity.start(getApplicationContext(), "WifiDetailsActivity", object);
+										
 									}
 									
 									@Override

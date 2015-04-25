@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		}
 		baseActivity.startActivity(i);
+		baseActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out); 
 	}
 
 	@Override

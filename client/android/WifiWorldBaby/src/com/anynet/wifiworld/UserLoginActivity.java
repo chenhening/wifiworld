@@ -44,6 +44,7 @@ public class UserLoginActivity extends BaseActivity {
 	public static void start(BaseActivity ctx) {
 		Intent intent = new Intent(ctx, UserLoginActivity.class);
 		ctx.startActivity(intent);
+		ctx.overridePendingTransition(R.anim.fade_in, R.anim.fade_out); 
 	}
 
 	private void bingdingTitleUI() {
