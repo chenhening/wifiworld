@@ -623,8 +623,8 @@ public class WifiFragment extends MainFragment {
 			});
 			
 			//评论ui
-			final EditText comment_edit = (EditText) mPopupView.findViewById(R.id.wifi_input_frame);
-			mPopupView.findViewById(R.id.wifi_input_frame).setOnClickListener(new OnClickListener() {
+			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.tv_button_sms);
+			send_btn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {

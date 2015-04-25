@@ -41,7 +41,7 @@
         android:layout_height="1px"
         android:background="@color/darkgray" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/wifi_comments_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,76 +53,39 @@
         <ListView
             android:id="@+id/wifi_list_comments"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:cacheColorHint="#00000000"
             android:fadingEdge="vertical" >
         </ListView>
-
+        
         <LinearLayout
-            android:id="@+id/wifi_comment_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/color_light_gray"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/dimen_3_dip"
-            android:paddingLeft="@dimen/dimen_5_dip"
-            android:paddingRight="@dimen/dimen_5_dip"
-            android:paddingTop="@dimen/dimen_3_dip" >
+            android:id="@+id/wifi_comment_send"
+            android:layout_width="80dp"
+            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/umeng_common_gradient_orange"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="0.6"
+            android:gravity="center_vertical" >
 
-            <EditText
-                android:id="@+id/wifi_input_frame"
-                android:layout_width="0.0dip"
+            <TextView
+                android:id="@+id/tv_button_sms"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="3"
-                android:drawablePadding="@dimen/dimen_10_dip"
-                android:gravity="center_vertical"
-                android:hint="输入评论"
-                android:maxLines="4"
-                android:paddingBottom="@dimen/dimen_12_dip"
-                android:paddingTop="@dimen/dimen_12_dip"
-                android:textColor="@color/font_color_black"
-                android:textColorHint="@color/edt_hint_color"
-                android:textSize="@dimen/font_main_big" />
-
-            <LinearLayout
-                android:id="@+id/wifi_comment_send"
-                android:layout_width="0.0dip"
-                android:layout_height="@dimen/dimen_40_dip"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
-                android:background="@drawable/umeng_common_gradient_orange"
-                android:gravity="center_vertical" >
-
-                <TextView
-                    android:id="@+id/tv_button_sms"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:text="发送"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/font_main_title"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="发送"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_main_title"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="0.100000024dip"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="1dp"
-            android:background="@color/color_blue_line" />
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
