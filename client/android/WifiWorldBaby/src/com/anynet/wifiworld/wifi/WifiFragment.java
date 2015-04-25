@@ -449,7 +449,7 @@ public class WifiFragment extends MainFragment {
 					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), cfgSelected, true);
 					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				} else {
-					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true);
+					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, true);
 					//Log.d(TAG, "reconnect wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
 				}
 				dialog.dismiss();
@@ -491,7 +491,7 @@ public class WifiFragment extends MainFragment {
 				
 				WifiBRService.setWifiSupplicant(true);
 				wifiInfoScanned.setWifiPwd(inputedPwd);
-				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true);
+				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, false);
 				dialog.dismiss();
 				if (!connResult) {
 					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 正在重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
@@ -534,11 +534,10 @@ public class WifiFragment extends MainFragment {
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 		
-		mLastWifiInfo = wifiCurInfo;
-		
 		//forget last WiFi connected configuration info
-		if (mLastWifiInfo != null
-			&& mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi()) {
+		if (mLastWifiInfo != null && mLastWifiInfoScanned != null
+				&& mLastWifiInfoScanned.isAuthWifi() && !mLastWifiInfoScanned.isLocalSave()) {
+			Log.i(TAG, "erase WiFi config which has been shared and not local save");
 			mWifiAdmin.forgetNetwork(mLastWifiInfo);
 		}
 		mLastWifiInfo = wifiCurInfo;

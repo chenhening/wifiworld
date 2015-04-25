@@ -25,6 +25,7 @@ public class WifiInfoScanned implements Serializable {
 	private String Sponser;
 	
 	private boolean isAuthWifi = false;
+	private boolean isLocalSave = false;
 	
 	private Bitmap mWifiLogo;
 	private String mBanner;
@@ -221,5 +222,13 @@ public class WifiInfoScanned implements Serializable {
 	public void setSponser(String sponser) {
 	    Sponser = sponser;
     }
+
+	public boolean isLocalSave() {
+		return isLocalSave;
+	}
+
+	public void setLocalSave(boolean isLocalSave) {
+		this.isLocalSave = isLocalSave;
+	}
 	
 }

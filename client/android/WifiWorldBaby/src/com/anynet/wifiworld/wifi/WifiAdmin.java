@@ -135,7 +135,8 @@ public class WifiAdmin {
 	 * @param password Password for secure network or is ignored.
 	 * @return
 	 */
-	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned, boolean reassociate) {
+	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned,
+			boolean reassociate, boolean localSave) {
 		
 		if(ConfigSec.isOpenNetwork(wifiInfoScanned.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
@@ -160,16 +161,19 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		//if(!mWifiManager.saveConfiguration()) {
-		//	Log.e(TAG, "Failed to save config");
-		//	return false;
-		//}
+		if (localSave) {
+			if(!mWifiManager.saveConfiguration()) {
+				Log.e(TAG, "Failed to save config");
+				return false;
+			}
+			
+			config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
+			if(config == null) {
+				Log.e(TAG, "Failed to get config from local configed wifi list");
+				return false;
+			}
+		}
 		
-		//config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
-		//if(config == null) {
-		//	Log.e(TAG, "Failed to get config from local configed wifi list");
-		//	return false;
-		//}
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
@@ -264,25 +268,24 @@ public class WifiAdmin {
 	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
 		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
 		final WifiConfiguration old_conf = getExistWifiConf(ssid, bssid);
-		int id = -1;
+		final WifiConfiguration updated_conf = old_conf;
 		try {
-			mWifiManager.removeNetwork(old_conf.networkId);
-			old_conf.preSharedKey = "\"" + pwd + "\"";
-			old_conf.priority = getMaxPriority(mWifiManager) + 1;
-			id = mWifiManager.addNetwork(old_conf);
-			old_conf.networkId = id;
-			mWifiManager.saveConfiguration();
+			//mWifiManager.removeNetwork(old_conf.networkId);
+			updated_conf.preSharedKey = "\"" + pwd + "\"";
+			updated_conf.priority = getMaxPriority(mWifiManager) + 1;
+			updated_conf.networkId = mWifiManager.updateNetwork(updated_conf);
+			//mWifiManager.saveConfiguration();
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
 		}
 		
-		if(id == -1) {
+		if(updated_conf.networkId == -1) {
 			Log.e(TAG, "Failed to add config to network");
 			return false;
 		}
 		
-		if(!mWifiManager.enableNetwork(old_conf.networkId, true)) {
+		if(!mWifiManager.enableNetwork(updated_conf.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network");
 			return false;
 		}
@@ -309,6 +312,9 @@ public class WifiAdmin {
 	            			timer.cancel();
 	            			mContext.unregisterReceiver(this);
 	            			callback.onFailed("密码验证失败，请重新输入密码。");
+	            			
+	            			
+	            			
 	            			return;
 	            		}
 	            	}
@@ -572,8 +578,8 @@ public class WifiAdmin {
     public WifiConfiguration getExistWifiConf(String SSID, String BSSID) {
 		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
 		for(final WifiConfiguration config : configurations) {
-			if(config.SSID != null && SSID.equals(config.SSID) &&
-				config.BSSID != null && BSSID.equals(config.BSSID)) {
+			if(config.SSID != null && (SSID.equals(config.SSID) || SSID.equals(convertToNonQuotedString(SSID))) &&
+				config.BSSID != null && (BSSID.equals(config.BSSID) || BSSID.equals(convertToNonQuotedString(BSSID)))) {
 				return config;
 			}
 		}

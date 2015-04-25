@@ -156,12 +156,14 @@ public class WifiListHelper {
 			wifiRemark = "当前连接WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
-			if (objects != null) {
-				int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
-				boolean isAuthWifi = idx == -1 ? false : true;
-				mWifiInfoCur.setAuthWifi(isAuthWifi);
-				//mWifiInfoCur.setSponser(objects.get(idx).Sponser);
-			}
+			
+			//query WiFi whether has been shared
+			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+			boolean isAuthWifi = idx == -1 ? false : true;
+			mWifiInfoCur.setAuthWifi(isAuthWifi);
+			boolean isLocalSave = wifiCfg == null ? false : true;
+			mWifiInfoCur.setLocalSave(isLocalSave);
+			
 			return;
 		}
 		
@@ -185,6 +187,7 @@ public class WifiListHelper {
 				WifiProfile wifi = objects.get(idx);
 				if (wifi.Alias != null && wifi.Alias.length() > 0)
 					wifiInfoScanned.setAlias(wifi.Alias);
+				wifiInfoScanned.setAuthWifi(true);
 				//wifiInfoScanned.setSponser(objects.get(idx).Sponser);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
@@ -204,6 +207,7 @@ public class WifiListHelper {
 			//wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
+			wifiInfoScanned.setLocalSave(true);
 			mWifiFree.add(wifiInfoScanned);
 		} else {
 			//Check whether is a open WiFi
@@ -226,9 +230,11 @@ public class WifiListHelper {
 	}
 	
 	private int isContained(String macAddress, List<WifiProfile> mList) {
-		for (int idx=0; idx<mList.size(); ++idx) {
-			if (mList.get(idx).MacAddr.equals(macAddress)) {
-				return idx;
+		if (mList != null) {
+			for (int idx=0; idx<mList.size(); ++idx) {
+				if (mList.get(idx).MacAddr.equals(macAddress)) {
+					return idx;
+				}
 			}
 		}
 		
