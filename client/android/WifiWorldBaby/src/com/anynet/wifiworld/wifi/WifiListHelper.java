@@ -144,7 +144,8 @@ public class WifiListHelper {
 		BmobGeoPoint wifiGeometry;
 		WifiInfoScanned wifiInfoScanned;
 		
-		if (wifiInfo != null &&  wifiInfo.getSSID().equals(WifiAdmin.convertToQuotedString(hotspot.SSID))) {
+		if (wifiInfo != null && (wifiInfo.getSSID().equals(WifiAdmin.convertToQuotedString(hotspot.SSID))
+				|| wifiInfo.getSSID().equals(hotspot.SSID))) {
 			Log.i(TAG, hotspot.SSID + " is the current connected wifi");
 			wifiName = hotspot.SSID;
 			wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
