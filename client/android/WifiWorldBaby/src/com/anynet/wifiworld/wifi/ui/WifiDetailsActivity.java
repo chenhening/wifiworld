@@ -59,6 +59,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private TextView mRankText;
 	private TextView mRateText;
 	private ImageView mWifiLogo;
+	private TextView mWifiMaster;
 	private TextView mWifiBanner;
 	private TextView mConnectedCnt;
 	private TextView mConnectedTime;
@@ -92,7 +93,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifiInfoScanned = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
-		mTitlebar.tvTitle.setText(mWifiInfoScanned.getWifiName());
+		mTitlebar.tvTitle.setText(mWifiInfoScanned.getAlias());
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -118,6 +119,8 @@ public class WifiDetailsActivity extends BaseActivity {
 		if (mWifiInfoScanned.getBanner() != null) {
 			mWifiBanner.setText(mWifiInfoScanned.getBanner());
 		}
+		mWifiMaster = (TextView) findViewById(R.id.tv_wifi_master);
+		mWifiMaster.setText(mWifiInfoScanned.getSponser());
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		
