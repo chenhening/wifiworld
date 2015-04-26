@@ -39,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
@@ -53,9 +52,8 @@ import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderRigisterLicenseActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
-import com.anynet.wifiworld.wifi.ui.WifiCommentsAdapter;
 import com.anynet.wifiworld.wifi.ui.WifiCommentActivity;
-import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
+import com.anynet.wifiworld.wifi.ui.WifiCommentsAdapter;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -540,9 +538,9 @@ public class WifiFragment extends MainFragment {
 			}
 			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null
 				&& wifiInfoCurrent.getAlias().length() > 0) {
-				mWifiNameView.setText("已连接" + wifiInfoCurrent.getAlias());
+				mWifiNameView.setText("已连接: " + wifiInfoCurrent.getAlias());
 			} else {
-				mWifiNameView.setText("已连接" + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
+				mWifiNameView.setText("已连接: " + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
 			}
 			mWifiNameView.setTextColor(Color.BLACK);
 			

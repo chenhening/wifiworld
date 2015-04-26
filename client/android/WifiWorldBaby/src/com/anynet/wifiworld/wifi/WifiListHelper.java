@@ -162,6 +162,7 @@ public class WifiListHelper {
 				mWifiInfoCur.setWifiLogo(wifiProfile.Logo);
 				mWifiInfoCur.setBanner(wifiProfile.Banner);
 				mWifiInfoCur.setAlias(wifiProfile.Alias);
+				mWifiInfoCur.setSponser(wifiProfile.Sponser);
 			}
 			boolean isLocalSave = wifiCfg == null ? false : true;
 			mWifiInfoCur.setLocalSave(isLocalSave);
@@ -191,7 +192,7 @@ public class WifiListHelper {
 				wifiInfoScanned.setAuthWifi(true);
 				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
 				wifiInfoScanned.setBanner(wifiProfile.Banner);
-				//wifiInfoScanned.setSponser(objects.get(idx).Sponser);
+				wifiInfoScanned.setSponser(wifiProfile.Sponser);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}
