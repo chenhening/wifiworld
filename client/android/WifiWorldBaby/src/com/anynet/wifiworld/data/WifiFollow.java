@@ -23,8 +23,8 @@ public class WifiFollow extends BmobObject {
 	public long FollowTime; //用户关注的时间
 	
 	public void QueryWifiByMac(final Context context, final String Mac, final String PhoneNumber, 
-			DataCallback<WifiFollow> callback) {
-		final DataCallback<WifiFollow> _callback = callback;
+			MultiDataCallback<WifiFollow> callback) {
+		final MultiDataCallback<WifiFollow> _callback = callback;
 		final BmobQuery<WifiFollow> query = new BmobQuery<WifiFollow>();
 		query.addWhereEqualTo(MAC_ADDR, Mac);
 		query.addWhereEqualTo(USER_ID, PhoneNumber);
@@ -36,11 +36,7 @@ public class WifiFollow extends BmobObject {
 				query.findObjects(context, new FindListener<WifiFollow>() {
 					@Override
 					public void onSuccess(List<WifiFollow> object) {
-						if (object.size() == 1) {
-							_callback.onSuccess(object.get(0));
-						} else {
-						//	_callback.onFailed("数据库中没有数据。");
-						}
+						_callback.onSuccess(object);
 					}
 
 					@Override
