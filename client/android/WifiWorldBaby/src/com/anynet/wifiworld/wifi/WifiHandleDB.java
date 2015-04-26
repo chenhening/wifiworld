@@ -159,7 +159,7 @@ public class WifiHandleDB {
 			public void onSuccess(final WifiProfile object) {
 				Log.i(TAG, "Success to query wifi profile from server:" + infoScanned.getWifiMAC());
 				Message msg = new Message();
-				msg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				msg.what = WifiFragment.GET_WIFI_DETAILS;
 				msg.obj = object;
 				mHandler.sendMessage(msg);
 			}
@@ -168,7 +168,7 @@ public class WifiHandleDB {
 			public void onFailed(String msg) {
 				Log.e(TAG, "Failed to query wifi profile from server" + infoScanned.getWifiMAC());
 				Message msgg = new Message();
-				msgg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				msgg.what = WifiFragment.GET_WIFI_DETAILS;
 				WifiProfile wifiProfile = new WifiProfile();
 				wifiProfile.Ssid = infoScanned.getWifiName();
 				msgg.obj = wifiProfile;
@@ -186,7 +186,7 @@ public class WifiHandleDB {
 			public void onSuccess(Long object) {
 				Log.i(TAG, "Success to query wifi dynamic from server:" + infoScanned.getWifiMAC());
 				Message msg = new Message();
-				msg.what = ((MainActivity)mContext).GET_WIFI_DETAILS;
+				msg.what = WifiFragment.GET_WIFI_DETAILS;
 				Log.i(TAG, "wifi connect count:" + object);
 				infoScanned.setConnectedTimes(object);
 				Log.i(TAG, "wifi connect count:" + infoScanned.getConnectedTimes());

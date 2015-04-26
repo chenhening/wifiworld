@@ -30,6 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -62,8 +63,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 	
-	static final int WIFI_CONNECT_CONFIRM = 1;
-	static final int WIFI_COMMENT = 2;
+	public static final int WIFI_CONNECT_CONFIRM = 1;
+	public static final int WIFI_COMMENT = 2;
+	
+	public final static int UPDATE_WIFI_LIST = 99;
+	public final static int GET_WIFI_DETAILS = 98;
 	
 	private WifiAdmin mWifiAdmin;
 	private PullToRefreshListView mWifiListView;
@@ -75,6 +79,7 @@ public class WifiFragment extends MainFragment {
 	private LoginHelper mLoginHelper = null;
 	
 	private TextView mWifiNameView;
+	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
 	
@@ -102,13 +107,14 @@ public class WifiFragment extends MainFragment {
 		public void handleMessage(Message msg) {
 			Log.i(TAG, "handle wifi list helper message");
 			int value = msg.what;
-			if (value == MainActivity.UPDATE_WIFI_LIST) {
+			if (value == UPDATE_WIFI_LIST) {
 				mWifiAuth = mWifiListHelper.getWifiAuths();
 				mWifiFree = mWifiListHelper.getWifiFrees();
 				mWifiEncrypt = mWifiListHelper.getWifiEncrypts();
 				if (mWifiListAdapter != null) {
 					mWifiListAdapter.refreshWifiList(mWifiAuth, mWifiFree, mWifiEncrypt);
 				}
+				refreshWifiTitleInfo();
 			}
 			mWifiListView.onRefreshComplete();
 		}
@@ -148,7 +154,7 @@ public class WifiFragment extends MainFragment {
 					}
 					//refresh WiFi list and WiFi title info
 					mWifiListHelper.fillWifiList();
-					refreshWifiTitleInfo();
+					//refreshWifiTitleInfo();
 					
 					if (isConnected) {
 						
@@ -203,6 +209,12 @@ public class WifiFragment extends MainFragment {
 				public void onSupplicantChanged(String statusStr) {
 					mWifiNameView.setText(statusStr);
 					mWifiNameView.setTextColor(Color.BLACK);
+					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
+					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
+						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
+					} else {
+						mWifiLogoView.setImageResource(R.drawable.icon_invalid);
+					}
 				}
 
 				@Override
@@ -255,6 +267,7 @@ public class WifiFragment extends MainFragment {
 		initWifiSquarePopupView();
 		//display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+		mWifiLogoView = (ImageView) mPageRoot.findViewById(R.id.wifi_logo);
 //		String connected_name = mWifiAdmin.getWifiNameConnection();
 //		if (!connected_name.equals("") && !connected_name.equals("0x")) {
 //			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
@@ -352,7 +365,7 @@ public class WifiFragment extends MainFragment {
 		});
 		
 		mWifiListHelper.fillWifiList();
-		refreshWifiTitleInfo();
+		//refreshWifiTitleInfo();
 		
 		//bind common title UI
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -519,7 +532,18 @@ public class WifiFragment extends MainFragment {
 		
 		//update WiFi title info
 		if (wifiCurInfo != null) {
-			mWifiNameView.setText("已连接" + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
+			WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
+			if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
+				mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
+			} else {
+				mWifiLogoView.setImageResource(R.drawable.icon_invalid);
+			}
+			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null
+				&& wifiInfoCurrent.getAlias().length() > 0) {
+				mWifiNameView.setText("已连接" + wifiInfoCurrent.getAlias());
+			} else {
+				mWifiNameView.setText("已连接" + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
+			}
 			mWifiNameView.setTextColor(Color.BLACK);
 			
 			mWifiSwitch.setVisibility(View.VISIBLE);
@@ -528,6 +552,7 @@ public class WifiFragment extends MainFragment {
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
 			mWifiNameView.setTextColor(Color.GRAY);
+			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 			
 			mWifiSwitch.setVisibility(View.GONE);
 			mWifiSwitch.setChecked(false);

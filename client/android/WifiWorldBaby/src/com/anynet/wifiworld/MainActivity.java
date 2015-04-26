@@ -64,9 +64,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	// private final static int FIND_TAB_IDX = 2;
 	private final static int MY_TAB_IDX = 2;
 
-	public final static int UPDATE_WIFI_LIST = 99;
-	public final static int GET_WIFI_DETAILS = 98;
-
 	public static void startActivity(BaseActivity baseActivity, boolean isFromWelcomeActivity) {
 		Intent i = new Intent(baseActivity, MainActivity.class);
 		i.putExtra("isFromWelcomeActivity", isFromWelcomeActivity);

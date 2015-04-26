@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.smssdk.app.NewAppReceiver;
@@ -27,7 +28,7 @@ public class WifiInfoScanned implements Serializable {
 	private boolean isAuthWifi = false;
 	private boolean isLocalSave = false;
 	
-	private Bitmap mWifiLogo;
+	private byte[] mWifiLogo;
 	private String mBanner;
 	
 	private float mRating;
@@ -159,12 +160,23 @@ public class WifiInfoScanned implements Serializable {
 		this.mGeometry = mGeometry;
 	}
 
-	public Bitmap getWifiLogo() {
-		return mWifiLogo;
-	}
-
-	public void setWifiLogo(Bitmap wifiLogo) {
+	public void setWifiLogo(byte[] wifiLogo) {
 		this.mWifiLogo = wifiLogo;
+	}
+	
+	public Bitmap getWifiLogo() {
+		if (mWifiLogo != null)
+			return Bytes2Bimap(mWifiLogo);
+		else
+			return null;
+	}
+	
+	public Bitmap Bytes2Bimap(byte[] b) {
+		if (b != null && b.length != 0) {
+			return BitmapFactory.decodeByteArray(b, 0, b.length);
+		} else {
+			return null;
+		}
 	}
 
 	public List<String> getComments() {

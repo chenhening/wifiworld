@@ -463,6 +463,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 				tempInfoScanned.setWifiName(mWP.Ssid);
 				tempInfoScanned.setWifiMAC(mWP.MacAddr);
+				tempInfoScanned.setWifiLogo(mWP.Logo);
 				wifiData.putSerializable("WifiSelected", tempInfoScanned);
 				intent.putExtras(wifiData);
 				startActivity(intent);
