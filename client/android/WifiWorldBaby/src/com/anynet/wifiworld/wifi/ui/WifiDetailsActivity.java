@@ -59,6 +59,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private TextView mRankText;
 	private TextView mRateText;
 	private ImageView mWifiLogo;
+	private TextView mWifiMaster;
 	private TextView mWifiBanner;
 	private TextView mConnectedCnt;
 	private TextView mConnectedTime;
@@ -110,6 +111,8 @@ public class WifiDetailsActivity extends BaseActivity {
 		//WiFi logo image
 		mWifiLogo = (ImageView)findViewById(R.id.wifi_account_portral);
 		mWifiBanner = (TextView) findViewById(R.id.wifi_account_desc);
+		mWifiMaster = (TextView) findViewById(R.id.tv_wifi_master);
+		mWifiMaster.setText(mWifiInfoScanned.getSponser());
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		

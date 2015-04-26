@@ -21,29 +21,65 @@
             android:scaleType="fitCenter"
             android:src="@drawable/icon_default_portal" />
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/wifi_account_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp" >
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_gray_white" >
 
             <TextView
                 android:id="@+id/wifi_account_rank"
                 android:layout_width="wrap_content"
                 android:layout_height="15dp"
-                android:layout_gravity="right"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:text="排名：--"
                 android:textColor="@color/darkgray"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/wifi_account_desc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_wifi_master"
+                android:layout_toRightOf="@+id/textView1"
+                android:gravity="top"
+                android:hint="本人WiFi只提供给有缘人"
+                android:maxLength="30"
+                android:maxLines="3" />
+
+            <TextView
+                android:id="@+id/tv_wifi_master"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="本人WiFi只提供给有缘人" />
-        </FrameLayout>
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/wifi_account_rank"
+                android:layout_toRightOf="@+id/textView1"
+                android:gravity="left"
+                android:hint="正在获取请稍等..." />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_wifi_master"
+                android:layout_alignParentLeft="true"
+                android:text="Wi-Fi主人:" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/wifi_account_desc"
+                android:layout_toLeftOf="@+id/wifi_account_desc"
+                android:gravity="top|center"
+                android:text="Wi-Fi简介:" />
+
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
