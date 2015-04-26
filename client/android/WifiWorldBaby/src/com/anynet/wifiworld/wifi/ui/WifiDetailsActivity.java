@@ -93,7 +93,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifiInfoScanned = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
-		mTitlebar.tvTitle.setText(mWifiInfoScanned.getWifiName());
+		mTitlebar.tvTitle.setText(mWifiInfoScanned.getAlias());
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
