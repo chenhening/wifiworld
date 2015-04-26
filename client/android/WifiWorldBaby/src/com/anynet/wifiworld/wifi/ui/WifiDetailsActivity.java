@@ -221,10 +221,6 @@ public class WifiDetailsActivity extends BaseActivity {
 						
 						@Override
 						public void onSuccess(WifiQuestions object) {
-//							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-//							i.putExtra("whoami", "WifiDetailsActivity");
-//							i.putExtra("data", object);
-//							startActivity(i);
 							KnockStepFirstActivity.start(WifiDetailsActivity.this.getActivity(), "WifiDetailsActivity", object);
 						}
 						

@@ -109,13 +109,14 @@ public class WifiQuestions extends BmobObject {
 						if (object.size() >= 1) {
 							_callback.onSuccess(object.get(0));
 						} else {
-							_callback.onFailed("数据库还没有相关数据。");
+							_callback.onSuccess(itself);
 						}
 					}
 
 					@Override
 					public void onError(int code, String msg) {
-						_callback.onSuccess(itself);
+						_callback.onSuccess(itself); //TODO(binfei):网络数据不能访问的时候暂时提供默认的问题
+						//_callback.onFailed("访问网络失败。");
 					}
 				});
 			}
