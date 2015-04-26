@@ -69,7 +69,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	
 	private Handler mUpdateViewHandler = new Handler();
 	private Runnable mMonitorDataRunnable = null;
-	private int mProfileFlag = GET_DATA_DEFAULT;
+//	private int mProfileFlag = GET_DATA_DEFAULT;
 	private int mDynamicFlag = GET_DATA_DEFAULT;
 	private int mMessagesFlag = GET_DATA_DEFAULT;
 	private int mCommentsFlag = GET_DATA_DEFAULT;
@@ -110,6 +110,14 @@ public class WifiDetailsActivity extends BaseActivity {
 		//WiFi logo image
 		mWifiLogo = (ImageView)findViewById(R.id.wifi_account_portral);
 		mWifiBanner = (TextView) findViewById(R.id.wifi_account_desc);
+		if (mWifiInfoScanned.getWifiLogo() != null) {
+			mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
+		} else {
+			mWifiLogo.setImageResource(R.drawable.icon_default_portal);
+		}
+		if (mWifiInfoScanned.getBanner() != null) {
+			mWifiBanner.setText(mWifiInfoScanned.getBanner());
+		}
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		
@@ -270,25 +278,25 @@ public class WifiDetailsActivity extends BaseActivity {
 	}
 	
 	private void pullDataFromDB() {
-		WifiProfile wifiProfile = new WifiProfile();
-		String queryTag = WifiProfile.LOGO + "," + WifiProfile.BANNER;
-		wifiProfile.QueryTagByMacAddr(this, mWifiInfoScanned.getWifiMAC(), queryTag, new DataCallback<WifiProfile>() {
-			
-			@Override
-			public void onSuccess(WifiProfile object) {
-				Log.i(TAG, "Success to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
-				mWifiInfoScanned.setWifiLogo(object.getLogo());
-				mWifiInfoScanned.setBanner(object.Banner);
-				mProfileFlag = GET_DATA_SUCCESS;
-			}
-			
-			@Override
-			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi profile:" + mWifiInfoScanned.getWifiMAC()
-						+ ": " + msg);
-				mProfileFlag = GET_DATA_FAILED;
-			}
-		});
+//		WifiProfile wifiProfile = new WifiProfile();
+//		String queryTag = WifiProfile.LOGO + "," + WifiProfile.BANNER;
+//		wifiProfile.QueryTagByMacAddr(this, mWifiInfoScanned.getWifiMAC(), queryTag, new DataCallback<WifiProfile>() {
+//			
+//			@Override
+//			public void onSuccess(WifiProfile object) {
+//				Log.i(TAG, "Success to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
+//				mWifiInfoScanned.setWifiLogo(object.getLogo());
+//				mWifiInfoScanned.setBanner(object.Banner);
+//				mProfileFlag = GET_DATA_SUCCESS;
+//			}
+//			
+//			@Override
+//			public void onFailed(String msg) {
+//				Log.e(TAG, "Failed to query wifi profile:" + mWifiInfoScanned.getWifiMAC()
+//						+ ": " + msg);
+//				mProfileFlag = GET_DATA_FAILED;
+//			}
+//		});
 		
 		WifiDynamic wifiDynamic = new WifiDynamic();
 		wifiDynamic.QueryConnectedTimes(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<Long>() {
@@ -396,14 +404,14 @@ public class WifiDetailsActivity extends BaseActivity {
 				
 				@Override
 				public void run() {
-					if (mProfileFlag == GET_DATA_SUCCESS) {
-						if (mWifiInfoScanned.getWifiLogo() != null) {
-							mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
-						}
-						if (mWifiInfoScanned.getBanner() != null) {
-							mWifiBanner.setText(mWifiInfoScanned.getBanner());
-						}
-					}
+//					if (mProfileFlag == GET_DATA_SUCCESS) {
+//						if (mWifiInfoScanned.getWifiLogo() != null) {
+//							mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
+//						}
+//						if (mWifiInfoScanned.getBanner() != null) {
+//							mWifiBanner.setText(mWifiInfoScanned.getBanner());
+//						}
+//					}
 					if (mDynamicFlag == GET_DATA_SUCCESS) {
 						mRankText.setText("排名：" + String.valueOf(mWifiInfoScanned.getRanking()));
 						mRateText.setText(String.valueOf(mWifiInfoScanned.getWifiStrength()));
@@ -419,11 +427,11 @@ public class WifiDetailsActivity extends BaseActivity {
 						List<String> comment_item = mWifiInfoScanned.getComments();
 						mListComments.setAdapter(new ArrayAdapter<String>(getBaseContext(), R.layout.list_view_item, comment_item));
 					}
-					Log.i(TAG, "flags: " + mProfileFlag + ", " + mCommentsFlag + ", " + mDynamicFlag
-							+ ", " + mMessagesFlag + ", " + mFollowFlag);
+//					Log.i(TAG, "flags: " + mProfileFlag + ", " + mCommentsFlag + ", " + mDynamicFlag
+//							+ ", " + mMessagesFlag + ", " + mFollowFlag);
 					if (mCommentsFlag != GET_DATA_DEFAULT && mDynamicFlag != GET_DATA_DEFAULT
 							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT
-							&& mProfileFlag != GET_DATA_DEFAULT) {
+							/*&& mProfileFlag != GET_DATA_DEFAULT*/) {
 						mProcessBar.setVisibility(View.GONE);
 						mLayoutRoot.removeView(mProcessBar);
 						return;

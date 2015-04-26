@@ -201,7 +201,7 @@ public class WifiProfile extends BmobObject {
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
 		if (!allkeys)
-			query.addQueryKeys("MacAddr,Password,Alias");
+			query.addQueryKeys("MacAddr,Password,Alias,Logo,Banner");
 		query.addWhereContainedIn(unique_key, Macs);
 		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
 		new Thread(new Runnable() {
