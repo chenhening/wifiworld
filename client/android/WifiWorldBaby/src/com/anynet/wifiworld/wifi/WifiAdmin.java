@@ -352,16 +352,6 @@ public class WifiAdmin {
 		return true;
 	}
     
-    private int parseBitSet(BitSet kmtBitSet) {
-    	for (int i = 0; i < kmtBitSet.size(); i++) {
-			if (kmtBitSet.get(i)) {
-				return i;
-			}
-		}
-    	
-    	return -1;
-    }
-
     public static int getWifiStrength(int dBm) {
     	if(dBm <= -100)
             return 0;
