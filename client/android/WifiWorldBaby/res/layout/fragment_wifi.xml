@@ -49,7 +49,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:id="@+id/wifi_icon"
+                android:id="@+id/wifi_logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"

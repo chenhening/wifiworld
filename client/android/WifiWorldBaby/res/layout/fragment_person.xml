@@ -346,7 +346,7 @@
                     android:id="@+id/slv_my_setting"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_msg"
+                    item:icon="@drawable/ic_person_setting"
                     item:label="@string/person_my_setting"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>

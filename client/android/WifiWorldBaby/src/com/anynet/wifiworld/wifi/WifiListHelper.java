@@ -11,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.bean.Msg;
-import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -131,7 +129,7 @@ public class WifiListHelper {
 			final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
 			verifyList(wifiCfg, hotspot, wifiInfo, mWifiProfiles);
 		}
-		mHandler.sendEmptyMessage(((MainActivity)mContext).UPDATE_WIFI_LIST);
+		mHandler.sendEmptyMessage(WifiFragment.UPDATE_WIFI_LIST);
 	}
 	
 	private void verifyList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
@@ -156,22 +154,29 @@ public class WifiListHelper {
 			wifiRemark = "当前连接WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
-			if (objects != null) {
-				int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
-				boolean isAuthWifi = idx == -1 ? false : true;
-				mWifiInfoCur.setAuthWifi(isAuthWifi);
-				//mWifiInfoCur.setSponser(objects.get(idx).Sponser);
+			
+			//query WiFi whether has been shared
+			WifiProfile wifiProfile = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+			if (wifiProfile != null) {
+				mWifiInfoCur.setAuthWifi(true);
+				mWifiInfoCur.setWifiLogo(wifiProfile.Logo);
+				mWifiInfoCur.setBanner(wifiProfile.Banner);
+				mWifiInfoCur.setAlias(wifiProfile.Alias);
+				mWifiInfoCur.setSponser(wifiProfile.Sponser);
 			}
+			boolean isLocalSave = wifiCfg == null ? false : true;
+			mWifiInfoCur.setLocalSave(isLocalSave);
+			
 			return;
 		}
 		
 		if (objects != null) {
-			int idx = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
-			if (idx != -1) {
+			WifiProfile wifiProfile = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
+			if (wifiProfile != null) {
 				Log.i(TAG, "Query wifi:" + hotspot.BSSID + ":" + hotspot.SSID + " has been shared");
 				wifiName = hotspot.SSID;
 				wifiMAC = hotspot.BSSID;
-				wifiPwd = objects.get(idx).Password;
+				wifiPwd = wifiProfile.Password;
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				
@@ -182,10 +187,12 @@ public class WifiListHelper {
 				}
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
-				WifiProfile wifi = objects.get(idx);
-				if (wifi.Alias != null && wifi.Alias.length() > 0)
-					wifiInfoScanned.setAlias(wifi.Alias);
-				//wifiInfoScanned.setSponser(objects.get(idx).Sponser);
+				if (wifiProfile.Alias != null && wifiProfile.Alias.length() > 0)
+					wifiInfoScanned.setAlias(wifiProfile.Alias);
+				wifiInfoScanned.setAuthWifi(true);
+				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
+				wifiInfoScanned.setBanner(wifiProfile.Banner);
+				wifiInfoScanned.setSponser(wifiProfile.Sponser);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}
@@ -204,6 +211,7 @@ public class WifiListHelper {
 			//wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
+			wifiInfoScanned.setLocalSave(true);
 			mWifiFree.add(wifiInfoScanned);
 		} else {
 			//Check whether is a open WiFi
@@ -225,14 +233,16 @@ public class WifiListHelper {
 		}
 	}
 	
-	private int isContained(String macAddress, List<WifiProfile> mList) {
-		for (int idx=0; idx<mList.size(); ++idx) {
-			if (mList.get(idx).MacAddr.equals(macAddress)) {
-				return idx;
+	private WifiProfile isContained(String macAddress, List<WifiProfile> mList) {
+		if (mList != null) {
+			for (int idx=0; idx<mList.size(); ++idx) {
+				if (mList.get(idx).MacAddr.equals(macAddress)) {
+					return mList.get(idx);
+				}
 			}
 		}
 		
-		return -1;
+		return null;
 	}
 	
 	//remove WIFI which is connected from free-WIFI-list or encrypt-WIFI-list

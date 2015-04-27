@@ -54,6 +54,8 @@ public class WifiReportOnlineFragment extends Fragment {
 	
 	private void addMarkerOnView(List<WifiDynamic> objects) {
 		ArrayList<String> records = new ArrayList<String>();
+		if (LoginHelper.getInstance(getActivity()).mWifiProfile == null)
+			return;
 		BmobGeoPoint mBmobGeoPoint = LoginHelper.getInstance(getActivity()).mWifiProfile.Geometry;
 		if (mBmobGeoPoint == null) 
 			return;

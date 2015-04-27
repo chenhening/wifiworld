@@ -201,7 +201,7 @@ public class WifiProfile extends BmobObject {
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
 		if (!allkeys)
-			query.addQueryKeys("MacAddr,Password,Alias");
+			query.addQueryKeys("MacAddr,Password,Alias,Logo,Banner,Sponser");
 		query.addWhereContainedIn(unique_key, Macs);
 		Log.d("findObjects", "开始查询BatchQueryByMacAddress");
 		new Thread(new Runnable() {
@@ -322,13 +322,13 @@ public class WifiProfile extends BmobObject {
 			@Override
 			public void run() {
 				// 先保存到leancloud去
-				GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
-				geo.setKey(MacAddr);
-				if (Geometry != null)
-					geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
-				if (!geo.StoreRemote()) {
+				//GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
+				//geo.setKey(MacAddr);
+				//if (Geometry != null)
+				//	geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
+				//if (!geo.StoreRemote()) {
 					//return;
-				}
+				//}
 
 				// 先查询，如果有数据就更新，否则增加一条新记录
 				QueryByMacAddress(context, MacAddr, new DataCallback<WifiProfile>() {

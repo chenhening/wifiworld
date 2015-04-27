@@ -160,8 +160,14 @@ public class WifiListAdapter extends BaseAdapter {
 				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
 	            if (position >= (wifiAuthCnt + wifiFreeCnt + 3)) {
 					imageView.setImageResource(R.drawable.icon_crack_failed);
-				} else {
+				} else if (position >= (wifiAuthCnt + 2)) {
 					imageView.setImageResource(R.drawable.icon_invalid);
+				} else {
+					if (infoScanned != null && infoScanned.getWifiLogo() != null) {
+						imageView.setImageBitmap(infoScanned.getWifiLogo());
+					} else {
+						imageView.setImageResource(R.drawable.icon_invalid);
+					}
 				}
 	            
 	            int signalStrength = (infoScanned).getWifiStrength();

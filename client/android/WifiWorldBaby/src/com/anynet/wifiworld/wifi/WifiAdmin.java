@@ -5,6 +5,8 @@ import java.util.BitSet;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
@@ -133,7 +135,8 @@ public class WifiAdmin {
 	 * @param password Password for secure network or is ignored.
 	 * @return
 	 */
-	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned) {
+	public boolean connectToNewNetwork(final Context ctx, final WifiInfoScanned wifiInfoScanned,
+			boolean reassociate, boolean localSave) {
 		
 		if(ConfigSec.isOpenNetwork(wifiInfoScanned.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
@@ -146,7 +149,9 @@ public class WifiAdmin {
 		
 		int id = -1;
 		try {
+			config.priority = getMaxPriority(mWifiManager) + 1;
 			id = mWifiManager.addNetwork(config);
+			config.networkId = id;
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
@@ -156,18 +161,31 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		if(!mWifiManager.saveConfiguration()) {
-			Log.e(TAG, "Failed to save config");
+		if (localSave) {
+			if(!mWifiManager.saveConfiguration()) {
+				Log.e(TAG, "Failed to save config");
+				return false;
+			}
+			
+			config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
+			if(config == null) {
+				Log.e(TAG, "Failed to get config from local configed wifi list");
+				return false;
+			}
+		}
+		
+		if(!mWifiManager.enableNetwork(config.networkId, true)) {
+			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
 		}
 		
-		config = getWifiConfiguration(config, wifiInfoScanned.getEncryptType());
-		if(config == null) {
-			Log.e(TAG, "Failed to get config from local configed wifi list");
+		final boolean connect = reassociate ? mWifiManager.reassociate() : mWifiManager.reconnect();
+		if(!connect) {
+			Log.e(TAG, "Failed to reassociate or reconnect");
 			return false;
 		}
 		
-		return connectToConfiguredNetwork(ctx, config, true);
+		return connect;
 	}
     
     //connect WiFi which is configurated
@@ -185,48 +203,48 @@ public class WifiAdmin {
 	 * @param numOpenNetworksKept Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT
 	 * @return
 	 */
-	public boolean connectToConfiguredNetwork(final Context ctx, WifiConfiguration config, boolean reassociate) {
-		final String security = ConfigSec.getWifiConfigurationSecurity(config);
+	public boolean connectToConfiguredNetwork(Context ctx, WifiConfiguration config, boolean reassociate) {
+		//final String security = ConfigSec.getWifiConfigurationSecurity(config);
 		
-		int oldPri = config.priority;
+		//int oldPri = config.priority;
 		// Make it the highest priority.
-		int newPri = getMaxPriority(mWifiManager) + 1;
-		if(newPri > MAX_PRIORITY) {
-			newPri = shiftPriorityAndSave(mWifiManager);
-			config = getWifiConfiguration(config, security);
-			if(config == null) {
-				Log.e(TAG, "Failed to find configed wifi under local wificonfiguration list");
-				return false;
-			}
-		}
+		//if(newPri > MAX_PRIORITY) {
+		//	newPri = shiftPriorityAndSave(mWifiManager);
+		//	config = getWifiConfiguration(config, security);
+		//	if(config == null) {
+		//		Log.e(TAG, "Failed to find configed wifi under local wificonfiguration list");
+		//		return false;
+		//	}
+		//}
 		
 		// Set highest priority to this configured network
-		config.priority = newPri;
+		config.priority = getMaxPriority(mWifiManager) + 1;
 		int networkId = mWifiManager.updateNetwork(config);
+		config.networkId = networkId;
 		if(networkId == -1) {
 			Log.e(TAG, "Unable to update new priority info to network");
 			return false;
 		}
 		
 		// Do not disable others
-		if(!mWifiManager.enableNetwork(config.networkId, false)) {
-			config.priority = oldPri;
-			Log.e(TAG, "Failed to enable current select network");
-			return false;
-		}
+		//if(!mWifiManager.enableNetwork(config.networkId, false)) {
+		//	config.priority = oldPri;
+		//	Log.e(TAG, "Failed to enable current select network");
+		//	return false;
+		//}
 		
-		if(!mWifiManager.saveConfiguration()) {
-			config.priority = oldPri;
-			Log.e(TAG, "Failed to save current configuration to local");
-			return false;
-		}
+		//if(!mWifiManager.saveConfiguration()) {
+		//	config.priority = oldPri;
+		//	Log.e(TAG, "Failed to save current configuration to local");
+		//	return false;
+		//}
 		
 		// We have to retrieve the WifiConfiguration after save.
-		config = getWifiConfiguration(config, security);
-		if(config == null) {
-			Log.e(TAG, "Failed to retrieve current wifi configuration");
-			return false;
-		}
+		//config = getWifiConfiguration(config, security);
+		//if(config == null) {
+		//	Log.e(TAG, "Failed to retrieve current wifi configuration");
+		//	return false;
+		//}
 		
 		//WifiReenable.schedule(ctx);
 		
@@ -247,103 +265,93 @@ public class WifiAdmin {
 	}
 
 	//----------------------------------------------------------------------
-	public boolean checkWifiPwd(String pwd, final DataCallback<Boolean> callback) {
-		WifiInfoScanned wifiInfoCur = WifiListHelper.getInstance(mContext).mWifiInfoCur;
-		if (wifiInfoCur != null) {
-			//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
-			final WifiConfiguration old_conf = getExistWifiConf(
-				convertToQuotedString(wifiInfoCur.getWifiName()), wifiInfoCur.getWifiMAC());
-			final WifiConfiguration config = new WifiConfiguration();
-			config.SSID = old_conf.SSID;
-			config.BSSID = old_conf.BSSID;
-			config.preSharedKey = "\"" + pwd + "\"";
-			//wifiInfoCur.setWifiPwd(pwd);
-			//ConfigSec.setupSecurity(config, wifiInfoCur.getEncryptType(), wifiInfoCur.getWifiPwd());
-			
-			int id = -1;
-			try {
-				id = mWifiManager.addNetwork(config);
-				config.networkId = id;
-			} catch(NullPointerException e) {
-				Log.e(TAG, "Weird!! Really!! What's wrong??", e);
-				return false;
+	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
+		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
+		WifiConfiguration conf = getExistWifiConf(ssid, bssid);
+		try {
+			if (conf != null) {
+				mWifiManager.removeNetwork(conf.networkId);
+			} else {
+				conf = new WifiConfiguration();
+				conf.SSID = convertToQuotedString(ssid);
+				conf.BSSID = bssid;
 			}
-			
-			if(id == -1) {
-				Log.e(TAG, "Failed to add config to network");
-				return false;
-			}
-			
-			//监听密码是否成功
-			final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-			mContext.registerReceiver(new BroadcastReceiver() {
-
-				@Override
-                public void onReceive(Context context, Intent intent) {
-					String action = intent.getAction();
-					
-					if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
-			        	Log.i(TAG, "supplicant state changed action");
-			            WifiInfo info = getWifiConnecting();
-			            SupplicantState state = info.getSupplicantState();
-			            if (state == SupplicantState.COMPLETED && info.getNetworkId() == config.networkId){ //验证当前网络登录的网络是否是测试网络
-			            	if (callback != null) {
-			            		mContext.unregisterReceiver(this);
-			            		//验证成功也要恢复之前的配置
-			            		mWifiManager.removeNetwork(config.networkId);
-			            		mWifiManager.enableNetwork(old_conf.networkId, true);
-			            		mWifiManager.reassociate();
-			            		mWifiManager.saveConfiguration();
-			            		callback.onSuccess(true);
-			            	}
-			            } else {
-			            	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
-			            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
-			            		if (callback != null) {
-			            			mContext.unregisterReceiver(this);
-			            			//验证失败恢复之前的配置
-				            		mWifiManager.removeNetwork(config.networkId);
-				            		mWifiManager.enableNetwork(old_conf.networkId, true);
-				            		mWifiManager.reassociate();
-				            		mWifiManager.saveConfiguration();
-			            			callback.onFailed("密码验证失败，当前网络不稳定或密码不正确");
-			            		}
-			            	}
-			            }
-			            Log.e(TAG, state.toString());
-			        }
-                }
-				
-			}, filter);
-			
-			if(!mWifiManager.enableNetwork(config.networkId, true)) {
-				Log.e(TAG, "Failed to enable current network");
-				return false;
-			}
-			
-			if (!mWifiManager.reassociate()) {
-				Log.e(TAG, "Failed to reassociate network");
-				return false;
-			}
-			
-			return true;
-		} else {
-			Log.e(TAG, "Not connect to any wifi");
-			Toast.makeText(mContext, "Not connect to any wifi", Toast.LENGTH_LONG).show();
+			conf.preSharedKey = "\"" + pwd + "\"";
+			conf.priority = getMaxPriority(mWifiManager) + 1;
+			conf.networkId = mWifiManager.addNetwork(conf);
+			//mWifiManager.saveConfiguration();
+		} catch(NullPointerException e) {
+			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
 		}
+		
+		if(conf.networkId == -1) {
+			Log.e(TAG, "Failed to add config to network");
+			return false;
+		}
+		
+		if(!mWifiManager.enableNetwork(conf.networkId, true)) {
+			Log.e(TAG, "Failed to enable current network");
+			return false;
+		}
+		
+		if (!mWifiManager.reassociate()) {
+			Log.e(TAG, "Failed to reassociate network");
+			return false;
+		}
+		
+		//监听密码是否成功
+		final WifiConfiguration _conf = conf;
+		final Timer timer = new Timer();
+		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+		final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+			@Override
+            public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				
+				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
+		        	Log.i(TAG, "supplicant state changed action");
+		        	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+	            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
+	            		if (callback != null) {
+	            			timer.cancel();
+	            			mWifiManager.removeNetwork(_conf.networkId);
+	            			mContext.unregisterReceiver(this);
+	            			callback.onFailed("密码验证失败，请重新输入密码。");
+	            			return;
+	            		}
+	            	}
+	            	
+		            WifiInfo info = getWifiConnecting();
+		            SupplicantState state = info.getSupplicantState();
+		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId){ //验证当前网络登录的网络是否是测试网络
+		            	if (callback != null) {
+		            		timer.cancel();
+		            		mContext.unregisterReceiver(this);
+		            		callback.onSuccess(true);
+		            	}
+		            } 
+		            Log.e(TAG, state.toString());
+		        }
+            }
+		};
+		
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				mWifiManager.removeNetwork(_conf.networkId);
+				mContext.unregisterReceiver(receiver);
+    			callback.onFailed("密码验证失败，请重新输入密码。");
+			}
+			
+		}, 10000);
+		
+		mContext.registerReceiver(receiver, filter);
+		return true;
 	}
     
-    private int parseBitSet(BitSet kmtBitSet) {
-    	for (int i = 0; i < kmtBitSet.size(); i++) {
-			if (kmtBitSet.get(i)) {
-				return i;
-			}
-		}
-    	
-    	return -1;
-    }
-
     public static int getWifiStrength(int dBm) {
     	if(dBm <= -100)
             return 0;
@@ -482,10 +490,11 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-    		mWifiManager.enableNetwork(netId, false);
-    		mWifiManager.saveConfiguration();
+    		//mWifiManager.enableNetwork(netId, false);
+    		//mWifiManager.saveConfiguration();
     		mWifiManager.disableNetwork(netId);
     		mWifiManager.disconnect();
+    		mWifiManager.removeNetwork(netId);
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {
@@ -562,13 +571,10 @@ public class WifiAdmin {
 	
     //获取存在的wifi配置
     public WifiConfiguration getExistWifiConf(String SSID, String BSSID) {
-
 		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
 		for(final WifiConfiguration config : configurations) {
-			if(config.SSID == null || !SSID.equals(config.SSID)) {
-				continue;
-			}
-			if(config.BSSID == null || BSSID == null || BSSID.equals(config.BSSID)) {
+			if(config.SSID != null && (SSID.equals(config.SSID) || SSID.equals(convertToNonQuotedString(SSID))) &&
+				config.BSSID != null && (BSSID.equals(config.BSSID) || BSSID.equals(convertToNonQuotedString(BSSID)))) {
 				return config;
 			}
 		}

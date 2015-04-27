@@ -1,6 +1,6 @@
 package com.anynet.wifiworld.wifi.ui;
 
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.anynet.wifiworld.MainActivity;
@@ -59,6 +59,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private TextView mRankText;
 	private TextView mRateText;
 	private ImageView mWifiLogo;
+	private TextView mWifiMaster;
 	private TextView mWifiBanner;
 	private TextView mConnectedCnt;
 	private TextView mConnectedTime;
@@ -69,12 +70,12 @@ public class WifiDetailsActivity extends BaseActivity {
 	
 	private Handler mUpdateViewHandler = new Handler();
 	private Runnable mMonitorDataRunnable = null;
-	private int mProfileFlag = GET_DATA_DEFAULT;
+//	private int mProfileFlag = GET_DATA_DEFAULT;
 	private int mDynamicFlag = GET_DATA_DEFAULT;
 	private int mMessagesFlag = GET_DATA_DEFAULT;
 	private int mCommentsFlag = GET_DATA_DEFAULT;
 	private int mFollowFlag = GET_DATA_DEFAULT;
-	private WifiFollow mFollowed = null;
+	private List<WifiFollow> mFollowed = null;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -92,7 +93,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifiInfoScanned = (WifiInfoScanned) intent.getSerializableExtra("WifiSelected");
 		//Set title text and back button listener
-		mTitlebar.tvTitle.setText(mWifiInfoScanned.getWifiName());
+		mTitlebar.tvTitle.setText(mWifiInfoScanned.getAlias());
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -110,6 +111,16 @@ public class WifiDetailsActivity extends BaseActivity {
 		//WiFi logo image
 		mWifiLogo = (ImageView)findViewById(R.id.wifi_account_portral);
 		mWifiBanner = (TextView) findViewById(R.id.wifi_account_desc);
+		if (mWifiInfoScanned.getWifiLogo() != null) {
+			mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
+		} else {
+			mWifiLogo.setImageResource(R.drawable.icon_default_portal);
+		}
+		if (mWifiInfoScanned.getBanner() != null) {
+			mWifiBanner.setText(mWifiInfoScanned.getBanner());
+		}
+		mWifiMaster = (TextView) findViewById(R.id.tv_wifi_master);
+		mWifiMaster.setText(mWifiInfoScanned.getSponser());
 		
 		mListComments = (ListView) findViewById(R.id.wifi_list_comments);
 		
@@ -124,8 +135,8 @@ public class WifiDetailsActivity extends BaseActivity {
 					return;
 				}
 				
-				if (mFollowed != null) {
-					mFollowed.CancelFollow(getBaseContext(), new DataCallback<WifiFollow>() {
+				if (mFollowed != null && mFollowed.size() > 0) {
+					mFollowed.get(0).CancelFollow(getBaseContext(), new DataCallback<WifiFollow>() {
 
 						@Override
 						public void onSuccess(WifiFollow object) {
@@ -154,7 +165,8 @@ public class WifiDetailsActivity extends BaseActivity {
 							Log.i(TAG, "Success to follow current WiFi");
 							mFollowView.setText("取消收藏");
 							//mFollowView.setBackgroundColor(color.gray);
-							mFollowed = object;
+							mFollowed = new ArrayList<WifiFollow>();
+							mFollowed.add(object);
 						}
 
 						@Override
@@ -220,11 +232,7 @@ public class WifiDetailsActivity extends BaseActivity {
 						
 						@Override
 						public void onSuccess(WifiQuestions object) {
-//							Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-//							i.putExtra("whoami", "WifiDetailsActivity");
-//							i.putExtra("data", object);
-//							startActivity(i);
-							KnockStepFirstActivity.start(WifiDetailsActivity.this, "WifiDetailsActivity", object);
+							KnockStepFirstActivity.start(WifiDetailsActivity.this.getActivity(), "WifiDetailsActivity", object);
 						}
 						
 						@Override
@@ -236,6 +244,10 @@ public class WifiDetailsActivity extends BaseActivity {
 				
 			});
 		}
+	}
+
+	protected Context getActivity() {
+		return this;
 	}
 
 	@Override
@@ -269,24 +281,25 @@ public class WifiDetailsActivity extends BaseActivity {
 	}
 	
 	private void pullDataFromDB() {
-		WifiProfile wifiProfile = new WifiProfile();
-		String queryTag = WifiProfile.LOGO + "," + WifiProfile.BANNER;
-		wifiProfile.QueryTagByMacAddr(this, mWifiInfoScanned.getWifiMAC(), queryTag, new DataCallback<WifiProfile>() {
-			
-			@Override
-			public void onSuccess(WifiProfile object) {
-				Log.i(TAG, "Success to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
-				mWifiInfoScanned.setWifiLogo(object.getLogo());
-				mWifiInfoScanned.setBanner(object.Banner);
-				mProfileFlag = GET_DATA_SUCCESS;
-			}
-			
-			@Override
-			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
-				mProfileFlag = GET_DATA_FAILED;
-			}
-		});
+//		WifiProfile wifiProfile = new WifiProfile();
+//		String queryTag = WifiProfile.LOGO + "," + WifiProfile.BANNER;
+//		wifiProfile.QueryTagByMacAddr(this, mWifiInfoScanned.getWifiMAC(), queryTag, new DataCallback<WifiProfile>() {
+//			
+//			@Override
+//			public void onSuccess(WifiProfile object) {
+//				Log.i(TAG, "Success to query wifi profile from server:" + mWifiInfoScanned.getWifiMAC());
+//				mWifiInfoScanned.setWifiLogo(object.getLogo());
+//				mWifiInfoScanned.setBanner(object.Banner);
+//				mProfileFlag = GET_DATA_SUCCESS;
+//			}
+//			
+//			@Override
+//			public void onFailed(String msg) {
+//				Log.e(TAG, "Failed to query wifi profile:" + mWifiInfoScanned.getWifiMAC()
+//						+ ": " + msg);
+//				mProfileFlag = GET_DATA_FAILED;
+//			}
+//		});
 		
 		WifiDynamic wifiDynamic = new WifiDynamic();
 		wifiDynamic.QueryConnectedTimes(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<Long>() {
@@ -300,7 +313,8 @@ public class WifiDetailsActivity extends BaseActivity {
 
 			@Override
 			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi dynamic from server:" + mWifiInfoScanned.getWifiMAC());
+				Log.e(TAG, "Failed to query wifi dynamic:" + mWifiInfoScanned.getWifiMAC()
+						+ ": " + msg);
 				mDynamicFlag = GET_DATA_FAILED;
 			}
 		});
@@ -310,7 +324,7 @@ public class WifiDetailsActivity extends BaseActivity {
 			
 			@Override
 			public void onSuccess(WifiMessages object) {
-				//Log.i(TAG, "Success to query wifi messages from server:" + object.size());
+				Log.i(TAG, "Success to query wifi messages from server:");
 				//for (WifiMessages wifiMessages : object) {
 					mWifiInfoScanned.addMessage(object.Message);
 				//}
@@ -319,7 +333,8 @@ public class WifiDetailsActivity extends BaseActivity {
 			
 			@Override
 			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi messages from server:" + mWifiInfoScanned.getWifiMAC());
+				Log.e(TAG, "Failed to query wifi messages:" + mWifiInfoScanned.getWifiMAC()
+						+ ": " + msg);
 				mMessagesFlag = GET_DATA_FAILED;
 			}
 		});
@@ -338,7 +353,8 @@ public class WifiDetailsActivity extends BaseActivity {
 			
 			@Override
 			public void onFailed(String msg) {
-				Log.e(TAG, "Failed to query wifi comments from server:" + mWifiInfoScanned.getWifiMAC());
+				Log.e(TAG, "Failed to query wifi comments:" + mWifiInfoScanned.getWifiMAC()
+						+ ": " + msg);
 				mCommentsFlag = GET_DATA_FAILED;
 				
 			}
@@ -347,24 +363,24 @@ public class WifiDetailsActivity extends BaseActivity {
 		if (LoginHelper.getInstance(this).isLogined()) {
 			WifiFollow wifiFollow = new WifiFollow();
 			wifiFollow.QueryWifiByMac(this, mWifiInfoScanned.getWifiMAC(),
-				LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber, new DataCallback<WifiFollow>() {
+				LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber, new MultiDataCallback<WifiFollow>() {
 
 					@Override
-					public void onSuccess(WifiFollow object) {
+					public void onSuccess(List<WifiFollow> objects) {
 						Log.i(TAG, "Success to find wifi info from wifi follow table");
 						mFollowView.setText("取消收藏");
 						//mFollowView.setBackgroundColor(color.gray);
-						mFollowed = object;
+						mFollowed = objects;
 						mFollowFlag = GET_DATA_SUCCESS;
 					}
 
 					@Override
 					public void onFailed(String msg) {
 						showToast("收藏或取消失败，请稍后再试");
-						//Log.e(TAG, "Failed to find wifi info from wifi follow table");
+						Log.e(TAG, "Failed to find wifi follow info: " + msg);
 						//mFollowView.setText("收藏WiFi");
 						//mFollowView.setBackgroundColor(color.orange);
-						//mFollowFlag = GET_DATA_FAILED;
+						mFollowFlag = GET_DATA_FAILED;
 					}
 				});
 		} else {
@@ -391,28 +407,34 @@ public class WifiDetailsActivity extends BaseActivity {
 				
 				@Override
 				public void run() {
-					if (mProfileFlag == GET_DATA_SUCCESS) {
-						mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
-						mWifiBanner.setText(mWifiInfoScanned.getBanner());
-					}
-					if (mCommentsFlag == GET_DATA_SUCCESS) {
+//					if (mProfileFlag == GET_DATA_SUCCESS) {
+//						if (mWifiInfoScanned.getWifiLogo() != null) {
+//							mWifiLogo.setImageBitmap(mWifiInfoScanned.getWifiLogo());
+//						}
+//						if (mWifiInfoScanned.getBanner() != null) {
+//							mWifiBanner.setText(mWifiInfoScanned.getBanner());
+//						}
+//					}
+					if (mDynamicFlag == GET_DATA_SUCCESS) {
 						mRankText.setText("排名：" + String.valueOf(mWifiInfoScanned.getRanking()));
 						mRateText.setText(String.valueOf(mWifiInfoScanned.getWifiStrength()));
 						mConnectedCnt.setText(String.valueOf(mWifiInfoScanned.getConnectedTimes()) + "次");
 						mConnectedTime.setText(String.valueOf(mWifiInfoScanned.getConnectedDuration()) + "小时");
 					}
-					if (mDynamicFlag == GET_DATA_SUCCESS) {
+					if (mMessagesFlag == GET_DATA_SUCCESS) {
 						if (mWifiInfoScanned.getMessages().size() > 0) {
 							mWifiMessage.setText(mWifiInfoScanned.getMessages().get(0));
 						}
 					}
-					if (mMessagesFlag == GET_DATA_SUCCESS) {
+					if (mCommentsFlag == GET_DATA_SUCCESS) {
 						List<String> comment_item = mWifiInfoScanned.getComments();
 						mListComments.setAdapter(new ArrayAdapter<String>(getBaseContext(), R.layout.list_view_item, comment_item));
 					}
+//					Log.i(TAG, "flags: " + mProfileFlag + ", " + mCommentsFlag + ", " + mDynamicFlag
+//							+ ", " + mMessagesFlag + ", " + mFollowFlag);
 					if (mCommentsFlag != GET_DATA_DEFAULT && mDynamicFlag != GET_DATA_DEFAULT
 							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT
-							&& mProfileFlag != GET_DATA_DEFAULT) {
+							/*&& mProfileFlag != GET_DATA_DEFAULT*/) {
 						mProcessBar.setVisibility(View.GONE);
 						mLayoutRoot.removeView(mProcessBar);
 						return;

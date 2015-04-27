@@ -204,11 +204,11 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
                 // 根据广播的status来确定是在区域内还是在区域外
                 int status = bundle.getInt("status");
                 if (status == 0) {
-                    Toast.makeText(getApplicationContext(), "不在区域",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "不在区域",
+                    //        Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "在区域内",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "在区域内",
+                    //        Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -269,6 +269,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		mListener = listener;
 		if (mAMapLocationManager == null) {
 			mAMapLocationManager = LocationManagerProxy.getInstance(this.getActivity());
+			mAMapLocationManager.setGpsEnable(false);
 			// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
 			// 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），
 			// 并且在合适时间调用removeUpdates()方法来取消定位请求
@@ -276,7 +277,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			// 其中如果间隔时间为-1，则定位只定一次
 			// 在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求
 			mAMapLocationManager.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 50, this);
-			mAMapLocationManager.setGpsEnable(false);
 		}
 	}
 
@@ -470,6 +470,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 				tempInfoScanned.setWifiName(mWP.Ssid);
 				tempInfoScanned.setWifiMAC(mWP.MacAddr);
+				tempInfoScanned.setWifiLogo(mWP.Logo);
 				wifiData.putSerializable("WifiSelected", tempInfoScanned);
 				intent.putExtras(wifiData);
 				startActivity(intent);
