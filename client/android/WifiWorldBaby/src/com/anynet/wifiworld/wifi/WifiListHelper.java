@@ -77,7 +77,14 @@ public class WifiListHelper {
 	
 	public boolean fillWifiList() {
 		if (mWifiAdmin.isWifiEnabled()) {
-			organizeWifiList(mWifiAdmin.scanWifi());
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					organizeWifiList(mWifiAdmin.scanWifi());
+				}
+			}).start();
 			return true;
 		}
 		return false;

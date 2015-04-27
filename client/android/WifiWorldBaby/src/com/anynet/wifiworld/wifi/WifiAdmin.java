@@ -1,7 +1,6 @@
 package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -10,34 +9,22 @@ import java.util.TimerTask;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
-import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
-import com.anynet.wifiworld.data.DataListenerHelper;
-import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LocationHelper;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
-import android.os.IBinder;
-import android.os.Parcel;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 public class WifiAdmin {
 	private static final String TAG = WifiAdmin.class.getSimpleName();
