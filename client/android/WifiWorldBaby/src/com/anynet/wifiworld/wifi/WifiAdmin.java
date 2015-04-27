@@ -267,30 +267,26 @@ public class WifiAdmin {
 	//----------------------------------------------------------------------
 	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
 		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
-		WifiConfiguration conf = getExistWifiConf(ssid, bssid);
+		final WifiConfiguration oriconf = getExistWifiConf(ssid, bssid);
+		WifiConfiguration newconf = new WifiConfiguration();
 		try {
-			if (conf != null) {
-				mWifiManager.removeNetwork(conf.networkId);
-			} else {
-				conf = new WifiConfiguration();
-				conf.SSID = convertToQuotedString(ssid);
-				conf.BSSID = bssid;
-			}
-			conf.preSharedKey = "\"" + pwd + "\"";
-			conf.priority = getMaxPriority(mWifiManager) + 1;
-			conf.networkId = mWifiManager.addNetwork(conf);
+			newconf.SSID = convertToQuotedString(ssid);
+			newconf.BSSID = bssid;
+			newconf.preSharedKey = "\"" + pwd + "\"";
+			newconf.priority = getMaxPriority(mWifiManager) + 1;
+			newconf.networkId = mWifiManager.addNetwork(newconf);
 			//mWifiManager.saveConfiguration();
 		} catch(NullPointerException e) {
 			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
 			return false;
 		}
 		
-		if(conf.networkId == -1) {
+		if(newconf.networkId == -1) {
 			Log.e(TAG, "Failed to add config to network");
 			return false;
 		}
 		
-		if(!mWifiManager.enableNetwork(conf.networkId, true)) {
+		if(!mWifiManager.enableNetwork(newconf.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network");
 			return false;
 		}
@@ -301,7 +297,7 @@ public class WifiAdmin {
 		}
 		
 		//监听密码是否成功
-		final WifiConfiguration _conf = conf;
+		final WifiConfiguration _conf = newconf;
 		final Timer timer = new Timer();
 		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 		final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -317,6 +313,9 @@ public class WifiAdmin {
 	            		if (callback != null) {
 	            			timer.cancel();
 	            			mWifiManager.removeNetwork(_conf.networkId);
+	            			if (oriconf != null)
+	            				mWifiManager.enableNetwork(oriconf.networkId, false);
+	            			mWifiManager.reassociate();
 	            			mContext.unregisterReceiver(this);
 	            			callback.onFailed("密码验证失败，请重新输入密码。");
 	            			return;
@@ -328,6 +327,10 @@ public class WifiAdmin {
 		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId){ //验证当前网络登录的网络是否是测试网络
 		            	if (callback != null) {
 		            		timer.cancel();
+		            		mWifiManager.removeNetwork(_conf.networkId);
+		            		if (oriconf != null)
+	            				mWifiManager.enableNetwork(oriconf.networkId, false);
+	            			mWifiManager.reassociate();
 		            		mContext.unregisterReceiver(this);
 		            		callback.onSuccess(true);
 		            	}
@@ -342,6 +345,9 @@ public class WifiAdmin {
 			@Override
 			public void run() {
 				mWifiManager.removeNetwork(_conf.networkId);
+				if (oriconf != null)
+    				mWifiManager.enableNetwork(oriconf.networkId, false);
+    			mWifiManager.reassociate();
 				mContext.unregisterReceiver(receiver);
     			callback.onFailed("密码验证失败，请重新输入密码。");
 			}
@@ -571,14 +577,18 @@ public class WifiAdmin {
 	
     //获取存在的wifi配置
     public WifiConfiguration getExistWifiConf(String SSID, String BSSID) {
+    	WifiConfiguration tmp = null;
 		List<WifiConfiguration> configurations = mWifiManager.getConfiguredNetworks();
 		for(final WifiConfiguration config : configurations) {
-			if(config.SSID != null && (SSID.equals(config.SSID) || SSID.equals(convertToNonQuotedString(SSID))) &&
-				config.BSSID != null && (BSSID.equals(config.BSSID) || BSSID.equals(convertToNonQuotedString(BSSID)))) {
+			if(config.SSID == null || (!SSID.equals(config.SSID) && !SSID.equals(convertToNonQuotedString(SSID))))
+				continue;
+			tmp = config;
+			//TODO(binfei):有些conf居然没有bssid，那只能匹配ssid
+			if (config.BSSID != null && (BSSID.equals(config.BSSID) || BSSID.equals(convertToNonQuotedString(BSSID)))) {
 				return config;
 			}
 		}
-		return null;
+		return tmp;
 	}
     
 	public WifiConfiguration getWifiConfiguration(final WifiConfiguration configToFind, String security) {
