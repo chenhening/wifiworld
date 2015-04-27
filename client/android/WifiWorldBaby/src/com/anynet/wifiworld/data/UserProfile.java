@@ -2,29 +2,35 @@ package com.anynet.wifiworld.data;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.AsyncCustomEndpoints;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.CloudCodeListener;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.StringCrypto;
-//import cn.bmob.v3.BmobQuery.CachePolicy;
 
-public class UserProfile extends BmobObject {
+
+public class UserProfile extends BmobUser {
 
 	private static final long serialVersionUID = 1L;
-	private static final String unique_key = "PhoneNumber";
+	private static final String unique_key = "username";
 
 	public static final String CryptoKey = "userprof";// 8bits
 
 	// public String Userid; //用户账号
-	public String PhoneNumber; // 用户手机号，作为表的唯一建
-	public String Password; // 密码
+	//public String PhoneNumber; // 用户手机号，作为表的唯一建
+	//public String Password; // 密码
 	public int Type; // 用户类型，
 	public float Wallet; // 用户钱包
 	public String NickName; //昵称
@@ -105,7 +111,131 @@ public class UserProfile extends BmobObject {
 		}).start();
 	}
 	
-	public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
+	//注册用户
+	public void signUp(final Context context, DataCallback<UserProfile> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
+		final DataCallback<UserProfile> _callback = callback;
+		final UserProfile user = this;
+		//对密码进行加密
+		try {
+			user.setPassword(StringCrypto.encryptDES(user.getPassword(), CryptoKey));
+		} catch (Exception e) {
+			_callback.onFailed("对密码加密失败: " + e.getMessage());
+			return;
+		}
+		user.signUp(context, new SaveListener() {
+
+			@Override
+            public void onFailure(int code, String msg) {
+				//很可能是存在账号，那么更新密码
+				if (code == 202) {
+					//调用云端代码
+					AsyncCustomEndpoints ace = new AsyncCustomEndpoints();
+					JSONObject para = new JSONObject();
+					try {
+	                    para.put("username", user.getUsername());
+	                    para.put("password", user.getPassword());
+                    } catch (JSONException e) {
+                    	_callback.onFailed("注册账号失败." + e.getMessage());
+                    	return;
+                    }
+					ace.callEndpoint(context, "resetPassword", para, new CloudCodeListener() {
+
+						@Override
+                        public void onFailure(int arg0, String msg) {
+							_callback.onFailed("注册账号失败." + msg);
+                        }
+
+						@Override
+                        public void onSuccess(Object arg0) {
+							user.login(context, _callback);
+                        }
+					});
+				} else {
+					_callback.onFailed("注册账号失败." + msg);
+				}
+            }
+
+			@Override
+            public void onSuccess() {
+				_callback.onSuccess(user);
+            }
+			
+		});
+	}
+	
+	//登录用户
+	public void login(final Context context, DataCallback<UserProfile> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+				
+		final DataCallback<UserProfile> _callback = callback;
+		final UserProfile user = this;
+		user.login(context, new SaveListener() {
+
+			@Override
+            public void onFailure(int arg0, String msg) {
+				_callback.onFailed("登陆账号失败：" + msg);
+            }
+
+			@Override
+            public void onSuccess() {
+				_callback.onSuccess(user);
+            }
+			
+		});
+	}
+	
+	//更新用户
+	public void update(final Context context, DataCallback<UserProfile> callback) {
+		//测试网络是否在wifi下，否则失败
+		if (!NetHelper.isWifiNet(context)) {
+			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+			return;
+		}
+		
+		final DataCallback<UserProfile> _callback = callback;
+		final UserProfile user = this;
+		//对密码进行加密
+		String Password = user.getPassword();
+		if (Password != null && Password.equals("")) {
+			try {
+				user.setPassword(StringCrypto.encryptDES(Password, CryptoKey));
+			} catch (Exception e) {
+				_callback.onFailed("无法保存数据: " + e.getMessage());
+				return;
+			}
+		}
+		
+		user.update(context, new UpdateListener() {
+
+			@Override
+            public void onFailure(int arg0, String msg) {
+				_callback.onFailed(msg);
+            }
+
+			@Override
+            public void onSuccess() {
+				_callback.onSuccess(user);
+            }
+			
+		});
+	}
+	
+	//退出登陆
+	public void logout(Context context) {
+		logOut(context);   //清除缓存用户对象
+	}
+	
+	/*public void StoreRemote(final Context context, DataCallback<UserProfile> callback) {
 		//测试网络是否在wifi下，否则失败
 		if (!NetHelper.isWifiNet(context)) {
 			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
@@ -158,5 +288,5 @@ public class UserProfile extends BmobObject {
 				});
 			}
 		});
-	}
+	}*/
 }

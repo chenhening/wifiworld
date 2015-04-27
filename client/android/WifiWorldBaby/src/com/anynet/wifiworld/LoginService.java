@@ -38,8 +38,8 @@ public class LoginService extends Service {
 	String mPhoneNumber = null;
 	String mSmsCode = null;
 	LoginHelper mLoginHelper;
-	public static int CountDown = 0;
-	private TimerTask mTask;
+	//public static int CountDown = 0;
+	//private TimerTask mTask;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -66,7 +66,7 @@ public class LoginService extends Service {
 
 			break;
 		case LOGIN_SERVICE_DESTORY: {
-			CountDown = -1;
+			//CountDown = -1;
 			stopSelf();
 		}
 
@@ -82,34 +82,29 @@ public class LoginService extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		// initialize sms
-		Log.e(TAG,"onCreate:");
-		CountDown = 60;
+		//Log.e(TAG,"onCreate:");
+		//CountDown = 60;
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
-		SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
 		mEventHandler = new EventHandler() {
 			public void afterEvent(int event, int result, Object data) {
 				if (result == SMSSDK.RESULT_COMPLETE) {
 					// 回调完成
 					if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
 						// 提交验证码成功
-						// TODO(binfei): 将类似的函数整理成一个公共函数
-						// 通过bmob保存到服务器，以便于做数据验证
-						UserProfile user = new UserProfile();
-						user.PhoneNumber = mPhoneNumber;
-						user.Password = mSmsCode;
-						mLoginHelper.Login(user);
+						//UserProfile user = new UserProfile();
+						//user.setUsername(mPhoneNumber);
+						//user.setPassword(mSmsCode);
+						//mLoginHelper.Login(user);
 						LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE));
 						// showToast("服务器验证成功，正在登陆......");
 					} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
 						LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_GET_VERIFICATION_CODE));
-						// showToast("获取验证码成功，请输入验证码点击登陆.");\
 					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
 						// 返回支持发送验证码的国家列表
 					}
 				} else {
 					((Throwable) data).printStackTrace();
 					LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_ERROR));
-					// showToast("验证失败，请重新操作.");
 				}
 			}
 		};
@@ -117,36 +112,37 @@ public class LoginService extends Service {
 		SMSSDK.registerEventHandler(mEventHandler);
 	}
 
-	Timer timer = new Timer();
+	//Timer timer = new Timer();
 
 	private void getVerificationCode(String mPhone_code, String mPhoneNumber) {
 		// 获取验证码
 		SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
-		Log.e(TAG,"getVerificationCode:"+mPhone_code+" "+mPhoneNumber);
-		mTask = new TimerTask() {
+		//Log.e(TAG,"getVerificationCode:"+mPhone_code+" "+mPhoneNumber);
+		//mTask = new TimerTask() {
 
-			@Override
-			public void run() {
-				if (CountDown <= 0) {
-					mTask.cancel();
-				} else {
-				}
-				--CountDown;
-			}
-		};
-		CountDown = 60;
-		timer.schedule(mTask, 0, 1000);
+		//	@Override
+		//	public void run() {
+		//		if (CountDown <= 0) {
+		//			mTask.cancel();
+		//		} else {
+		//		}
+		//		--CountDown;
+		//	}
+		//};
+		//CountDown = 60;
+		//timer.schedule(mTask, 0);
 	}
 
 	private void submitVerificationCode(String mPhone_code, String mPhoneNumber, String mSmsCode) {
-		Log.e(TAG,"getVerificationCode:"+mPhone_code+" "+mPhoneNumber+"  "+mSmsCode);
-		SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
+		//Log.e(TAG,"getVerificationCode:"+mPhone_code+" "+mPhoneNumber+"  "+mSmsCode);
+		//SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
+		LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE));
 	}
 
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		Log.e(TAG,"onDestroy:");
+		//Log.e(TAG,"onDestroy:");
 		super.onDestroy();
 		SMSSDK.unregisterEventHandler(mEventHandler);
 	}

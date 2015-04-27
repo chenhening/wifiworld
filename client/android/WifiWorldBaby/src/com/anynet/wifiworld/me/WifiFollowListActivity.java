@@ -58,7 +58,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		
 		//查询服务器
 		WifiFollow records = new WifiFollow();
-		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber;
+		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
 		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiFollow>() {
 
 			@Override

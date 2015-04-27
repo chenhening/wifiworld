@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import cn.bmob.v3.Bmob;
+import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
@@ -79,9 +80,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		super.onCreate(savedInstanceState);
 		
 		// 友盟自动更新
+		SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-		AVOSCloud.initialize(this, "0nwv06bg11i8rzoil8gap1deoy9jzt94xlmrre5m02y885as",
-				"ppwv1eysceehv3e5ppbppmq1bga59z1500k0i4dm8qkgaftd");
 		UmengUpdateAgent.update(this);
 		FeedbackAgent agent = new FeedbackAgent(this);
 		agent.sync();

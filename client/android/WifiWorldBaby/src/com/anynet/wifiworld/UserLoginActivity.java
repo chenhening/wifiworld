@@ -40,6 +40,7 @@ public class UserLoginActivity extends BaseActivity {
 	private TextView mTV_Verify;
 	private String mPhoneNumber;
 	private String mSmsCode;
+	private int CountDown = 0;
 
 	public static void start(BaseActivity ctx) {
 		Intent intent = new Intent(ctx, UserLoginActivity.class);
@@ -81,6 +82,7 @@ public class UserLoginActivity extends BaseActivity {
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
 				Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
+				mLL_Login.setEnabled(true);
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
 				UserLoginActivity.this.finish();
@@ -88,8 +90,8 @@ public class UserLoginActivity extends BaseActivity {
 				Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginService.LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE)) {
 				UserProfile user = new UserProfile();
-				user.PhoneNumber = mPhoneNumber;
-				user.Password = mSmsCode;
+				user.setUsername(mPhoneNumber);
+				user.setPassword(mSmsCode);
 				mLoginHelper.Login(user);
 				((Activity) getActivity()).runOnUiThread(new Runnable() {
 					@Override
@@ -130,9 +132,6 @@ public class UserLoginActivity extends BaseActivity {
 		bingdingTitleUI();
 
 		mLoginHelper = LoginHelper.getInstance(getActivity());
-		// 初始化 Bmob SDK
-		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-		// initialize sms
 
 		setUIEvent();
 		ResetLoginUI();
@@ -155,16 +154,11 @@ public class UserLoginActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				mET_Account = (EditText) findViewById(R.id.tv_login_account);
-				mPhoneNumber = mET_Account.getText().toString().trim();
-				Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
-				if (!pattern.matcher(mPhoneNumber).find()) {
-					showToast("请输入11位手机正确号码.");
+				if (!setUsernameUI()) {
 					return;
 				}
 
 				// 发送验证码
-				// SMSSDK.getVerificationCode(mPhone_code, mPhoneNumber);
 				Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
 				intent.putExtra(LoginService.LOGIN_SERVICE_KEY,
 						LoginService.LOGIN_SERVICE_GET_VERIFICODE);
@@ -172,6 +166,7 @@ public class UserLoginActivity extends BaseActivity {
 				intent.putExtra("code", mPhone_code);
 				UserLoginActivity.this.startService(intent);
 				// 按钮进入60秒倒计时
+				CountDown = 60;
 				mTV_Verify = (TextView) findViewById(R.id.tv_button_sms);
 				mLL_Verify.setEnabled(false);
 				final Timer timer = new Timer();
@@ -182,14 +177,14 @@ public class UserLoginActivity extends BaseActivity {
 						((Activity) getActivity()).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								if (LoginService.CountDown <= 0) {
+								if (--CountDown <= 0) {
 									mET_Account.setEnabled(true);
 									mLL_Verify.setEnabled(true);
 									mTV_Verify.setText("点击再次发送");
 									mLL_Login.setEnabled(true);
 									mTask.cancel();
 								} else {
-									mTV_Verify.setText("验证码" + "(" + LoginService.CountDown + ")");
+									mTV_Verify.setText("验证码" + "(" + CountDown + ")");
 								}
 							}
 						});
@@ -205,6 +200,10 @@ public class UserLoginActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (!setUsernameUI()) {
+					return;
+				}
+				
 				mET_SMS = ((EditText) findViewById(R.id.tv_login_sms));
 				mSmsCode = mET_SMS.getText().toString().trim();
 				Pattern pattern = Pattern.compile("^[0-9]{4}$");
@@ -214,14 +213,11 @@ public class UserLoginActivity extends BaseActivity {
 				}
 				mLL_Login.setEnabled(false);
 				Intent intent = new Intent(UserLoginActivity.this, LoginService.class);
-				intent.putExtra(LoginService.LOGIN_SERVICE_KEY,
-						LoginService.LOGIN_SERVICE_SUMBIT_VERIFICODE);
+				intent.putExtra(LoginService.LOGIN_SERVICE_KEY, LoginService.LOGIN_SERVICE_SUMBIT_VERIFICODE);
 				intent.putExtra("phone", mPhoneNumber);
 				intent.putExtra("code", mPhone_code);
 				intent.putExtra("smscode", mSmsCode);
 				UserLoginActivity.this.startService(intent);
-				// SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber,
-				// mSmsCode);
 			}
 		});
 		mLL_Login.setEnabled(false);
@@ -232,6 +228,18 @@ public class UserLoginActivity extends BaseActivity {
 			mET_SMS.setEnabled(true);
 		if (mLL_Login != null)
 			mLL_Login.setEnabled(true);
+	}
+	
+	private boolean setUsernameUI() {
+		mET_Account = (EditText) findViewById(R.id.tv_login_account);
+		mPhoneNumber = mET_Account.getText().toString().trim();
+		Pattern pattern = Pattern.compile("^1[3|4|5|7|8][0-9]{9}$");
+		if (!pattern.matcher(mPhoneNumber).find()) {
+			showToast("请输入11位手机正确号码.");
+			return false;
+		}
+		
+		return true;
 	}
 
 	private Context getActivity() {
@@ -280,8 +288,7 @@ public class UserLoginActivity extends BaseActivity {
 		InputMethodManager imm = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
 		View v = getCurrentFocus();
 		if (imm != null && v != null){
-			imm.hideSoftInputFromWindow(v.getWindowToken(),
-					InputMethodManager.HIDE_NOT_ALWAYS);
+			imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
 

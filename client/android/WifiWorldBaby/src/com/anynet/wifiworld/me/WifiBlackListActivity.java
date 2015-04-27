@@ -58,7 +58,7 @@ public class WifiBlackListActivity extends BaseActivity {
 		
 		//查询服务器
 		WifiBlack records = new WifiBlack();
-		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber;
+		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
 		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiBlack>() {
 
 			@Override

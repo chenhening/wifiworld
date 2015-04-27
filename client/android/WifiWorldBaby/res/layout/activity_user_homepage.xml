@@ -159,6 +159,7 @@
                     android:id="@+id/sev_password"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
+                    android:visibility="gone"
                     item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHint="@string/account_edit"
@@ -168,6 +169,7 @@
                     item:showContent="true"
                     item:showRedPoint="false"
                     item:showTopDivider="true" >
+
                 </com.anynet.wifiworld.view.SettingEditItemView>
             </LinearLayout>
 

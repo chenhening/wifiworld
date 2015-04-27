@@ -6,9 +6,7 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import cn.smssdk.app.NewAppReceiver;
 
 public class WifiInfoScanned implements Serializable {
 	/**

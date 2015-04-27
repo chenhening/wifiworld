@@ -155,7 +155,7 @@ public class WifiDetailsActivity extends BaseActivity {
 				} else {
 					WifiFollow wifiFollow = new WifiFollow();
 					wifiFollow.MacAddr = mWifiInfoScanned.getWifiMAC();
-					wifiFollow.Userid = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo().PhoneNumber;
+					wifiFollow.Userid = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo().getUsername();
 					wifiFollow.MarkFollowTime();
 					
 					wifiFollow.FollowWifi(getBaseContext(), new DataCallback<WifiFollow>() {
@@ -192,7 +192,7 @@ public class WifiDetailsActivity extends BaseActivity {
 				WifiBlack wifiBlack = new WifiBlack();
 				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
 				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
-						.getCurLoginUserInfo().PhoneNumber;
+						.getCurLoginUserInfo().getUsername();
 				wifiBlack.BlackType = WifiBlack.Type.WrongPwd;
 				wifiBlack.Content = "shit, shit";
 				wifiBlack.MarkReportTime();
@@ -363,7 +363,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		if (LoginHelper.getInstance(this).isLogined()) {
 			WifiFollow wifiFollow = new WifiFollow();
 			wifiFollow.QueryWifiByMac(this, mWifiInfoScanned.getWifiMAC(),
-				LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber, new MultiDataCallback<WifiFollow>() {
+				LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername(), new MultiDataCallback<WifiFollow>() {
 
 					@Override
 					public void onSuccess(List<WifiFollow> objects) {

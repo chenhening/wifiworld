@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.data.DataCallback;
@@ -96,14 +97,13 @@ public class LoginHelper {
 
 	// ------------------------------------------------------------------------------------------------
 	public void Login(UserProfile profile) {
-		mIsLogin = false;
 		mUser = profile;
-		mUser.StoreRemote(globalContext, new DataCallback<UserProfile>() {
+		mUser.signUp(globalContext, new DataCallback<UserProfile>() {
 
 			@Override
 			public void onSuccess(UserProfile object) {
-				Log.i(TAG, "用户信息更新成功。");
-				SaveProfileLocal(object);
+				Log.i(TAG, "用户注册成功。");
+				//SaveProfileLocal(object);
 				mUser = object;
 				mIsLogin = true;
 				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
@@ -120,57 +120,55 @@ public class LoginHelper {
 	}
 
 	public void AutoLogin() {
-		//mIsLogin = false;
 		// 读取本地保存的账号密码文件
-		mUser = new UserProfile();
-		mUser.PhoneNumber = mPreferences.getString(mAliasUser, "");
-		mUser.Password = mPreferences.getString(mAliasPwd, "");
-		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
-		if (mUser.PhoneNumber == null || mUser.Password == null || mUser.PhoneNumber.isEmpty()
-				|| mUser.Password.isEmpty()) {
+		mUser = (UserProfile) BmobUser.getCurrentUser(globalContext, UserProfile.class);
+		if (mUser == null) {
 			Log.d(TAG, "用户未登录过");
-			globalContext.sendBroadcast(new Intent(AUTO_LOGIN_NEVERLOGIN));
-			// ShowToast(globalContext, "用户未登录过。", Toast.LENGTH_SHORT);
 			return;
 		}
-
-		final UserProfile remote_user = new UserProfile();
-		remote_user.QueryByPhoneNumber(globalContext, mUser.PhoneNumber, new DataCallback<UserProfile>() {
+		//登录成功
+		mIsLogin = true;
+		globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
+		Log.d(TAG, "用户自动登陆成功。");
+		pullWifiProfile();
+		
+		/*String username = mPreferences.getString(mAliasUser, "");
+		final String password = mPreferences.getString(mAliasPwd, "");
+		mUser = new UserProfile();
+		mUser.setUsername(username);
+		mUser.setUsername(password);
+		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
+		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+			Log.d(TAG, "用户未登录过");
+			globalContext.sendBroadcast(new Intent(AUTO_LOGIN_NEVERLOGIN));
+			return;
+		}
+		mUser.login(globalContext, new DataCallback<UserProfile>() {
 
 			@Override
 			public void onSuccess(UserProfile object) {
- 				if (object.Password.equals(mUser.Password)) {
-					mIsLogin = true;
-					mUser = object;
-					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
-					Log.d(TAG, "用户自动登陆成功。");
-					pullWifiProfile();
-					// ShowToast(globalContext, "用户自动登陆成功。",Toast.LENGTH_SHORT);
-				} else {
-					globalContext.sendBroadcast(new Intent(AUTO_LOGIN_FAIL));
-					Log.d(TAG, "用户自动登陆失败，请重新登陆。");
-					// ShowToast(globalContext,
-					// "用户自动登陆失败，请重新登陆。",Toast.LENGTH_SHORT);
-				}
+				mIsLogin = true;
+				mUser = object;
+				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
+				Log.d(TAG, "用户自动登陆成功。");
+				pullWifiProfile();
 			}
 
 			@Override
 			public void onFailed(String msg) {
-				Log.d(TAG, "当前网络不稳定，请稍后再试。");
-				//AutoLogin();
-				// ShowToast(globalContext,
-				// "用户自动登陆失败，用户未登陆过。",Toast.LENGTH_SHORT);
+				Log.d(TAG, "用户自动登陆失败。");
 			}
-		});
+		});*/
 	}
 
 	public void logout() {
-		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
 		mIsLogin = false;
+		mUser.logout(globalContext);
 		mUser = null;
-		SharedPreferences.Editor sharedata = mPreferences.edit();
-		sharedata.clear();
-		sharedata.commit();
+		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
+		//SharedPreferences.Editor sharedata = mPreferences.edit();
+		//sharedata.clear();
+		//sharedata.commit();
 		Log.d(TAG, "用户退出成功");
 	}
 	
@@ -180,16 +178,16 @@ public class LoginHelper {
 		mIsLogin = false;
 	}
 
-	private void SaveProfileLocal(UserProfile user) {
+	/*private void SaveProfileLocal(UserProfile user) {
 		// 保存账号密码到本地用于下次登陆
 		// TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
 		SharedPreferences.Editor sharedata = mPreferences.edit();
-		sharedata.putString(mAliasUser, user.PhoneNumber);
-		sharedata.putString(mAliasPwd, user.Password);
+		sharedata.putString(mAliasUser, user.getUsername());
+		sharedata.putString(mAliasPwd, user.getPassword());
 		sharedata.commit();
 		Log.d(TAG, "用户密码本地保存成功。");
 		// ShowToast(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT);
-	}
+	}*/
 
 	public boolean getCurLoginStatus() {
 		return mIsLogin && mUser != null;
@@ -209,7 +207,7 @@ public class LoginHelper {
 	//只要用户登录过就会有一个id，不管它 在线不在线
 	public String getUserid() {
 		if (mUser != null)
-			return mUser.PhoneNumber;
+			return mUser.getUsername();
 		return null;
 	}
 
@@ -219,7 +217,7 @@ public class LoginHelper {
 		
 		// 去服务器上查询是否已经登记了自己的wifi
 		WifiProfile wifi = new WifiProfile();
-		wifi.Sponser = getCurLoginUserInfo().PhoneNumber;
+		wifi.Sponser = mUser.getUsername();
 		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
 	
 			@Override
@@ -247,8 +245,8 @@ public class LoginHelper {
 		double lng = LocationHelper.getInstance(globalContext).getLongitude();
 		record.Geometry = new BmobGeoPoint(lng, lat);
 		record.MarkLoginTime();
-		if (mUser != null && mUser.PhoneNumber != null && !mUser.PhoneNumber.equals("")) {
-			record.Userid = mUser.PhoneNumber;
+		if (mUser != null && mUser.getUsername() != null && !mUser.getUsername().equals("")) {
+			record.Userid = mUser.getUsername();
 		} else {
 			record.Userid = "user_" + DeviceUID.getLocalMacAddressFromIp(globalContext);
 		}

@@ -283,7 +283,7 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.VISIBLE);
 			TextView tvName = (TextView) mPageRoot.findViewById(R.id.person_name);
-			tvName.setText(mLoginHelper.getCurLoginUserInfo().PhoneNumber);
+			tvName.setText(mLoginHelper.getCurLoginUserInfo().getUsername());
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);

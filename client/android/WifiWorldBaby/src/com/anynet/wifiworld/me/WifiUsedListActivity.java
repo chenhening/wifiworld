@@ -64,7 +64,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		
 		//查询服务器
 		WifiDynamic records = new WifiDynamic();
-		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().PhoneNumber;
+		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
 		records.MarkLoginTime();
 		records.QueryWiFiInOneWeek(this, records.LoginTime, new MultiDataCallback<WifiDynamic>() {
 

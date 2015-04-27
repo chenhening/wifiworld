@@ -62,13 +62,13 @@ public class MyAccountActivity extends BaseActivity {
 		final TextView tvName = (TextView) findViewById(R.id.person_name);
 		si = (SettingItemView) findViewById(R.id.siv_account);
 		final TextView tvContent = (TextView) si.findViewById(R.id.setting_item_content);
-		tvName.setText(mUserProfile.PhoneNumber);
-		tvContent.setText(mUserProfile.PhoneNumber);
+		tvName.setText(mUserProfile.getUsername());
+		tvContent.setText(mUserProfile.getUsername());
 		si.findViewById(R.id.setting_item_next).setVisibility(View.INVISIBLE);
 
 		final SettingEditItemView nicknameIV = (SettingEditItemView) findViewById(R.id.siv_alias);
 		if (mUserProfile.NickName == null || mUserProfile.NickName.equals("")) {
-			nicknameIV.setContent(mUserProfile.PhoneNumber);
+			nicknameIV.setContent(mUserProfile.getUsername());
 		} else {
 			nicknameIV.setContent(mUserProfile.NickName);
 		}
@@ -205,19 +205,19 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 
-		final SettingEditItemView password = (SettingEditItemView) findViewById(R.id.sev_password);
-		if (mUserProfile.Password == null || mUserProfile.Password.equals("")) {
+		/*final SettingEditItemView password = (SettingEditItemView) findViewById(R.id.sev_password);
+		if (mUserProfile.getPassword() == null || mUserProfile.getPassword().equals("")) {
 			password.setContent("");
 		} else {
-			password.setContent(mUserProfile.Password);
+			password.setContent(mUserProfile.getPassword());
 		}
 		password.setClickEditButtonListener(new ClickEditButtonListener() {
 
 			@Override
 			public void onSave(CharSequence charSequence) {
 				// TODO Auto-generated method stub
-				mUserProfile.Password = charSequence.toString();
-				password.setContent(mUserProfile.Password);
+				mUserProfile.getPassword() = charSequence.toString();
+				password.setContent(mUserProfile.getPassword());
 				mUserProfile.update(getApplicationContext(), new UpdateListener() {
 
 					@Override
@@ -246,7 +246,7 @@ public class MyAccountActivity extends BaseActivity {
 			public void onClick(CharSequence charSequence) {
 
 			}
-		});
+		});*/
 
 		final SettingEditItemView age = (SettingEditItemView) findViewById(R.id.sev_age);
 		if (mUserProfile.Age == null || mUserProfile.Age.equals("")) {
