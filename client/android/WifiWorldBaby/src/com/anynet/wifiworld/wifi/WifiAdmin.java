@@ -159,6 +159,8 @@ public class WifiAdmin {
 				Log.e(TAG, "Failed to get config from local configed wifi list");
 				return false;
 			}
+			
+			wifiInfoScanned.setNetworkId(config.networkId);
 		}
 		
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
@@ -487,7 +489,12 @@ public class WifiAdmin {
     		//mWifiManager.saveConfiguration();
     		mWifiManager.disableNetwork(netId);
     		mWifiManager.disconnect();
-    		mWifiManager.removeNetwork(netId);
+//    		mWifiManager.removeNetwork(netId);
+    }
+    
+    public boolean forgetNetwork(int networkId) {
+    	return mWifiManager.removeNetwork(networkId)
+				&& mWifiManager.saveConfiguration();
     }
     
     public boolean forgetNetwork(WifiConfiguration wifiConfiguration) {
