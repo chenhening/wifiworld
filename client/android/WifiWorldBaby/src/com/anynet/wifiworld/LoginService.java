@@ -96,7 +96,7 @@ public class LoginService extends Service {
 						//user.setPassword(mSmsCode);
 						//mLoginHelper.Login(user);
 						LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE));
-						// showToast("服务器验证成功，正在登陆......");
+						//showToast("服务器验证成功，正在登陆......");
 					} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
 						LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_GET_VERIFICATION_CODE));
 					} else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
@@ -135,8 +135,8 @@ public class LoginService extends Service {
 
 	private void submitVerificationCode(String mPhone_code, String mPhoneNumber, String mSmsCode) {
 		//Log.e(TAG,"getVerificationCode:"+mPhone_code+" "+mPhoneNumber+"  "+mSmsCode);
-		//SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
-		LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE));
+		SMSSDK.submitVerificationCode(mPhone_code, mPhoneNumber, mSmsCode);
+		//LoginService.this.sendBroadcast(new Intent(LOGIN_SERVICE_EVENT_SUBMIT_VERIFICATION_CODE));
 	}
 
 	@Override
