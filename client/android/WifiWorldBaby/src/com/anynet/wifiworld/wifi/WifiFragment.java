@@ -294,7 +294,7 @@ public class WifiFragment extends MainFragment {
 //										i.putExtra("whoami", "WifiDetailsActivity");
 //										i.putExtra("data", object);
 //										startActivity(i);
-										KnockStepFirstActivity.start(getApplicationContext(), "WifiDetailsActivity", object);
+										KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
 										
 									}
 									

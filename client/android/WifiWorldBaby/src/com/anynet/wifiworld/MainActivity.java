@@ -98,20 +98,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		intent.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
 		initView();
+		initFragments();
 
-		if (wifiFragment == null)
-			wifiFragment = new WifiFragment();
-		if (mapFragment == null)
-			mapFragment = new MapFragment();
-		// discoverFragment = new DiscoverFragment();
-		if (meFragment == null)
-			meFragment = new MeFragment();
-
-		if (fragments == null || fragments.length < 2)
-			fragments = new MainFragment[] { wifiFragment, mapFragment, /*
-																		 * discoverFragment
-																		 * ,
-																		 */meFragment };
 		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		// 添加显示第一个fragment
 		for (int i = 0; i < fragments.length; i++) {
@@ -132,11 +120,30 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		changeToConnect();
 	}
 
+	private void initFragments(){
+		if (wifiFragment == null)
+			wifiFragment = new WifiFragment();
+		if (mapFragment == null)
+			mapFragment = new MapFragment();
+		// discoverFragment = new DiscoverFragment();
+		if (meFragment == null)
+			meFragment = new MeFragment();
+
+		if (fragments == null || fragments.length < 2)
+			fragments = new MainFragment[] { wifiFragment, mapFragment, /*
+																		 * discoverFragment
+																		 * ,
+																		 */meFragment };
+	}
+	
 	@Override
 	public void onAttachFragment(Fragment fragment) {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 		Log.e(TAG, "onAttachFragment");
+		if(fragments == null){
+			initFragments();
+		}
 		if (wifiFragment == null && fragment instanceof WifiFragment) {
 			wifiFragment = (WifiFragment) fragment;
 			fragments[CONNECT_TAB_IDX] = wifiFragment;

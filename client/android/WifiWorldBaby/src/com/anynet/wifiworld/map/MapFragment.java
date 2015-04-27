@@ -218,6 +218,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public void onPause() {
 		super.onPause();
 		mapView.onPause();
+		if (currentMarker != null) {
+			currentMarker.hideInfoWindow();
+		}
 		deactivate();
 	}
 
@@ -247,6 +250,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		aMap.setOnInfoWindowClickListener(this);
 		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
 		aMap.setOnMapClickListener(this);
+		onLocationChanged(amapLocation);
 		
 		// centerMarker.setAnimationListener(this);
 		// locate.setOnClickListener(this);
@@ -313,10 +317,13 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 	}
 
+	AMapLocation amapLocation;
+	
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
+				this.amapLocation = amapLocation;
 				mListener.onLocationChanged(amapLocation);
 				double Longitude = amapLocation.getLongitude();
 				double Latitude = amapLocation.getLatitude();
