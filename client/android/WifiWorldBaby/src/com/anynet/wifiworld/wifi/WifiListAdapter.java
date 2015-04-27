@@ -1,4 +1,5 @@
 package com.anynet.wifiworld.wifi;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
 
-
 public class WifiListAdapter extends BaseAdapter {
 	private final static String TAG = WifiListAdapter.class.getSimpleName();
 
@@ -25,21 +25,20 @@ public class WifiListAdapter extends BaseAdapter {
 	private List<WifiInfoScanned> mWifiTags = new ArrayList<WifiInfoScanned>();
 	private int wifiFreeCnt = 0;
 	private int wifiEncryptCnt = 0;
-	private int wifiAuthCnt = 0; //表示平台认证的wifi
+	private int wifiAuthCnt = 0; // 表示平台认证的wifi
 	private Context mContext;
 
-	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, 
-		List<WifiInfoScanned> wifiEncrypt) {
+	public WifiListAdapter(Context context, List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		super();
 		this.mContext = context;
-		
+
 		refreshWifiList(wifiAuth, wifiFree, wifiEncrypt);
 	}
-	
+
 	public void refreshWifiList(List<WifiInfoScanned> wifiAuth, List<WifiInfoScanned> wifiFree, List<WifiInfoScanned> wifiEncrypt) {
 		mWifiList.clear();
-		
-		//设置认证wifi的分界标志
+
+		// 设置认证wifi的分界标志
 		WifiInfoScanned AuthTag = new WifiInfoScanned("Auth");
 		mWifiList.add(AuthTag);
 		mWifiTags.add(AuthTag);
@@ -51,8 +50,8 @@ public class WifiListAdapter extends BaseAdapter {
 		for (int i = 0; i < wifiAuth.size(); i++) {
 			mWifiList.add(wifiAuth.get(i));
 		}
-		
-		//设置免费的分界标志
+
+		// 设置免费的分界标志
 		WifiInfoScanned freeTag = new WifiInfoScanned("Free");
 		mWifiList.add(freeTag);
 		mWifiTags.add(freeTag);
@@ -64,8 +63,8 @@ public class WifiListAdapter extends BaseAdapter {
 		for (int i = 0; i < wifiFree.size(); i++) {
 			mWifiList.add(wifiFree.get(i));
 		}
-		
-		//设置加密分界标志
+
+		// 设置加密分界标志
 		WifiInfoScanned encryptTag = new WifiInfoScanned("Encrypt");
 		mWifiList.add(encryptTag);
 		mWifiTags.add(encryptTag);
@@ -77,11 +76,11 @@ public class WifiListAdapter extends BaseAdapter {
 		for (int i = 0; i < wifiEncrypt.size(); i++) {
 			mWifiList.add(wifiEncrypt.get(i));
 		}
-		
+
 		Log.i(TAG, "refresh wifi list...");
 		notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return mWifiList.size();
@@ -96,100 +95,123 @@ public class WifiListAdapter extends BaseAdapter {
 	public long getItemId(int pos) {
 		return pos;
 	}
-	
+
 	@Override
-    public boolean isEnabled(int position) {
-        if(mWifiTags.contains(getItem(position)) ||
-        		((WifiInfoScanned)getItem(position)).getWifiName() == "FreeDeclare" ||
-        		((WifiInfoScanned)getItem(position)).getWifiName() == "EncryptDeclare" ||
-        		((WifiInfoScanned)getItem(position)).getWifiName() == "AuthDeclare"){
-            return false;
-        }
-        return super.isEnabled(position);
-    }
+	public boolean isEnabled(int position) {
+		if (mWifiTags.contains(getItem(position)) || ((WifiInfoScanned) getItem(position)).getWifiName() == "FreeDeclare"
+				|| ((WifiInfoScanned) getItem(position)).getWifiName() == "EncryptDeclare"
+				|| ((WifiInfoScanned) getItem(position)).getWifiName() == "AuthDeclare") {
+			return false;
+		}
+		return super.isEnabled(position);
+	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
+		// view.setTag(key, tag);
 		TextView textView = null;
-		final WifiInfoScanned infoScanned = (WifiInfoScanned)getItem(position);
-        if(mWifiTags.contains(infoScanned)){
-            view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_tag, null);
-            textView = (TextView) view.findViewById(R.id.wifi_tag_text);
-            if ((infoScanned).getWifiName().equals("Auth")) {
-            	textView.setText("获取到" + wifiAuthCnt + "个认证WiFi");
-        	} else if ((infoScanned).getWifiName().equals("Free")) {
-            	textView.setText("挖掘到" + wifiFreeCnt + "个不需要密码WiFi");
+		final WifiInfoScanned infoScanned = (WifiInfoScanned) getItem(position);
+		if (mWifiTags.contains(infoScanned)) {
+			view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_tag, null);
+			textView = (TextView) view.findViewById(R.id.wifi_tag_text);
+			if ((infoScanned).getWifiName().equals("Auth")) {
+				textView.setText("获取到" + wifiAuthCnt + "个认证WiFi");
+			} else if ((infoScanned).getWifiName().equals("Free")) {
+				textView.setText("挖掘到" + wifiFreeCnt + "个不需要密码WiFi");
 			} else if ((infoScanned).getWifiName().equals("Encrypt")) {
 				textView.setText("扫描到" + wifiEncryptCnt + "个需要密码的WiFi");
 			}
-        } else {
-	        	if (infoScanned.getWifiName() == "AuthDeclare") {
-	        		view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
-	                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
+		} else {
+			int type = -1;
+			ViewHolder viewHolder = null;
+			if (view != null) {
+				if (view.getTag() instanceof ViewHolder) {
+					viewHolder = (ViewHolder) view.getTag();
+					type = viewHolder.getHolderType();
+				}
+			}
+			if (((infoScanned.getWifiName() == "AuthDeclare") || ((infoScanned).getWifiName() == "FreeDeclare") || ((infoScanned).getWifiName() == "EncryptDeclare"))) {
+				DeclareViewHolder dv = null;
+				if (viewHolder != null && type == 0) {
+					dv = (DeclareViewHolder) view.getTag();
+				} else {
+					dv = new DeclareViewHolder();
+					view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
+					dv.name_dec = (TextView) view.findViewById(R.id.wifi_name_dec);
+					view.setTag(dv);
+				}
+				textView = dv.name_dec;
+				if (infoScanned.getWifiName() == "AuthDeclare") {
 					textView.setText("认证WiFi出现在这里");
 					textView.setTextColor(Color.GRAY);
-	        	}else if ((infoScanned).getWifiName() == "FreeDeclare") {
-	            	view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
-                textView = (TextView) view.findViewById(R.id.wifi_name_dec);
-				textView.setText("不需要密码WiFi出现在这里");
-				textView.setTextColor(Color.GRAY);
-			} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
-				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_declare, null);
-                	textView = (TextView) view.findViewById(R.id.wifi_name_dec);
-				textView.setText("需要密码的WiFi出现在这里");
-				textView.setTextColor(Color.GRAY);
+				} else if ((infoScanned).getWifiName() == "FreeDeclare") {
+					textView.setText("不需要密码WiFi出现在这里");
+					textView.setTextColor(Color.GRAY);
+				} else if ((infoScanned).getWifiName() == "EncryptDeclare") {
+					textView.setText("需要密码的WiFi出现在这里");
+					textView.setTextColor(Color.GRAY);
+				}
 			} else {
-				view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
-	            	textView = (TextView) view.findViewById(R.id.wifi_name);
-	            if (infoScanned.getAlias() != null) {
-	            		textView.setText(infoScanned.getAlias());
-	            		TextView nameTextView = (TextView) view.findViewById(R.id.wifi_alias);
-	            		nameTextView.setText("[" + infoScanned.getWifiName() + "]");
-	            } else {
-	            		textView.setText((infoScanned).getWifiName());
-				}
-				
-				TextView remarkText = (TextView) view.findViewById(R.id.wifi_remark);
-				if (infoScanned.getRemark() == null || infoScanned.getRemark() == "") {
-					remarkText.setVisibility(View.GONE);
+				ItemViewHolder iv = null;
+				if (type == 1 && viewHolder != null) {
+					iv = (ItemViewHolder) view.getTag();
 				} else {
-					remarkText.setText((infoScanned).getRemark());
+					iv = new ItemViewHolder();
+					view = LayoutInflater.from(this.mContext).inflate(R.layout.wifi_item, null);
+					iv.alias = (TextView) view.findViewById(R.id.wifi_alias);
+					iv.icon = (ImageView) view.findViewById(R.id.wifi_icon);
+					iv.name = (TextView) view.findViewById(R.id.wifi_name);
+					iv.remark =  (TextView) view.findViewById(R.id.wifi_remark);
+					iv.signalIcon= (ImageView) view.findViewById(R.id.wifi_status_icon);
+					iv.signalLevel=  (TextView) view.findViewById(R.id.wifi_status_digit);
+					iv.wifiDetails = (Button) view.findViewById(R.id.wifi_details_btn);
+					view.setTag(iv);
 				}
 				
-				ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-	            if (position >= (wifiAuthCnt + wifiFreeCnt + 3)) {
-					imageView.setImageResource(R.drawable.icon_crack_failed);
+				
+				if (infoScanned.getAlias() != null) {
+					iv.name.setText(infoScanned.getAlias());
+					iv.alias.setText("[" + infoScanned.getWifiName() + "]");
+				} else {
+					iv.name.setText((infoScanned).getWifiName());
+				}
+				
+				if (infoScanned.getRemark() == null || infoScanned.getRemark() == "") {
+					iv.remark.setVisibility(View.GONE);
+				} else {
+					iv.remark.setText((infoScanned).getRemark());
+				}
+				
+				if (position >= (wifiAuthCnt + wifiFreeCnt + 3)) {
+					iv.icon.setImageResource(R.drawable.icon_crack_failed);
 				} else if (position >= (wifiAuthCnt + 2)) {
-					imageView.setImageResource(R.drawable.icon_invalid);
+					iv.icon.setImageResource(R.drawable.icon_invalid);
 				} else {
 					if (infoScanned != null && infoScanned.getWifiLogo() != null) {
-						imageView.setImageBitmap(infoScanned.getWifiLogo());
+						iv.icon.setImageBitmap(infoScanned.getWifiLogo());
 					} else {
-						imageView.setImageResource(R.drawable.icon_invalid);
+						iv.icon.setImageResource(R.drawable.icon_invalid);
 					}
 				}
-	            
-	            int signalStrength = (infoScanned).getWifiStrength();
-	            TextView signalLevelView = (TextView) view.findViewById(R.id.wifi_status_digit);
-	            signalLevelView.setText(signalStrength + "%");
-	            ImageView signalImage = (ImageView) view.findViewById(R.id.wifi_status_icon);
-	            if (signalStrength >= 80) {
-	            	signalImage.setImageResource(R.drawable.lock_wifi_signal_icon3);
+
+				int signalStrength = (infoScanned).getWifiStrength();
+				iv.signalLevel.setText(signalStrength + "%");
+				if (signalStrength >= 80) {
+					iv.signalIcon.setImageResource(R.drawable.lock_wifi_signal_icon3);
 				} else if (signalStrength >= 60) {
-					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon2);
+					iv.signalIcon.setImageResource(R.drawable.lock_wifi_signal_icon2);
 				} else {
-					signalImage.setImageResource(R.drawable.lock_wifi_signal_icon1);
+					iv.signalIcon.setImageResource(R.drawable.lock_wifi_signal_icon1);
 				}
-	            
-	            final int pos = position;
-	            Button wifiDetails = (Button)view.findViewById(R.id.wifi_details_btn);
-	            wifiDetails.setOnClickListener(new View.OnClickListener() {
-					
+				
+				final int pos = position;
+				iv.wifiDetails.setOnClickListener(new View.OnClickListener() {
+
 					@Override
 					public void onClick(View arg0) {
-						//mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
-						//getWifiProfiles(infoScanned);
+						// mWifiHandleDB.queryWifiDynamic4Display(infoScanned);
+						// getWifiProfiles(infoScanned);
 						if (pos < wifiAuthCnt + 1) {
 							Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 							Bundle wifiData = new Bundle();
@@ -206,9 +228,43 @@ public class WifiListAdapter extends BaseAdapter {
 						}
 					}
 				});
+				
 			}
-        }
-        return view;
+
+		}
+		return view;
+	}
+
+	public interface ViewHolder {
+		public int getHolderType();
+	}
+
+	public final class DeclareViewHolder implements ViewHolder {
+		public static final int type = 0;
+		public TextView name_dec;
+
+		@Override
+		public int getHolderType() {
+			// TODO Auto-generated method stub
+			return type;
+		}
+	}
+
+	public final class ItemViewHolder implements ViewHolder {
+		public static final int type = 1;
+		public TextView remark;
+		public TextView name;
+		public TextView alias;
+		public ImageView icon;
+		public TextView signalLevel;
+		public ImageView signalIcon;
+		public Button wifiDetails;
+
+		@Override
+		public int getHolderType() {
+			// TODO Auto-generated method stub
+			return type;
+		}
 	}
 
 }
