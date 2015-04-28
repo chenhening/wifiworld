@@ -324,7 +324,6 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 												});
 									}
 								}).setNegativeButton("取消", null).show();
-
 					}
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);

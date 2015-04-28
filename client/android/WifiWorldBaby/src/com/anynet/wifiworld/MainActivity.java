@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		initFragments();
 		super.onCreate(savedInstanceState);
 
 		// 友盟自动更新
@@ -94,8 +95,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		Intent intent = getIntent();
 		intent.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
-		initView();
-		initFragments();
+		initView();		
 
 		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		// 添加显示第一个fragment
@@ -138,22 +138,23 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 		Log.e(TAG, "onAttachFragment");
-		if (fragments == null) {
-			fragments = new MainFragment[3];
-		}
-		if (wifiFragment == null && fragment instanceof WifiFragment) {
+//		if (fragments == null) {
+//			fragments = new MainFragment[3];
+//		}wifiFragment == null && 
+		if (fragment instanceof WifiFragment) {
 			wifiFragment = (WifiFragment) fragment;
 			fragments[CONNECT_TAB_IDX] = wifiFragment;
-		}
-		if (mapFragment == null && fragment instanceof MapFragment) {
+		}//mapFragment == null && 
+		if (fragment instanceof MapFragment) {
 			mapFragment = (MapFragment) fragment;
 			fragments[NEARBY_TAB_IDX] = mapFragment;
 		}
-		// discoverFragment = new DiscoverFragment();
-		if (meFragment == null && fragment instanceof MeFragment) {
+		// discoverFragment = new DiscoverFragment();meFragment == null && 
+		if (fragment instanceof MeFragment) {
 			meFragment = (MeFragment) fragment;
 			fragments[MY_TAB_IDX] = meFragment;
 		}
+		reflesh();
 	}
 
 	@Override

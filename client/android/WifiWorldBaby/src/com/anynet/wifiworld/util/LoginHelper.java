@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
@@ -22,16 +23,11 @@ import com.anynet.wifiworld.wifi.WifiListHelper;
 public class LoginHelper {
 
 	public static final int LOGOUT_KICKOUT = 0;
-
 	public static final int LOGOUT_TIMEOUT = 1;
-
-
 	public static final int STATUS_LOGOUT = 2;
-
 	public static final int LOGOUT_BY_USER = 3;
 	
 	private final String TAG = LoginHelper.class.getSimpleName();
-
 	public static String AUTO_LOGIN_SUCCESS = "com.anynet.wifiworld.autologin.success";
 	public static String AUTO_LOGIN_FAIL = "com.anynet.wifiworld.autologin.fail";
 	public static String AUTO_LOGIN_NEVERLOGIN = "com.anynet.wifiworld.autologin.neverlogin";
@@ -42,15 +38,18 @@ public class LoginHelper {
 	public static String LOGIN_FAIL = AUTO_LOGIN_FAIL;
 	public static String LOGIN_NEVERLOGIN = AUTO_LOGIN_NEVERLOGIN;
 
-	private static String mUserprofileDataFile = "userprofile.conf";
-	private static String mAliasPwd = "Password";
-	private static String mAliasUser = "PhoneNumber";
 	private UserProfile mUser = null;
 	private boolean mIsLogin = false;
-
 	private static LoginHelper mInstance = null;
-	private SharedPreferences mPreferences = null;
 	private Context globalContext = null;
+	
+	//private static String mUserprofileDataFile = "userprofile.conf";
+	//private SharedPreferences mPreferences = null;
+	private static String mRecordDataFile = "record.data";
+	private static String key_record = "objectid";
+	private static String key_logoff = "logoff";
+	private static String key_login = "login";
+	private SharedPreferences mCurRecord = null;//记录当前使用wifi的记录
 	public Set<String> mKnockList = new HashSet<String>();// 保存敲门历史到本地
 
 	private double Longitude = 0.0;
@@ -92,7 +91,8 @@ public class LoginHelper {
 
 	public LoginHelper(Context context) {
 		this.globalContext = context;
-		mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
+		mCurRecord = globalContext.getSharedPreferences(mRecordDataFile, Context.MODE_PRIVATE);
+		//mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
 	}
 
 	// ------------------------------------------------------------------------------------------------
@@ -131,34 +131,6 @@ public class LoginHelper {
 		globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
 		Log.d(TAG, "用户自动登陆成功。");
 		pullWifiProfile();
-		
-		/*String username = mPreferences.getString(mAliasUser, "");
-		final String password = mPreferences.getString(mAliasPwd, "");
-		mUser = new UserProfile();
-		mUser.setUsername(username);
-		mUser.setUsername(password);
-		// 如果本地已经存有数据，那么取出来与服务器验证是否成功
-		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-			Log.d(TAG, "用户未登录过");
-			globalContext.sendBroadcast(new Intent(AUTO_LOGIN_NEVERLOGIN));
-			return;
-		}
-		mUser.login(globalContext, new DataCallback<UserProfile>() {
-
-			@Override
-			public void onSuccess(UserProfile object) {
-				mIsLogin = true;
-				mUser = object;
-				globalContext.sendBroadcast(new Intent(AUTO_LOGIN_SUCCESS));
-				Log.d(TAG, "用户自动登陆成功。");
-				pullWifiProfile();
-			}
-
-			@Override
-			public void onFailed(String msg) {
-				Log.d(TAG, "用户自动登陆失败。");
-			}
-		});*/
 	}
 
 	public void logout() {
@@ -166,9 +138,6 @@ public class LoginHelper {
 		mUser.logout(globalContext);
 		mUser = null;
 		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
-		//SharedPreferences.Editor sharedata = mPreferences.edit();
-		//sharedata.clear();
-		//sharedata.commit();
 		Log.d(TAG, "用户退出成功");
 	}
 	
@@ -176,18 +145,10 @@ public class LoginHelper {
 	public void logoff() {
 		globalContext.sendBroadcast(new Intent(LOGIN_OFF));
 		mIsLogin = false;
-	}
-
-	/*private void SaveProfileLocal(UserProfile user) {
-		// 保存账号密码到本地用于下次登陆
-		// TODO(binfei):先简单的保存在本地某个文件，以后改成sqlite3
-		SharedPreferences.Editor sharedata = mPreferences.edit();
-		sharedata.putString(mAliasUser, user.getUsername());
-		sharedata.putString(mAliasPwd, user.getPassword());
+		SharedPreferences.Editor sharedata = mCurRecord.edit();
+		sharedata.putLong(key_logoff, System.currentTimeMillis()); //只记录数据那条记录的id
 		sharedata.commit();
-		Log.d(TAG, "用户密码本地保存成功。");
-		// ShowToast(globalContext, "用户密码本地保存成功。", Toast.LENGTH_SHORT);
-	}*/
+	}
 
 	public boolean getCurLoginStatus() {
 		return mIsLogin && mUser != null;
@@ -236,6 +197,29 @@ public class LoginHelper {
 	}
 	
 	public void updateWifiDynamic() {
+		String objectid = mCurRecord.getString(key_record, "");
+		long logintime = mCurRecord.getLong(key_login, 0);
+		long logofftime = mCurRecord.getLong(key_logoff, 0);
+		if (objectid != null) {
+			WifiDynamic record = new WifiDynamic();
+			record.setObjectId(objectid);
+			record.LoginTime = logintime;
+			record.LogoutTime = logofftime;
+			record.update(globalContext, new UpdateListener() {
+
+				@Override
+                public void onFailure(int arg0, String arg1) {
+                }
+
+				@Override
+                public void onSuccess() {
+					//SharedPreferences.Editor sharedata = mCurRecord.edit();
+					//sharedata.clear();
+					//sharedata.commit();
+                }
+			});
+		}
+		
 		if (WifiListHelper.getInstance(globalContext).mWifiInfoCur == null)
 			return;
 		
@@ -254,7 +238,10 @@ public class LoginHelper {
 
 			@Override
 			public void onSuccess(WifiDynamic object) {
-				Log.i(TAG, "Success to store wifi dynamic info to server");
+				SharedPreferences.Editor sharedata = mCurRecord.edit();
+				sharedata.putString(key_record, object.getObjectId()); //只记录数据那条记录的id
+				sharedata.putLong(key_login, object.LoginTime);
+				sharedata.commit();
 			}
 
 			@Override

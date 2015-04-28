@@ -1,36 +1,35 @@
 package com.anynet.wifiworld.map;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
-
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiListMapAdapter extends BaseAdapter {
 	private final static String TAG = WifiListMapAdapter.class.getSimpleName();
 
-	private List<WifiInfoScanned> mWifiList = new ArrayList<WifiInfoScanned>();
-	private MapFragment context;
+	private List<WifiProfile> mWifiList = new ArrayList<WifiProfile>();
+	private Context context;
 
-	public WifiListMapAdapter(MapFragment context, List<WifiInfoScanned> wifiList) {
+	public WifiListMapAdapter(Context context, List<WifiProfile> wifiList) {
 		super();
 		this.context = context;
 		mWifiList = wifiList;
 	}
-	
-	public void setData(List<WifiInfoScanned> data) {
+
+	public void setData(List<WifiProfile> data) {
 		mWifiList = data;
 	}
-	
+
 	@Override
 	public int getCount() {
 		return mWifiList.size();
@@ -45,48 +44,76 @@ public class WifiListMapAdapter extends BaseAdapter {
 	public long getItemId(int pos) {
 		return pos;
 	}
-	
+
 	@Override
-    public boolean isEnabled(int position) {
-        return super.isEnabled(position);
-    }
+	public boolean isEnabled(int position) {
+		return super.isEnabled(position);
+	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		if (view != null) {
-			return view;
+		ViewHolder vh = null;
+		if (view == null) {
+			vh = new ViewHolder();
+			view = LayoutInflater.from(context).inflate(R.layout.wifi_item_map, null);
+			vh.name = (TextView) view.findViewById(R.id.wifi_name);
+			vh.remark = (TextView) view.findViewById(R.id.wifi_remark);
+			vh.icon = (ImageView) view.findViewById(R.id.wifi_icon);
+			vh.dis_digit = (TextView) view.findViewById(R.id.wifi_dis_digit);
+			view.setTag(vh);
+		} else {
+			vh = (ViewHolder) view.getTag();
 		}
-		final WifiInfoScanned infoScanned = (WifiInfoScanned)getItem(position);
-		view = LayoutInflater.from(context.getActivity()).inflate(R.layout.wifi_item_map, null);
-		view.findViewById(R.id.wifi_layout).setOnClickListener(new OnClickListener() {
+
+		WifiProfile wifiProfile = (WifiProfile) getItem(position);
+/*		view.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				context.zoomAndDisplay(infoScanned.getWifiMAC());
+			public void onClick(View v) {
+				if (mOnItemClickListener != null) {
+					mOnItemClickListener.onClick(v, infoScanned.getWifiMAC());
+				}
+				// context.zoomAndDisplay(infoScanned.getWifiMAC());
 			}
-			
+
 		});
-		
-	    TextView textView = (TextView) view.findViewById(R.id.wifi_name);
-		textView.setText((infoScanned).getWifiName());
-		
-		TextView remarkText = (TextView) view.findViewById(R.id.wifi_remark);
-		if ((infoScanned).getRemark() != null) {
-			remarkText.setText((infoScanned).getRemark());
+*/
+		vh.name.setText(wifiProfile.Ssid+"|"+wifiProfile.Alias);
+
+		if (wifiProfile.ExtAddress != null) {
+			vh.remark.setText(wifiProfile.ExtAddress);
 		} else {
-			remarkText.setVisibility(View.GONE);
+			vh.remark.setVisibility(View.GONE);
 		}
-		
-		ImageView imageView = (ImageView)view.findViewById(R.id.wifi_icon);
-		imageView.setImageResource(R.drawable.icon_invalid);
-	    
-	    //int wifiDistance = (infoScanned).mWifiDistance;
-	    TextView distanceView = (TextView) view.findViewById(R.id.wifi_dis_digit);
-	    //distanceView.setText(String.valueOf(wifiDistance));
-	    distanceView.setVisibility(View.GONE);
-	    
-        return view;
+
+		vh.icon.setImageResource(R.drawable.icon_invalid);
+
+		// int wifiDistance = (infoScanned).mWifiDistance;
+		// distanceView.setText(String.valueOf(wifiDistance));
+		vh.dis_digit.setVisibility(View.GONE);
+
+		return view;
 	}
 
+/*	OnItemClickListener mOnItemClickListener;
+
+	public void setOnItemClickListener(OnItemClickListener m) {
+		mOnItemClickListener = m;
+	}
+
+	public void UnsetOnItemClickListener() {
+		mOnItemClickListener = null;
+	}
+
+	public interface OnItemClickListener {
+		public void onClick(View arg0, Object data);
+	}*/
+
+	public final class ViewHolder {
+		public TextView name;
+		public TextView remark;
+		public ImageView icon;
+		public TextView dis_digit;
+	}
 }

@@ -44,6 +44,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -92,6 +94,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private ImageView mImageView;
 	private ListView mWifiListView;
 	private WifiListMapAdapter mWifiListMapAdapter;
+	List<WifiProfile> wifiList;
 	private Marker currentMarker;
 	private Map<String, Marker> allMarkers = new HashMap<String, Marker>();
 	private LatLng mMyPosition;
@@ -158,11 +161,22 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			}
 		});
 
-		List<WifiInfoScanned> wifiList = new ArrayList<WifiInfoScanned>();
+		wifiList = new ArrayList<WifiProfile>();
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
-		mWifiListMapAdapter = new WifiListMapAdapter(this, wifiList);
+		mWifiListMapAdapter = new WifiListMapAdapter(getActivity(), wifiList);
 		mWifiListView.setAdapter(mWifiListMapAdapter);
-		
+		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				if(wifiList!=null && wifiList.size()>0){
+					WifiProfile  wf= wifiList.get(position);
+					zoomAndDisplay(wf);
+					Toast.makeText(getActivity(), "mac:"+wf.MacAddr, Toast.LENGTH_LONG).show();
+				}
+			}
+		});
 		mImageView = (ImageView) mPageRoot.findViewById(R.id.brought_by);
 		mImageView.setOnClickListener(new OnClickListener() {
 			
@@ -221,12 +235,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		if (currentMarker != null) {
 			currentMarker.hideInfoWindow();
 		}
-		deactivate();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
+		deactivate();
 	}
 
 	@Override
@@ -345,7 +359,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								showToast("查询周围wifi成功：共" + objects.size() + "条数据。");
 								// add wifi label
 								DisplayNearbyWifi(objects);
-								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
+/*								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
 								for (WifiProfile item : objects) {
 									WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 									//tempInfoScanned.mWifiDistance = 10;
@@ -353,8 +367,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 									tempInfoScanned.setRemark(item.ExtAddress);
 									tempInfoScanned.setWifiMAC(item.MacAddr);
 									data.add(tempInfoScanned);
-								}
-								mWifiListMapAdapter.setData(data);
+								}*/
+								mWifiListMapAdapter.setData(objects);
 								mWifiListMapAdapter.notifyDataSetChanged();
 							}
 
@@ -504,7 +518,16 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	}
 
 	private void DisplayNearbyWifi(final List<WifiProfile> wifilist) {
-		getActivity().runOnUiThread(new Runnable() {
+
+		allMarkers.clear();
+		for (int i = 0; i < wifilist.size(); ++i) {
+			WifiProfile wifi = wifilist.get(i);
+			Marker mM = getMarkerByWifiProfile(wifi);
+			allMarkers.put(wifi.MacAddr, mM);
+			//mM.showInfoWindow();
+		}
+	
+/*		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				allMarkers.clear();
@@ -519,9 +542,19 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 					//mM.showInfoWindow();
 				}
 			}
-		});
+		});*/
 	}
 
+	
+	public Marker getMarkerByWifiProfile(WifiProfile wifi){
+		LatLng llwifi1 = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
+		MarkerOptions mMO = new MarkerOptions();
+		Marker mM = aMap.addMarker(mMO.position(llwifi1).title(wifi.Alias)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo)).draggable(true));
+		mM.setObject(wifi);
+		return mM;
+	}
+	
 	@Override
     public void onBusRouteSearched(BusRouteResult arg0, int arg1) {
 	    // TODO Auto-generated method stub
@@ -564,8 +597,14 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		mCircle = aMap.addCircle(circleOptions);
 	}
 	
-	public void zoomAndDisplay(String Mac) {
+	
+	
+	public void zoomAndDisplay(WifiProfile wp) {
 		reDisplayCenter();
-		allMarkers.get(Mac).showInfoWindow();
+		if(!allMarkers.isEmpty()){
+			Marker mk = allMarkers.get(wp.MacAddr);
+			if(mk!=null)mk.showInfoWindow();
+		}
+		
 	}
 }
