@@ -102,7 +102,7 @@ public class BaseActivity extends FragmentActivity {
 				//自动登录
 				LoginHelper.getInstance(getApplicationContext()).logoff();
 				//记录掉线时间
-				LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
+				//LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
             }
 			
 		}, 0);
