@@ -23,6 +23,8 @@ public class WifiInfoScanned implements Serializable {
 	private String Alias;
 	private String Sponser;
 	
+	private int networkId = -1;
+	
 	private boolean isAuthWifi = false;
 	private boolean isLocalSave = false;
 	
@@ -239,6 +241,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setLocalSave(boolean isLocalSave) {
 		this.isLocalSave = isLocalSave;
+	}
+
+	public int getNetworkId() {
+		return networkId;
+	}
+
+	public void setNetworkId(int networkId) {
+		this.networkId = networkId;
 	}
 	
 }

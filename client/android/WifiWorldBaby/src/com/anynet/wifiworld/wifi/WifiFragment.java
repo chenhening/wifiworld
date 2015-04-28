@@ -54,6 +54,7 @@ import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.ui.WifiCommentActivity;
 import com.anynet.wifiworld.wifi.ui.WifiCommentsAdapter;
+import com.avos.avoscloud.LogUtil.log;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -95,6 +96,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
 	private WifiInfoScanned mWifiItemClick;
+
+	private boolean isPwdConnect = false;
 
 	private WifiCommentsAdapter mWifiCommentsAdapter;
 	private List<String> mWifiCommentsList = new ArrayList<String>();
@@ -152,7 +155,9 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 					}
 					// refresh WiFi list and WiFi title info
 					mWifiListHelper.fillWifiList();
+
 					// refreshWifiTitleInfo();
+					isPwdConnect = false;
 
 					if (isConnected) {
 
@@ -217,7 +222,15 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 				@Override
 				public void onSupplicantDisconnected(String statusStr) {
-					mWifiListHelper.fillWifiList();
+					if (isPwdConnect) {
+						Log.i(TAG, "forget network: " + mWifiItemClick.getNetworkId());
+						mWifiAdmin.forgetNetwork(mWifiItemClick.getNetworkId());
+						isPwdConnect = false;
+						String titleStr = "密码输入错误，请重新输入密码";
+						showWifiConnectPwdConfirmDialog(titleStr, mWifiItemClick, mWifiConnectPwdDialog);
+					} else {
+						mWifiListHelper.fillWifiList();
+					}
 				}
 			});
 		}
@@ -300,14 +313,6 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 													@Override
 													public void onSuccess(WifiQuestions object) {
-														// Intent i = new
-														// Intent(getApplicationContext(),
-														// KnockStepFirstActivity.class);
-														// i.putExtra("whoami",
-														// "WifiDetailsActivity");
-														// i.putExtra("data",
-														// object);
-														// startActivity(i);
 														KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
 													}
 
@@ -325,7 +330,9 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 					showWifiConnectConfirmDialog(mWifiItemClick, false);
 				} else {
 					mWifiItemClick = mWifiEncrypt.get(position - 2 - mWifiFree.size() - index_auth);
-					showWifiConnectPwdConfirmDialog(mWifiItemClick, mWifiConnectPwdDialog);
+					String titleStr = "连接到：" + mWifiItemClick.getWifiName();
+					showWifiConnectPwdConfirmDialog(titleStr, mWifiItemClick, mWifiConnectPwdDialog);
+
 				}
 			}
 		});
@@ -462,7 +469,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 					// wifiInfoScanned.getWifiName() + ", " +
 					// wifiInfoScanned.getWifiPwd());
 				} else {
-					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, true);
+					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, false);
 					// Log.d(TAG, "reconnect wifi with " +
 					// wifiInfoScanned.getWifiName() + ", " +
 					// wifiInfoScanned.getWifiPwd());
@@ -487,8 +494,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		mWifiConnectDialog.show();
 	}
 
-	private void showWifiConnectPwdConfirmDialog(final WifiInfoScanned wifiInfoScanned, final WifiConnectDialog wifiConnectDialog) {
-		wifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
+	private void showWifiConnectPwdConfirmDialog(String title, final WifiInfoScanned wifiInfoScanned, final WifiConnectDialog wifiConnectDialog) {
+		wifiConnectDialog.setTitle(title);
 		wifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
 
 		wifiConnectDialog.setLeftBtnStr("取消");
@@ -504,9 +511,10 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 					return;
 				}
 
+				isPwdConnect = true;
 				WifiBRService.setWifiSupplicant(true);
 				wifiInfoScanned.setWifiPwd(inputedPwd);
-				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, false);
+				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, true);
 				dialog.dismiss();
 				if (!connResult) {
 					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 正在重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();
