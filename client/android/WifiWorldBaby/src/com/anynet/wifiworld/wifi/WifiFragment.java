@@ -32,6 +32,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
@@ -445,6 +446,24 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		}
 	}
 
+	public void setListViewHeightBasedOnChildren(ListView listView) {  
+	    ListAdapter listAdapter = listView.getAdapter();   
+	    if (listAdapter == null) {  
+	        return;  
+	    }  
+	 
+	    int totalHeight = 0;  
+	    for (int i = 0; i < listAdapter.getCount(); i++) {  
+	        View listItem = listAdapter.getView(i, null, listView);  
+	        listItem.measure(0, 0);  
+	        totalHeight += listItem.getMeasuredHeight();  
+	    }  
+	 
+	    ViewGroup.LayoutParams params = listView.getLayoutParams();  
+	    params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+	    listView.setLayoutParams(params);  
+	} 
+	
 	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned, boolean beAuth) {
 		mWifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
 		mWifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
@@ -684,6 +703,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 				}
 				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
 				commentsListView.setAdapter(mWifiCommentsAdapter);
+				setListViewHeightBasedOnChildren(commentsListView);
 			}
 
 			@Override
