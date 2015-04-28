@@ -6,28 +6,27 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.anynet.wifiworld.data.WifiProfile;
 
 public class WifiListMapAdapter extends BaseAdapter {
 	private final static String TAG = WifiListMapAdapter.class.getSimpleName();
 
-	private List<WifiInfoScanned> mWifiList = new ArrayList<WifiInfoScanned>();
+	private List<WifiProfile> mWifiList = new ArrayList<WifiProfile>();
 	private Context context;
 
-	public WifiListMapAdapter(Context context, List<WifiInfoScanned> wifiList) {
+	public WifiListMapAdapter(Context context, List<WifiProfile> wifiList) {
 		super();
 		this.context = context;
 		mWifiList = wifiList;
 	}
 
-	public void setData(List<WifiInfoScanned> data) {
+	public void setData(List<WifiProfile> data) {
 		mWifiList = data;
 	}
 
@@ -67,7 +66,7 @@ public class WifiListMapAdapter extends BaseAdapter {
 			vh = (ViewHolder) view.getTag();
 		}
 
-		WifiInfoScanned infoScanned = (WifiInfoScanned) getItem(position);
+		WifiProfile wifiProfile = (WifiProfile) getItem(position);
 /*		view.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -80,10 +79,10 @@ public class WifiListMapAdapter extends BaseAdapter {
 
 		});
 */
-		vh.name.setText((infoScanned).getWifiName());
+		vh.name.setText(wifiProfile.Ssid+"|"+wifiProfile.Alias);
 
-		if ((infoScanned).getRemark() != null) {
-			vh.remark.setText((infoScanned).getRemark());
+		if (wifiProfile.ExtAddress != null) {
+			vh.remark.setText(wifiProfile.ExtAddress);
 		} else {
 			vh.remark.setVisibility(View.GONE);
 		}

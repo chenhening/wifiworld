@@ -94,7 +94,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private ImageView mImageView;
 	private ListView mWifiListView;
 	private WifiListMapAdapter mWifiListMapAdapter;
-	List<WifiInfoScanned> wifiList;
+	List<WifiProfile> wifiList;
 	private Marker currentMarker;
 	private Map<String, Marker> allMarkers = new HashMap<String, Marker>();
 	private LatLng mMyPosition;
@@ -161,7 +161,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			}
 		});
 
-		wifiList = new ArrayList<WifiInfoScanned>();
+		wifiList = new ArrayList<WifiProfile>();
 		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
 		mWifiListMapAdapter = new WifiListMapAdapter(getActivity(), wifiList);
 		mWifiListView.setAdapter(mWifiListMapAdapter);
@@ -171,9 +171,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				if(wifiList!=null && wifiList.size()>0){
-					WifiInfoScanned  wf= wifiList.get(position);
-					zoomAndDisplay(wf.getWifiMAC());
-					Toast.makeText(getActivity(), "mac:"+wf.getWifiMAC(), Toast.LENGTH_LONG).show();
+					WifiProfile  wf= wifiList.get(position);
+					zoomAndDisplay(wf);
+					Toast.makeText(getActivity(), "mac:"+wf.MacAddr, Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -359,7 +359,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								showToast("查询周围wifi成功：共" + objects.size() + "条数据。");
 								// add wifi label
 								DisplayNearbyWifi(objects);
-								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
+/*								List<WifiInfoScanned> data = new ArrayList<WifiInfoScanned>();
 								for (WifiProfile item : objects) {
 									WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 									//tempInfoScanned.mWifiDistance = 10;
@@ -367,8 +367,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 									tempInfoScanned.setRemark(item.ExtAddress);
 									tempInfoScanned.setWifiMAC(item.MacAddr);
 									data.add(tempInfoScanned);
-								}
-								mWifiListMapAdapter.setData(data);
+								}*/
+								mWifiListMapAdapter.setData(objects);
 								mWifiListMapAdapter.notifyDataSetChanged();
 							}
 
@@ -599,10 +599,10 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	
 	
 	
-	public void zoomAndDisplay(String Mac) {
+	public void zoomAndDisplay(WifiProfile wp) {
 		reDisplayCenter();
 		if(!allMarkers.isEmpty()){
-			Marker mk = allMarkers.get(Mac);
+			Marker mk = allMarkers.get(wp.MacAddr);
 			if(mk!=null)mk.showInfoWindow();
 		}
 		
