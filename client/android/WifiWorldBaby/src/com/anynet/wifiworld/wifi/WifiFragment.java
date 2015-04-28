@@ -58,15 +58,15 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class WifiFragment extends MainFragment {
+public class WifiFragment extends MainFragment implements OnClickListener {
 	private final static String TAG = WifiFragment.class.getSimpleName();
-	
+
 	public static final int WIFI_CONNECT_CONFIRM = 1;
 	public static final int WIFI_COMMENT = 2;
-	
+
 	public final static int UPDATE_WIFI_LIST = 99;
 	public final static int GET_WIFI_DETAILS = 98;
-	
+
 	private WifiAdmin mWifiAdmin;
 	private PullToRefreshListView mWifiListView;
 	private WifiListAdapter mWifiListAdapter;
@@ -75,12 +75,12 @@ public class WifiFragment extends MainFragment {
 	private List<WifiInfoScanned> mWifiEncrypt = new ArrayList<WifiInfoScanned>();
 	private WifiListHelper mWifiListHelper;
 	private LoginHelper mLoginHelper = null;
-	
+
 	private TextView mWifiNameView;
 	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
-	
+
 	private LinearLayout mWifiSquareLayout;
 	private View mPopupView;
 	private WifiSpeedTester mWifiSpeedTester;
@@ -88,19 +88,19 @@ public class WifiFragment extends MainFragment {
 	private LinearLayout mWifiSpeedLayout;
 	private LinearLayout mWifiShareLayout;
 	private LinearLayout mWifiLouderLayout;
-	
+
 	private WifiConnectDialog mWifiConnectDialog;
 	private WifiConnectDialog mWifiConnectPwdDialog;
-	
+
 	private WifiInfo mLastWifiInfo = null;
 	private WifiInfoScanned mLastWifiInfoScanned = null;
 	private WifiInfoScanned mWifiItemClick;
-	
+
 	private WifiCommentsAdapter mWifiCommentsAdapter;
 	private List<String> mWifiCommentsList = new ArrayList<String>();
 
 	private Handler mHandler = new Handler() {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			Log.i(TAG, "handle wifi list helper message");
@@ -116,20 +116,20 @@ public class WifiFragment extends MainFragment {
 			}
 			mWifiListView.onRefreshComplete();
 		}
-		
+
 	};
-	
+
 	private WifiBRService.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
-		
+
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			
+
 		}
-		
+
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			mWifiMonitorService = ((WifiBRService.WifiMonitorService.WifiStatusBinder)service).getService();
+			mWifiMonitorService = ((WifiBRService.WifiMonitorService.WifiStatusBinder) service).getService();
 			mWifiMonitorService.setOnWifiStatusListener(new OnWifiStatusListener() {
 
 				@Override
@@ -147,15 +147,15 @@ public class WifiFragment extends MainFragment {
 				@Override
 				public void onNetWorkChanged(boolean isConnected, String str) {
 					if (isConnected) {
-						//一旦网络状态发生变化后停止监听服务
+						// 一旦网络状态发生变化后停止监听服务
 						WifiBRService.setWifiSupplicant(false);
 					}
-					//refresh WiFi list and WiFi title info
+					// refresh WiFi list and WiFi title info
 					mWifiListHelper.fillWifiList();
-					//refreshWifiTitleInfo();
-					
+					// refreshWifiTitleInfo();
+
 					if (isConnected) {
-						
+
 						WifiInfo curwifi = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected();
 						if (curwifi == null)
 							return;
@@ -164,37 +164,37 @@ public class WifiFragment extends MainFragment {
 							if (item.getWifiName().equals(curwifi.getSSID())) {
 								isExist = true;
 							}
-						}//发现wifi未认证不做数据监听
+						}// 发现wifi未认证不做数据监听
 						if (!isExist)
 							return;
-						
-						//一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
+
+						// 一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
 						String CurMac = curwifi.getBSSID();
 						WifiProfile data_listener = new WifiProfile();
-						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", 
-							WifiProfile.unique_key, CurMac, DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
+						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", WifiProfile.unique_key, CurMac,
+								DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
 
-							@Override
-							public void onFailed(String msg) {
-								Log.d(TAG, msg);
-							}
+									@Override
+									public void onFailed(String msg) {
+										Log.d(TAG, msg);
+									}
 
-							@Override
-							public void onSuccess(WifiProfile object) {
-								//通知下线
-								if (!object.isShared()) {
-									getActivity().runOnUiThread(new Runnable() {
+									@Override
+									public void onSuccess(WifiProfile object) {
+										// 通知下线
+										if (!object.isShared()) {
+											getActivity().runOnUiThread(new Runnable() {
 
-										@Override
-										public void run() {
-											showToast("对不起，此网络主人停止了网络分享，请保存数据退出网络。");
-											WifiAdmin.getInstance(getApplicationContext()).disConnectionWifi(
-												mWifiAdmin.getWifiConnected().getNetworkId());
+												@Override
+												public void run() {
+													showToast("对不起，此网络主人停止了网络分享，请保存数据退出网络。");
+													WifiAdmin.getInstance(getApplicationContext()).disConnectionWifi(
+															mWifiAdmin.getWifiConnected().getNetworkId());
+												}
+											});
 										}
-									});
-								}
-							}
-						});
+									}
+								});
 					}
 				}
 
@@ -222,11 +222,11 @@ public class WifiFragment extends MainFragment {
 			});
 		}
 	};
-	
+
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		// mTitlebar.llFinish.setOnClickListener(this);
 		mTitlebar.tvTitle.setText(getString(R.string.connect));
@@ -237,18 +237,17 @@ public class WifiFragment extends MainFragment {
 		super.onCreate(savedInstanceState);
 		mWifiListHelper = WifiListHelper.getInstance(getActivity(), mHandler);
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
-		
-		WifiBRService.bindWifiService(getActivity(), conn);	
+
+		WifiBRService.bindWifiService(getActivity(), conn);
 		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
 		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
-		
+
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
 		if (mWifiAdmin.isWifiEnabled()) {
 			mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
@@ -257,68 +256,69 @@ public class WifiFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
 			mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
 		}
-		
-		//handle WIFI square view
+
+		// handle WIFI square view
 		mWifiSquareLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_square);
 		setWifiSquareListener(mWifiSquareLayout);
-		//initial WIFI square pop-up view
+		// initial WIFI square pop-up view
 		initWifiSquarePopupView();
-		//display WIFI SSID which is connected or not
+		// display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
 		mWifiLogoView = (ImageView) mPageRoot.findViewById(R.id.wifi_logo);
-//		String connected_name = mWifiAdmin.getWifiNameConnection();
-//		if (!connected_name.equals("") && !connected_name.equals("0x")) {
-//			mWifiNameView.setText("已连接"	+ WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
-//			mWifiNameView.setTextColor(Color.BLACK);
-//		}
-		
-		//WIFI list view display and operation
+		// String connected_name = mWifiAdmin.getWifiNameConnection();
+		// if (!connected_name.equals("") && !connected_name.equals("0x")) {
+		// mWifiNameView.setText("已连接" +
+		// WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
+		// mWifiNameView.setTextColor(Color.BLACK);
+		// }
+
+		// WIFI list view display and operation
 		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
 		mWifiListAdapter = new WifiListAdapter(this.getActivity(), mWifiAuth, mWifiFree, mWifiEncrypt);
 		mWifiListView.setAdapter(mWifiListAdapter);
 		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				int index_auth = (mWifiAuth.size() + 2);
 				if (position < index_auth) {
 					mWifiItemClick = mWifiAuth.get(position - 2);
-					//判断是否敲门，没有敲门提醒其去敲门
-					if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || 
-						mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())) {
+					// 判断是否敲门，没有敲门提醒其去敲门
+					if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())) {
 						showWifiConnectConfirmDialog(mWifiItemClick, true);
 					} else {
-						//弹出询问对话框
-						new AlertDialog.Builder(getActivity())
-						.setTitle("Wi-Fi敲门").setMessage("当前Wi-Fi的门没有敲开，是否去敲门？")  
-						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-		
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								//拉取敲门问题
-								WifiQuestions wifiQuestions = new WifiQuestions();
-								wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(), new DataCallback<WifiQuestions>() {
-									
+						// 弹出询问对话框
+						new AlertDialog.Builder(getActivity()).setTitle("Wi-Fi敲门").setMessage("当前Wi-Fi的门没有敲开，是否去敲门？")
+								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
 									@Override
-									public void onSuccess(WifiQuestions object) {
-//										Intent i = new Intent(getApplicationContext(), KnockStepFirstActivity.class);
-//										i.putExtra("whoami", "WifiDetailsActivity");
-//										i.putExtra("data", object);
-//										startActivity(i);
-										KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
+									public void onClick(DialogInterface dialog, int which) {
+										// 拉取敲门问题
+										WifiQuestions wifiQuestions = new WifiQuestions();
+										wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(),
+												new DataCallback<WifiQuestions>() {
+
+													@Override
+													public void onSuccess(WifiQuestions object) {
+														// Intent i = new
+														// Intent(getApplicationContext(),
+														// KnockStepFirstActivity.class);
+														// i.putExtra("whoami",
+														// "WifiDetailsActivity");
+														// i.putExtra("data",
+														// object);
+														// startActivity(i);
+														KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
+													}
+
+													@Override
+													public void onFailed(String msg) {
+														showToast("获取敲门信息失败，请稍后重试:" + msg);
+													}
+												});
 									}
-									
-									@Override
-									public void onFailed(String msg) {
-										showToast("获取敲门信息失败，请稍后重试:" + msg);
-									}
-								});
-							}					
-						})
-						.setNegativeButton("取消", null)
-						.show();
-						
+								}).setNegativeButton("取消", null).show();
+
 					}
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
@@ -336,19 +336,19 @@ public class WifiFragment extends MainFragment {
 				mWifiListHelper.fillWifiList();
 			}
 		});
-		
+
 		mOpenWifiBtn = (Button) mPageRoot.findViewById(R.id.open_wifi_btn);
 		mOpenWifiBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View view) {
 				mWifiAdmin.openWifi();
 			}
 		});
-		
+
 		mWifiSwitch = (ToggleButton) mPageRoot.findViewById(R.id.wifi_control_toggle);
 		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
 				if (!isChecked) {
@@ -360,21 +360,21 @@ public class WifiFragment extends MainFragment {
 				}
 			}
 		});
-		
+
 		mWifiListHelper.fillWifiList();
-		//refreshWifiTitleInfo();
-		
-		//bind common title UI
+		// refreshWifiTitleInfo();
+
+		// bind common title UI
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		
+		curSquareIdx = -1;
 		return mPageRoot;
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		if (requestCode == WIFI_CONNECT_CONFIRM && resultCode == android.app.Activity.RESULT_OK) {
 			mWifiListHelper.fillWifiList();
 		} else if (requestCode == WIFI_CONNECT_CONFIRM && resultCode != android.app.Activity.RESULT_CANCELED) {
@@ -382,7 +382,7 @@ public class WifiFragment extends MainFragment {
 				Toast.makeText(getActivity(), "Failed to connect to " + mWifiItemClick.getWifiName(), Toast.LENGTH_LONG).show();
 			}
 		}
-		
+
 		if (requestCode == WIFI_COMMENT && resultCode == android.app.Activity.RESULT_OK) {
 			String commentStr = data.getStringExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
 			mWifiCommentsList.add(commentStr);
@@ -392,7 +392,7 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onDestroyView() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 		super.onDestroyView();
 	}
 
@@ -403,30 +403,31 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onPause() {
-//		if (mSupplicantBRRegisterd) {
-//			getActivity().unregisterReceiver(mSupplicantReceiver);
-//		}
-		
-		//getActivity().unregisterReceiver(mLoginReceiver);
-		
+		// if (mSupplicantBRRegisterd) {
+		// getActivity().unregisterReceiver(mSupplicantReceiver);
+		// }
+
+		// getActivity().unregisterReceiver(mLoginReceiver);
+
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-//		mSupplicantReceiver = mWifiSupplicant.mReceiver;
-//		
-//		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-//		getActivity().registerReceiver(mSupplicantReceiver, filter);
-//		mSupplicantBRRegisterd = true;
-		
+		// mSupplicantReceiver = mWifiSupplicant.mReceiver;
+		//
+		// final IntentFilter filter = new
+		// IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+		// getActivity().registerReceiver(mSupplicantReceiver, filter);
+		// mSupplicantBRRegisterd = true;
+
 		IntentFilter loginFilter = new IntentFilter();
 		loginFilter.addAction(LoginHelper.LOGIN_SUCCESS);
-		//getActivity().registerReceiver(mLoginReceiver, loginFilter);
-		
+		// getActivity().registerReceiver(mLoginReceiver, loginFilter);
+
 		super.onResume();
 	}
-	
+
 	@Override
 	public boolean onBackPressed() {
 		if (mWifiSquarePopup.isShowing()) {
@@ -445,22 +446,26 @@ public class WifiFragment extends MainFragment {
 		} else {
 			mWifiConnectDialog.setSecurity("该WiFi未经认证，请谨慎使用！");
 		}
-		
+
 		mWifiConnectDialog.setLeftBtnStr("取消");
 		mWifiConnectDialog.setRightBtnStr("确定");
-		
+
 		mWifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				WifiBRService.setWifiSupplicant(true);
-				
+
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
 					connResult = mWifiAdmin.connectToConfiguredNetwork(getActivity(), cfgSelected, true);
-					//Log.d(TAG, "reconnect saved wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
+					// Log.d(TAG, "reconnect saved wifi with " +
+					// wifiInfoScanned.getWifiName() + ", " +
+					// wifiInfoScanned.getWifiPwd());
 				} else {
 					connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, true);
-					//Log.d(TAG, "reconnect wifi with " + wifiInfoScanned.getWifiName() + ", " + wifiInfoScanned.getWifiPwd());
+					// Log.d(TAG, "reconnect wifi with " +
+					// wifiInfoScanned.getWifiName() + ", " +
+					// wifiInfoScanned.getWifiPwd());
 				}
 				dialog.dismiss();
 				if (!connResult) {
@@ -470,7 +475,7 @@ public class WifiFragment extends MainFragment {
 				}
 			}
 		});
-		
+
 		mWifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 
@@ -481,24 +486,24 @@ public class WifiFragment extends MainFragment {
 
 		mWifiConnectDialog.show();
 	}
-	
+
 	private void showWifiConnectPwdConfirmDialog(final WifiInfoScanned wifiInfoScanned, final WifiConnectDialog wifiConnectDialog) {
 		wifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
 		wifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
-		
+
 		wifiConnectDialog.setLeftBtnStr("取消");
 		wifiConnectDialog.setRightBtnStr("确定");
 		wifiConnectDialog.clearPwdEditText();
-		
+
 		wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {				
+			public void onClick(DialogInterface dialog, int which) {
 				boolean connResult = false;
 				String inputedPwd = wifiConnectDialog.getPwdContent();
 				if (inputedPwd.equals("")) {
 					Toast.makeText(getActivity(), "请输入密码。", Toast.LENGTH_LONG).show();
 					return;
 				}
-				
+
 				WifiBRService.setWifiSupplicant(true);
 				wifiInfoScanned.setWifiPwd(inputedPwd);
 				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, false);
@@ -510,7 +515,7 @@ public class WifiFragment extends MainFragment {
 				}
 			}
 		});
-		
+
 		wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 
@@ -521,13 +526,11 @@ public class WifiFragment extends MainFragment {
 
 		wifiConnectDialog.show();
 	}
-	
-	
 
 	private void refreshWifiTitleInfo() {
 		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
-		
-		//update WiFi title info
+
+		// update WiFi title info
 		if (wifiCurInfo != null) {
 			WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 			if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
@@ -535,14 +538,13 @@ public class WifiFragment extends MainFragment {
 			} else {
 				mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 			}
-			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null
-				&& wifiInfoCurrent.getAlias().length() > 0) {
+			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null && wifiInfoCurrent.getAlias().length() > 0) {
 				mWifiNameView.setText("已连接: " + wifiInfoCurrent.getAlias());
 			} else {
 				mWifiNameView.setText("已连接: " + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
 			}
 			mWifiNameView.setTextColor(Color.BLACK);
-			
+
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
@@ -550,22 +552,21 @@ public class WifiFragment extends MainFragment {
 			mWifiNameView.setText("未连接任何WiFi");
 			mWifiNameView.setTextColor(Color.GRAY);
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
-			
+
 			mWifiSwitch.setVisibility(View.GONE);
 			mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
-		
-		//forget last WiFi connected configuration info
-		if (mLastWifiInfo != null && mLastWifiInfoScanned != null
-				&& mLastWifiInfoScanned.isAuthWifi() && !mLastWifiInfoScanned.isLocalSave()) {
+
+		// forget last WiFi connected configuration info
+		if (mLastWifiInfo != null && mLastWifiInfoScanned != null && mLastWifiInfoScanned.isAuthWifi() && !mLastWifiInfoScanned.isLocalSave()) {
 			Log.i(TAG, "erase WiFi config which has been shared and not local save");
 			mWifiAdmin.forgetNetwork(mLastWifiInfo);
 		}
 		mLastWifiInfo = wifiCurInfo;
 		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
-	
+
 	private void showPopupWindow(View view, PopupWindow popupWindow) {
 		Log.i(TAG, "Show Wifi Square PopupWindow");
 		popupWindow.setFocusable(false);
@@ -573,38 +574,38 @@ public class WifiFragment extends MainFragment {
 		popupWindow.setAnimationStyle(R.style.PopupAnimation);
 		popupWindow.showAsDropDown(view);
 	}
-	
+
 	private void initWifiSquarePopupView() {
 		if (mWifiSquarePopup == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			mPopupView = layoutInflater.inflate(R.layout.wifi_popup_view, null); 
-			
+			mPopupView = layoutInflater.inflate(R.layout.wifi_popup_view, null);
+
 			mWifiSpeedLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_speed_layout);
 			mWifiShareLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_share_layout);
 			mWifiLouderLayout = (LinearLayout) mPopupView.findViewById(R.id.wifi_louder_layout);
-			
-			//create one pop-up window object
-			mWifiSquarePopup = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT); 
+
+			// create one pop-up window object
+			mWifiSquarePopup = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			mWifiSquarePopup.setFocusable(false);
-			mWifiSquarePopup.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);  
-			//mWifiSquarePopup.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);  
-			//mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0);
-			
-			//测速ui
+			mWifiSquarePopup.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+			// mWifiSquarePopup.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+			// mWifiSquarePopup.showAtLocation(this, Gravity.BOTTOM, 0, 0);
+
+			// 测速ui
 			mWifiSpeedTester = new WifiSpeedTester(mPopupView);
 			Button testBtn = (Button) mPopupView.findViewById(R.id.start_button);
 			testBtn.setOnClickListener(mWifiSpeedTester);
 			mWifiSquarePopup.setOnDismissListener(new OnDismissListener() {
-				
+
 				@Override
 				public void onDismiss() {
 					Log.i(TAG, "on popup window dismiss");
 					mWifiSpeedTester.stopSpeedTest();
 				}
 			});
-			
-			//shared ui
-			TextView mTVLinkLicense = (TextView)mWifiShareLayout.findViewById(R.id.tv_link_license);
+
+			// shared ui
+			TextView mTVLinkLicense = (TextView) mWifiShareLayout.findViewById(R.id.tv_link_license);
 			final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
 			mTVLinkLicense.setText(Html.fromHtml(sText));
 			mTVLinkLicense.setClickable(true);
@@ -623,49 +624,50 @@ public class WifiFragment extends MainFragment {
 
 				@Override
 				public void onClick(View v) {
-					//如果用户未登陆提醒其登陆
+					// 如果用户未登陆提醒其登陆
 					if (!checkIsLogined()) {
 						showToast("需要登录之后才能认证。");
 						return;
 					}
-					
-					//验证当前登录用户是否已经登记了wifi，目前只支持一人绑定一个wifi
+
+					// 验证当前登录用户是否已经登记了wifi，目前只支持一人绑定一个wifi
 					WifiProfile wifi = LoginHelper.getInstance(getApplicationContext()).mWifiProfile;
 					if (wifi != null) {
 						showToast("你已经绑定了一个Wi-Fi，当前支持一个账号绑定一个Wi-Fi");
 						return;
 					}
-					
-					//TODO（binfei） 验证当前wifi是否已经被人绑定了，如果绑定可以提请申诉
+
+					// TODO（binfei） 验证当前wifi是否已经被人绑定了，如果绑定可以提请申诉
 					Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
 					startActivity(i);
 				}
 			});
-			
-			//评论ui
+
+			// 评论ui
 			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.tv_button_sms);
 			send_btn.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View view) {
-//					if (!LoginHelper.getInstance(getActivity()).isLogined()) {
-//						UserLoginActivity.start((BaseActivity) getActivity());
-//						return;
-//					}
+					// if (!LoginHelper.getInstance(getActivity()).isLogined())
+					// {
+					// UserLoginActivity.start((BaseActivity) getActivity());
+					// return;
+					// }
 					Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
 					startActivityForResult(intent, WIFI_COMMENT);
 				}
 			});
 		}
 	}
-	
+
 	private void loadWifiComments(View popupView) {
 		WifiInfoScanned wifiInfoScanned = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
-		
-		final ListView commentsListView = (ListView)popupView.findViewById(R.id.wifi_list_comments);
+
+		final ListView commentsListView = (ListView) popupView.findViewById(R.id.wifi_list_comments);
 		WifiComments wifiComments = new WifiComments();
 		wifiComments.QueryByMacAddress(getActivity(), wifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
-			
+
 			@Override
 			public void onSuccess(List<WifiComments> objects) {
 				mWifiCommentsList.clear();
@@ -675,57 +677,59 @@ public class WifiFragment extends MainFragment {
 				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
 				commentsListView.setAdapter(mWifiCommentsAdapter);
 			}
-			
+
 			@Override
 			public void onFailed(String msg) {
 				Log.e(TAG, msg + ". Failed to pull wifi comments");
 			}
 		});
 	}
-	
-	private int curSquareIdx = R.id.wifi_speed;
-	private OnClickListener mSquareClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View view) {
-			switch (view.getId()) {
-			case R.id.wifi_speed:
-				mWifiSpeedLayout.setVisibility(View.VISIBLE);
-				mWifiShareLayout.setVisibility(View.GONE);
-				mWifiLouderLayout.setVisibility(View.GONE);
-				break;
-			case R.id.wifi_share:
-				mWifiSpeedLayout.setVisibility(View.GONE);
-				mWifiShareLayout.setVisibility(View.VISIBLE);
-				mWifiLouderLayout.setVisibility(View.GONE);
-				break;
-			case R.id.wifi_louder:
-				mWifiSpeedLayout.setVisibility(View.GONE);
-				mWifiShareLayout.setVisibility(View.GONE);
-				mWifiLouderLayout.setVisibility(View.VISIBLE);
-				//WiFi comments list
-				loadWifiComments(mPopupView);
-				break;
-			default:
-				break;
-			}
-			if (!mWifiSquarePopup.isShowing()) {
-				showPopupWindow(view, mWifiSquarePopup);
-			} else if (curSquareIdx == view.getId()) {
-				mWifiSquarePopup.dismiss();
-			}
-			
-			curSquareIdx = view.getId();
-		}
-	};
+
 	private void setWifiSquareListener(LinearLayout wifiTasteLayout) {
 		TextView wifiSpeed = (TextView) wifiTasteLayout.findViewById(R.id.wifi_speed);
-		wifiSpeed.setOnClickListener(mSquareClickListener);
-		
+		wifiSpeed.setOnClickListener(this);
+
 		TextView wifiShare = (TextView) wifiTasteLayout.findViewById(R.id.wifi_share);
-		wifiShare.setOnClickListener(mSquareClickListener);
-		
+		wifiShare.setOnClickListener(this);
+
 		TextView wifiLouder = (TextView) wifiTasteLayout.findViewById(R.id.wifi_louder);
-		wifiLouder.setOnClickListener(mSquareClickListener);
+		wifiLouder.setOnClickListener(this);
+	}
+
+	private int curSquareIdx = -1;
+
+	@Override
+	public void onClick(View view) {
+		// TODO Auto-generated method stub
+
+		switch (view.getId()) {
+		case R.id.wifi_speed:
+			mWifiSpeedLayout.setVisibility(View.VISIBLE);
+			mWifiShareLayout.setVisibility(View.GONE);
+			mWifiLouderLayout.setVisibility(View.GONE);
+			break;
+		case R.id.wifi_share:
+			mWifiSpeedLayout.setVisibility(View.GONE);
+			mWifiShareLayout.setVisibility(View.VISIBLE);
+			mWifiLouderLayout.setVisibility(View.GONE);
+			break;
+		case R.id.wifi_louder:
+			mWifiSpeedLayout.setVisibility(View.GONE);
+			mWifiShareLayout.setVisibility(View.GONE);
+			mWifiLouderLayout.setVisibility(View.VISIBLE);
+			// WiFi comments list
+			loadWifiComments(mPopupView);
+			break;
+		default:
+			break;
+		}
+		if (!mWifiSquarePopup.isShowing()) {
+			showPopupWindow(view, mWifiSquarePopup);
+		} else if (curSquareIdx == view.getId()) {
+			mWifiSquarePopup.dismiss();
+		}
+
+		curSquareIdx = view.getId();
+
 	}
 }

@@ -72,13 +72,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		}
 		baseActivity.startActivity(i);
-		baseActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out); 
+		baseActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// 友盟自动更新
 		SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
 		Bmob.initialize(this, GlobalConfig.BMOB_KEY);
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		agent.sync();
 
 		mLoginHelper = LoginHelper.getInstance(this);
-		//mLoginHelper.AutoLogin();
+		// mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
 		dbHelper = DBHelper.getInstance(this);
 
@@ -111,13 +111,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mPushAgent.onAppStart();
 		mPushAgent.enable(mRegisterCallback);
 		// Dianle SDK provision
-		//Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
-		//Data.setCurrentUserID(this, "123456789");
+		// Data.initGoogleContext(this, "072cb4d9d9d5dfd23ed2981e5e33fe59");
+		// Data.setCurrentUserID(this, "123456789");
 
 		changeToConnect();
 	}
 
-	private void initFragments(){
+	private void initFragments() {
 		if (wifiFragment == null)
 			wifiFragment = new WifiFragment();
 		if (mapFragment == null)
@@ -132,14 +132,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 																		 * ,
 																		 */meFragment };
 	}
-	
+
 	@Override
 	public void onAttachFragment(Fragment fragment) {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 		Log.e(TAG, "onAttachFragment");
-		if(fragments == null){
-			initFragments();
+		if (fragments == null) {
+			fragments = new MainFragment[3];
 		}
 		if (wifiFragment == null && fragment instanceof WifiFragment) {
 			wifiFragment = (WifiFragment) fragment;
@@ -189,9 +189,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		ivMyNew = (ImageView) findViewById(R.id.iv_my_new);
 	}
 
-	/** button点击事件
+	/**
+	 * button点击事件
 	 * 
-	 * @param view */
+	 * @param view
+	 */
 	public void onTabClicked(View view) {
 		switch (view.getId()) {
 		case R.id.btn_connect:

@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
+import android.os.AsyncTask.Status;
 import android.os.Handler;
 import android.util.Log;
 
@@ -40,6 +41,7 @@ public class WifiListHelper {
 	public List<WifiProfile> mWifiProfiles;
 	public WifiInfoScanned mWifiInfoCur; 
 	
+	public boolean refreshed = true;
 	private final String WIFI_LIST_FILE_NAME = "wifi_list_file.txt";
 
 	public static WifiListHelper getInstance(Context context, Handler handler) {
@@ -57,6 +59,7 @@ public class WifiListHelper {
 		mWifiListUnique = new ArrayList<String>();
 		mContext = context;
 		mHandler = handler;
+		refreshed = true;
 	}
 	
 	public static WifiListHelper getInstance(Context context) {
@@ -75,16 +78,31 @@ public class WifiListHelper {
 		mContext = context;
 	}
 	
+	Thread freshThread = new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			refreshed = false;
+			Log.e(TAG, "Thread id:"+this.hashCode());
+			organizeWifiList(mWifiAdmin.scanWifi());
+		}
+	});
+	
 	public boolean fillWifiList() {
 		if (mWifiAdmin.isWifiEnabled()) {
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					organizeWifiList(mWifiAdmin.scanWifi());
-				}
-			}).start();
+			if(refreshed){
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						refreshed = false;
+						Log.e(TAG, "Thread id:"+this.hashCode());
+						organizeWifiList(mWifiAdmin.scanWifi());
+					}
+				}).start();
+			}
 			return true;
 		}
 		return false;
@@ -137,6 +155,7 @@ public class WifiListHelper {
 			verifyList(wifiCfg, hotspot, wifiInfo, mWifiProfiles);
 		}
 		mHandler.sendEmptyMessage(WifiFragment.UPDATE_WIFI_LIST);
+		refreshed = true;
 	}
 	
 	private void verifyList(WifiConfiguration wifiCfg, ScanResult hotspot, WifiInfo wifiInfo, List<WifiProfile> objects) {
