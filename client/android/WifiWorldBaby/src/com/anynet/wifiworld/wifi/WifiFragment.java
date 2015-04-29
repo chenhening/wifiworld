@@ -82,6 +82,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
+	private TextView mWifiMaster;
+	private TextView mWifiDesc;
 
 	private LinearLayout mWifiSquareLayout;
 	private View mPopupView;
@@ -279,6 +281,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		// display WIFI SSID which is connected or not
 		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.tv_wifi_name);
 		mWifiLogoView = (ImageView) mPageRoot.findViewById(R.id.wifi_logo);
+		mWifiMaster = (TextView) mPageRoot.findViewById(R.id.tv_wifi_master_v);
+		mWifiDesc = (TextView) mPageRoot.findViewById(R.id.tv_wifi_desc_v);
 
 		// WIFI list view display and operation
 		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
@@ -560,6 +564,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			}
 			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null && wifiInfoCurrent.getAlias().length() > 0) {
 				mWifiNameView.setText("已连接: " + wifiInfoCurrent.getAlias());
+				mWifiMaster.setText(wifiInfoCurrent.getSponser());
+				mWifiDesc.setText(wifiInfoCurrent.getBanner());
 			} else {
 				mWifiNameView.setText("已连接: " + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
 			}

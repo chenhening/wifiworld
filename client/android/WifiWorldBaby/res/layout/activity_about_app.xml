@@ -34,15 +34,14 @@
             android:id="@+id/tv_app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignBaseline="@+id/tv_wifi_desc_k"
+            android:layout_alignBottom="@+id/tv_wifi_desc_k"
             android:layout_alignRight="@+id/tv_clues_location"
-            android:layout_toRightOf="@+id/textView2"
+            android:layout_toRightOf="@+id/tv_wifi_desc_k"
             android:hint="v0.0.0"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tv_clues_location"
