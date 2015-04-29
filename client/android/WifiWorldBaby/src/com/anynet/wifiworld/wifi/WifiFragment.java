@@ -554,6 +554,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private void refreshWifiTitleInfo() {
 		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
 
+		mWifiMaster.setText("");
+		mWifiDesc.setText("");
 		// update WiFi title info
 		if (wifiCurInfo != null) {
 			WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
