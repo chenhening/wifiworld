@@ -266,12 +266,26 @@
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/message_layout"
+                    android:id="@+id/siv_my_whitelist"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_msg"
-                    item:label="@string/person_center_message"
-                    item:showTopDivider="true" >
+                    android:visibility="visible"
+                    item:icon="@drawable/icon_person_center_fans"
+                    item:label="白名单"
+                    item:showTopDivider="true" 
+                    item:subLabel="互利互惠，你用他的他也能用你的"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/siv_my_blacklist"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/ic_person_blacklist"
+                    item:label="黑名单"
+                    item:showTopDivider="true"
+                    item:subLabel="你不用他的，他也不能用你的"
+                    item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
@@ -284,21 +298,11 @@
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/fensi_layout"
+                    android:id="@+id/message_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    android:visibility="gone"
-                    item:icon="@drawable/icon_person_center_fans"
-                    item:label="@string/person_center_fensi"
-                    item:showTopDivider="true" >
-                </com.anynet.wifiworld.view.SettingItemView>
-
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_my_blacklist"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/ic_person_blacklist"
-                    item:label="@string/person_center_blacklist"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="@string/person_center_message"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>

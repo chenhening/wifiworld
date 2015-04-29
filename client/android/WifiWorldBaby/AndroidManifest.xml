@@ -78,6 +78,11 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
+            android:name="com.anynet.wifiworld.me.MyWhiteListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.anynet.wifiworld.me.AboutAppActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >

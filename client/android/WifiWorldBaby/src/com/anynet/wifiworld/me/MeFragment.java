@@ -238,7 +238,7 @@ public class MeFragment extends MainFragment {
 			
 		});
 		//我的黑名单
-		mPageRoot.findViewById(R.id.slv_my_blacklist).setOnClickListener(new OnClickListener() {
+		mPageRoot.findViewById(R.id.siv_my_blacklist).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -261,6 +261,18 @@ public class MeFragment extends MainFragment {
 				i.setClass(getApplicationContext(), AboutAppActivity.class);
 				startActivity(i);
 			}
+			
+		});
+		
+		//设置白名单
+		this.findViewById(R.id.siv_my_whitelist).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				Intent i = new Intent();
+				i.setClass(getApplicationContext(), MyWhiteListActivity.class);
+				startActivity(i);
+            }
 			
 		});
 		

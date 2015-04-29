@@ -49,7 +49,6 @@ public class LoginService extends Service {
 		switch (actionID) {
 		case LOGIN_SERVICE_INIT: {
 		}
-
 			break;
 		case LOGIN_SERVICE_GET_VERIFICODE: {
 			mPhone_code = intent.getStringExtra("code");

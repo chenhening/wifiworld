@@ -220,7 +220,7 @@ public class WifiBlackListActivity extends BaseActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = View.inflate(getApplicationContext(), R.layout.item_wifi_used_list, null);
+				convertView = View.inflate(getApplicationContext(), R.layout.item_my_whitelist1, null);
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
