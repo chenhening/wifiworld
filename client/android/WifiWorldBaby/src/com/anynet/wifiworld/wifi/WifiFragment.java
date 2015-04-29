@@ -102,8 +102,9 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 	private boolean isPwdConnect = false;
 
+	private ListView mCommentsListView;
 	private WifiCommentsAdapter mWifiCommentsAdapter;
-	private List<String> mWifiCommentsList = new ArrayList<String>();
+	private List<WifiComments> mWifiCommentsList = new ArrayList<WifiComments>();
 
 	private Handler mHandler = new Handler() {
 
@@ -389,9 +390,10 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		}
 
 		if (requestCode == WIFI_COMMENT && resultCode == android.app.Activity.RESULT_OK) {
-			String commentStr = data.getStringExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
-			mWifiCommentsList.add(commentStr);
+			WifiComments commentCtn = (WifiComments)data.getSerializableExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
+			mWifiCommentsList.add(commentCtn);
 			mWifiCommentsAdapter.refreshCommentsList();
+			setListViewHeightBasedOnChildren(mCommentsListView);
 		}
 	}
 
@@ -672,7 +674,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			});
 
 			// 评论ui
-			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.tv_button_sms);
+			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.comment_btn);
 			send_btn.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -692,7 +694,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private void loadWifiComments(View popupView) {
 		WifiInfoScanned wifiInfoScanned = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 
-		final ListView commentsListView = (ListView) popupView.findViewById(R.id.wifi_list_comments);
+		mCommentsListView = (ListView) popupView.findViewById(R.id.wifi_list_comments);
 		WifiComments wifiComments = new WifiComments();
 		wifiComments.QueryByMacAddress(getActivity(), wifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
 
@@ -700,11 +702,11 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			public void onSuccess(List<WifiComments> objects) {
 				mWifiCommentsList.clear();
 				for (WifiComments obj : objects) {
-					mWifiCommentsList.add(obj.Comment);
+					mWifiCommentsList.add(obj);
 				}
 				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
-				commentsListView.setAdapter(mWifiCommentsAdapter);
-				setListViewHeightBasedOnChildren(commentsListView);
+				mCommentsListView.setAdapter(mWifiCommentsAdapter);
+				setListViewHeightBasedOnChildren(mCommentsListView);
 			}
 
 			@Override

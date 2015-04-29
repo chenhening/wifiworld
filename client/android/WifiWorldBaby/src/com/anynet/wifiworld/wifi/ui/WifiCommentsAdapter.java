@@ -3,6 +3,7 @@ package com.anynet.wifiworld.wifi.ui;
 import java.util.List;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiComments;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,10 +16,10 @@ import android.widget.TextView;
 public class WifiCommentsAdapter extends BaseAdapter {
 	private final static String TAG = WifiCommentsAdapter.class.getSimpleName();
 	
-	private List<String> mWifiCommentsList;
+	private List<WifiComments> mWifiCommentsList;
 	private Context mContext;
 	
-	public WifiCommentsAdapter(Context context, List<String> wifiComments) {
+	public WifiCommentsAdapter(Context context, List<WifiComments> wifiComments) {
 		mContext = context;
 		mWifiCommentsList = wifiComments;
 	}
@@ -57,7 +58,9 @@ public class WifiCommentsAdapter extends BaseAdapter {
 		TextView commentString = (TextView)view.findViewById(R.id.wifi_comment);
 		TextView commentTime = (TextView)view.findViewById(R.id.comment_time);
 		
-		commentString.setText(mWifiCommentsList.get(position));
+		WifiComments wifiComments = mWifiCommentsList.get(position);
+		commentString.setText(wifiComments.Comment);
+		userName.setText(wifiComments.UserId);
 		
 		return view;
 	}

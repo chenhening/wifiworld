@@ -57,6 +57,16 @@
                 android:text="未连接"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
+            
+            <ToggleButton
+                android:id="@+id/wifi_control_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="2dp"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/sl_checkbox_open_or_close" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,31 +86,23 @@
                 android:background="@drawable/icon_invalid"
                 android:contentDescription="@string/wifi_icon" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
-
             <RelativeLayout
                 android:id="@+id/wifi_switch_layout"
-                android:layout_width="204dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.36"
-                android:gravity="top|center" >
+                android:gravity="center_vertical" >
 
                 <LinearLayout
                     android:id="@+id/ll_wifi_master"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="41dp"
                     android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/tv_wifi_master_k"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="主人:" />
 
                     <TextView
@@ -135,21 +137,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
-
-            <ToggleButton
-                android:id="@+id/wifi_control_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:layout_marginRight="2dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/sl_checkbox_open_or_close" />
         </LinearLayout>
 
         <View
