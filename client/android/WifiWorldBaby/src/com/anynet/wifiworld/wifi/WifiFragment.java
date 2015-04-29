@@ -212,7 +212,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 				@Override
 				public void onSupplicantChanged(String statusStr) {
 					mWifiNameView.setText(statusStr);
-					mWifiNameView.setTextColor(Color.BLACK);
+					//mWifiNameView.setTextColor(Color.BLACK);
 					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
 						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
@@ -277,14 +277,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		// initial WIFI square pop-up view
 		initWifiSquarePopupView();
 		// display WIFI SSID which is connected or not
-		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.tv_wifi_name);
 		mWifiLogoView = (ImageView) mPageRoot.findViewById(R.id.wifi_logo);
-		// String connected_name = mWifiAdmin.getWifiNameConnection();
-		// if (!connected_name.equals("") && !connected_name.equals("0x")) {
-		// mWifiNameView.setText("已连接" +
-		// WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
-		// mWifiNameView.setTextColor(Color.BLACK);
-		// }
 
 		// WIFI list view display and operation
 		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
@@ -569,14 +563,14 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			} else {
 				mWifiNameView.setText("已连接: " + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
 			}
-			mWifiNameView.setTextColor(Color.BLACK);
+			//mWifiNameView.setTextColor(Color.BLACK);
 
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
-			mWifiNameView.setTextColor(Color.GRAY);
+			//mWifiNameView.setTextColor(Color.GRAY);
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 
 			mWifiSwitch.setVisibility(View.GONE);
