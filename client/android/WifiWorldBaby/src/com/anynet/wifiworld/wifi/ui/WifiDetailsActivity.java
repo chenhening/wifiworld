@@ -20,12 +20,15 @@ import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.me.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiBRService;
+import com.anynet.wifiworld.wifi.WifiConnectDialog;
 import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.anynet.wifiworld.wifi.WifiListHelper;
 import com.avos.avoscloud.LogUtil.log;
 
 import android.R.integer;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +46,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WifiDetailsActivity extends BaseActivity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
@@ -76,6 +80,8 @@ public class WifiDetailsActivity extends BaseActivity {
 	private int mCommentsFlag = GET_DATA_DEFAULT;
 	private int mFollowFlag = GET_DATA_DEFAULT;
 	private List<WifiFollow> mFollowed = null;
+	
+	private WifiConnectDialog mReportDialog;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -180,6 +186,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		// Process WiFi black report
+		mReportDialog = new WifiConnectDialog(mContext, WifiConnectDialog.DialogType.REPORT);
 		mBlackView = (TextView) findViewById(R.id.wifi_black);
 		mBlackView.setOnClickListener(new OnClickListener() {
 
@@ -189,27 +196,28 @@ public class WifiDetailsActivity extends BaseActivity {
 					UserLoginActivity.start((BaseActivity) mContext);
 					return;
 				}
-				WifiBlack wifiBlack = new WifiBlack();
-				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
-				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
-						.getCurLoginUserInfo().getUsername();
-				wifiBlack.BlackType = WifiBlack.Type.WrongPwd;
-				wifiBlack.Content = "shit, shit";
-				wifiBlack.MarkReportTime();
-
-				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
-
-					@Override
-					public void onSuccess(WifiBlack object) {
-						Log.i(TAG, "Success to report WiFi");
-					}
-
-					@Override
-					public void onFailed(String msg) {
-						Log.e(TAG, "Failed to report WiFi:" + msg);
-					}
-
-				});
+				showWifiReportDialog("举报", mReportDialog);
+//				WifiBlack wifiBlack = new WifiBlack();
+//				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
+//				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
+//						.getCurLoginUserInfo().getUsername();
+//				wifiBlack.BlackType = WifiBlack.Type.WrongPwd;
+//				wifiBlack.Content = "shit, shit";
+//				wifiBlack.MarkReportTime();
+//
+//				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
+//
+//					@Override
+//					public void onSuccess(WifiBlack object) {
+//						Log.i(TAG, "Success to report WiFi");
+//					}
+//
+//					@Override
+//					public void onFailed(String msg) {
+//						Log.e(TAG, "Failed to report WiFi:" + msg);
+//					}
+//
+//				});
 			}
 		});
 		
@@ -278,6 +286,29 @@ public class WifiDetailsActivity extends BaseActivity {
 	protected void onStop() {
 		Log.d(TAG, "onSop");
 		super.onStop();
+	}
+	
+	private void showWifiReportDialog(String title, final WifiConnectDialog wifiConnectDialog) {
+		wifiConnectDialog.setTitle(title);
+
+		wifiConnectDialog.setLeftBtnStr("取消");
+		wifiConnectDialog.setRightBtnStr("确定");
+
+		wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+
+		wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+
+				dialog.dismiss();
+
+			}
+		});
+
+		wifiConnectDialog.show();
 	}
 	
 	private void pullDataFromDB() {

@@ -256,8 +256,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 
 		WifiBRService.bindWifiService(getActivity(), conn);
-		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
-		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
+		mWifiConnectDialog = new WifiConnectDialog(getActivity(), WifiConnectDialog.DialogType.DEFAULT);
+		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), WifiConnectDialog.DialogType.PASSWORD);
 
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}

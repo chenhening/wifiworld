@@ -24,9 +24,9 @@ public class WifiBlack extends BmobObject {
 	
 	public static class Type {
 		public final static int WrongPwd = 1; //密码错误
-		public final static int LowNetworkSpeed = 1; //网速太慢
-		public final static int NotSafe = 1; //网络不安全
-		public final static int others = 1; //其他原因
+		public final static int LowNetworkSpeed = 2; //网速太慢
+		public final static int NotSafe = 3; //网络不安全
+		public final static int others = 0; //其他原因
 	}
 	
 	public void ReportWifi(final Context context, DataCallback<WifiBlack> callback) {
