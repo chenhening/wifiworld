@@ -258,7 +258,7 @@ public class WifiUsedListActivity extends BaseActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = View.inflate(getApplicationContext(), R.layout.item_my_whitelist1, null);
+				convertView = View.inflate(getApplicationContext(), R.layout.item_my_whitelist, null);
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
