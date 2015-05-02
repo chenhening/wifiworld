@@ -62,6 +62,18 @@ public class MeFragment extends MainFragment {
 	};
 
 	@Override
+	protected void onVisible() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void onInvisible() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);

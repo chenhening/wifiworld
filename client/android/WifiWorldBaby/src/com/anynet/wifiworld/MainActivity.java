@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		Intent intent = getIntent();
 		intent.getBooleanExtra("isFromWelcomeActivity", false);
 		setContentView(R.layout.activity_main);
-		initView();		
+		initView();
 
 		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		// 添加显示第一个fragment
@@ -104,10 +104,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				trx.add(R.id.fragment_container, fragments[i]).hide(fragments[i]);
 			}
 		}
-//		if (!fragments[0].isAdded()) {
-//			trx.add(R.id.fragment_container, fragments[0]).hide(fragments[0]);
-//		}
-		trx.add(R.id.fragment_container, fragments[0]);
+		// if (!fragments[0].isAdded()) {
+		// trx.add(R.id.fragment_container, fragments[0]).hide(fragments[0]);
+		// }
+		// trx.add(R.id.fragment_container, fragments[0]);
 		trx.show(fragments[0]).commit();
 
 		// 打开友盟推送
@@ -142,18 +142,18 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 		Log.e(TAG, "onAttachFragment");
-//		if (fragments == null) {
-//			fragments = new MainFragment[3];
-//		}wifiFragment == null && 
+		// if (fragments == null) {
+		// fragments = new MainFragment[3];
+		// }wifiFragment == null &&
 		if (fragment instanceof WifiFragment) {
 			wifiFragment = (WifiFragment) fragment;
 			fragments[CONNECT_TAB_IDX] = wifiFragment;
-		}//mapFragment == null && 
+		}// mapFragment == null &&
 		if (fragment instanceof MapFragment) {
 			mapFragment = (MapFragment) fragment;
 			fragments[NEARBY_TAB_IDX] = mapFragment;
 		}
-		// discoverFragment = new DiscoverFragment();meFragment == null && 
+		// discoverFragment = new DiscoverFragment();meFragment == null &&
 		if (fragment instanceof MeFragment) {
 			meFragment = (MeFragment) fragment;
 			fragments[MY_TAB_IDX] = meFragment;
@@ -248,7 +248,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			//fragments[index].onResume();
+			// fragments[index].onResume();
 			trx.show(fragments[index]).commit();
 
 			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	}
 
-	public static class MainFragment extends BaseFragment {
+	public static abstract class MainFragment extends BaseFragment {
 
 		public boolean checkIsLogined() {
 			if (!mLoginHelper.isLogined()) {
@@ -379,7 +379,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			return true;
 		}
 
-		
 		public void startUpdte() {
 			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
 		}
@@ -387,6 +386,29 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		public void stopUpdte() {
 			com.anynet.wifiworld.util.XLLog.log(TAG, "stopUpdte");
 		}
+
+		protected boolean isVisible;
+
+		/**
+		 * 在这里实现Fragment数据的缓加载.
+		 * 
+		 * @param isVisibleToUser
+		 */
+		@Override
+		public void setUserVisibleHint(boolean isVisibleToUser) {
+			super.setUserVisibleHint(isVisibleToUser);
+			if (getUserVisibleHint()) {
+				isVisible = true;
+				onVisible();
+			} else {
+				isVisible = false;
+				onInvisible();
+			}
+		}
+
+		protected abstract void onVisible();
+
+		protected abstract void onInvisible();
 	}
 
 	public IUmengRegisterCallback mRegisterCallback = new IUmengRegisterCallback() {

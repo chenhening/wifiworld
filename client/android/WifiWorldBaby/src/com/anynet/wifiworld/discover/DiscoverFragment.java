@@ -28,7 +28,18 @@ public class DiscoverFragment extends MainFragment {
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my));
 	}
+	
+	@Override
+	protected void onVisible() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	protected void onInvisible() {
+		// TODO Auto-generated method stub
+		
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

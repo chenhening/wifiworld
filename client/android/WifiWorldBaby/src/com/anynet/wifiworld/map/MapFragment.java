@@ -615,4 +615,16 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		}
 		Log.e(TAG, "2 zoomAndDisplay:"+(System.currentTimeMillis()-current));
 	}
+
+	@Override
+	protected void onVisible() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void onInvisible() {
+		// TODO Auto-generated method stub
+		
+	}
 }
