@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
@@ -22,9 +25,11 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.ValueEventListener;
 
 import com.anynet.wifiworld.data.DataListenerHelper.Type;
+import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.StringCrypto;
+import com.anynet.wifiworld.util.XLLog;
 
-public class WifiProfile extends BmobObject {
+public class WifiProfile extends BmobObject{
 	private final static String TAG = WifiProfile.class.getSimpleName();
 
 	private static final long serialVersionUID = 1L;
@@ -32,38 +37,67 @@ public class WifiProfile extends BmobObject {
 
 	public static final String table_name_wifiunregistered = "WifiUnregistered";
 	public static final String CryptoKey = "Wifi2Key";// 8bits
-	
+
 	public static final String LOGO = "Logo";
 	public static final String PASSWORD = "Password";
 	public static final String BANNER = "Banner";
 
 	private boolean isShared = false;
-	public String MacAddr; // mac地址, 唯一键
-	public String Ssid; // wifi的ssid
-	public String Password; // wifi的密码，经过base64后保存
-	public String Sponser; // 绑定的用户账号，wifi提供者
-	public int Type; // wifi的类型
+	public String MacAddr = ""; // mac地址, 唯一键
+	public String Ssid = ""; // wifi的ssid
+	public String Password = ""; // wifi的密码，经过base64后保存
+	public String Sponser = ""; // 绑定的用户账号，wifi提供者
+	public int Type = 0; // wifi的类型
 	// public String encryptType; //wifi加密类型
-	public byte[] Logo; // 用户自定义的logo信息
+	public byte[] Logo = null; // 用户自定义的logo信息
 
-	public String Alias; // 用户自定义的wifi别名
-	public BmobGeoPoint Geometry; // WiFi的地理位置
-	public String ExtAddress;
-	public String Banner; // wifi的展示页内容(TODO(binfei)还需要定义更多)
-	public float Income; // wifi 收入
+	public String Alias = ""; // 用户自定义的wifi别名
+	public BmobGeoPoint Geometry=null; // WiFi的地理位置
+	public String ExtAddress = "";
+	public String Banner = ""; // wifi的展示页内容(TODO(binfei)还需要定义更多)
+	public float Income = 0; // wifi 收入
 
-	// public float Rating;
-	// public int Ranking;
-	// public int ConnectedTimes;
-	// public int ConnectedDuration;
-	// ------------------------------------------------------------------------------------------------
 	public static class WifiType {
-		public static int WIFI_SUPPLY_BY_UNKNOWN = 0; //未知wifi
-		public static int WIFI_SUPPLY_BY_PUBLIC = 1; //公共场所WiFi，如家，kfc
-		public static int WIFI_SUPPLY_BY_BUSINESS = 2; //商户提供的WiFi
-		public static int WIFI_SUPPLY_BY_HOME = 3; //家庭提供wifi
+		public static int WIFI_SUPPLY_BY_UNKNOWN = 0; // 未知wifi
+		public static int WIFI_SUPPLY_BY_PUBLIC = 1; // 公共场所WiFi，如家，kfc
+		public static int WIFI_SUPPLY_BY_BUSINESS = 2; // 商户提供的WiFi
+		public static int WIFI_SUPPLY_BY_HOME = 3; // 家庭提供wifi
 	}
 	
+	public void deleteRemote(final Context context) {
+		WifiProfile wifi = this;
+		wifi.delete(context);
+	}
+
+	public Bitmap getLogo() {
+		if (Logo != null)
+			return BitmapUtil.Bytes2Bimap(Logo);
+		else
+			return null;
+	}
+
+	public void setLogo(Bitmap logo) {
+		Logo = BitmapUtil.Bitmap2Bytes(logo);
+	}
+
+
+	public boolean isShared() {
+		return isShared;
+	}
+
+	public void setShared(boolean shared) {
+		isShared = shared;
+	}
+
+	public boolean equale(WifiProfile wp) {
+		if (this.isShared == wp.isShared && this.MacAddr.equals(wp.MacAddr) && this.Ssid.equals(wp.Ssid) && this.ExtAddress.equals(wp.ExtAddress)
+				&& this.Geometry.equals(wp.Geometry)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	public WifiProfile() {
 	}
 
@@ -73,8 +107,8 @@ public class WifiProfile extends BmobObject {
 	}
 
 	public String toString() {
-		return "Mac:" + MacAddr + " SSID:" + Ssid + " Sponser:" + Sponser + " Type:" + Type + " Alias:" + Alias
-				+ " Point(" + Geometry.getLongitude() + "," + Geometry.getLatitude() + ") ExtAddress:" + ExtAddress;
+		return "Mac:" + MacAddr + " SSID:" + Ssid + " Sponser:" + Sponser + " Type:" + Type + " Alias:" + Alias + " Point(" + Geometry.getLongitude()
+				+ "," + Geometry.getLatitude() + ") ExtAddress:" + ExtAddress;
 	}
 
 	public String decryptPwd(String pwd) {
@@ -121,7 +155,7 @@ public class WifiProfile extends BmobObject {
 
 		}).start();
 	}
-	
+
 	public void VerfyIsShared(final Context context, String Mac, DataCallback<Boolean> callback) {
 		final DataCallback<Boolean> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
@@ -155,8 +189,7 @@ public class WifiProfile extends BmobObject {
 
 		}).start();
 	}
-	
-	
+
 	public void QueryTagByMacAddr(final Context context, String Mac, String QueryTag, DataCallback<WifiProfile> callback) {
 		final DataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
@@ -194,8 +227,7 @@ public class WifiProfile extends BmobObject {
 		}).start();
 	}
 
-	public void BatchQueryByMacAddress(final Context context, List<String> Macs, 
-		boolean allkeys, MultiDataCallback<WifiProfile> callback) {
+	public void BatchQueryByMacAddress(final Context context, List<String> Macs, boolean allkeys, MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
 		final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
@@ -233,40 +265,21 @@ public class WifiProfile extends BmobObject {
 	}
 
 	// 以圆的半径查找
-	public void QueryInRadians(final Context context, final BmobGeoPoint center, final double radians,
-			MultiDataCallback<WifiProfile> callback) {
+	public static void QueryInRadians(final Context context, final BmobGeoPoint center, final double radians, MultiDataCallback<WifiProfile> callback) {
 		final MultiDataCallback<WifiProfile> _callback = callback;
+		
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				//先从leancloud上拉取数据
-				//GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
-				//geo.setGeometry(center.getLatitude(), center.getLongitude());
-				//List<String> result = geo.QueryInRadians(radians, 30);
-				//if (result == null) {
-				//	_callback.onFailed("数据库中没有数据。");
-				//	return;
-				//}
-				
+				XLLog.d("findObjects", "开始查询QueryInRadians");
 				final BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
-				//query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
-				//query.addWhereWithinRadians("Geometry", center, radians);
-				//query.addWhereWithinKilometers("Geometry", center, radians);
-				query.addWhereWithinMiles("Geometry", center, radians);
-				//query.addWhereContainedIn(unique_key, result);
-				//query.addWhereNear("Geometry", center);
-				query.setLimit(30);// 最多查询到30个，多了用户也会疲劳
-				Log.d("findObjects", "开始查询QueryInRadians");
-
+				query.addWhereWithinMiles("Geometry", center, radians).setLimit(30);// 最多查询到30个，多了用户也会疲劳
 				query.findObjects(context, new FindListener<WifiProfile>() {
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
-						if (object.size() >= 1) {
-							_callback.onSuccess(object);
-						} else {
-							_callback.onFailed("数据库中没有数据。");
-						}
+						@SuppressWarnings("unused")
+						boolean o = (object.size() > 0)?_callback.onSuccess(object):_callback.onFailed("数据库中没有数据。");
 					}
 
 					@Override
@@ -274,7 +287,7 @@ public class WifiProfile extends BmobObject {
 						_callback.onFailed(msg);
 					}
 				});
-				Log.d("findObjects", "结束查询QueryInRadians");
+				XLLog.d("findObjects", "结束查询QueryInRadians");
 			}
 
 		}).start();
@@ -322,13 +335,15 @@ public class WifiProfile extends BmobObject {
 			@Override
 			public void run() {
 				// 先保存到leancloud去
-				//GeoSearchByLeanCloud geo = new GeoSearchByLeanCloud("WifiProfile");
-				//geo.setKey(MacAddr);
-				//if (Geometry != null)
-				//	geo.setGeometry(Geometry.getLatitude(), Geometry.getLongitude());
-				//if (!geo.StoreRemote()) {
-					//return;
-				//}
+				// GeoSearchByLeanCloud geo = new
+				// GeoSearchByLeanCloud("WifiProfile");
+				// geo.setKey(MacAddr);
+				// if (Geometry != null)
+				// geo.setGeometry(Geometry.getLatitude(),
+				// Geometry.getLongitude());
+				// if (!geo.StoreRemote()) {
+				// return;
+				// }
 
 				// 先查询，如果有数据就更新，否则增加一条新记录
 				QueryByMacAddress(context, MacAddr, new DataCallback<WifiProfile>() {
@@ -382,67 +397,25 @@ public class WifiProfile extends BmobObject {
 		}).start();
 	}
 
-	public void deleteRemote(final Context context) {
-		final WifiProfile wifi = this;
-		wifi.delete(context);
-	}
 
-	public Bitmap getLogo() {
-		if (Logo != null)
-			return Bytes2Bimap(Logo);
-		else
-			return null;
-	}
-
-	public void setLogo(Bitmap logo) {
-		Logo = Bitmap2Bytes(logo);
-		// Logo = logo;
-	}
-
-	public Bitmap Bytes2Bimap(byte[] b) {
-		if (b != null && b.length != 0) {
-			return BitmapFactory.decodeByteArray(b, 0, b.length);
-		} else {
-			return null;
-		}
-	}
-
-	public byte[] Bitmap2Bytes(Bitmap bm) {
-		if (bm == null) {
-			return null;
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		return baos.toByteArray();
-	}
-
-	public boolean isShared() {
-		return isShared;
-	}
-
-	public void setShared(boolean shared) {
-		isShared = shared;
-		// Logo = logo;
-	}
-	
-	//设置监听数据
-	public void startListenRowUpdate(final Context context, final String tablename, final String fieldname, 
-		final String fieldvalue, final Type type, final DataCallback<WifiProfile> callback) {
+	// 设置监听数据
+	public void startListenRowUpdate(final Context context, final String tablename, final String fieldname, final String fieldvalue, final Type type,
+			final DataCallback<WifiProfile> callback) {
 		final WifiProfile itslef = this;
 		final BmobRealTimeData mBrtd = new BmobRealTimeData();
 		mBrtd.start(context, new ValueEventListener() {
-		    @Override
-		    public void onDataChange(JSONObject data) {
-		        Log.e(TAG, "("+data.optString("action")+")"+"数据："+data);
-		        
-		        itslef.isShared = data.optJSONObject("data").optBoolean("isShared");
-		        callback.onSuccess(itslef);
-		    }
+			@Override
+			public void onDataChange(JSONObject data) {
+				Log.e(TAG, "(" + data.optString("action") + ")" + "数据：" + data);
 
-		    @Override
-		    public void onConnectCompleted() {
-		        Log.e(TAG, "连接成功:"+mBrtd.isConnected());
-		      //先去数据库中查询
+				itslef.isShared = data.optJSONObject("data").optBoolean("isShared");
+				callback.onSuccess(itslef);
+			}
+
+			@Override
+			public void onConnectCompleted() {
+				Log.e(TAG, "连接成功:" + mBrtd.isConnected());
+				// 先去数据库中查询
 				BmobQuery<WifiProfile> query = new BmobQuery<WifiProfile>();
 				query.addQueryKeys("objectId");
 				query.addWhereEqualTo(fieldname, fieldvalue);
@@ -459,11 +432,11 @@ public class WifiProfile extends BmobObject {
 							callback.onFailed("数据库中没有您要监听的数据");
 							Log.d(TAG, "监听失败:数据库没有对应数据");
 						} else {
-							//查询成功后，设置监听
-							for (int i=0; i < objects.size(); ++i) {
+							// 查询成功后，设置监听
+							for (int i = 0; i < objects.size(); ++i) {
 								WifiProfile item = objects.get(i);
 								String id = item.getObjectId();
-								switch(type) {
+								switch (type) {
 								case UPDATE:
 									mBrtd.subRowUpdate(tablename, id);
 									break;
@@ -474,9 +447,32 @@ public class WifiProfile extends BmobObject {
 							}
 						}
 					}
-					
+
 				});
-		    }
+			}
 		});
 	}
+
+/*	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeValue(isShared);
+		dest.writeString(MacAddr);
+		dest.writeString(Ssid);
+		dest.writeString(Password);
+		dest.writeString(Sponser);
+		dest.writeInt(Type);
+		dest.writeByteArray(Logo);
+		dest.writeString(Alias);
+		dest.writeSerializable(Geometry);
+		dest.writeString(ExtAddress);
+		dest.writeString(Banner);
+		dest.writeFloat(Income);
+	}*/
 }

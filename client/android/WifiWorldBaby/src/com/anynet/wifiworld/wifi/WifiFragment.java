@@ -676,18 +676,20 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		wifiComments.QueryByMacAddress(getActivity(), wifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
 
 			@Override
-			public void onSuccess(List<WifiComments> objects) {
+			public boolean onSuccess(List<WifiComments> objects) {
 				mWifiCommentsList.clear();
 				for (WifiComments obj : objects) {
 					mWifiCommentsList.add(obj.Comment);
 				}
 				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
 				commentsListView.setAdapter(mWifiCommentsAdapter);
+				return false;
 			}
 
 			@Override
-			public void onFailed(String msg) {
+			public boolean onFailed(String msg) {
 				Log.e(TAG, msg + ". Failed to pull wifi comments");
+				return false;
 			}
 		});
 	}

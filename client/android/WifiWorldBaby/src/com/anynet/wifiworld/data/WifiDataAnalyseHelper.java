@@ -60,7 +60,7 @@ public class WifiDataAnalyseHelper {
 			    record.QueryUserInOneWeek(mContext, record.LoginTime, new MultiDataCallback<WifiDynamic>() {
 
 					@Override
-		            public void onSuccess(List<WifiDynamic> objects) {
+		            public boolean onSuccess(List<WifiDynamic> objects) {
 						for (int i=0; i<7; ++i)
 							headcount[i] = 0;
 						for (int i=0; i<4; ++i)
@@ -112,12 +112,14 @@ public class WifiDataAnalyseHelper {
 			            	mCcallback.onSuccess(mInstance);
 			            }
 			            Log.d(TAG, "查询到数据" + objects.size() + "条。");
+			            return false;
 		            }
 
 					@Override
-		            public void onFailed(String msg) {
+		            public boolean onFailed(String msg) {
 			            Log.d(TAG, "查询一周数据失败。");
 			            mReady = 2;
+			            return false;
 		            }
 			    });
 			}

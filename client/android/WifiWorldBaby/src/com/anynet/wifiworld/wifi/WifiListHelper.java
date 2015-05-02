@@ -128,15 +128,17 @@ public class WifiListHelper {
 		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, false, new MultiDataCallback<WifiProfile>() {
 			
 			@Override
-			public void onSuccess(List<WifiProfile> objects) {
+			public boolean onSuccess(List<WifiProfile> objects) {
 				Log.i(TAG, "Batch query by mac address success");
 				mWifiProfiles = objects;
 				refreshListUI(wifiList);
+				return false;
 			}
 			
 			@Override
-			public void onFailed(String msg) {
+			public boolean onFailed(String msg) {
 				Log.i(TAG, msg);
+				return false;
 			}
 		});
 		

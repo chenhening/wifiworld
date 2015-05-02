@@ -104,6 +104,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				trx.add(R.id.fragment_container, fragments[i]).hide(fragments[i]);
 			}
 		}
+//		if (!fragments[0].isAdded()) {
+//			trx.add(R.id.fragment_container, fragments[0]).hide(fragments[0]);
+//		}
+		trx.add(R.id.fragment_container, fragments[0]);
 		trx.show(fragments[0]).commit();
 
 		// 打开友盟推送
@@ -244,7 +248,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			fragments[index].onResume();
+			//fragments[index].onResume();
 			trx.show(fragments[index]).commit();
 
 			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
@@ -368,6 +372,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			return true;
 		}
 
+		public boolean isLogined() {
+			if (!mLoginHelper.isLogined()) {
+				return false;
+			}
+			return true;
+		}
+
+		
 		public void startUpdte() {
 			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
 		}

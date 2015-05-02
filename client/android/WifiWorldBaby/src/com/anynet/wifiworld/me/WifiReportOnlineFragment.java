@@ -34,8 +34,7 @@ public class WifiReportOnlineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_report_online, container, false);
-        rippleBackground = (RippleBackground)mRootView.findViewById(R.id.content);
-        StartDisaplay();
+        rippleBackground = (RippleBackground)mRootView.findViewById(R.id.content);        
         bOnAnimating = true;
         
         //得到wifi上传的logo信息展示
@@ -48,7 +47,7 @@ public class WifiReportOnlineFragment extends Fragment {
 				SetOpenOrCloseStatus();
 			}
         });*/
-        
+        StartDisaplay();
         return mRootView;
     }
 	
@@ -93,13 +92,15 @@ public class WifiReportOnlineFragment extends Fragment {
         record.QueryUserCurrent(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
 
 			@Override
-			public void onSuccess(List<WifiDynamic> objects) {
+			public boolean onSuccess(List<WifiDynamic> objects) {
 				addMarkerOnView(objects);
+				return false;
 			}
 
 			@Override
-			public void onFailed(String msg) {
-				tv_online.setText("0 人");
+			public boolean onFailed(String msg) {
+				if(tv_online != null)tv_online.setText("0 人");
+				return false;
 			}
         	
         });

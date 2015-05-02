@@ -62,17 +62,18 @@ public class WifiFollowListActivity extends BaseActivity {
 		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiFollow>() {
 
 			@Override
-            public void onSuccess(List<WifiFollow> objects) {
+            public boolean onSuccess(List<WifiFollow> objects) {
 	            //分析一周的上网记录
 				mListData = objects;
 				displayList();
+				return false;
             }
 
 			@Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
 				Log.d("WifiUsedListActivity", "当前网络不稳定，请稍后再试：" + msg);
 	            showToast("当前网络不稳定，请稍后再试：" + msg);
-	            //finish();
+	            return false;
             }
 			
 		});

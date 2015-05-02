@@ -20,6 +20,10 @@ public class WifiListMapAdapter extends BaseAdapter {
 	private List<WifiProfile> mWifiList = new ArrayList<WifiProfile>();
 	private Context context;
 
+	public Context getContext() {
+		return context;
+	}
+
 	public WifiListMapAdapter(Context context, List<WifiProfile> wifiList) {
 		super();
 		this.context = context;
@@ -37,7 +41,7 @@ public class WifiListMapAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int pos) {
-		return mWifiList.get(pos);
+		return (mWifiList != null && mWifiList.size() > 0) ? mWifiList.get(pos) : null;
 	}
 
 	@Override
@@ -67,19 +71,8 @@ public class WifiListMapAdapter extends BaseAdapter {
 		}
 
 		WifiProfile wifiProfile = (WifiProfile) getItem(position);
-/*		view.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				if (mOnItemClickListener != null) {
-					mOnItemClickListener.onClick(v, infoScanned.getWifiMAC());
-				}
-				// context.zoomAndDisplay(infoScanned.getWifiMAC());
-			}
-
-		});
-*/
-		vh.name.setText(wifiProfile.Ssid+"|"+wifiProfile.Alias);
+		vh.name.setText(wifiProfile.Ssid + "|" + wifiProfile.Alias);
 
 		if (wifiProfile.ExtAddress != null) {
 			vh.remark.setText(wifiProfile.ExtAddress);
@@ -95,20 +88,6 @@ public class WifiListMapAdapter extends BaseAdapter {
 
 		return view;
 	}
-
-/*	OnItemClickListener mOnItemClickListener;
-
-	public void setOnItemClickListener(OnItemClickListener m) {
-		mOnItemClickListener = m;
-	}
-
-	public void UnsetOnItemClickListener() {
-		mOnItemClickListener = null;
-	}
-
-	public interface OnItemClickListener {
-		public void onClick(View arg0, Object data);
-	}*/
 
 	public final class ViewHolder {
 		public TextView name;

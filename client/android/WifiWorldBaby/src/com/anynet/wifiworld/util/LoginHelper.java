@@ -182,16 +182,18 @@ public class LoginHelper {
 		wifi.QueryBySponser(globalContext, wifi.Sponser, new MultiDataCallback<WifiProfile>() {
 	
 			@Override
-			public void onSuccess(List<WifiProfile> objects) {
+			public boolean onSuccess(List<WifiProfile> objects) {
 				if (objects.size() >= 1) {
 					mWifiProfile = objects.get(0); // TODO(binfei)目前一个账号才对应一个wifi
 				}
+				return false;
 			}
 	
 			@Override
-			public void onFailed(String msg) {
+			public boolean onFailed(String msg) {
 				Log.d(TAG, "查询登记的wifi失败，正在重试: " + msg);
 				pullWifiProfile();//TODO(binfei)这样做有可能造成堆栈溢出
+				return false;
 			}
 		});
 	}

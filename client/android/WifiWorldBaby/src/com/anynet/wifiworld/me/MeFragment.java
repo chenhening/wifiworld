@@ -43,14 +43,18 @@ public class MeFragment extends MainFragment {
 			boolean isLogined = false;
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
-				//Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
+				// Toast.makeText(getApplicationContext(), "登录失败!",
+				// Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				isLogined = true;
-				//Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
+				// Toast.makeText(getApplicationContext(), "登录成功!",
+				// Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
-				//Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();
+				// Toast.makeText(getApplicationContext(), "自动登录失败!",
+				// Toast.LENGTH_LONG).show();
 			} else if (action.equals(LoginHelper.LOGIN_OUT)) {
-				//Toast.makeText(getApplicationContext(), "退出登录!", Toast.LENGTH_LONG).show();
+				// Toast.makeText(getApplicationContext(), "退出登录!",
+				// Toast.LENGTH_LONG).show();
 				isLogined = false;
 			}
 			setLoginedUI(isLogined);
@@ -61,14 +65,14 @@ public class MeFragment extends MainFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		// 监听登录
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LoginHelper.LOGIN_SUCCESS);
 		filter.addAction(LoginHelper.LOGIN_FAIL);
 		filter.addAction(LoginHelper.LOGIN_OUT);
 		getActivity().registerReceiver(loginBR, filter);
-		
+
 		mLoginHelper = LoginHelper.getInstance(getActivity());
 	}
 
@@ -84,14 +88,16 @@ public class MeFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_person, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		setLoginedUI(false);
-		
+		setLoginedUI(isLogined());
+
 		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (!checkIsLogined()) {
 					return;
+				}else{
+					setLoginedUI(isLogined());
 				}
 			}
 		});
@@ -104,45 +110,47 @@ public class MeFragment extends MainFragment {
 				// 查询是否登录
 				if (!checkIsLogined()) {
 					return;
+				}else{
+					setLoginedUI(isLogined());
 				}
-				
+
 				mWifiProfile = mLoginHelper.mWifiProfile;
 				if (mWifiProfile != null) {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
-					new AlertDialog.Builder(getActivity())
-					.setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")  
-					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-	
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							//mLoginHelper.mWifiProfile = new WifiProfile();
-							Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
-							startActivity(i);
-						}					
-					})  
-					.setNegativeButton("取消", null)
-					.show();
+					new AlertDialog.Builder(getActivity()).setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")
+							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// mLoginHelper.mWifiProfile = new
+									// WifiProfile();
+									Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
+									startActivity(i);
+								}
+							}).setNegativeButton("取消", null).show();
 				}
 			}
 		});
-		
-		//我用的wifi
+
+		// 我用的wifi
 		mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
 
 			@Override
-            public void onClick(View v) {
+			public void onClick(View v) {
 				// 查询是否登录
 				if (!checkIsLogined()) {
 					return;
+				}else{
+					setLoginedUI(isLogined());
 				}
 				Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
-				startActivity(i); 
-            }
-			
+				startActivity(i);
+			}
+
 		});
-		
+
 		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -150,19 +158,21 @@ public class MeFragment extends MainFragment {
 				// TODO Auto-generated method stub
 				if (!checkIsLogined()) {
 					return;
+				}else{
+					setLoginedUI(isLogined());
 				}
 				Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
 				startActivity(i);
 			}
 		});
-		
+
 		mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//if (!checkIsLogined()) {
-				//	return;
-				//}
+				// if (!checkIsLogined()) {
+				// return;
+				// }
 				/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
 				SocializeConstants.APPKEY = GlobalConfig.UMENG_SHARE_KEY;
 				com.umeng.socialize.utils.Log.LOG = true;
@@ -189,12 +199,11 @@ public class MeFragment extends MainFragment {
 				// umlwHandler.addToSocialSDK();
 				// umlwHandler.setMessageFrom("友盟分享组件");
 				// 设置分享面板上显示的平台
-				mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ,
-						SHARE_MEDIA.SINA, SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN,
-						SHARE_MEDIA.DOUBAN);
-				//UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
-				mController.setShareContent("您的朋友邀请你使用：" + getString(R.string.app_name)
-						+ "。闲置WIFI是不是很浪费？" + getString(R.string.app_name) + "可以利用闲置的WIFI给自己赚钱啦！");
+				mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA,
+						SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+				// UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
+				mController.setShareContent("您的朋友邀请你使用：" + getString(R.string.app_name) + "。闲置WIFI是不是很浪费？" + getString(R.string.app_name)
+						+ "可以利用闲置的WIFI给自己赚钱啦！");
 				mController.openShare(getActivity(), new SnsPostListener() {
 
 					@Override
@@ -213,7 +222,7 @@ public class MeFragment extends MainFragment {
 				});
 			}
 		});
-		
+
 		mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -222,37 +231,37 @@ public class MeFragment extends MainFragment {
 				startActivity(i);
 			}
 		});
-		
-		//我的关注
+
+		// 我的关注
 		mPageRoot.findViewById(R.id.slv_my_attention).setOnClickListener(new OnClickListener() {
 
 			@Override
-            public void onClick(View v) {
+			public void onClick(View v) {
 				// 查询是否登录
 				if (!checkIsLogined()) {
 					return;
 				}
 				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
-				startActivity(i); 
-            }
-			
+				startActivity(i);
+			}
+
 		});
-		//我的黑名单
+		// 我的黑名单
 		mPageRoot.findViewById(R.id.slv_my_blacklist).setOnClickListener(new OnClickListener() {
 
 			@Override
-            public void onClick(View v) {
+			public void onClick(View v) {
 				// 查询是否登录
 				if (!checkIsLogined()) {
 					return;
 				}
 				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
-				startActivity(i); 
-            }
-			
+				startActivity(i);
+			}
+
 		});
-		
-		//设置about
+
+		// 设置about
 		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -261,10 +270,20 @@ public class MeFragment extends MainFragment {
 				i.setClass(getApplicationContext(), AboutAppActivity.class);
 				startActivity(i);
 			}
-			
+
 		});
-		
+
 		return mPageRoot;
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+				setLoginedUI(checkIsLogined());
+		} else {
+			// 相当于Fragment的onPause
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -272,13 +291,13 @@ public class MeFragment extends MainFragment {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my));
 	}
 
 	private void setLoginedUI(boolean isLogined) {
-		if (isLogined && mLoginHelper.isLogined() && mLoginHelper.getCurLoginUserInfo()!=null) {
+		if (isLogined && mLoginHelper.isLogined() && mLoginHelper.getCurLoginUserInfo() != null) {
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(View.GONE);
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.VISIBLE);

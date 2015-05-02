@@ -343,20 +343,21 @@ public class WifiDetailsActivity extends BaseActivity {
 		wifiComments.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
 			
 			@Override
-			public void onSuccess(List<WifiComments> object) {
+			public boolean onSuccess(List<WifiComments> object) {
 				Log.i(TAG, "Success to query wifi comments from server:" + object.size());
 				for (WifiComments wifiComments : object) {
 					mWifiInfoScanned.addComment(wifiComments.Comment);
 				}
 				mCommentsFlag = GET_DATA_SUCCESS;
+				return false;
 			}
 			
 			@Override
-			public void onFailed(String msg) {
+			public boolean onFailed(String msg) {
 				Log.e(TAG, "Failed to query wifi comments:" + mWifiInfoScanned.getWifiMAC()
 						+ ": " + msg);
 				mCommentsFlag = GET_DATA_FAILED;
-				
+				return false;
 			}
 		});
 		
@@ -366,21 +367,23 @@ public class WifiDetailsActivity extends BaseActivity {
 				LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername(), new MultiDataCallback<WifiFollow>() {
 
 					@Override
-					public void onSuccess(List<WifiFollow> objects) {
+					public boolean onSuccess(List<WifiFollow> objects) {
 						Log.i(TAG, "Success to find wifi info from wifi follow table");
 						mFollowView.setText("取消收藏");
 						//mFollowView.setBackgroundColor(color.gray);
 						mFollowed = objects;
 						mFollowFlag = GET_DATA_SUCCESS;
+						return false;
 					}
 
 					@Override
-					public void onFailed(String msg) {
+					public boolean onFailed(String msg) {
 						showToast("收藏或取消失败，请稍后再试");
 						Log.e(TAG, "Failed to find wifi follow info: " + msg);
 						//mFollowView.setText("收藏WiFi");
 						//mFollowView.setBackgroundColor(color.orange);
 						mFollowFlag = GET_DATA_FAILED;
+						return false;
 					}
 				});
 		} else {
