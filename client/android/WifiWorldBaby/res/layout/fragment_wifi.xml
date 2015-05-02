@@ -41,9 +41,38 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <TextView
+                android:id="@+id/tv_wifi_name"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:text="未连接"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+            
+            <ToggleButton
+                android:id="@+id/wifi_control_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="2dp"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/sl_checkbox_open_or_close" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/wifi_connected_info"
             android:layout_width="match_parent"
-            android:layout_height="148dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:background="@drawable/bg_portal_1"
             android:orientation="horizontal" >
@@ -53,35 +82,61 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_margin="10dip"
+                android:layout_margin="8dp"
                 android:background="@drawable/icon_invalid"
                 android:contentDescription="@string/wifi_icon" />
 
-            <TextView
-                android:id="@+id/wifi_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/wifi_default_text"
-                android:textColor="@color/darkgray"
-                android:textSize="18sp" />
-
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/wifi_switch_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:gravity="center_vertical" >
 
-                <ToggleButton
-                    android:id="@+id/wifi_control_toggle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_wifi_master"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/sl_checkbox_open_or_close"
-                    android:textOff=""
-                    android:textOn="" />
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal" >
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/tv_wifi_master_k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="主人:" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_master_v"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="未认证无法找到主人" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_wifi_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/ll_wifi_master"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_desc_h"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="简介:" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_desc_v"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="未认证无法显示简介信息"
+                        android:maxLines="3" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
         </LinearLayout>
 
         <View
@@ -134,7 +189,6 @@
                 android:gravity="center"
                 android:text="互动"
                 android:textColor="@color/white" />
-
         </LinearLayout>
 
         <View

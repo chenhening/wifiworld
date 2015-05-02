@@ -36,17 +36,24 @@ public class WifiCommentActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Input text can not be empty", Toast.LENGTH_LONG).show();
 					return;
 				}
-				WifiComments wifiComments = new WifiComments();
+				final WifiComments wifiComments = new WifiComments();
 				wifiComments.Comment = commentString;
 				wifiComments.MacAddr = WifiListHelper.getInstance(getBaseContext()).mWifiInfoCur.getWifiMAC();
-				wifiComments.UserId = "匿名"/*LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo().PhoneNumber*/;
+				String nickName = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo().NickName;
+				if (nickName != null) {
+					wifiComments.UserId = nickName;
+				} else {
+					wifiComments.UserId = "无名氏";
+				}
 				wifiComments.MarkSendTime();
 				wifiComments.StoreRemote(getBaseContext(), new DataCallback<WifiComments>() {
 					
 					@Override
 					public void onSuccess(WifiComments object) {
 						Intent intent = new Intent();
-						intent.putExtra(WIFI_COMMENT_ADD, commentString);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable(WIFI_COMMENT_ADD, wifiComments);
+						intent.putExtras(bundle);
 						setResult(RESULT_OK, intent);
 						finish();
 					}

@@ -1,6 +1,8 @@
 package com.anynet.wifiworld.data;
 
 import android.content.Context;
+
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class WifiComments extends BmobObject {
+public class WifiComments extends BmobObject implements Serializable {
 	private final static String TAG = WifiComments.class.getSimpleName();
 	private final static String MACADDR_TAG = "MacAddr";
 	

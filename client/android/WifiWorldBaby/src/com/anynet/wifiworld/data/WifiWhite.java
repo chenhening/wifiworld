@@ -3,7 +3,6 @@ package com.anynet.wifiworld.data;
 import java.util.List;
 
 import android.content.Context;
-import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
@@ -11,27 +10,20 @@ import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class WifiBlack extends BmobObject {
+public class WifiWhite extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
 	private String TAG = "WifiBlack";
 	
-	public String MacAddr; //路由器地址
-	public String Userid; //用户账号
-	public int BlackType; //拉黑类型
-	public String Content; //补充说明
-	public long ReportTime; //用户关注的时间
+	public String MyUserid; //本人账号
+	public String Whiteid; //加入白名单人的账号
+	public int Friendliness; //两人之间的友好度
+	public int AddType; //添加到白名单方式方式
+	public long ReportTime; //加入时间
 	
-	public static class Type {
-		public final static int WrongPwd = 1; //密码错误
-		public final static int LowNetworkSpeed = 2; //网速太慢
-		public final static int NotSafe = 3; //网络不安全
-		public final static int others = 0; //其他原因
-	}
-	
-	public void ReportWifi(final Context context, DataCallback<WifiBlack> callback) {
-		final DataCallback<WifiBlack> _callback = callback;
-		final WifiBlack user = this;
+	public void addAWhiter(final Context context, DataCallback<WifiWhite> callback) {
+		final DataCallback<WifiWhite> _callback = callback;
+		final WifiWhite user = this;
 		user.save(context, new SaveListener() {
 			
 			@Override
@@ -46,9 +38,9 @@ public class WifiBlack extends BmobObject {
 		});
 	}
 	
-	public void RemoveReport (final Context context, DataCallback<WifiBlack> callback) {
-		final DataCallback<WifiBlack> _callback = callback;
-		final WifiBlack user = this;
+	public void deleteAWhiter(final Context context, DataCallback<WifiWhite> callback) {
+		final DataCallback<WifiWhite> _callback = callback;
+		final WifiWhite user = this;
 		user.delete(context, new DeleteListener() {
 			
 			@Override
@@ -65,19 +57,19 @@ public class WifiBlack extends BmobObject {
 		});
 	}
 	
-	public void QueryWifiByUser(final Context context, final String PhoneNumber, 
-			MultiDataCallback<WifiBlack> callback) {
-		final MultiDataCallback<WifiBlack> _callback = callback;
-		final BmobQuery<WifiBlack> query = new BmobQuery<WifiBlack>();
-		query.addWhereEqualTo("Userid", PhoneNumber);
+	public void QueryWhitersByUser(final Context context, final String PhoneNumber, 
+			MultiDataCallback<WifiWhite> callback) {
+		final MultiDataCallback<WifiWhite> _callback = callback;
+		final BmobQuery<WifiWhite> query = new BmobQuery<WifiWhite>();
+		query.addWhereEqualTo("MyUserid", PhoneNumber);
 		Log.d(TAG, "Start to query wifi follow table for: " + PhoneNumber);
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				query.findObjects(context, new FindListener<WifiBlack>() {
+				query.findObjects(context, new FindListener<WifiWhite>() {
 					@Override
-					public void onSuccess(List<WifiBlack> object) {
+					public void onSuccess(List<WifiWhite> object) {
 						_callback.onSuccess(object);
 					}
 

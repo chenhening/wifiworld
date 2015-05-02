@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:background="@drawable/dialog_bg"
     android:orientation="vertical" >
-    
+
     <LinearLayout
         android:id="@+id/wifi_title_layout"
         android:layout_width="334dp"
@@ -15,11 +15,11 @@
 
         <TextView
             android:id="@+id/wifi_title"
+            style="@style/dlg_title_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="@string/tips"
-            style="@style/dlg_title_txt"
             android:visibility="visible" />
     </LinearLayout>
 
@@ -29,87 +29,149 @@
         android:gravity="center"
         android:minHeight="100dp"
         android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/wifi_basic_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
         
         <LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content">
-	        
-	        <TextView
-	            style="@style/textAppearanceBaseContent"
-	            android:text="@string/signal"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" />
-	        
-	        <TextView android:id="@+id/signal_strength_text"
-	            android:text="Poor"
-	            android:paddingLeft = "5sp"
-	            android:textStyle="bold"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            style="@style/dlg_content_txt" />
-	    
-		</LinearLayout>
-        
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/textAppearanceBaseContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signal" />
+
+            <TextView
+                android:id="@+id/signal_strength_text"
+                style="@style/dlg_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:text="Poor"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content">
-	        
-	        <TextView
-	            style="@style/textAppearanceBaseContent"
-	            android:text="@string/security"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" />
-	        
-	        <TextView android:id="@+id/security_text"
-	            android:text="WEP"
-	            android:paddingLeft = "5sp"
-	            android:textStyle="bold"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            style="@style/dlg_content_txt" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/textAppearanceBaseContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/security" />
+
+            <TextView
+                android:id="@+id/security_text"
+                style="@style/dlg_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:text="WEP"
+                android:textStyle="bold" />
+        </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="13dp"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/Password_TextView"
+                style="@style/textAppearanceBaseContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10sp"
+                android:text="无线密码" />
+
+            <com.anynet.wifiworld.wifi.ChangingAwareEditText
+                android:id="@+id/Password_EditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="text|textPassword" />
+
+            <CheckBox
+                android:id="@+id/ShowPassword_CheckBox"
+                style="@style/textAppearanceBaseContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="显示密码" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="13dp"
+            android:orientation="vertical" >
+
+            <RadioGroup
+                android:id="@+id/report_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/wrong_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:textSize="12sp"
+                    android:textColor="@color/base_color_text_black"
+                    android:text="密码错误" />
+
+                <RadioButton
+                    android:id="@+id/low_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/base_color_text_black"
+                    android:text="网速太慢" />
+
+                <RadioButton
+                    android:id="@+id/not_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/base_color_text_black"
+                    android:text="网络不安全" />
+                
+                <RadioButton
+                    android:id="@+id/others"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/base_color_text_black"
+                    android:text="其他" />
+            </RadioGroup>
             
-	    </LinearLayout>
-	    
-        <LinearLayout android:id="@+id/Password"
-			android:orientation="vertical"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="left"
-			android:gravity="left"
-			android:layout_marginLeft="13dp"
-			android:visibility="gone" >
-			
-			<TextView android:id="@+id/Password_TextView"
-				style="@style/textAppearanceBaseContent"
-				android:text="无线密码"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:paddingTop="10sp"
-				/>
-				
-			<com.anynet.wifiworld.wifi.ChangingAwareEditText
-			    android:id="@+id/Password_EditText"
-				android:layout_width="300dp"
-				android:layout_height="wrap_content" 
-				android:inputType="text|textPassword"/>
-				
-			<CheckBox android:id="@+id/ShowPassword_CheckBox"
-				style="@style/textAppearanceBaseContent"
-				android:text="显示密码"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-	
-		</LinearLayout>
-        
+            <EditText
+                android:id="@+id/report_reason"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E7E9EA" />
-    
+
     <LinearLayout
         android:id="@+id/buttons_view"
         android:layout_width="fill_parent"

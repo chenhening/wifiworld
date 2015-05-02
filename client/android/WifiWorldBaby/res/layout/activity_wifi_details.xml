@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_wifi_master"
-                android:layout_toRightOf="@+id/textView1"
+                android:layout_toRightOf="@+id/tv_white_id"
                 android:gravity="top"
                 android:hint="本人WiFi只提供给有缘人"
                 android:maxLength="30"
@@ -56,12 +56,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/wifi_account_rank"
-                android:layout_toRightOf="@+id/textView1"
+                android:layout_toRightOf="@+id/tv_white_id"
                 android:gravity="left"
                 android:hint="正在获取请稍等..." />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/tv_white_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tv_wifi_master"

@@ -32,6 +32,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
@@ -81,6 +82,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
 	private ToggleButton mWifiSwitch;
+	private TextView mWifiMaster;
+	private TextView mWifiDesc;
 
 	private LinearLayout mWifiSquareLayout;
 	private View mPopupView;
@@ -99,8 +102,9 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 	private boolean isPwdConnect = false;
 
+	private ListView mCommentsListView;
 	private WifiCommentsAdapter mWifiCommentsAdapter;
-	private List<String> mWifiCommentsList = new ArrayList<String>();
+	private List<WifiComments> mWifiCommentsList = new ArrayList<WifiComments>();
 
 	private Handler mHandler = new Handler() {
 
@@ -211,7 +215,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 				@Override
 				public void onSupplicantChanged(String statusStr) {
 					mWifiNameView.setText(statusStr);
-					mWifiNameView.setTextColor(Color.BLACK);
+					//mWifiNameView.setTextColor(Color.BLACK);
 					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
 						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
@@ -252,8 +256,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		mWifiAdmin = mWifiListHelper.getWifiAdmin();
 
 		WifiBRService.bindWifiService(getActivity(), conn);
-		mWifiConnectDialog = new WifiConnectDialog(getActivity(), false);
-		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), true);
+		mWifiConnectDialog = new WifiConnectDialog(getActivity(), WifiConnectDialog.DialogType.DEFAULT);
+		mWifiConnectPwdDialog = new WifiConnectDialog(getActivity(), WifiConnectDialog.DialogType.PASSWORD);
 
 		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 	}
@@ -276,14 +280,10 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		// initial WIFI square pop-up view
 		initWifiSquarePopupView();
 		// display WIFI SSID which is connected or not
-		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.wifi_name);
+		mWifiNameView = (TextView) mPageRoot.findViewById(R.id.tv_wifi_name);
 		mWifiLogoView = (ImageView) mPageRoot.findViewById(R.id.wifi_logo);
-		// String connected_name = mWifiAdmin.getWifiNameConnection();
-		// if (!connected_name.equals("") && !connected_name.equals("0x")) {
-		// mWifiNameView.setText("已连接" +
-		// WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
-		// mWifiNameView.setTextColor(Color.BLACK);
-		// }
+		mWifiMaster = (TextView) mPageRoot.findViewById(R.id.tv_wifi_master_v);
+		mWifiDesc = (TextView) mPageRoot.findViewById(R.id.tv_wifi_desc_v);
 
 		// WIFI list view display and operation
 		mWifiListView = (PullToRefreshListView) mPageRoot.findViewById(R.id.wifi_list_view);
@@ -390,9 +390,10 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		}
 
 		if (requestCode == WIFI_COMMENT && resultCode == android.app.Activity.RESULT_OK) {
-			String commentStr = data.getStringExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
-			mWifiCommentsList.add(commentStr);
+			WifiComments commentCtn = (WifiComments)data.getSerializableExtra(WifiCommentActivity.WIFI_COMMENT_ADD);
+			mWifiCommentsList.add(commentCtn);
 			mWifiCommentsAdapter.refreshCommentsList();
+			setListViewHeightBasedOnChildren(mCommentsListView);
 		}
 	}
 
@@ -444,6 +445,24 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		}
 	}
 
+	public void setListViewHeightBasedOnChildren(ListView listView) {  
+	    ListAdapter listAdapter = listView.getAdapter();   
+	    if (listAdapter == null) {  
+	        return;  
+	    }  
+	 
+	    int totalHeight = 0;  
+	    for (int i = 0; i < listAdapter.getCount(); i++) {  
+	        View listItem = listAdapter.getView(i, null, listView);  
+	        listItem.measure(0, 0);  
+	        totalHeight += listItem.getMeasuredHeight();  
+	    }  
+	 
+	    ViewGroup.LayoutParams params = listView.getLayoutParams();  
+	    params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+	    listView.setLayoutParams(params);  
+	} 
+	
 	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned, boolean beAuth) {
 		mWifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
 		mWifiConnectDialog.setSignal(String.valueOf(wifiInfoScanned.getWifiStrength()));
@@ -537,6 +556,8 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private void refreshWifiTitleInfo() {
 		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
 
+		mWifiMaster.setText("");
+		mWifiDesc.setText("");
 		// update WiFi title info
 		if (wifiCurInfo != null) {
 			WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
@@ -547,17 +568,19 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			}
 			if (wifiInfoCurrent != null && wifiInfoCurrent.getAlias() != null && wifiInfoCurrent.getAlias().length() > 0) {
 				mWifiNameView.setText("已连接: " + wifiInfoCurrent.getAlias());
+				mWifiMaster.setText(wifiInfoCurrent.getSponser());
+				mWifiDesc.setText(wifiInfoCurrent.getBanner());
 			} else {
 				mWifiNameView.setText("已连接: " + WifiAdmin.convertToNonQuotedString(wifiCurInfo.getSSID()));
 			}
-			mWifiNameView.setTextColor(Color.BLACK);
+			//mWifiNameView.setTextColor(Color.BLACK);
 
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
-			mWifiNameView.setTextColor(Color.GRAY);
+			//mWifiNameView.setTextColor(Color.GRAY);
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 
 			mWifiSwitch.setVisibility(View.GONE);
@@ -651,7 +674,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			});
 
 			// 评论ui
-			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.tv_button_sms);
+			final TextView send_btn = (TextView) mPopupView.findViewById(R.id.comment_btn);
 			send_btn.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -671,7 +694,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private void loadWifiComments(View popupView) {
 		WifiInfoScanned wifiInfoScanned = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 
-		final ListView commentsListView = (ListView) popupView.findViewById(R.id.wifi_list_comments);
+		mCommentsListView = (ListView) popupView.findViewById(R.id.wifi_list_comments);
 		WifiComments wifiComments = new WifiComments();
 		wifiComments.QueryByMacAddress(getActivity(), wifiInfoScanned.getWifiMAC(), new MultiDataCallback<WifiComments>() {
 
@@ -679,10 +702,11 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			public boolean onSuccess(List<WifiComments> objects) {
 				mWifiCommentsList.clear();
 				for (WifiComments obj : objects) {
-					mWifiCommentsList.add(obj.Comment);
+					mWifiCommentsList.add(obj);
 				}
 				mWifiCommentsAdapter = new WifiCommentsAdapter(getActivity(), mWifiCommentsList);
-				commentsListView.setAdapter(mWifiCommentsAdapter);
+				mCommentsListView.setAdapter(mWifiCommentsAdapter);
+				setListViewHeightBasedOnChildren(mCommentsListView);
 				return false;
 			}
 

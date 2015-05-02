@@ -183,6 +183,7 @@ public class WifiListAdapter extends BaseAdapter {
 					iv.alias.setText("[" + infoScanned.getWifiName() + "]");
 				} else {
 					iv.name.setText((infoScanned).getWifiName());
+					iv.alias.setVisibility(View.GONE);
 				}
 
 				if (infoScanned.getRemark() == null || infoScanned.getRemark() == "") {

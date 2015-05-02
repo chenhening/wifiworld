@@ -23,6 +23,12 @@ import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 public class WifiConnectDialog extends XLBaseDialog {
 	public static final String TAG = WifiConnectDialog.class.getSimpleName();
 
+	public enum DialogType {
+		DEFAULT,
+		PASSWORD,
+		REPORT
+	};
+	
 	private Context mContext;
 
 	private TextView mTitle;
@@ -36,10 +42,10 @@ public class WifiConnectDialog extends XLBaseDialog {
 	private ChangingAwareEditText mPassword;
 	private CheckBox mPwdCheckBox;
 
-	public WifiConnectDialog(Context context, boolean showPwd) {
+	public WifiConnectDialog(Context context, DialogType dialogType) {
 		super(context, R.style.bt_dialog);// 透明背景对话框
 		mContext = context;
-		initUI(showPwd);
+		initUI(dialogType);
 	}
 
 	public void setUserData(Object userData) {
@@ -244,19 +250,18 @@ public class WifiConnectDialog extends XLBaseDialog {
 		mPassword.setText("");
 	}
 
-	private void initUI(boolean showPwd) {
+	private void initUI(DialogType dialogType) {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.wifi_connect_dialog, null);
 
+		LinearLayout wifiBasic = (LinearLayout)dlgView.findViewById(R.id.wifi_basic_info);
 		mTitle = (TextView)dlgView.findViewById(R.id.wifi_title);
 		mSecurityView = (TextView)dlgView.findViewById(R.id.security_text);
 		mSignalView = (TextView)dlgView.findViewById(R.id.signal_strength_text);
 		mRightBtn = (TextView)dlgView.findViewById(R.id.btn_connect);
 		mLeftBtn = (TextView)dlgView.findViewById(R.id.btn_cancel);
 		
+		//password layout
 		LinearLayout pwdLayout = (LinearLayout) dlgView.findViewById(R.id.Password);
-		if (showPwd) {
-			pwdLayout.setVisibility(View.VISIBLE);
-		}
 		mPassword = (ChangingAwareEditText)dlgView.findViewById(R.id.Password_EditText);
 		mPwdCheckBox = (CheckBox)dlgView.findViewById(R.id.ShowPassword_CheckBox);
 		mPwdCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -269,7 +274,37 @@ public class WifiConnectDialog extends XLBaseDialog {
 				
 			}
 		});
+		
+		//report layout
+		LinearLayout reportLayout = (LinearLayout)dlgView.findViewById(R.id.report);
 
+		//display ui
+		switch (dialogType) {
+		case DEFAULT:
+			wifiBasic.setVisibility(View.VISIBLE);
+			pwdLayout.setVisibility(View.GONE);
+			reportLayout.setVisibility(View.GONE);
+			break;
+		case PASSWORD:
+			wifiBasic.setVisibility(View.VISIBLE);
+			pwdLayout.setVisibility(View.VISIBLE);
+			reportLayout.setVisibility(View.GONE);
+			break;
+		case REPORT:
+			wifiBasic.setVisibility(View.GONE);
+			pwdLayout.setVisibility(View.GONE);
+			reportLayout.setVisibility(View.VISIBLE);
+			break;
+
+		default:
+			break;
+		}
+		if (dialogType == DialogType.PASSWORD) {
+			pwdLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+		}
+		
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
 			@Override

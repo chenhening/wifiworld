@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,8 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
-import com.anynet.wifiworld.data.WifiFollow;
+import com.anynet.wifiworld.data.WifiBlack;
+import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -28,10 +30,10 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
-public class WifiFollowListActivity extends BaseActivity {
+public class MyWhiteListActivity extends BaseActivity {
 
 	//IPC
-	private List<WifiFollow> mListData;
+	private List<WifiWhite> mListData;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
 	
@@ -39,7 +41,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("我举报过的Wi-Fi");
+		mTitlebar.tvTitle.setText("我的白名单");
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
@@ -52,17 +54,17 @@ public class WifiFollowListActivity extends BaseActivity {
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_wifi_used_list);
+		setContentView(R.layout.activity_my_whitelist);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
 		//查询服务器
-		WifiFollow records = new WifiFollow();
-		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
-		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiFollow>() {
+		WifiWhite records = new WifiWhite();
+		records.MyUserid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
+		records.QueryWhitersByUser(this, records.MyUserid, new MultiDataCallback<WifiWhite>() {
 
 			@Override
-            public boolean onSuccess(List<WifiFollow> objects) {
+            public boolean onSuccess(List<WifiWhite> objects) {
 	            //分析一周的上网记录
 				mListData = objects;
 				displayList();
@@ -165,7 +167,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				WifiFollow item = mListData.get(position);
+				WifiWhite item = mListData.get(position);
 				switch (index) {
 				case 0:
 					break;
@@ -209,7 +211,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		}
 
 		@Override
-		public WifiFollow getItem(int position) {
+		public WifiWhite getItem(int position) {
 			return mListData.get(position);
 		}
 
@@ -225,18 +227,13 @@ public class WifiFollowListActivity extends BaseActivity {
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-			WifiFollow item = getItem(position);
-			//holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
-			holder.tv_wifi_name.setText("employeehost");
-			holder.tv_wifi_alias.setText("王思聪家的wifi");
-			holder.tv_wifi_addr.setText("武汉市江汉区xxx小区");
-			holder.tv_connect_count.setText("已连接46次");
-			holder.tv_connect_time.setText("已连接17小时");
+			holder.iv_icon.setImageResource(R.drawable.naicha);
+			holder.tv_wifi_name.setText("奶茶妹妹");
 			return convertView;
 		}
 
 		class ViewHolder {
-			//ImageView iv_icon;
+			ImageView iv_icon;
 			TextView tv_wifi_name;
 			TextView tv_wifi_alias;
 			TextView tv_wifi_addr;
@@ -244,12 +241,8 @@ public class WifiFollowListActivity extends BaseActivity {
 			TextView tv_connect_time;
 
 			public ViewHolder(View view) {
-				//iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
-				tv_wifi_name = (TextView) view.findViewById(R.id.tv_wifi_used_ssid);
-				tv_wifi_alias = (TextView) view.findViewById(R.id.tv_wifi_used_alias);
-				tv_wifi_addr = (TextView) view.findViewById(R.id.tv_wifi_used_addr);
-				tv_connect_count = (TextView) view.findViewById(R.id.tv_wifi_used_count);
-				tv_connect_time = (TextView) view.findViewById(R.id.tv_wifi_used_time);
+				iv_icon = (ImageView) view.findViewById(R.id.iv_white_logo);
+				tv_wifi_name = (TextView) view.findViewById(R.id.tv_white_id);
 				view.setTag(this);
 			}
 		}
