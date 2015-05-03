@@ -137,6 +137,8 @@ public class LoginHelper {
 		mIsLogin = false;
 		mUser.logout(globalContext);
 		mUser = null;
+		mKnockList.clear();
+		mWifiProfile = null;
 		globalContext.sendBroadcast(new Intent(LOGIN_OUT));
 		Log.d(TAG, "用户退出成功");
 	}

@@ -384,7 +384,9 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		mWifiProfile.ExtAddress = mtv_location.getText().toString();
 		EditText et_detail_addr = (EditText) this.findViewById(R.id.et_wifi_provider_detail_address);
 		mWifiProfile.ExtAddress += " " + et_detail_addr.getText().toString();
-		if (mWifiProfile.ExtAddress.equals("") || mWifiProfile.ExtAddress.startsWith("未能自动识别")) {
+		if (mWifiProfile.ExtAddress.equals("") || mWifiProfile.ExtAddress.startsWith("未能自动识别") ||
+			mWifiProfile.Geometry == null || mWifiProfile.Geometry.getLatitude() <= 0.0 || 
+			mWifiProfile.Geometry.getLongitude() <= 0.0) {
 			showToast("获取地理位置失败，请重新点击获取地理位置");
 			return false;
 		}

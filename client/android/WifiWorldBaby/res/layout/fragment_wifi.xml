@@ -53,7 +53,11 @@
                 android:layout_height="32dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:gravity="left|center"
+                android:longClickable="false"
                 android:text="未连接"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -64,9 +68,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
                 android:layout_marginRight="2dp"
-                android:textOn=""
+                android:background="@drawable/sl_checkbox_open_or_close"
+                android:checked="true"
+                android:focusableInTouchMode="true"
+                android:longClickable="true"
                 android:textOff=""
-                android:background="@drawable/sl_checkbox_open_or_close" />
+                android:textOn="" />
+
         </LinearLayout>
 
         <LinearLayout

@@ -10,17 +10,17 @@
         
 	<ImageView
 	    android:id="@+id/user_icon"
-	    android:layout_width="48dip"
-	    android:layout_height="match_parent"
+	    android:layout_width="32dip"
+	    android:layout_height="32dp"
 	    android:layout_gravity="left"
 	    android:src="@drawable/icon_invalid" />
 	
 	<LinearLayout
 	    android:id="@+id/user_comment_layout"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingLeft="15dp"
-	    android:orientation="vertical" >
+	    android:layout_height="32dp"
+	    android:orientation="vertical"
+	    android:paddingLeft="15dp" >
 	    
 	    <LinearLayout
 	        android:id="@+id/user_comment_content"
@@ -30,14 +30,14 @@
 	        android:layout_weight="1" >
 	    
 	    		<TextView
-                android:id="@+id/user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="匿名"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_weight="1" />
+	    		    android:id="@+id/user_name"
+	    		    android:layout_width="match_parent"
+	    		    android:layout_height="wrap_content"
+	    		    android:layout_gravity="left"
+	    		    android:layout_weight="1"
+	    		    android:text="匿名"
+	    		    android:textColor="@color/black"
+	    		    android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/comment_time"
@@ -57,10 +57,11 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical"
-	        android:textColor="@color/gray"
-	        android:textSize="16sp"
+	        android:layout_weight="1"
 	        android:text="moren"
-	        android:layout_weight="1" />
+	        android:textColor="@color/gray"
+	        android:textSize="12sp" />
+
 	</LinearLayout>
 
 </LinearLayout>

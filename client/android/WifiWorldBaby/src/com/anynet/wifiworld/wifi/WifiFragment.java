@@ -119,7 +119,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 				if (mWifiListAdapter != null) {
 					mWifiListAdapter.refreshWifiList(mWifiAuth, mWifiFree, mWifiEncrypt);
 				}
-				refreshWifiTitleInfo();
+				refreshWifiTitleInfo(true);
 			}
 			mWifiListView.onRefreshComplete();
 		}
@@ -365,17 +365,15 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		});
 
 		mWifiSwitch = (ToggleButton) mPageRoot.findViewById(R.id.wifi_control_toggle);
-		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		mWifiSwitch.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
-				if (!isChecked) {
-					WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
-					if (wifiInfo != null) {
-						mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-					}
-					refreshWifiTitleInfo();
+			public void onClick(View v) {
+				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+				if (wifiInfo != null) {
+					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
 				}
+				refreshWifiTitleInfo(false);
 			}
 		});
 
@@ -565,13 +563,13 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		wifiConnectDialog.show();
 	}
 
-	private void refreshWifiTitleInfo() {
+	private void refreshWifiTitleInfo(boolean open) {
 		WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
 
 		mWifiMaster.setText("");
 		mWifiDesc.setText("");
 		// update WiFi title info
-		if (wifiCurInfo != null) {
+		if (open && wifiCurInfo != null) {
 			WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 			if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
 				mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
@@ -588,7 +586,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			// mWifiNameView.setTextColor(Color.BLACK);
 
 			mWifiSwitch.setVisibility(View.VISIBLE);
-			mWifiSwitch.setChecked(true);
+			//mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
@@ -596,7 +594,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 
 			mWifiSwitch.setVisibility(View.GONE);
-			mWifiSwitch.setChecked(false);
+			//mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 
