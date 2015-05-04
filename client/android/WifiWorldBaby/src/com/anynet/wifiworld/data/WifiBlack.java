@@ -18,15 +18,14 @@ public class WifiBlack extends BmobObject {
 	
 	public String MacAddr; //路由器地址
 	public String Userid; //用户账号
-	public int BlackType; //拉黑类型
+	public ReportType BlackType; //拉黑类型
 	public String Content; //补充说明
 	public long ReportTime; //用户关注的时间
 	
-	public static class Type {
-		public final static int WrongPwd = 1; //密码错误
-		public final static int LowNetworkSpeed = 2; //网速太慢
-		public final static int NotSafe = 3; //网络不安全
-		public final static int others = 0; //其他原因
+	public enum ReportType {
+		OTHERS,
+		WRONG_PWD,
+		NOT_SAFE
 	}
 	
 	public void ReportWifi(final Context context, DataCallback<WifiBlack> callback) {

@@ -134,14 +134,6 @@
                     android:text="密码错误" />
 
                 <RadioButton
-                    android:id="@+id/low_speed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/base_color_text_black"
-                    android:text="网速太慢" />
-
-                <RadioButton
                     android:id="@+id/not_safe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

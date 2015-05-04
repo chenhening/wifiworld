@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -13,10 +14,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.amap.api.mapcore.util.r;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiBlack;
 import com.anynet.wifiworld.dialog.XLBaseDialog;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 
@@ -41,6 +44,9 @@ public class WifiConnectDialog extends XLBaseDialog {
 	
 	private ChangingAwareEditText mPassword;
 	private CheckBox mPwdCheckBox;
+	
+	private int mBlackTypeId;
+	private EditText mBlackContent;
 
 	public WifiConnectDialog(Context context, DialogType dialogType) {
 		super(context, R.style.bt_dialog);// 透明背景对话框
@@ -249,6 +255,32 @@ public class WifiConnectDialog extends XLBaseDialog {
 	public void clearPwdEditText() {
 		mPassword.setText("");
 	}
+	
+	public WifiBlack.ReportType getBlackType() {
+		WifiBlack.ReportType blackType = null;
+		switch (mBlackTypeId) {
+		case R.id.wrong_pwd:
+			blackType = WifiBlack.ReportType.WRONG_PWD;
+			break;
+		case R.id.not_safe:
+			blackType = WifiBlack.ReportType.NOT_SAFE;
+			break;
+		case R.id.others:
+			blackType = WifiBlack.ReportType.OTHERS;
+			break;
+		default:
+			break;
+		}
+		return blackType;
+	}
+	
+	public String getBlackContent() {
+		return mBlackContent.getText().toString();
+	}
+	
+	public void clearBlackContent() {
+		mBlackContent.setText("");
+	}
 
 	private void initUI(DialogType dialogType) {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.wifi_connect_dialog, null);
@@ -277,6 +309,16 @@ public class WifiConnectDialog extends XLBaseDialog {
 		
 		//report layout
 		LinearLayout reportLayout = (LinearLayout)dlgView.findViewById(R.id.report);
+		mBlackContent = (EditText)dlgView.findViewById(R.id.report_reason);
+		RadioGroup radioGroup = (RadioGroup)dlgView.findViewById(R.id.report_group);
+		mBlackTypeId = radioGroup.getCheckedRadioButtonId();
+		radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int ButtonIdx) {
+				mBlackTypeId = group.getCheckedRadioButtonId();
+			}
+		});
 
 		//display ui
 		switch (dialogType) {

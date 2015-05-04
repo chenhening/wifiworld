@@ -81,7 +81,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private int mFollowFlag = GET_DATA_DEFAULT;
 	private List<WifiFollow> mFollowed = null;
 	
-	private WifiConnectDialog mReportDialog;
+	private WifiConnectDialog mBlackDialog;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -186,7 +186,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		// Process WiFi black report
-		mReportDialog = new WifiConnectDialog(mContext, WifiConnectDialog.DialogType.REPORT);
+		mBlackDialog = new WifiConnectDialog(mContext, WifiConnectDialog.DialogType.REPORT);
 		mBlackView = (TextView) findViewById(R.id.wifi_black);
 		mBlackView.setOnClickListener(new OnClickListener() {
 
@@ -196,28 +196,7 @@ public class WifiDetailsActivity extends BaseActivity {
 					UserLoginActivity.start((BaseActivity) mContext);
 					return;
 				}
-				showWifiReportDialog("举报", mReportDialog);
-//				WifiBlack wifiBlack = new WifiBlack();
-//				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
-//				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
-//						.getCurLoginUserInfo().getUsername();
-//				wifiBlack.BlackType = WifiBlack.Type.WrongPwd;
-//				wifiBlack.Content = "shit, shit";
-//				wifiBlack.MarkReportTime();
-//
-//				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
-//
-//					@Override
-//					public void onSuccess(WifiBlack object) {
-//						Log.i(TAG, "Success to report WiFi");
-//					}
-//
-//					@Override
-//					public void onFailed(String msg) {
-//						Log.e(TAG, "Failed to report WiFi:" + msg);
-//					}
-//
-//				});
+				showWifiBlackDialog("举报", mBlackDialog);
 			}
 		});
 		
@@ -288,14 +267,39 @@ public class WifiDetailsActivity extends BaseActivity {
 		super.onStop();
 	}
 	
-	private void showWifiReportDialog(String title, final WifiConnectDialog wifiConnectDialog) {
+	private void showWifiBlackDialog(String title, final WifiConnectDialog wifiConnectDialog) {
 		wifiConnectDialog.setTitle(title);
 
 		wifiConnectDialog.setLeftBtnStr("取消");
 		wifiConnectDialog.setRightBtnStr("确定");
+		wifiConnectDialog.clearBlackContent();
 
 		wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				WifiBlack wifiBlack = new WifiBlack();
+				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
+				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
+						.getCurLoginUserInfo().getUsername();
+				wifiBlack.BlackType = wifiConnectDialog.getBlackType();
+				wifiBlack.Content = wifiConnectDialog.getBlackContent();
+				wifiBlack.MarkReportTime();
+
+				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
+
+					@Override
+					public void onSuccess(WifiBlack object) {
+						Log.i(TAG, "Success to report WiFi");
+						Toast.makeText(mContext, "Success to put current wifi to black list", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailed(String msg) {
+						Log.e(TAG, "Failed to report WiFi:" + msg);
+						Toast.makeText(mContext, "Failed to put current wifi to black list", Toast.LENGTH_LONG).show();
+					}
+
+				});
+				
 				dialog.dismiss();
 			}
 		});
