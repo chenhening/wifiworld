@@ -301,9 +301,11 @@
                     android:id="@+id/message_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
+                    android:visibility="gone"
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="@string/person_center_message"
                     item:showTopDivider="true" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
