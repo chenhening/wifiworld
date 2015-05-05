@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="69"
-    android:versionName="0.1.69" >
+    android:versionCode="74"
+    android:versionName="0.1.74" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -55,7 +55,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="065d01658c50cf92e6a4a4bdcd423527" />
+            android:value="39192cd2a95f37f072fa829b8349e753" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5516ac08fd98c5df10000053" >
