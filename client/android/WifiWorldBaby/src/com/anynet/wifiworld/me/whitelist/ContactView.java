@@ -167,6 +167,16 @@ public class ContactView extends FrameLayout {
         }
         loadAvatar();
 
+        //对已经存在白名单的用户过滤
+        for (WifiWhite item : MyWhiteListActivity.mListData) {
+        	if (item.Whiteid.equals(phoneString)) {
+        		addButton.setText("已添加");
+				addButton.setBackgroundColor(Color.WHITE);
+				addButton.setEnabled(false);
+				break;
+        	}
+        }
+        
         addButton.setOnClickListener(onClickListener);
         phoneLayout.setClickable(true);
         phoneLayout.setOnTouchListener(new OnShortLongClickListener());
@@ -381,6 +391,9 @@ public class ContactView extends FrameLayout {
                                     }
 									
 								}, 0);
+								
+								//添加数据到内存
+								MyWhiteListActivity.mListData.add(object);
                             }
 
 							@Override

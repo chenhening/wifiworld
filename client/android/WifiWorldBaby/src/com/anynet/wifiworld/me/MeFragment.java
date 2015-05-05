@@ -128,7 +128,7 @@ public class MeFragment extends MainFragment {
 					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
 					startActivity(i);
 				} else {
-					new AlertDialog.Builder(getActivity()).setTitle("共享WiFi").setMessage("您目前还没有共享过WiFi，是否要共享当前WiFi并进行绑定?")
+					new AlertDialog.Builder(getActivity()).setTitle("认证WiFi").setMessage("您目前还没有认证过您的WiFi，是否要认证当前WiFi?")
 							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
 								@Override
@@ -265,7 +265,7 @@ public class MeFragment extends MainFragment {
 				if (!checkIsLogined()) {
 					return;
 				}
-				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
+				Intent i = new Intent(getApplicationContext(), WifiBlackListActivity.class);
 				startActivity(i);
 			}
 

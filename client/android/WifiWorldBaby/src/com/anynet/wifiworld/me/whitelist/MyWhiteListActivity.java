@@ -32,7 +32,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 public class MyWhiteListActivity extends BaseActivity {
 
 	//IPC
-	private List<WifiWhite> mListData;
+	public static List<WifiWhite> mListData;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
 	
@@ -112,9 +112,9 @@ public class MyWhiteListActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
-		
 		super.onResume();
+		if (mAdapter != null)
+			mAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -133,6 +133,8 @@ public class MyWhiteListActivity extends BaseActivity {
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
+		if (mAdapter != null)
+			mAdapter.notifyDataSetChanged();
 	}
 	
 	private void displayList() {
@@ -183,6 +185,7 @@ public class MyWhiteListActivity extends BaseActivity {
 				case 0:
 					break;
 				case 1:
+					mListData.get(position).delete(getApplicationContext());
 					mListData.remove(position);
 					mAdapter.notifyDataSetChanged();
 					break;

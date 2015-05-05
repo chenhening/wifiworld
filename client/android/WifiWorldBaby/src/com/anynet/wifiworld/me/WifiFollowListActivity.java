@@ -39,7 +39,7 @@ public class WifiFollowListActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("我举报过的Wi-Fi");
+		mTitlebar.tvTitle.setText("我关注的Wi-Fi");
 		mTitlebar.ivMySetting.setVisibility(View.GONE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			

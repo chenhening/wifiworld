@@ -271,7 +271,7 @@
                     android:layout_height="@dimen/dimen_48_dip"
                     android:visibility="visible"
                     item:icon="@drawable/icon_person_center_fans"
-                    item:label="白名单"
+                    item:label="我的白名单"
                     item:showTopDivider="true" 
                     item:subLabel="互利互惠，你用他的他也能用你的"
                     item:subLabelColor="@color/red" >
@@ -282,7 +282,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:icon="@drawable/ic_person_blacklist"
-                    item:label="黑名单"
+                    item:label="我的黑名单"
                     item:showTopDivider="true"
                     item:subLabel="你不用他的，他也不能用你的"
                     item:subLabelColor="@color/red" >
