@@ -42,6 +42,7 @@ import android.widget.ToggleButton;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.R.color;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.DataListenerHelper;
 import com.anynet.wifiworld.data.MultiDataCallback;
@@ -689,15 +690,18 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 				@Override
 				public void onClick(View view) {
-					// if (!LoginHelper.getInstance(getActivity()).isLogined())
-					// {
-					// UserLoginActivity.start((BaseActivity) getActivity());
-					// return;
-					// }
 					Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
 					startActivityForResult(intent, WIFI_COMMENT);
 				}
 			});
+			WifiProfile wifiProfile = LoginHelper.getInstance(getActivity()).getWifiProfile();
+			WifiInfoScanned wifiInfoScanned = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
+			if (wifiProfile != null) {
+				if (wifiProfile.MacAddr.equals(wifiInfoScanned.getWifiMAC())) {
+					send_btn.setBackgroundColor(color.gray);
+					send_btn.setClickable(false);
+				}
+			}
 		}
 	}
 

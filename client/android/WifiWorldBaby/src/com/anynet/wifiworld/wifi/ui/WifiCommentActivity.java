@@ -2,6 +2,7 @@ package com.anynet.wifiworld.wifi.ui;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiListHelper;
@@ -39,9 +40,9 @@ public class WifiCommentActivity extends Activity {
 				final WifiComments wifiComments = new WifiComments();
 				wifiComments.Comment = commentString;
 				wifiComments.MacAddr = WifiListHelper.getInstance(getBaseContext()).mWifiInfoCur.getWifiMAC();
-				String nickName = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo().NickName;
-				if (nickName != null) {
-					wifiComments.UserId = nickName;
+				UserProfile userProfile = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo();
+				if (userProfile != null && userProfile.NickName != null) {
+					wifiComments.UserId = userProfile.NickName;
 				} else {
 					wifiComments.UserId = "无名氏";
 				}
