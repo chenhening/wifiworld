@@ -19,6 +19,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.me.whitelist.MyWhiteListActivity;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.common.SocializeConstants;

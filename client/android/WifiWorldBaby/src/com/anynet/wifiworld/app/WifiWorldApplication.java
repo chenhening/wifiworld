@@ -150,24 +150,14 @@ public class WifiWorldApplication extends Application
     }
     
     //初始化配置项的值，默认都开
-    private  void initDefaultSetting()
-    {
-
-        
-        if ( !pref.contains(Const.SYS_NEW_MSG))
-        {
-        pref.setBoolean(Const.SYS_NEW_MSG, false);
+    private  void initDefaultSetting() {
+ 
+        if ( !pref.contains(Const.SYS_NEW_MSG)) {
+        	pref.setBoolean(Const.SYS_NEW_MSG, false);
         }
-        
-        
-        
     }
     
-
-    
-    public static void initImageLoader(Context context)
-    {
-        
+    public static void initImageLoader(Context context) { 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 context).threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()

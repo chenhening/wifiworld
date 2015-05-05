@@ -49,7 +49,7 @@ public class AllContactsAdapter extends SectionedBaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-            ContactView contactView = new ContactView(mContext, ContactView.Display_Mode_Display);
+            ContactView contactView = new ContactView(mContext, ContactView.Display_Mode_Search);
             holder.contactView = contactView;
             contactView.setTag(holder);
         } else {

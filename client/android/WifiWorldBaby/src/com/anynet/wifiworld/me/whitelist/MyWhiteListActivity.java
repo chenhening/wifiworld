@@ -2,6 +2,7 @@ package com.anynet.wifiworld.me.whitelist;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,8 +21,6 @@ import android.widget.Toast;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiDynamic;
-import com.anynet.wifiworld.data.WifiBlack;
 import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -57,6 +56,18 @@ public class MyWhiteListActivity extends BaseActivity {
 		setContentView(R.layout.activity_my_whitelist);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
+		//设置白名单
+		this.findViewById(R.id.siv_add_from_contact).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+	            Intent i = new Intent();
+	            i.setClass(getApplicationContext(), AllContactActivity.class);
+	            startActivity(i);
+            }
+			
+		});
 		
 		//查询服务器
 		WifiWhite records = new WifiWhite();

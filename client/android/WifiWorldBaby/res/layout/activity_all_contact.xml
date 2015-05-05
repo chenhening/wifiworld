@@ -1,19 +1,28 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
-    <net.nashlegend.quickid.util.PinnedHeaderListView
-        android:id="@+id/listview_all_contacts"
+    <include layout="@layout/header_setting" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null" />
+        android:layout_height="wrap_content" >
 
-    <net.nashlegend.quickid.view.SideBar
-        android:id="@+id/sidebar_all_contacts"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true" />
+        <com.anynet.wifiworld.me.whitelist.PinnedHeaderListView
+            android:id="@+id/listview_all_contacts"
+            android:layout_width="306dp"
+            android:layout_height="match_parent"
+            android:divider="@null" >
+        </com.anynet.wifiworld.me.whitelist.PinnedHeaderListView>
 
-</RelativeLayout>
+        <com.anynet.wifiworld.me.whitelist.SideBar
+            android:id="@+id/sidebar_all_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

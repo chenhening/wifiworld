@@ -336,7 +336,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
-		Log.e(TAG, "1 onLocationChanged:"+(System.currentTimeMillis()-current));
 		if (mListener != null && amapLocation != null) {
 			if (amapLocation != null && amapLocation.getAMapException().getErrorCode() == 0) {
 				this.mAMapLocation = amapLocation;
@@ -352,43 +351,17 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 				// TODO Auto-generated method stub
 				// query wifi nearby
-				Log.e(TAG, "1 updateListHander:"+(System.currentTimeMillis()-current));
 				WifiProfile wifis = new WifiProfile();
 				WifiProfile.QueryInRadians(getApplicationContext(), new BmobGeoPoint(mAMapLocation.getLongitude(), mAMapLocation.getLatitude()), 0.25,
 						new MultiDataCallback<WifiProfile>() {
 
 							@Override
 							public boolean onSuccess(List<WifiProfile> wifiProfiles) {
-								Log.e(TAG, "1 wifis.QueryInRadians:"+(System.currentTimeMillis()-current));
-								Log.d("map", "查询周围未登记wifi成功：共" + wifiProfiles.size() + "条数据。");
 								showToast("查询周围wifi成功：共" + wifiProfiles.size() + "条数据。");
-								// add wifi label
-/*								boolean eq = true;
-								if(wifiList != null && wifiList.size()>0 && wifiList.size() == wifiProfiles.size()){
-									for (WifiProfile wifiProfile : wifiProfiles) {
-										boolean seq = false;
-										for (WifiProfile wifi : wifiList) {
-											if(wifiProfile.equale(wifi)){
-												seq = true;
-												break;
-											}
-										}
-										if(!seq){
-											eq = false;
-											break;
-										}
-									}
-								}else{
-									eq = false;
-								}
-								if(eq){
-									return true;
-								}*/
 								wifiList = wifiProfiles;
 								DisplayNearbyWifi(wifiProfiles);
 								mWifiListMapAdapter.setData(wifiProfiles);
 								mWifiListMapAdapter.notifyDataSetChanged();
-								Log.e(TAG, "2 wifis.QueryInRadians:"+(System.currentTimeMillis()-current));
 								return false;
 							}
 
@@ -399,8 +372,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 								return false;
 							}
 						});
-				Log.e(TAG, "2 updateListHander:"+(System.currentTimeMillis()-current));
-		
+				
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);
 				aMap.setInfoWindowAdapter(this);
@@ -408,7 +380,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				Log.e("AmapErr", "Location ERR:" + amapLocation.getAMapException().getErrorCode());
 			}
 		}
-		Log.e(TAG, "2 onLocationChanged:"+(System.currentTimeMillis()-current));
 	}
 
 	
@@ -508,12 +479,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	// ---------------------------------------------------------------------------------------------
 	// for self-define functions
 	private void setUpMap() {
-		//MyLocationStyle myLocationStyle = new MyLocationStyle();
-		// myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.gps));
-		//myLocationStyle.strokeColor(Color.GRAY);
-		//myLocationStyle.strokeWidth(1);
-		//aMap.setMyLocationStyle(myLocationStyle);
-
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 		// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -531,23 +496,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			allMarkers.put(wifi.MacAddr, mM);
 			//mM.showInfoWindow();
 		}
-	
-/*		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				allMarkers.clear();
-				for (int i = 0; i < wifilist.size(); ++i) {
-					WifiProfile wifi = wifilist.get(i);
-					LatLng llwifi1 = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
-					MarkerOptions mMO = new MarkerOptions();
-					Marker mM = aMap.addMarker(mMO.position(llwifi1).title(wifi.Alias)
-							.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo)).draggable(true));
-					mM.setObject(wifi);
-					allMarkers.put(wifi.MacAddr, mM);
-					//mM.showInfoWindow();
-				}
-			}
-		});*/
 	}
 
 	
@@ -589,7 +537,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
     }
 	
 	private void reDisplayCenter() {
-		Log.e(TAG, "1 reDisplayCenter:"+(System.currentTimeMillis()-current));
 		aMap.clear();
 		Marker mGPSMarker = aMap.addMarker(markOptions);
 		mGPSMarker.setPosition(mMyPosition);
@@ -602,18 +549,15 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		mAMapLocationManager.addGeoFenceAlert(mMyPosition.latitude, mMyPosition.longitude, 50, 1000 * 60 * 30, mPendingIntent);
 		circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(180, 224, 171, 10)).strokeColor(Color.GRAY);
 		mCircle = aMap.addCircle(circleOptions);
-		Log.e(TAG, "2 reDisplayCenter:"+(System.currentTimeMillis()-current));
 	}
 	
 	
 	public void zoomAndDisplay(WifiProfile wp) {
-		Log.e(TAG, "1 zoomAndDisplay:"+(System.currentTimeMillis()-current));
 		reDisplayCenter();
 		if(!allMarkers.isEmpty()){
 			Marker mk = allMarkers.get(wp.MacAddr);
 			if(mk!=null)mk.showInfoWindow();
 		}
-		Log.e(TAG, "2 zoomAndDisplay:"+(System.currentTimeMillis()-current));
 	}
 
 	@Override

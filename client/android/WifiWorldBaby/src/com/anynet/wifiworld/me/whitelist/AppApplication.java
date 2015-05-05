@@ -3,11 +3,14 @@ package com.anynet.wifiworld.me.whitelist;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.anynet.wifiworld.app.WifiWorldApplication;
+
 import android.app.Application;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 
-public class AppApplication extends Application {
+public class AppApplication {
 	public static ArrayList<Contact> AllContacts = new ArrayList<Contact>();
 	public static ArrayList<Contact> RecentContacts = new ArrayList<Contact>();
 	public static HanyuPinyinHelper hanyuPinyinHelper;
@@ -15,15 +18,9 @@ public class AppApplication extends Application {
 	public static ContentResolver contentResolver;
 	public static HashMap<Character, Character> keyBoardMaps;
 
-	public AppApplication() {
-
-	}
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		globalApplication = this;
-		hanyuPinyinHelper = new HanyuPinyinHelper(this);
+	public AppApplication(Context ctx) {
+		globalApplication = WifiWorldApplication.getInstance();
+		hanyuPinyinHelper = new HanyuPinyinHelper(ctx);
 
 		keyBoardMaps = new HashMap<Character, Character>();
 		keyBoardMaps.put('a', '2');
@@ -80,11 +77,16 @@ public class AppApplication extends Application {
 		keyBoardMaps.put('Y', '9');
 		keyBoardMaps.put('Z', '9');
 
-		Intent intent = new Intent(this, ContactService.class);
-		startService(intent);
+		Intent intent = new Intent(ctx, ContactService.class);
+		ctx.startService(intent);
 		ContactHelper.loadContacts();
 		ContactHelper.loadCallLogsCombined();
 	}
+
+	//@Override
+	//public void onCreate() {
+	//	super.onCreate();
+	//}
 
 	public static ContentResolver getApplicationContentResolver() {
 		if (contentResolver == null) {

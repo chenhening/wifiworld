@@ -4,17 +4,19 @@ package com.anynet.wifiworld.me.whitelist;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.app.BaseActivity;
 
-public class AllContactActivity extends Activity {
+public class AllContactActivity extends BaseActivity {
     private ContactUpdateReceiver receiver;
     private final SparseArray<ArrayList<Contact>> contactMaps = new SparseArray<ArrayList<Contact>>();
     private final SparseArray<String> charMaps = new SparseArray<String>();
@@ -23,10 +25,28 @@ public class AllContactActivity extends Activity {
     AllContactsAdapter adapter;
     SideBar sideBar;
 
+	private void bingdingTitleUI() {
+		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+		mTitlebar.llFinish.setVisibility(View.VISIBLE);
+		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
+		mTitlebar.tvTitle.setText("添加白名单");
+		mTitlebar.ivMySetting.setVisibility(View.GONE);
+		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	}
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	setContentView(R.layout.activity_all_contact);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_contact);
+        bingdingTitleUI();
+        
+        new AppApplication(this);
 
         listView = (PinnedHeaderListView) findViewById(R.id.listview_all_contacts);
         adapter = new AllContactsAdapter(this);

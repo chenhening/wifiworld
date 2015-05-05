@@ -5,16 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.anynet.wifiworld.me.whitelist.AppApplication;
-import com.anynet.wifiworld.me.whitelist.Contact;
-import com.anynet.wifiworld.me.whitelist.Contact.PhoneStruct;
-import com.anynet.wifiworld.me.whitelist.Contact.PointPair;
-import com.anynet.wifiworld.me.whitelist.Consts;
-import com.anynet.wifiworld.me.whitelist.ContactHelper;
-import com.anynet.wifiworld.me.whitelist.IconContainer;
-
-import com.anynet.wifiworld.R;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -24,13 +14,11 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.AsyncTask.Status;
+import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -46,6 +34,9 @@ import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.whitelist.Contact.PointPair;
+
 public class ContactView extends FrameLayout {
 
     private Contact contact;
@@ -57,7 +48,7 @@ public class ContactView extends FrameLayout {
     private IconLoadTask task;
     public int Display_Mode = 0;
     private ImageButton smsButton;
-    private LinearLayout phoneViews;
+    //private LinearLayout phoneViews;
     public static final int Display_Mode_Recent = 1;
     public static final int Display_Mode_Search = 2;
     public static final int Display_Mode_Display = 3;
@@ -72,7 +63,6 @@ public class ContactView extends FrameLayout {
         nameTextView = (TextView) findViewById(R.id.text_contact_name);
         pinyinTextView = (TextView) findViewById(R.id.text_contact_pinyin);
         phoneTextView = (TextView) findViewById(R.id.text_contact_phone);
-        phoneViews = (LinearLayout) findViewById(R.id.layout_more_phones);
         phoneLayout = (LinearLayout) findViewById(R.id.layout_phone_numbers);
         this.Display_Mode = display;
     }
@@ -86,7 +76,7 @@ public class ContactView extends FrameLayout {
     }
 
     public void build() {
-        phoneViews.removeAllViews();
+        //phoneViews.removeAllViews();
         boolean shouldDisplayMorePhones = true;
         phoneTextView.setText("");
         pinyinTextView.setText("");
@@ -148,13 +138,13 @@ public class ContactView extends FrameLayout {
                                     + contact.matchValue.reg.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     phoneTextView.setText(builder);
-                    for (int i = 1; i < contact.matchValue.pairs.size(); i++) {
-                        int idx = contact.matchValue.pairs.get(i).listIndex;
-                        PhoneStruct phoneStruct = contact.getPhones().get(idx);
-                        PhoneView phoneView = new PhoneView(getContext());
-                        phoneView.setPhone(phoneStruct, contact.matchValue.reg);
-                        phoneViews.addView(phoneView);
-                    }
+                    //for (int i = 1; i < contact.matchValue.pairs.size(); i++) {
+                        //int idx = contact.matchValue.pairs.get(i).listIndex;
+                        //PhoneStruct phoneStruct = contact.getPhones().get(idx);
+                        //PhoneView phoneView = new PhoneView(getContext());
+                        //phoneView.setPhone(phoneStruct, contact.matchValue.reg);
+                        //phoneViews.addView(phoneView);
+                    //}
                 } else {
                     String str = contact.fullNamesString.get(
                             contact.matchValue.nameIndex).replaceAll(" ", "");
@@ -178,12 +168,12 @@ public class ContactView extends FrameLayout {
                 break;
         }
         if (shouldDisplayMorePhones) {
-            for (int i = 1; i < contact.getPhones().size(); i++) {
-                PhoneStruct phoneStruct = contact.getPhones().get(i);
-                PhoneView phoneView = new PhoneView(getContext());
-                phoneView.setPhone(phoneStruct);
-                phoneViews.addView(phoneView);
-            }
+            //for (int i = 1; i < contact.getPhones().size(); i++) {
+            //    PhoneStruct phoneStruct = contact.getPhones().get(i);
+            //    PhoneView phoneView = new PhoneView(getContext());
+            //    phoneView.setPhone(phoneStruct);
+            //    phoneViews.addView(phoneView);
+            //}
         }
         loadAvatar();
 

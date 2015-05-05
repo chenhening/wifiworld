@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.text.TextUtils;
 import com.anynet.wifiworld.me.whitelist.TextUtil;
-import com.anynet.wifiworld.me.whitelist.AppApplication;
 
 /**
  * @author Pan

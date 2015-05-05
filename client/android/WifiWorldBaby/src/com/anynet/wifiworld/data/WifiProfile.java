@@ -452,27 +452,4 @@ public class WifiProfile extends BmobObject{
 			}
 		});
 	}
-
-/*	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		dest.writeValue(isShared);
-		dest.writeString(MacAddr);
-		dest.writeString(Ssid);
-		dest.writeString(Password);
-		dest.writeString(Sponser);
-		dest.writeInt(Type);
-		dest.writeByteArray(Logo);
-		dest.writeString(Alias);
-		dest.writeSerializable(Geometry);
-		dest.writeString(ExtAddress);
-		dest.writeString(Banner);
-		dest.writeFloat(Income);
-	}*/
 }
