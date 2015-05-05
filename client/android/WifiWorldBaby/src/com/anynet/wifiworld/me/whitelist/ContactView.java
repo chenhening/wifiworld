@@ -35,7 +35,11 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiWhite;
+import com.anynet.wifiworld.me.WifiProviderRigisterFirstActivity;
 import com.anynet.wifiworld.me.whitelist.Contact.PointPair;
+import com.anynet.wifiworld.util.LoginHelper;
 
 public class ContactView extends FrameLayout {
 
@@ -47,7 +51,7 @@ public class ContactView extends FrameLayout {
     private LinearLayout phoneLayout;
     private IconLoadTask task;
     public int Display_Mode = 0;
-    private ImageButton smsButton;
+    private TextView addButton;
     //private LinearLayout phoneViews;
     public static final int Display_Mode_Recent = 1;
     public static final int Display_Mode_Search = 2;
@@ -59,7 +63,7 @@ public class ContactView extends FrameLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.item_layout_contact, this);
         badge = (QuickContactBadge) findViewById(R.id.badge_contact_item);
-        smsButton = (ImageButton) findViewById(R.id.button_send_sms);
+        addButton = (TextView) findViewById(R.id.tv_add_contacts);
         nameTextView = (TextView) findViewById(R.id.text_contact_name);
         pinyinTextView = (TextView) findViewById(R.id.text_contact_pinyin);
         phoneTextView = (TextView) findViewById(R.id.text_contact_phone);
@@ -88,14 +92,15 @@ public class ContactView extends FrameLayout {
             phoneString = contact.getPhones().get(0).phoneNumber;
         }
         nameTextView.setText(nameString);
+        phoneTextView.setText(phoneString);
         switch (Display_Mode) {
             case Display_Mode_Display:
-                smsButton.setVisibility(View.GONE);
-                phoneTextView.setVisibility(View.GONE);
+                //smsButton.setVisibility(View.GONE);
+                //phoneTextView.setVisibility(View.GONE);
                 shouldDisplayMorePhones = false;
                 break;
             case Display_Mode_Search:
-                smsButton.setVisibility(View.VISIBLE);
+            	addButton.setVisibility(View.VISIBLE);
                 phoneTextView.setVisibility(View.VISIBLE);
                 phoneTextView.setText(phoneString);
                 if (contact.matchValue.nameIndex < 0
@@ -138,13 +143,6 @@ public class ContactView extends FrameLayout {
                                     + contact.matchValue.reg.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     phoneTextView.setText(builder);
-                    //for (int i = 1; i < contact.matchValue.pairs.size(); i++) {
-                        //int idx = contact.matchValue.pairs.get(i).listIndex;
-                        //PhoneStruct phoneStruct = contact.getPhones().get(idx);
-                        //PhoneView phoneView = new PhoneView(getContext());
-                        //phoneView.setPhone(phoneStruct, contact.matchValue.reg);
-                        //phoneViews.addView(phoneView);
-                    //}
                 } else {
                     String str = contact.fullNamesString.get(
                             contact.matchValue.nameIndex).replaceAll(" ", "");
@@ -167,17 +165,9 @@ public class ContactView extends FrameLayout {
             default:
                 break;
         }
-        if (shouldDisplayMorePhones) {
-            //for (int i = 1; i < contact.getPhones().size(); i++) {
-            //    PhoneStruct phoneStruct = contact.getPhones().get(i);
-            //    PhoneView phoneView = new PhoneView(getContext());
-            //    phoneView.setPhone(phoneStruct);
-            //    phoneViews.addView(phoneView);
-            //}
-        }
         loadAvatar();
 
-        smsButton.setOnClickListener(onClickListener);
+        addButton.setOnClickListener(onClickListener);
         phoneLayout.setClickable(true);
         phoneLayout.setOnTouchListener(new OnShortLongClickListener());
     }
@@ -358,10 +348,48 @@ public class ContactView extends FrameLayout {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.button_send_sms:
+                case R.id.tv_add_contacts:
                     if (contact.getPhones().size() > 0) {
-                        ContactHelper
-                                .sendSMS(contact.getPhones().get(0).phoneNumber);
+                    	//添加到白名单服务器，TODO(binfei):暂时点一个上传一个，以后再优化
+                    	WifiWhite white = new WifiWhite();
+                    	white.MyUserid = LoginHelper.getInstance(getContext()).getUserid();
+                    	white.Whiteid = contact.getPhones().get(0).phoneNumber;
+                    	white.AddType = 0; //0表示通过通信录添加
+                    	white.Friendliness = 50;
+                    	white.MarkReportTime();
+                    	white.addAWhiter(getContext(), new DataCallback<WifiWhite>() {
+
+							@Override
+                            public void onSuccess(WifiWhite object) {
+								new AlertDialog.Builder(getContext()).setTitle("短信通知好友")
+								.setMessage("是否马上发送短信通知好友可以自由使用您的网络?")
+								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										ContactHelper.sendSMS(contact.getPhones().get(0).phoneNumber);
+									}
+								}).setNegativeButton("取消", null).show();
+								
+								addButton.postDelayed(new Runnable() {
+
+									@Override
+                                    public void run() {
+										addButton.setText("已添加");
+										addButton.setBackgroundColor(Color.WHITE);
+										addButton.setEnabled(false);
+                                    }
+									
+								}, 0);
+                            }
+
+							@Override
+                            public void onFailed(String msg) {
+	                            // TODO Auto-generated method stub
+	                            
+                            }
+                    		
+                    	});
                     }
                     break;
                 default:

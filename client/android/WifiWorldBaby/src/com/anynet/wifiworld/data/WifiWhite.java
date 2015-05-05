@@ -13,7 +13,6 @@ import cn.bmob.v3.listener.SaveListener;
 public class WifiWhite extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
-	private String TAG = "WifiBlack";
 	
 	public String MyUserid; //本人账号
 	public String Whiteid; //加入白名单人的账号
@@ -62,7 +61,6 @@ public class WifiWhite extends BmobObject {
 		final MultiDataCallback<WifiWhite> _callback = callback;
 		final BmobQuery<WifiWhite> query = new BmobQuery<WifiWhite>();
 		query.addWhereEqualTo("MyUserid", PhoneNumber);
-		Log.d(TAG, "Start to query wifi follow table for: " + PhoneNumber);
 		new Thread(new Runnable() {
 
 			@Override
@@ -79,7 +77,6 @@ public class WifiWhite extends BmobObject {
 					}
 					
 				});
-				Log.d(TAG, "Finish to query wifi messages");
 			}
 
 		}).start();
@@ -87,5 +84,21 @@ public class WifiWhite extends BmobObject {
 	
 	public void MarkReportTime() {
 		ReportTime = System.currentTimeMillis();
+	}
+	
+	public String getTypeDesc() {
+		switch(AddType) {
+		case 0: {
+			return "通过通信录批量导入添加";
+		}
+		case 1: {
+			return "通过手动输入号码添加";
+		}
+		case 2: {
+			return "通过使用对方网络自动添加";
+		}
+		}
+		
+		return "未知的添加方式";
 	}
 }

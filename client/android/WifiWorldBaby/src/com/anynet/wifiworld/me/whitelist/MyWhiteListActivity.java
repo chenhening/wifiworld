@@ -234,26 +234,26 @@ public class MyWhiteListActivity extends BaseActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = View.inflate(getApplicationContext(), R.layout.item_wifi_user_list, null);
+				convertView = View.inflate(getApplicationContext(), R.layout.item_my_whitelist, null);
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
 			holder.iv_icon.setImageResource(R.drawable.naicha);
-			holder.tv_wifi_name.setText("奶茶妹妹");
+			holder.tv_wifi_name.setText(mListData.get(position).Whiteid);
+			holder.tv_wifi_type.setText(mListData.get(position).getTypeDesc());
+			
 			return convertView;
 		}
 
 		class ViewHolder {
 			ImageView iv_icon;
 			TextView tv_wifi_name;
-			TextView tv_wifi_alias;
-			TextView tv_wifi_addr;
-			TextView tv_connect_count;
-			TextView tv_connect_time;
+			TextView tv_wifi_type;
 
 			public ViewHolder(View view) {
 				iv_icon = (ImageView) view.findViewById(R.id.iv_white_logo);
 				tv_wifi_name = (TextView) view.findViewById(R.id.tv_white_id);
+				tv_wifi_type = (TextView) view.findViewById(R.id.tv_add_white_type);
 				view.setTag(this);
 			}
 		}

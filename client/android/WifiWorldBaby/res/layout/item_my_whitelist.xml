@@ -36,19 +36,11 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="与他的好友度:"
-                android:textSize="8sp" />
-
-            <RatingBar
-                android:id="@+id/rb_white_rate"
+                android:id="@+id/tv_add_white_type"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:maxHeight="5dip"
-                android:minHeight="5dip"
-                android:numStars="5"
-                android:stepSize="5" />
+                android:layout_height="wrap_content"
+                android:text="添加方式："
+                android:textSize="8sp" />
 
         </LinearLayout>
 
