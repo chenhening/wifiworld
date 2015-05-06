@@ -131,10 +131,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			meFragment = new MeFragment();
 
 		if (fragments == null || fragments.length < 2)
-			fragments = new MainFragment[] { wifiFragment, mapFragment, /*
-																		 * discoverFragment
-																		 * ,
-																		 */meFragment };
+			fragments = new MainFragment[] { 
+				wifiFragment, 
+				mapFragment, 
+				//discoverFragment,
+				meFragment };
 	}
 
 	@Override

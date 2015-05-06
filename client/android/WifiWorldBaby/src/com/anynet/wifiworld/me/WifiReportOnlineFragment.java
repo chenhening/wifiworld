@@ -130,23 +130,7 @@ public class WifiReportOnlineFragment extends Fragment {
 		
 		bOnAnimating = !bOnAnimating;
 		
-		WifiProfile wifi = new WifiProfile();
-		wifi.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
-		wifi.setShared(bOnAnimating);
-		wifi.StoreRemote(getActivity(), new DataCallback<WifiProfile>() {
-
-			@Override
-			public void onSuccess(WifiProfile object) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onFailed(String msg) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		LoginHelper.getInstance(getActivity()).mWifiProfile.setShared(bOnAnimating);
+		LoginHelper.getInstance(getActivity()).mWifiProfile.update(getActivity());
 	}
 }
