@@ -625,7 +625,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			// mWifiNameView.setTextColor(Color.BLACK);
 
 			mWifiSwitch.setVisibility(View.VISIBLE);
-			//mWifiSwitch.setChecked(true);
+			mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
@@ -633,7 +633,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 
 			mWifiSwitch.setVisibility(View.GONE);
-			//mWifiSwitch.setChecked(false);
+			mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 		}
 
