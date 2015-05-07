@@ -273,7 +273,7 @@
                     item:icon="@drawable/icon_person_center_fans"
                     item:label="我的白名单"
                     item:showTopDivider="true" 
-                    item:subLabel="互利互惠，你用他的他也能用你的"
+                    item:subLabel="分享你的网络给你的朋友吧"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -284,7 +284,6 @@
                     item:icon="@drawable/ic_person_blacklist"
                     item:label="我的黑名单"
                     item:showTopDivider="true"
-                    item:subLabel="你不用他的，他也不能用你的"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 

@@ -34,13 +34,13 @@
             android:id="@+id/tv_qq_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_below="@+id/textView2"
+            android:layout_alignLeft="@+id/tv_our_group"
+            android:layout_below="@+id/tv_our_group"
             android:text="我们的QQ群：452705991"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_our_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tv_clues_location"
@@ -52,8 +52,8 @@
             android:id="@+id/tv_app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_toRightOf="@+id/textView2"
+            android:layout_alignBottom="@+id/tv_our_group"
+            android:layout_toRightOf="@+id/tv_our_group"
             android:hint="v0.0.0"
             android:textSize="20sp" />
 
