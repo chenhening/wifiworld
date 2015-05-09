@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,11 @@ public class WifiCommentActivity extends Activity {
 						bundle.putSerializable(WIFI_COMMENT_ADD, wifiComments);
 						intent.putExtras(bundle);
 						setResult(RESULT_OK, intent);
+						//shutdown soft keyboard if soft keyboard is actived
+						InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+						if (imm.isActive()) {
+							imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+						}
 						finish();
 					}
 					
