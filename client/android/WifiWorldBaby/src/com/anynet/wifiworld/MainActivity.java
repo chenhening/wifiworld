@@ -264,9 +264,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				}
 			}
 		}
-		mTabs[currentTabIndex].setSelected(false);
+		if (mTabs != null && mTabs[currentTabIndex] != null)
+			mTabs[currentTabIndex].setSelected(false);
 		// 把当前tab设为选中状态
-		mTabs[index].setSelected(true);
+		if (mTabs != null && mTabs[index] != null)
+			mTabs[index].setSelected(true);
 		currentTabIndex = index;
 	}
 

@@ -56,7 +56,7 @@ public class AllContactActivity extends BaseActivity {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Consts.Action_All_Contacts_Changed);
-        filter.addAction(Consts.Action_Delete_One_Contact_From_All);
+        //filter.addAction(Consts.Action_Delete_One_Contact_From_All);
         receiver = new ContactUpdateReceiver();
         registerReceiver(receiver, filter);
 
@@ -115,10 +115,10 @@ public class AllContactActivity extends BaseActivity {
             String action = intent.getAction();
             if (Consts.Action_All_Contacts_Changed.equals(action)) {
                 updateData();
-            } else if (Consts.Action_Delete_One_Contact_From_All.equals(action)) {
-                long id = intent.getLongExtra(Consts.Extra_Contact_ID, -1L);
-                onContactDeleted(id);
-            }
+            } //else if (Consts.Action_Delete_One_Contact_From_All.equals(action)) {
+                //long id = intent.getLongExtra(Consts.Extra_Contact_ID, -1L);
+                //onContactDeleted(id);
+            //}
         }
     }
 }

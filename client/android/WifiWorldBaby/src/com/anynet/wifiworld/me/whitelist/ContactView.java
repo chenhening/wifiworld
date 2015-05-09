@@ -168,6 +168,9 @@ public class ContactView extends FrameLayout {
         loadAvatar();
 
         //对已经存在白名单的用户过滤
+        addButton.setText("添加");//fucking code
+		addButton.setBackgroundResource(R.drawable.btn_orange_press);
+		addButton.setEnabled(true);
         for (WifiWhite item : MyWhiteListActivity.mListData) {
         	if (item.Whiteid.equals(phoneString)) {
         		addButton.setText("已添加");

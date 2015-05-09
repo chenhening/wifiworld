@@ -185,9 +185,9 @@ public class MyWhiteListActivity extends BaseActivity {
 				case 0:
 					break;
 				case 1:
-					mListData.get(position).delete(getApplicationContext());
 					mListData.remove(position);
 					mAdapter.notifyDataSetChanged();
+					item.delete(getApplicationContext());
 					break;
 				}
 				return false;
