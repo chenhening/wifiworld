@@ -432,7 +432,7 @@ public class WifiAdmin {
         if (scanResults != null) {
         	return filterWifiScanned(scanResults);
 		} else {
-			return null;
+			return new ArrayList<ScanResult>();
 		}
     }
     
