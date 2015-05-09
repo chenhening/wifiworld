@@ -67,7 +67,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class WifiFragment extends MainFragment implements OnClickListener {
+public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
 
 	public static final int WIFI_CONNECT_CONFIRM = 1;
@@ -92,8 +92,11 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 	private TextView mWifiMaster;
 	private TextView mWifiDesc;
 
+	private LinearLayout mWifiTitleLayout;
+	
 	private LinearLayout mWifiSquareLayout;
 	private WifiSquarePopup mWifiSquarePopup;
+	private int mLastSquareId = -1;
 
 	private WifiConnectDialog mWifiConnectDialog;
 	private WifiConnectDialog mWifiConnectPwdDialog;
@@ -241,6 +244,33 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		}
 	};
 
+	private OnClickListener mWifiSquareClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View view) {
+			switch (view.getId()) {
+			case R.id.wifi_speed:
+				mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.SPEED_TESTER);
+				break;
+			case R.id.wifi_share:
+				mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.SHARE_PAGE);
+				break;
+			case R.id.wifi_louder:
+				mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.COMMENTS_PAGE);
+				break;
+			default:
+				break;
+			}
+			if (!mWifiSquarePopup.isShowing()) {
+				mWifiSquarePopup.show(view);
+			} else if (mLastSquareId == view.getId()) {
+				mWifiSquarePopup.dismiss();
+			}
+
+			mLastSquareId = view.getId();
+		}
+	};
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.llFinish.setVisibility(View.VISIBLE);
@@ -287,6 +317,16 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
 		}
 
+		mWifiTitleLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_connected_info);
+		mWifiTitleLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_ADVANCE");
+				getActivity().startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
+			}
+		});
 		// handle WIFI square view
 		mWifiSquareLayout = (LinearLayout) mPageRoot.findViewById(R.id.wifi_square);
 		setWifiSquareListener(mWifiSquareLayout);
@@ -414,7 +454,6 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 		// bind common title UI
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		curSquareIdx = -1;
 		return mPageRoot;
 	}
 
@@ -601,6 +640,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			mWifiSwitch.setVisibility(View.VISIBLE);
 			mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
+			mWifiTitleLayout.setClickable(true);
 		} else {
 			mWifiNameView.setText("未连接任何WiFi");
 			// mWifiNameView.setTextColor(Color.GRAY);
@@ -609,6 +649,7 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 			mWifiSwitch.setVisibility(View.GONE);
 			mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
+			mWifiTitleLayout.setClickable(false);
 		}
 
 		// forget last WiFi connected configuration info
@@ -622,41 +663,14 @@ public class WifiFragment extends MainFragment implements OnClickListener {
 
 	
 
-	private void setWifiSquareListener(LinearLayout wifiTasteLayout) {
-		TextView wifiSpeed = (TextView) wifiTasteLayout.findViewById(R.id.wifi_speed);
-		wifiSpeed.setOnClickListener(this);
+	private void setWifiSquareListener(LinearLayout wifiSquareLayout) {
+		TextView wifiSpeed = (TextView) wifiSquareLayout.findViewById(R.id.wifi_speed);
+		wifiSpeed.setOnClickListener(mWifiSquareClickListener);
 
-		TextView wifiShare = (TextView) wifiTasteLayout.findViewById(R.id.wifi_share);
-		wifiShare.setOnClickListener(this);
+		TextView wifiShare = (TextView) wifiSquareLayout.findViewById(R.id.wifi_share);
+		wifiShare.setOnClickListener(mWifiSquareClickListener);
 
-		TextView wifiLouder = (TextView) wifiTasteLayout.findViewById(R.id.wifi_louder);
-		wifiLouder.setOnClickListener(this);
-	}
-
-	private int curSquareIdx = -1;
-
-	@Override
-	public void onClick(View view) {
-		switch (view.getId()) {
-		case R.id.wifi_speed:
-			mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.SPEED_TESTER);
-			break;
-		case R.id.wifi_share:
-			mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.SHARE_PAGE);
-			break;
-		case R.id.wifi_louder:
-			mWifiSquarePopup.displayLayout(WifiSquarePopup.SquareType.COMMENTS_PAGE);
-			break;
-		default:
-			break;
-		}
-		if (!mWifiSquarePopup.isShowing()) {
-			mWifiSquarePopup.show(view);
-		} else if (curSquareIdx == view.getId()) {
-			mWifiSquarePopup.dismiss();
-		}
-
-		curSquareIdx = view.getId();
-
+		TextView wifiLouder = (TextView) wifiSquareLayout.findViewById(R.id.wifi_louder);
+		wifiLouder.setOnClickListener(mWifiSquareClickListener);
 	}
 }

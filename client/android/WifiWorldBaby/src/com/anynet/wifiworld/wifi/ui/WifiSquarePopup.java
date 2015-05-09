@@ -20,7 +20,6 @@ import com.anynet.wifiworld.wifi.WifiSpeedTester;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
