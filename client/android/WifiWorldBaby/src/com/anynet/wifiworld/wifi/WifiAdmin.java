@@ -428,7 +428,12 @@ public class WifiAdmin {
         }
         mWifiManager.startScan();
         List<ScanResult> scanResults = mWifiManager.getScanResults();
-        return filterWifiScanned(scanResults);
+        
+        if (scanResults != null) {
+        	return filterWifiScanned(scanResults);
+		} else {
+			return null;
+		}
     }
     
     private List<ScanResult> filterWifiScanned(List<ScanResult> wifiList) {
