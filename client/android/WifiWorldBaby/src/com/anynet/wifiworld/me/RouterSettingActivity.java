@@ -3,18 +3,22 @@ package com.anynet.wifiworld.me;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.HttpAuthHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 
-public class MySettingActivity extends BaseActivity {
+public class RouterSettingActivity extends BaseActivity {
 
-	// IPC
-	private Intent mIntent = null;
-	private Activity activity = this;
+	private WebView mWebView; 
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -33,21 +37,20 @@ public class MySettingActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mIntent = getIntent();
-		setContentView(R.layout.activity_my_setting);
+		setContentView(R.layout.activity_router_setting);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 
-		//网络设置
-		this.findViewById(R.id.slv_net_setting).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mIntent.setClass(getApplicationContext(), RouterSettingActivity.class);
-				startActivity(mIntent);
-			}
-			
-		});
+		mWebView = (WebView) findViewById(R.id.wv_router_setting);       
+        WebSettings webSettings = mWebView.getSettings();       
+        webSettings.setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+        	@Override
+        	public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+                handler.proceed("admin", "12344321");
+            }
+        });
+        mWebView.loadUrl("http://192.168.1.1");  
 	}
 
 	@Override

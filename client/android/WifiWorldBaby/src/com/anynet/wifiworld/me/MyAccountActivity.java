@@ -1,16 +1,15 @@
 package com.anynet.wifiworld.me;
 
 import java.util.Calendar;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.anynet.wifiworld.R;
