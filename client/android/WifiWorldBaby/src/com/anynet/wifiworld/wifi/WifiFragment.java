@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -144,12 +145,16 @@ public class WifiFragment extends MainFragment {
 					if (isConnected) {
 						// 一旦网络状态发生变化后停止监听服务
 						WifiBRService.setWifiSupplicant(false);
+						if (isPwdConnect) {
+							mWifiAdmin.saveConfig();
+							isPwdConnect = false;
+						}
 					}
 					// refresh WiFi list and WiFi title info
 					mWifiListHelper.fillWifiList();
 
 					// refreshWifiTitleInfo();
-					isPwdConnect = false;
+					//isPwdConnect = false;
 
 					if (isConnected) {
 
@@ -215,8 +220,11 @@ public class WifiFragment extends MainFragment {
 				@Override
 				public void onSupplicantDisconnected(String statusStr) {
 					if (isPwdConnect) {
-						Log.i(TAG, "forget network: " + mWifiItemClick.getNetworkId());
-						mWifiAdmin.forgetNetwork(mWifiItemClick.getNetworkId());
+//						Log.i(TAG, "forget network: " + mWifiItemClick.getNetworkId());
+						if (mWifiItemClick.getNetworkId() != -1) {
+							mWifiAdmin.forgetNetwork(mWifiItemClick.getNetworkId());
+						}
+						mWifiListHelper.fillWifiList();
 						isPwdConnect = false;
 						String titleStr = "密码输入错误，请重新输入密码";
 						showWifiConnectPwdConfirmDialog(titleStr, mWifiItemClick, mWifiConnectPwdDialog);
@@ -525,6 +533,7 @@ public class WifiFragment extends MainFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				WifiBRService.setWifiSupplicant(true);
 
+				isPwdConnect = false;
 				boolean connResult = false;
 				WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiInfoScanned);
 				if (cfgSelected != null) {
@@ -578,7 +587,12 @@ public class WifiFragment extends MainFragment {
 				isPwdConnect = true;
 				WifiBRService.setWifiSupplicant(true);
 				wifiInfoScanned.setWifiPwd(inputedPwd);
-				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, true);
+				connResult = mWifiAdmin.connectToNewNetwork(getActivity(), wifiInfoScanned, true, false);
+				//shutdown soft keyboard if soft keyboard is actived
+				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+				if (imm.isActive()) {
+					imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+				}
 				dialog.dismiss();
 				if (!connResult) {
 					Toast.makeText(getActivity(), "不能连接到网络：" + wifiInfoScanned.getWifiName() + ", 正在重启WiFi请稍后再试。", Toast.LENGTH_LONG).show();

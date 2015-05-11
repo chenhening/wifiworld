@@ -159,10 +159,8 @@ public class WifiAdmin {
 				Log.e(TAG, "Failed to get config from local configed wifi list");
 				return false;
 			}
-			
-			wifiInfoScanned.setNetworkId(config.networkId);
 		}
-		
+		wifiInfoScanned.setNetworkId(config.networkId);
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
@@ -177,6 +175,14 @@ public class WifiAdmin {
 		return connect;
 	}
     
+	public boolean saveConfig() {
+		if(!mWifiManager.saveConfiguration()) {
+			Log.e(TAG, "Failed to save config");
+			return false;
+		}
+		return true;
+	}
+	
     //connect WiFi which is configurated
     public void connectToConfiguredNetwork(int index) {
     	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
