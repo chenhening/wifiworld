@@ -7,12 +7,15 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -25,6 +28,7 @@ import android.net.wifi.WifiInfo;
 import android.os.AsyncTask.Status;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WifiListHelper {
 	private final static String TAG = WifiListHelper.class.getSimpleName();
@@ -39,6 +43,7 @@ public class WifiListHelper {
 	private List<WifiInfoScanned> mWifiEncrypt;
 	private List<String> mWifiListUnique;
 	public List<WifiProfile> mWifiProfiles;
+	public Map<String, List<WifiWhite>> mWifiWhites = new HashMap<String, List<WifiWhite>>();
 	public WifiInfoScanned mWifiInfoCur; 
 	
 	public boolean refreshed = true;
@@ -191,6 +196,7 @@ public class WifiListHelper {
 				mWifiInfoCur.setBanner(wifiProfile.Banner);
 				mWifiInfoCur.setAlias(wifiProfile.Alias);
 				mWifiInfoCur.setSponser(wifiProfile.Sponser);
+				pullWifiWhites(wifiProfile.Sponser, mWifiInfoCur);
 			}
 			boolean isLocalSave = wifiCfg == null ? false : true;
 			mWifiInfoCur.setLocalSave(isLocalSave);
@@ -221,6 +227,7 @@ public class WifiListHelper {
 				wifiInfoScanned.setWifiLogo(wifiProfile.Logo);
 				wifiInfoScanned.setBanner(wifiProfile.Banner);
 				wifiInfoScanned.setSponser(wifiProfile.Sponser);
+				pullWifiWhites(wifiProfile.Sponser, wifiInfoScanned);
 				mWifiAuth.add(wifiInfoScanned);
 				return;
 			}
@@ -259,6 +266,30 @@ public class WifiListHelper {
 				mWifiEncrypt.add(wifiInfoScanned);
 			}
 		}
+	}
+	
+	private void pullWifiWhites(final String wifiSponser, final WifiInfoScanned wifiInfoScanned) {
+		WifiWhite wifiWhite = new WifiWhite();
+		wifiWhite.QueryWhitersByUser(mContext, wifiSponser, new MultiDataCallback<WifiWhite>() {
+
+			@Override
+			public boolean onSuccess(List<WifiWhite> objects) {
+				Log.i(TAG, "Success to pull wifi white list:" + wifiSponser);
+				mWifiWhites.put(wifiSponser, objects);
+				wifiInfoScanned.setWifiWhites(objects);
+				return true;
+			}
+
+			@Override
+			public boolean onFailed(String msg) {
+				Log.e(TAG, "Failed to pull wifi white list:" + msg);
+				if (mWifiWhites.size() > 0) {
+					wifiInfoScanned.setWifiWhites(mWifiWhites.get(wifiSponser));
+				}
+				
+				return false;
+			}
+		});
 	}
 	
 	private WifiProfile isContained(String macAddress, List<WifiProfile> mList) {

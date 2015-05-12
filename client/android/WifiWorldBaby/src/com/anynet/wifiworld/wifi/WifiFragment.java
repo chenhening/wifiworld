@@ -3,6 +3,8 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cordova.Whitelist;
+
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -341,63 +343,39 @@ public class WifiFragment extends MainFragment {
 				int index_auth = (mWifiAuth.size() + 2);
 				if (position < index_auth) {
 					mWifiItemClick = mWifiAuth.get(position - 2);
-					// 先过滤用户，再判断是否敲门，没有敲门提醒其去敲门
-					if (!LoginHelper.getInstance(getActivity()).isLogined()) {
-						new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("需要登录才能免费使用WiFi，是否登录？")
-						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+					List<WifiWhite> whiteList = mWifiItemClick.getWifiWhites();
+					final String userId = mLoginHelper.getUserid();
+					if (whiteList == null) {
+						Toast.makeText(getActivity(), "Failed to pull white list, pls try again later", Toast.LENGTH_LONG).show();
+					} else if (whiteList.size() > 0 && (userId == null || !isContainUserId(userId, whiteList))) {
+						showToast("Can not to connect this wifi as sponser set the white list and you are not under this list");
+					} else if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())
+							|| whiteList.size() > 0 && userId != null && isContainUserId(userId, whiteList)) {
+									showWifiConnectConfirmDialog(mWifiItemClick, true);
+					} else {
+						// 弹出询问对话框
+						new AlertDialog.Builder(getActivity()).setTitle("Wi-Fi敲门").setMessage("当前Wi-Fi的门没有敲开，是否去敲门？")
+									.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								UserLoginActivity.start((BaseActivity) getActivity());
+							// 拉取敲门问题
+							WifiQuestions wifiQuestions = new WifiQuestions();
+							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(),
+								new DataCallback<WifiQuestions>() {
+
+									@Override
+									public void onSuccess(WifiQuestions object) {
+										KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
+									}
+
+									@Override
+									public void onFailed(String msg) {
+										showToast("获取敲门信息失败，请稍后重试:" + msg);
+									}
+								});
 							}
 						}).setNegativeButton("取消", null).show();
-					} else {
-						final String userId = mLoginHelper.getUserid();
-						WifiWhite wifiWhite = new WifiWhite();
-						wifiWhite.QueryWhitersByUser(getActivity(), mWifiItemClick.getSponser(), new MultiDataCallback<WifiWhite>() {
-
-							@Override
-							public boolean onSuccess(List<WifiWhite> whiteList) {
-								mWifiWhite = whiteList;
-								if (whiteList.size() > 0 && !mWifiWhite.contains(userId)) {
-									showToast("Can not to connect this wifi as sponser set the white list and you are not under this list");
-								} else if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())) {
-									showWifiConnectConfirmDialog(mWifiItemClick, true);
-								} else {
-									// 弹出询问对话框
-									new AlertDialog.Builder(getActivity()).setTitle("Wi-Fi敲门").setMessage("当前Wi-Fi的门没有敲开，是否去敲门？")
-											.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-												@Override
-												public void onClick(DialogInterface dialog, int which) {
-													// 拉取敲门问题
-													WifiQuestions wifiQuestions = new WifiQuestions();
-													wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(),
-															new DataCallback<WifiQuestions>() {
-
-																@Override
-																public void onSuccess(WifiQuestions object) {
-																	KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", object);
-																}
-
-																@Override
-																public void onFailed(String msg) {
-																	showToast("获取敲门信息失败，请稍后重试:" + msg);
-																}
-															});
-												}
-											}).setNegativeButton("取消", null).show();
-								}
-								return true;
-							}
-
-							@Override
-							public boolean onFailed(String msg) {
-								showToast("Failed to pull wifi white list:" + msg);
-								Log.e(TAG, "Failed to pull wifi white list:" + msg);
-								return false;
-							}
-						});
 					}
 				} else if (position < (index_auth + mWifiFree.size() + 1)) {
 					mWifiItemClick = mWifiFree.get(position - 1 - index_auth);
@@ -515,7 +493,15 @@ public class WifiFragment extends MainFragment {
 		}
 	}
 
-	
+	private boolean isContainUserId(String userId, List<WifiWhite> wifiWhites) {
+		for (WifiWhite wifiWhite : wifiWhites) {
+			if (wifiWhite.Whiteid.equals(userId)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	private void showWifiConnectConfirmDialog(final WifiInfoScanned wifiInfoScanned, boolean beAuth) {
 		mWifiConnectDialog.setTitle("连接到：" + wifiInfoScanned.getWifiName());
@@ -658,8 +644,6 @@ public class WifiFragment extends MainFragment {
 		mLastWifiInfo = wifiCurInfo;
 		mLastWifiInfoScanned = mWifiListHelper.mWifiInfoCur;
 	}
-
-	
 
 	private void setWifiSquareListener(LinearLayout wifiSquareLayout) {
 		TextView wifiSpeed = (TextView) wifiSquareLayout.findViewById(R.id.wifi_speed);

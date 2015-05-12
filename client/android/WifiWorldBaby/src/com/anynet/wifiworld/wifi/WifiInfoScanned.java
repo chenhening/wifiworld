@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.anynet.wifiworld.data.WifiWhite;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -39,6 +41,7 @@ public class WifiInfoScanned implements Serializable {
 	private List<String> mComments = new ArrayList<String>();
 	private List<String> mMessages = new ArrayList<String>();
 	
+	private List<WifiWhite> mWifiWhites;
 	//public int mWifiDistance;
 	
 	public WifiInfoScanned() {
@@ -249,6 +252,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setNetworkId(int networkId) {
 		this.networkId = networkId;
+	}
+
+	public List<WifiWhite> getWifiWhites() {
+		return mWifiWhites;
+	}
+
+	public void setWifiWhites(List<WifiWhite> mWifiWhites) {
+		this.mWifiWhites = mWifiWhites;
 	}
 	
 }
