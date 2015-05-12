@@ -78,10 +78,10 @@ public class UserProfile extends BmobUser {
 		final DataCallback<UserProfile> _callback = callback;
 		
 		//测试网络是否在wifi下，否则失败
-		if (!NetHelper.isWifiNet(context)) {
-			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
-			return;
-		}
+		//if (!NetHelper.isWifiNet(context)) {
+		//	callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+		//	return;
+		//}
 		
 		final BmobQuery<UserProfile> query = new BmobQuery<UserProfile>();
 		query.addWhereEqualTo(unique_key, number);
@@ -114,10 +114,10 @@ public class UserProfile extends BmobUser {
 	//注册用户
 	public void signUp(final Context context, DataCallback<UserProfile> callback) {
 		//测试网络是否在wifi下，否则失败
-		if (!NetHelper.isWifiNet(context)) {
-			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
-			return;
-		}
+		//if (!NetHelper.isWifiNet(context)) {
+		//	callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+		//	return;
+		//}
 		
 		final DataCallback<UserProfile> _callback = callback;
 		final UserProfile user = this;
@@ -172,10 +172,10 @@ public class UserProfile extends BmobUser {
 	//登录用户
 	public void login(final Context context, DataCallback<UserProfile> callback) {
 		//测试网络是否在wifi下，否则失败
-		if (!NetHelper.isWifiNet(context)) {
-			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
-			return;
-		}
+		//if (!NetHelper.isWifiNet(context)) {
+		//	callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+		//	return;
+		//}
 				
 		final DataCallback<UserProfile> _callback = callback;
 		final UserProfile user = this;
@@ -197,10 +197,10 @@ public class UserProfile extends BmobUser {
 	//更新用户
 	public void update(final Context context, DataCallback<UserProfile> callback) {
 		//测试网络是否在wifi下，否则失败
-		if (!NetHelper.isWifiNet(context)) {
-			callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
-			return;
-		}
+		//if (!NetHelper.isWifiNet(context)) {
+		//	callback.onFailed("当前网络不在wifi环境下，请使用wifi。");
+		//	return;
+		//}
 		
 		final DataCallback<UserProfile> _callback = callback;
 		final UserProfile user = this;
