@@ -128,7 +128,7 @@ public class WifiProfile extends BmobObject{
 		// query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK); //
 		// 先从缓存获取数据，再拉取网络数据更新
 		query.addWhereEqualTo(unique_key, Mac);
-		Log.d("findObjects", "开始查询QueryByMacAddress");
+		Log.d("QueryByMacAddress", "开始查询QueryByMacAddress");
 		new Thread(new Runnable() {
 
 			@Override
@@ -150,7 +150,7 @@ public class WifiProfile extends BmobObject{
 						_callback.onFailed(msg);
 					}
 				});
-				Log.d("findObjects", "结束查询QueryByMacAddress");
+				Log.d("QueryByMacAddress", "结束查询QueryByMacAddress");
 			}
 
 		}).start();

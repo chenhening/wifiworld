@@ -146,7 +146,7 @@ public class LoginHelper {
 	//掉线
 	public void logoff() {
 		globalContext.sendBroadcast(new Intent(LOGIN_OFF));
-		mIsLogin = false;
+		//mIsLogin = false;
 		SharedPreferences.Editor sharedata = mCurRecord.edit();
 		sharedata.putLong(key_logoff, System.currentTimeMillis()); //只记录数据那条记录的id
 		sharedata.commit();
