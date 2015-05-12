@@ -67,8 +67,6 @@ public class WifiSquarePopup extends PopupWindow {
 		this.setHeight(LayoutParams.MATCH_PARENT);
 		this.setFocusable(false);
 		this.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-		// this.setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-		// this.showAtLocation(this, Gravity.BOTTOM, 0, 0);
 		
 		initWifiSquarePopup();
 	}

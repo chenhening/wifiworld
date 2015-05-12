@@ -15,6 +15,7 @@
         android:smallScreens="true" >
     </supports-screens>
 
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -78,6 +79,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="cn.hugo.android.scanner.CaptureActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.anynet.wifiworld.me.RouterSettingActivity"

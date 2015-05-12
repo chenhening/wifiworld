@@ -7,6 +7,7 @@ import org.apache.cordova.Whitelist;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,8 +20,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,9 +32,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import cn.hugo.android.scanner.CaptureActivity;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
@@ -75,7 +81,7 @@ public class WifiFragment extends MainFragment {
 	private TextView mWifiNameView;
 	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
-	private ToggleButton mWifiSwitch;
+	//private ToggleButton mWifiSwitch;
 	private TextView mWifiMaster;
 	private TextView mWifiDesc;
 
@@ -96,6 +102,7 @@ public class WifiFragment extends MainFragment {
 	private List<WifiBlack> mWifiBlack = null;
 
 	private boolean isPwdConnect = false;
+	private PopupWindow popupwindow;
 
 	private Handler mHandler = new Handler() {
 
@@ -210,7 +217,6 @@ public class WifiFragment extends MainFragment {
 				@Override
 				public void onSupplicantChanged(String statusStr) {
 					mWifiNameView.setText(statusStr);
-					// mWifiNameView.setTextColor(Color.BLACK);
 					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
 						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
@@ -222,7 +228,6 @@ public class WifiFragment extends MainFragment {
 				@Override
 				public void onSupplicantDisconnected(String statusStr) {
 					if (isPwdConnect) {
-//						Log.i(TAG, "forget network: " + mWifiItemClick.getNetworkId());
 						if (mWifiItemClick.getNetworkId() != -1) {
 							mWifiAdmin.forgetNetwork(mWifiItemClick.getNetworkId());
 						}
@@ -405,17 +410,33 @@ public class WifiFragment extends MainFragment {
 			}
 		});
 
-		mWifiSwitch = (ToggleButton) mPageRoot.findViewById(R.id.wifi_control_toggle);
-		mWifiSwitch.setOnClickListener(new OnClickListener() {
+		//mWifiSwitch = (ToggleButton) mPageRoot.findViewById(R.id.wifi_control_toggle);
+		//mWifiSwitch.setOnClickListener(new OnClickListener() {
+
+		//	@Override
+		//	public void onClick(View v) {
+		//		WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+		//		if (wifiInfo != null) {
+		//			mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+		//		}
+		//		refreshWifiTitleInfo(false);
+		//	}
+		//});
+		
+		//设置wifi弹出式下拉菜单
+		this.findViewById(R.id.iv_wifi_more).setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
-				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
-				if (wifiInfo != null) {
-					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-				}
-				refreshWifiTitleInfo(false);
-			}
+            public void onClick(View v) {
+				if (popupwindow != null&&popupwindow.isShowing()) {  
+	                popupwindow.dismiss();  
+	                return;  
+	            } else {  
+	            	initMorePopWindows();  
+	                popupwindow.showAsDropDown(v, 0, 5);  
+	            }
+            }
+			
 		});
 
 		mWifiListHelper.fillWifiList();
@@ -458,28 +479,13 @@ public class WifiFragment extends MainFragment {
 
 	@Override
 	public void onPause() {
-		// if (mSupplicantBRRegisterd) {
-		// getActivity().unregisterReceiver(mSupplicantReceiver);
-		// }
-
-		// getActivity().unregisterReceiver(mLoginReceiver);
-
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-		// mSupplicantReceiver = mWifiSupplicant.mReceiver;
-		//
-		// final IntentFilter filter = new
-		// IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-		// getActivity().registerReceiver(mSupplicantReceiver, filter);
-		// mSupplicantBRRegisterd = true;
-
 		IntentFilter loginFilter = new IntentFilter();
 		loginFilter.addAction(LoginHelper.LOGIN_SUCCESS);
-		// getActivity().registerReceiver(mLoginReceiver, loginFilter);
-
 		super.onResume();
 	}
 
@@ -621,8 +627,8 @@ public class WifiFragment extends MainFragment {
 			}
 			// mWifiNameView.setTextColor(Color.BLACK);
 
-			mWifiSwitch.setVisibility(View.VISIBLE);
-			mWifiSwitch.setChecked(true);
+			//mWifiSwitch.setVisibility(View.VISIBLE);
+			//mWifiSwitch.setChecked(true);
 			mWifiSquareLayout.setVisibility(View.VISIBLE);
 			mWifiTitleLayout.setClickable(true);
 		} else {
@@ -630,8 +636,8 @@ public class WifiFragment extends MainFragment {
 			// mWifiNameView.setTextColor(Color.GRAY);
 			mWifiLogoView.setImageResource(R.drawable.icon_invalid);
 
-			mWifiSwitch.setVisibility(View.GONE);
-			mWifiSwitch.setChecked(false);
+			//mWifiSwitch.setVisibility(View.GONE);
+			//mWifiSwitch.setChecked(false);
 			mWifiSquareLayout.setVisibility(View.GONE);
 			mWifiTitleLayout.setClickable(false);
 		}
@@ -654,5 +660,53 @@ public class WifiFragment extends MainFragment {
 
 		TextView wifiLouder = (TextView) wifiSquareLayout.findViewById(R.id.wifi_louder);
 		wifiLouder.setOnClickListener(mWifiSquareClickListener);
+	}
+	
+	private void initMorePopWindows() {
+		// 获取自定义布局文件pop.xml的视图  
+		LayoutInflater layoutInflater = (LayoutInflater)this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
+        //创建PopupWindow实例,200,150分别是宽度和高度  
+        popupwindow = new PopupWindow(customView, 500, 280);
+        // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]
+        popupwindow.setAnimationStyle(R.style.PopupAnimation);
+        // 自定义view添加触摸事件  
+        customView.setOnTouchListener(new OnTouchListener() {  
+  
+			@Override
+            public boolean onTouch(View v, MotionEvent event) {
+				if (popupwindow != null && popupwindow.isShowing()) {  
+                    popupwindow.dismiss();  
+                    popupwindow = null;  
+                }  
+  
+                return false;
+            }  
+        });
+        
+        customView.findViewById(R.id.ll_switch).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+				if (wifiInfo != null) {
+					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+				}
+				refreshWifiTitleInfo(false);
+            }
+        	
+        });
+        
+        //扫一扫
+        customView.findViewById(R.id.ll_scan).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				Intent i = new Intent();
+				i.setClass(getActivity(), CaptureActivity.class);
+				startActivity(i);
+            }
+        	
+        });
 	}
 }
