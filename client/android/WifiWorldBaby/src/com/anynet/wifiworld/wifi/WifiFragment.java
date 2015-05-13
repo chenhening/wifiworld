@@ -2,6 +2,8 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.cordova.Whitelist;
 
@@ -670,6 +672,18 @@ public class WifiFragment extends MainFragment {
         popupwindow = new PopupWindow(customView, 500, 280);
         // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]
         popupwindow.setAnimationStyle(R.style.PopupAnimation);
+        //先设置3s内自动退出
+        customView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				if (popupwindow != null && popupwindow.isShowing()) {  
+                    popupwindow.dismiss();  
+                    popupwindow = null;  
+                }  
+			}
+        	
+        }, 3000);
         // 自定义view添加触摸事件  
         customView.setOnTouchListener(new OnTouchListener() {  
   
