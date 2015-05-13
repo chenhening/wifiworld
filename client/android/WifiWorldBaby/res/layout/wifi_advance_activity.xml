@@ -2,13 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/black" >
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/wifi_speedup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/green"
+        android:layout_weight="1"
+        android:gravity="center|top"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/wifi_advance_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="WiFi名字"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/wifi_advance_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/icon" />
+    </LinearLayout>
     
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="敬请期待..." />
+    <LinearLayout
+        android:id="@+id/wifi_advance_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="4.5" ></LinearLayout>
 
 </LinearLayout>
