@@ -11,6 +11,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +24,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 import cn.hugo.android.scanner.camera.CameraManager;
 import cn.hugo.android.scanner.common.BitmapUtils;
@@ -30,6 +33,7 @@ import cn.hugo.android.scanner.decode.CaptureActivityHandler;
 import cn.hugo.android.scanner.view.ViewfinderView;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.util.XLLog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -162,7 +166,7 @@ public final class CaptureActivity extends Activity implements
 
 		Window window = getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.capture);
+		setContentView(R.layout.activity_scan);
 
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
@@ -171,9 +175,8 @@ public final class CaptureActivity extends Activity implements
 
 		// 监听图片识别按钮
 		findViewById(R.id.capture_scan_photo).setOnClickListener(this);
-
 		findViewById(R.id.capture_flashlight).setOnClickListener(this);
-
+		findViewById(R.id.capture_button_cancel).setOnClickListener(this);
 	}
 
 	@Override
@@ -287,7 +290,7 @@ public final class CaptureActivity extends Activity implements
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	public void onActivityResult(int requestCode, int resultCode, final Intent intent) {
 
 		if (resultCode == RESULT_OK) {
 			final ProgressDialog progressDialog;
@@ -295,13 +298,11 @@ public final class CaptureActivity extends Activity implements
 				case REQUEST_CODE:
 
 					// 获取选中图片的路径
-					Cursor cursor = getContentResolver().query(
-							intent.getData(), null, null, null, null);
-					if (cursor.moveToFirst()) {
-						photoPath = cursor.getString(cursor
-								.getColumnIndex(MediaStore.Images.Media.DATA));
-					}
-					cursor.close();
+					//Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
+					//if (cursor.moveToFirst()) {
+					//	photoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+					//}
+					//cursor.close();
 
 					progressDialog = new ProgressDialog(this);
 					progressDialog.setMessage("正在扫描...");
@@ -313,9 +314,11 @@ public final class CaptureActivity extends Activity implements
 						@Override
 						public void run() {
 
-							Bitmap img = BitmapUtils
-									.getCompressedBitmap(photoPath);
+							//Bitmap img = BitmapUtils
+							//		.getCompressedBitmap(photoPath);
 
+							Bundle extras = intent.getExtras();
+							Bitmap img = extras.getParcelable("data");
 							BitmapDecoder decoder = new BitmapDecoder(
 									CaptureActivity.this);
 							Result result = decoder.getRawResult(img);
@@ -497,8 +500,7 @@ public final class CaptureActivity extends Activity implements
 				// 打开手机中的相册
 				Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
 				innerIntent.setType("image/*");
-				Intent wrapperIntent = Intent.createChooser(innerIntent,
-						"选择二维码图片");
+				Intent wrapperIntent = Intent.createChooser(innerIntent,"选择二维码图片");
 				this.startActivityForResult(wrapperIntent, REQUEST_CODE);
 				break;
 
@@ -511,6 +513,9 @@ public final class CaptureActivity extends Activity implements
 					cameraManager.setTorch(true); // 打开闪光灯
 					isFlashlightOpen = true;
 				}
+				break;
+			case R.id.capture_button_cancel:
+				finish();
 				break;
 			default:
 				break;

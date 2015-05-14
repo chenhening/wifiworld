@@ -1,15 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_menu" >
-  
+    android:background="@drawable/bg_menu"
+    android:orientation="vertical" >
+
     <LinearLayout
         android:id="@+id/ll_switch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:background="@color/orange" >
 
         <ImageView
@@ -19,22 +18,20 @@
             android:layout_marginLeft="8dp"
             android:background="@drawable/icon_bind_rightnow" />
 
-        <TextView  
-            android:layout_width="wrap_content"  
-            android:layout_height="wrap_content"  
-            android:padding="8dp"  
-            android:text="断开连接"  
-          android:layout_gravity="center_vertical"  
-            android:textColor="#fff"  
-            android:textSize="16sp" />  
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:text="断开连接"
+            android:textColor="#fff"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_scan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ll_switch"
         android:layout_marginTop="2dp"
         android:background="@color/orange" >
 
@@ -54,5 +51,53 @@
             android:textColor="#fff"
             android:textSize="16sp" />
     </LinearLayout>
-  
-</RelativeLayout>  
+
+    <LinearLayout
+        android:id="@+id/ll_create_scan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/orange" >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/icon_account_weixin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:text="生成二维码"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/orange" >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/ic_person_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Wi-Fi设置"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,10 +2,6 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.cordova.Whitelist;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -15,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
@@ -22,13 +19,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -38,17 +35,13 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
 import cn.hugo.android.scanner.CaptureActivity;
+import cn.hugo.android.scanner.decode.EncodingHandler;
 
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.UserLoginActivity;
-import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.DataListenerHelper;
-import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiBlack;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiProfile;
@@ -59,6 +52,7 @@ import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.ui.WifiCommentActivity;
 import com.anynet.wifiworld.wifi.ui.WifiSquarePopup;
+import com.google.zxing.WriterException;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -84,7 +78,6 @@ public class WifiFragment extends MainFragment {
 	private TextView mWifiNameView;
 	private ImageView mWifiLogoView;
 	private Button mOpenWifiBtn;
-	//private ToggleButton mWifiSwitch;
 	private TextView mWifiMaster;
 	private TextView mWifiDesc;
 
@@ -665,72 +658,75 @@ public class WifiFragment extends MainFragment {
 	
 	private void initMorePopWindows() {
         if (popupwindow == null) {
-        		// 获取自定义布局文件pop.xml的视图  
-    			LayoutInflater layoutInflater = (LayoutInflater)this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
-    			//创建PopupWindow实例,200,150分别是宽度和高度  
-        		popupwindow = new PopupWindow(customView, 500, 280);
-        		popupwindow.setTouchable(true);
-        		popupwindow.setFocusable(true);
-        		popupwindow.setBackgroundDrawable(new BitmapDrawable());
-        		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
-        		popupwindow.setOutsideTouchable(true);
-        		
-        		customView.findViewById(R.id.ll_switch).setOnClickListener(new OnClickListener() {
+    		// 获取自定义布局文件pop.xml的视图  
+			LayoutInflater layoutInflater = (LayoutInflater)this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
+    		popupwindow = new PopupWindow(customView);
+    		popupwindow.setWidth(LayoutParams.WRAP_CONTENT);    
+    		popupwindow.setHeight(LayoutParams.WRAP_CONTENT); 
+    		popupwindow.setTouchable(true);
+    		popupwindow.setFocusable(true);
+    		popupwindow.setBackgroundDrawable(new BitmapDrawable());
+    		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
+    		popupwindow.setOutsideTouchable(true);
+    	
+        	//断开连接
+    		customView.findViewById(R.id.ll_switch).setOnClickListener(new OnClickListener() {
 
-        			@Override
-                public void onClick(View v) {
-        				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
-        				if (wifiInfo != null) {
-        					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-        				}
-        				refreshWifiTitleInfo(false);
-        				popupwindow.dismiss();
-                }
+    			@Override
+    			public void onClick(View v) {
+    				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+    				if (wifiInfo != null) {
+    					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+    				}
+    				refreshWifiTitleInfo(false);
+    				popupwindow.dismiss();
+            	}
                 	
             });
                 
             //扫一扫
             customView.findViewById(R.id.ll_scan).setOnClickListener(new OnClickListener() {
 
-        			@Override
+        		@Override
                 public void onClick(View v) {
-        				Intent i = new Intent();
-        				i.setClass(getActivity(), CaptureActivity.class);
-        				startActivity(i);
-        				popupwindow.dismiss();
+    				Intent i = new Intent();
+    				i.setClass(getActivity(), CaptureActivity.class);
+    				startActivity(i);
+    				popupwindow.dismiss();
+                }
+                	
+            });
+            
+            //生成二维码
+            customView.findViewById(R.id.ll_create_scan).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+        			popupwindow.dismiss();
+        			
+        			LayoutInflater layoutInflater = 
+        				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
+        			PopupWindow image_display_popwin = new PopupWindow(customView);
+        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);    
+        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
+        			image_display_popwin.setTouchable(true);
+        			image_display_popwin.setFocusable(true);
+        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
+        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
+        			image_display_popwin.setOutsideTouchable(true);
+        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
+        			try {
+	                    image.setImageBitmap(EncodingHandler.createQRCode("fuck", 640));
+                    } catch (WriterException e) {
+	                    e.printStackTrace();
+                    }
+        			image_display_popwin.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
                 }
                 	
             });
 		}
-        // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]
-        //popupwindow.setAnimationStyle(R.style.PopupAnimation);
-        //先设置3s内自动退出
-//        customView.postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				if (popupwindow != null && popupwindow.isShowing()) {  
-//                    popupwindow.dismiss();  
-//                    popupwindow = null;  
-//                }  
-//			}
-//        	
-//        }, 3000);
-        // 自定义view添加触摸事件  
-//        customView.setOnTouchListener(new OnTouchListener() {  
-//  
-//			@Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//				if (popupwindow != null && popupwindow.isShowing()) {  
-//                    popupwindow.dismiss();  
-//                    popupwindow = null;  
-//                }  
-//  
-//                return false;
-//            }  
-//        });
 	}
-	
-	
+
 }
