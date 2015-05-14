@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
@@ -104,7 +105,7 @@ public class WifiFragment extends MainFragment {
 	private List<WifiBlack> mWifiBlack = null;
 
 	private boolean isPwdConnect = false;
-	private PopupWindow popupwindow;
+	public PopupWindow popupwindow;
 
 	private Handler mHandler = new Handler() {
 
@@ -426,16 +427,16 @@ public class WifiFragment extends MainFragment {
 		//});
 		
 		//设置wifi弹出式下拉菜单
+		initMorePopWindows();
 		this.findViewById(R.id.iv_wifi_more).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
-				if (popupwindow != null&&popupwindow.isShowing()) {  
-	                popupwindow.dismiss();  
-	                return;  
-	            } else {  
-	            	initMorePopWindows();  
-	                popupwindow.showAsDropDown(v, 0, 5);  
+				if (popupwindow != null&&popupwindow.isShowing()) {
+	                popupwindow.dismiss();
+	                return;
+	            } else {
+	                popupwindow.showAsDropDown(v, 0, 5);
 	            }
             }
 			
@@ -665,62 +666,73 @@ public class WifiFragment extends MainFragment {
 	}
 	
 	private void initMorePopWindows() {
-		// 获取自定义布局文件pop.xml的视图  
-		LayoutInflater layoutInflater = (LayoutInflater)this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
-        //创建PopupWindow实例,200,150分别是宽度和高度  
-        popupwindow = new PopupWindow(customView, 500, 280);
+        if (popupwindow == null) {
+        		// 获取自定义布局文件pop.xml的视图  
+    			LayoutInflater layoutInflater = (LayoutInflater)this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
+    			//创建PopupWindow实例,200,150分别是宽度和高度  
+        		popupwindow = new PopupWindow(customView, 500, 280);
+        		popupwindow.setTouchable(true);
+        		popupwindow.setFocusable(true);
+        		popupwindow.setBackgroundDrawable(new BitmapDrawable());
+        		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
+        		popupwindow.setOutsideTouchable(true);
+        		
+        		customView.findViewById(R.id.ll_switch).setOnClickListener(new OnClickListener() {
+
+        			@Override
+                public void onClick(View v) {
+        				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
+        				if (wifiInfo != null) {
+        					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+        				}
+        				refreshWifiTitleInfo(false);
+        				popupwindow.dismiss();
+                }
+                	
+            });
+                
+            //扫一扫
+            customView.findViewById(R.id.ll_scan).setOnClickListener(new OnClickListener() {
+
+        			@Override
+                public void onClick(View v) {
+        				Intent i = new Intent();
+        				i.setClass(getActivity(), CaptureActivity.class);
+        				startActivity(i);
+        				popupwindow.dismiss();
+                }
+                	
+            });
+		}
         // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]
-        popupwindow.setAnimationStyle(R.style.PopupAnimation);
+        //popupwindow.setAnimationStyle(R.style.PopupAnimation);
         //先设置3s内自动退出
-        customView.postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				if (popupwindow != null && popupwindow.isShowing()) {  
-                    popupwindow.dismiss();  
-                    popupwindow = null;  
-                }  
-			}
-        	
-        }, 3000);
+//        customView.postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				if (popupwindow != null && popupwindow.isShowing()) {  
+//                    popupwindow.dismiss();  
+//                    popupwindow = null;  
+//                }  
+//			}
+//        	
+//        }, 3000);
         // 自定义view添加触摸事件  
-        customView.setOnTouchListener(new OnTouchListener() {  
-  
-			@Override
-            public boolean onTouch(View v, MotionEvent event) {
-				if (popupwindow != null && popupwindow.isShowing()) {  
-                    popupwindow.dismiss();  
-                    popupwindow = null;  
-                }  
-  
-                return false;
-            }  
-        });
-        
-        customView.findViewById(R.id.ll_switch).setOnClickListener(new OnClickListener() {
-
-			@Override
-            public void onClick(View v) {
-				WifiInfo wifiInfo = mWifiAdmin.getWifiConnected();
-				if (wifiInfo != null) {
-					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-				}
-				refreshWifiTitleInfo(false);
-            }
-        	
-        });
-        
-        //扫一扫
-        customView.findViewById(R.id.ll_scan).setOnClickListener(new OnClickListener() {
-
-			@Override
-            public void onClick(View v) {
-				Intent i = new Intent();
-				i.setClass(getActivity(), CaptureActivity.class);
-				startActivity(i);
-            }
-        	
-        });
+//        customView.setOnTouchListener(new OnTouchListener() {  
+//  
+//			@Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//				if (popupwindow != null && popupwindow.isShowing()) {  
+//                    popupwindow.dismiss();  
+//                    popupwindow = null;  
+//                }  
+//  
+//                return false;
+//            }  
+//        });
 	}
+	
+	
 }
