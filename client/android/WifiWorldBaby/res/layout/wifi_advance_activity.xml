@@ -56,8 +56,20 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/encrypt_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/encrypt_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging" />
+	            </LinearLayout>
 	        </RelativeLayout>
 	        
 	        <View
@@ -211,10 +223,102 @@
         
         <LinearLayout
             android:id="@+id/devices_connected"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center" ></LinearLayout>
+            android:gravity="center" >
+            
+            <ImageView
+                android:id="@+id/devices_connected_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/setting_icon_autoshare" />
+            
+            <TextView
+                android:id="@+id/devices_connected_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="连接设备" />
+        </LinearLayout>
+        
+        <View
+		    android:layout_width="1.0px"
+		    android:layout_height="match_parent"
+		    android:background="@color/color_line" />
+        
+        <LinearLayout
+            android:id="@+id/router_rebbot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center" >
+            
+            <ImageView
+                android:id="@+id/router_rebbot_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/setting_icon_autoshare" />
+            
+            <TextView
+                android:id="@+id/router_rebbot_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重启路由" />
+        </LinearLayout>
+        
+        <View
+		    android:layout_width="1.0px"
+		    android:layout_height="match_parent"
+		    android:background="@color/color_line" />
+        
+        <LinearLayout
+            android:id="@+id/band_width"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center" >
+            
+            <ImageView
+                android:id="@+id/band_width_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/setting_icon_autoshare" />
+            
+            <TextView
+                android:id="@+id/band_width_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="带宽设置" />
+        </LinearLayout>
+        
+        <View
+		    android:layout_width="1.0px"
+		    android:layout_height="match_parent"
+		    android:background="@color/color_line" />
+        
+        <LinearLayout
+            android:id="@+id/router_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center" >
+            
+            <ImageView
+                android:id="@+id/router_pwd_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/setting_icon_autoshare" />
+            
+            <TextView
+                android:id="@+id/router_pwd_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="修改密码" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
