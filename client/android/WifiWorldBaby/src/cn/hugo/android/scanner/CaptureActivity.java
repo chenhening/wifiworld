@@ -11,8 +11,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +22,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 import cn.hugo.android.scanner.camera.CameraManager;
 import cn.hugo.android.scanner.common.BitmapUtils;
@@ -33,7 +30,6 @@ import cn.hugo.android.scanner.decode.CaptureActivityHandler;
 import cn.hugo.android.scanner.view.ViewfinderView;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.util.XLLog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -298,11 +294,12 @@ public final class CaptureActivity extends Activity implements
 				case REQUEST_CODE:
 
 					// 获取选中图片的路径
-					//Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
-					//if (cursor.moveToFirst()) {
-					//	photoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-					//}
-					//cursor.close();
+					Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
+					int index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+					if (index >= 0 && cursor.moveToFirst()) {
+						photoPath = cursor.getString(index);
+					}
+					cursor.close();
 
 					progressDialog = new ProgressDialog(this);
 					progressDialog.setMessage("正在扫描...");
@@ -314,11 +311,7 @@ public final class CaptureActivity extends Activity implements
 						@Override
 						public void run() {
 
-							//Bitmap img = BitmapUtils
-							//		.getCompressedBitmap(photoPath);
-
-							Bundle extras = intent.getExtras();
-							Bitmap img = extras.getParcelable("data");
+							Bitmap img = BitmapUtils.getCompressedBitmap(photoPath);
 							BitmapDecoder decoder = new BitmapDecoder(
 									CaptureActivity.this);
 							Result result = decoder.getRawResult(img);
@@ -336,7 +329,7 @@ public final class CaptureActivity extends Activity implements
 								mHandler.sendMessage(m);
 							}
 
-							progressDialog.dismiss();
+							//progressDialog.dismiss();
 
 						}
 					}).start();

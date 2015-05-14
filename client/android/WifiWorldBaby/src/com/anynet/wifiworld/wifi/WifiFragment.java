@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
@@ -705,6 +704,11 @@ public class WifiFragment extends MainFragment {
                 public void onClick(View v) {
         			popupwindow.dismiss();
         			
+        			WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
+        			if (wifiCurInfo == null) {//如果网络没有连接不生成二维码
+        				return;
+        			}
+        			
         			LayoutInflater layoutInflater = 
         				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
@@ -718,7 +722,7 @@ public class WifiFragment extends MainFragment {
         			image_display_popwin.setOutsideTouchable(true);
         			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
         			try {
-	                    image.setImageBitmap(EncodingHandler.createQRCode("fuck", 640));
+	                    image.setImageBitmap(EncodingHandler.createQRCode(wifiCurInfo.toString(), 640));
                     } catch (WriterException e) {
 	                    e.printStackTrace();
                     }
