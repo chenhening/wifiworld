@@ -355,10 +355,8 @@ public class WifiFragment extends MainFragment {
 					final String userId = mLoginHelper.getUserid();
 					if (whiteList == null) {
 						Toast.makeText(getActivity(), "Failed to pull white list, pls try again later", Toast.LENGTH_LONG).show();
-					} else if (whiteList.size() > 0 && (userId == null || !isContainUserId(userId, whiteList))) {
-						showToast("Can not to connect this wifi as sponser set the white list and you are not under this list");
 					} else if (mLoginHelper.canAccessDirectly(mWifiItemClick.getWifiMAC()) || mLoginHelper.mKnockList.contains(mWifiItemClick.getWifiMAC())
-							|| whiteList.size() > 0 && userId != null && isContainUserId(userId, whiteList)) {
+							|| (whiteList.size() > 0 && userId != null && isContainUserId(userId, whiteList))) {
 									showWifiConnectConfirmDialog(mWifiItemClick, true);
 					} else {
 						// 弹出询问对话框

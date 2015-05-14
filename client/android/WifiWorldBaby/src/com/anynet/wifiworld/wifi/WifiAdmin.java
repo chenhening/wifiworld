@@ -298,39 +298,39 @@ public class WifiAdmin {
 		final BroadcastReceiver receiver = new BroadcastReceiver() {
 
 			@Override
-            public void onReceive(Context context, Intent intent) {
+			public void onReceive(Context context, Intent intent) {
 				String action = intent.getAction();
-				
+
 				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
-		        	Log.i(TAG, "supplicant state changed action");
-		        	int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
-	            	if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
-	            		if (callback != null) {
-	            			timer.cancel();
-	            			mWifiManager.removeNetwork(_conf.networkId);
-	            			if (oriconf != null)
-	            				mWifiManager.enableNetwork(oriconf.networkId, false);
-	            			mWifiManager.reassociate();
-	            			mContext.unregisterReceiver(this);
-	            			callback.onFailed("密码验证失败，请重新输入密码。");
-	            			return;
-	            		}
-	            	}
-	            	
-		            WifiInfo info = getWifiConnecting();
-		            SupplicantState state = info.getSupplicantState();
-		            if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId){ //验证当前网络登录的网络是否是测试网络
-		            	if (callback != null) {
-		            		timer.cancel();
-		            		mWifiManager.removeNetwork(_conf.networkId);
-		            		if (oriconf != null)
-	            				mWifiManager.enableNetwork(oriconf.networkId, false);
-	            			mWifiManager.reassociate();
-		            		mContext.unregisterReceiver(this);
-		            		callback.onSuccess(true);
-		            	}
-		            } 
-		            Log.e(TAG, state.toString());
+					Log.i(TAG, "supplicant state changed action");
+					int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+					if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
+						if (callback != null) {
+							timer.cancel();
+							mWifiManager.removeNetwork(_conf.networkId);
+							if (oriconf != null)
+								mWifiManager.enableNetwork(oriconf.networkId, false);
+							mWifiManager.reassociate();
+							mContext.unregisterReceiver(this);
+							callback.onFailed("密码验证失败，请重新输入密码。");
+							return;
+						}
+					}
+
+					WifiInfo info = getWifiConnecting();
+					SupplicantState state = info.getSupplicantState();
+					if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId) { // 验证当前网络登录的网络是否是测试网络
+						if (callback != null) {
+							timer.cancel();
+							mWifiManager.removeNetwork(_conf.networkId);
+							if (oriconf != null)
+								mWifiManager.enableNetwork(oriconf.networkId, false);
+							mWifiManager.reassociate();
+							mContext.unregisterReceiver(this);
+							callback.onSuccess(true);
+						}
+					}
+					Log.e(TAG, state.toString());
 		        }
             }
 		};
