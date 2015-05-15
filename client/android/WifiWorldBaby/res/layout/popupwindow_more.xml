@@ -40,7 +40,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/auth_follow_cb_chd" />
+            android:background="@drawable/ic_saomiao" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/icon_account_weixin" />
+            android:background="@drawable/ic_chuansu" />
 
         <TextView
             android:layout_width="wrap_content"
