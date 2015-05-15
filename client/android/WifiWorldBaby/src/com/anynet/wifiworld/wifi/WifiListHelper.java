@@ -201,7 +201,7 @@ public class WifiListHelper {
 			boolean isLocalSave = wifiCfg == null ? false : true;
 			mWifiInfoCur.setLocalSave(isLocalSave);
 			
-			//return;
+			return;
 		}
 		
 		if (objects != null) {

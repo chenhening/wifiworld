@@ -705,26 +705,19 @@ public class WifiFragment extends MainFragment {
                 public void onClick(View v) {
         			popupwindow.dismiss();
         			
-        			WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
-        			if (wifiCurInfo == null) {//如果网络没有连接不生成二维码
-        				showToast("只有在连接到网络的情况下，才能生成二维码。");
+        			//WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
+        			WifiInfoScanned wifiCurInfo = mWifiListHelper.mWifiInfoCur;
+        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
+        				showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
         				return;
         			}
-        			WifiInfoScanned curwifi = null;
-        			for (WifiInfoScanned item : mWifiAuth) {
-        				if (item.getWifiMAC().equals(wifiCurInfo.getBSSID())) {
-        					curwifi = new WifiInfoScanned();
-        					curwifi.setWifiName(item.getWifiName());
-        					curwifi.setWifiMAC(item.getWifiMAC());
-        					curwifi.setWifiPwd(item.getWifiPwd());
-        					curwifi.setEncryptType(item.getEncryptType());
-        					break;
-        				}
-        			}
-        			if (curwifi == null) {
-        				showToast("只有在连接到认证网络的情况下，才能生成二维码。");
-        				return;
-        			}
+        			
+        			WifiInfoScanned curwifi = new WifiInfoScanned();
+				curwifi.setWifiName(wifiCurInfo.getWifiName());
+				curwifi.setWifiMAC(wifiCurInfo.getWifiMAC());
+				curwifi.setWifiPwd(wifiCurInfo.getWifiPwd());
+				curwifi.setEncryptType(wifiCurInfo.getEncryptType());
+				curwifi.setAuthWifi(true);
         			
         			LayoutInflater layoutInflater = 
         				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
