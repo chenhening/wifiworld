@@ -29,7 +29,10 @@ import cn.hugo.android.scanner.decode.BitmapDecoder;
 import cn.hugo.android.scanner.decode.CaptureActivityHandler;
 import cn.hugo.android.scanner.view.ViewfinderView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -139,6 +142,15 @@ public final class CaptureActivity extends Activity implements
 				case PARSE_BARCODE_SUC: // 解析图片成功
 					Toast.makeText(activityReference.get(),
 							"解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+					JSONObject object = JSONObject.parseObject(msg.obj.toString());
+					WifiInfoScanned wifi = new WifiInfoScanned();
+					wifi.setWifiName(object.get("wifiName").toString());
+					wifi.setWifiMAC(object.get("wifiMAC").toString());
+					wifi.setWifiPwd(object.get("wifiPwd").toString());
+					wifi.setEncryptType(object.get("encryptType").toString());
+					WifiAdmin.getInstance(activityReference.get()).connectToNewNetwork(activityReference.get(), 
+							wifi, true, false);
+					activityReference.get().finish();
 					break;
 
 				case PARSE_BARCODE_FAIL:// 解析图片失败
@@ -319,8 +331,7 @@ public final class CaptureActivity extends Activity implements
 							if (result != null) {
 								Message m = mHandler.obtainMessage();
 								m.what = PARSE_BARCODE_SUC;
-								m.obj = ResultParser.parseResult(result)
-										.toString();
+								m.obj = ResultParser.parseResult(result).toString();
 								mHandler.sendMessage(m);
 							}
 							else {
@@ -329,7 +340,7 @@ public final class CaptureActivity extends Activity implements
 								mHandler.sendMessage(m);
 							}
 
-							//progressDialog.dismiss();
+							progressDialog.dismiss();
 
 						}
 					}).start();

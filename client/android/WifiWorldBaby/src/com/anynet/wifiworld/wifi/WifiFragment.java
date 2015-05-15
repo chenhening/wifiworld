@@ -37,6 +37,7 @@ import android.widget.Toast;
 import cn.hugo.android.scanner.CaptureActivity;
 import cn.hugo.android.scanner.decode.EncodingHandler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
@@ -706,6 +707,22 @@ public class WifiFragment extends MainFragment {
         			
         			WifiInfo wifiCurInfo = mWifiAdmin.getWifiConnected();
         			if (wifiCurInfo == null) {//如果网络没有连接不生成二维码
+        				showToast("只有在连接到网络的情况下，才能生成二维码。");
+        				return;
+        			}
+        			WifiInfoScanned curwifi = null;
+        			for (WifiInfoScanned item : mWifiAuth) {
+        				if (item.getWifiMAC().equals(wifiCurInfo.getBSSID())) {
+        					curwifi = new WifiInfoScanned();
+        					curwifi.setWifiName(item.getWifiName());
+        					curwifi.setWifiMAC(item.getWifiMAC());
+        					curwifi.setWifiPwd(item.getWifiPwd());
+        					curwifi.setEncryptType(item.getEncryptType());
+        					break;
+        				}
+        			}
+        			if (curwifi == null) {
+        				showToast("只有在连接到认证网络的情况下，才能生成二维码。");
         				return;
         			}
         			
@@ -722,7 +739,8 @@ public class WifiFragment extends MainFragment {
         			image_display_popwin.setOutsideTouchable(true);
         			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
         			try {
-	                    image.setImageBitmap(EncodingHandler.createQRCode(wifiCurInfo.toString(), 640));
+        				String object = JSONObject.toJSONString(curwifi);
+	                    image.setImageBitmap(EncodingHandler.createQRCode(object, 640));
                     } catch (WriterException e) {
 	                    e.printStackTrace();
                     }

@@ -184,7 +184,7 @@ public class WifiListHelper {
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
 			wifiPwd = null;
-			wifiRemark = "当前连接WiFi";
+			wifiRemark = "当前正在使用的WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
 			
@@ -201,7 +201,7 @@ public class WifiListHelper {
 			boolean isLocalSave = wifiCfg == null ? false : true;
 			mWifiInfoCur.setLocalSave(isLocalSave);
 			
-			return;
+			//return;
 		}
 		
 		if (objects != null) {
@@ -214,10 +214,12 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				
-				if (LoginHelper.getInstance(mContext).mKnockList.contains(wifiMAC)) {
-					wifiRemark += "已经敲门成功可直接使用";
-				} else {
-					wifiRemark += "敲门成功就能使用";
+				if (wifiRemark == "") {
+					if (LoginHelper.getInstance(mContext).mKnockList.contains(wifiMAC)) {
+						wifiRemark = "已经敲门成功可直接使用";
+					} else {
+						wifiRemark = "敲门成功就能使用";
+					}
 				}
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
@@ -240,10 +242,13 @@ public class WifiListHelper {
 			wifiMAC = hotspot.BSSID;
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
-			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-				wifiRemark = "无密码";
+			if (wifiRemark == "") {
+				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+					wifiRemark = "无密码";
+				} else {
+					wifiRemark = "本地已保存";
+				}
 			}
-			//wifiRemark += "本地已保存";
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
 			wifiInfoScanned.setLocalSave(true);
