@@ -318,6 +318,7 @@ public class WifiFragment extends MainFragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_ADVANCE");
+				intent.putExtra("security", mWifiListHelper.mWifiInfoCur.getWifiEncryptString());
 				getActivity().startActivity(intent);
 				getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 			}

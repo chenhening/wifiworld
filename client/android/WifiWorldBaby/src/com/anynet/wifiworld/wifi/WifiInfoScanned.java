@@ -29,6 +29,7 @@ public class WifiInfoScanned implements Serializable {
 	
 	private boolean isAuthWifi = false;
 	private boolean isLocalSave = false;
+	private String mWifiEncryptString;
 	
 	private byte[] mWifiLogo;
 	private String mBanner;
@@ -260,6 +261,14 @@ public class WifiInfoScanned implements Serializable {
 
 	public void setWifiWhites(List<WifiWhite> mWifiWhites) {
 		this.mWifiWhites = mWifiWhites;
+	}
+
+	public String getWifiEncryptString() {
+		return mWifiEncryptString;
+	}
+
+	public void setWifiEncryptString(String mWifiEncryptString) {
+		this.mWifiEncryptString = mWifiEncryptString;
 	}
 	
 }

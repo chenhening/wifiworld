@@ -4,6 +4,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,12 +23,16 @@ public class WifiAdvanceActivity extends Activity {
 		setContentView(R.layout.wifi_advance_activity);
 		super.onCreate(savedInstanceState);
 		
+		Intent intent = getIntent();
+		final String security = intent.getStringExtra("security");
+		
 		mWifiAdmin = WifiAdmin.getInstance(this);
 		mWifiName = (TextView)findViewById(R.id.wifi_advance_name);
 		mWifiName.setText(WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
 		
 		final ProgressBar progressBar = (ProgressBar)findViewById(R.id.encrypt_process);
 		final ImageView imageView = (ImageView)findViewById(R.id.encrypt_result);
+		final TextView textView = (TextView)findViewById(R.id.wifi_encrypt_text);
 		progressBar.setVisibility(View.VISIBLE);
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
@@ -36,6 +41,7 @@ public class WifiAdvanceActivity extends Activity {
 			public void run() {
 				progressBar.setVisibility(View.GONE);
 				imageView.setVisibility(View.VISIBLE);
+				textView.setText(textView.getText() + "(" + security + ")");
 			}
 		}, 1000);
 	}

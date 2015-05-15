@@ -187,6 +187,7 @@ public class WifiListHelper {
 			wifiRemark = "当前正在使用的WiFi";
 			mWifiInfoCur = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
+			mWifiInfoCur.setWifiEncryptString(WifiAdmin.ConfigSec.getDisplaySecirityString(hotspot));
 			
 			//query WiFi whether has been shared
 			WifiProfile wifiProfile = isContained(WifiAdmin.convertToNonQuotedString(hotspot.BSSID), objects);
@@ -214,15 +215,16 @@ public class WifiListHelper {
 				wifiType = WifiAdmin.ConfigSec.getScanResultSecurity(hotspot);
 				wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 				
-				if (wifiRemark == "") {
-					if (LoginHelper.getInstance(mContext).mKnockList.contains(wifiMAC)) {
-						wifiRemark = "已经敲门成功可直接使用";
-					} else {
-						wifiRemark = "敲门成功就能使用";
-					}
+				if (LoginHelper.getInstance(mContext).mKnockList.contains(wifiMAC)) {
+					wifiRemark = "已经敲门成功可直接使用";
+				} else {
+					wifiRemark = "敲门成功就能使用";
 				}
+				
 				wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, 
 						wifiType, wifiStrength, null, wifiRemark);
+				wifiInfoScanned.setWifiEncryptString(WifiAdmin.ConfigSec.getDisplaySecirityString(hotspot));
+				
 				if (wifiProfile.Alias != null && wifiProfile.Alias.length() > 0)
 					wifiInfoScanned.setAlias(wifiProfile.Alias);
 				wifiInfoScanned.setAuthWifi(true);
@@ -242,16 +244,17 @@ public class WifiListHelper {
 			wifiMAC = hotspot.BSSID;
 			wifiStrength = WifiAdmin.getWifiStrength(hotspot.level);
 			wifiGeometry = WifiAdmin.getWifiGeometry(mContext, hotspot.level);
-			if (wifiRemark == "") {
-				if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
-					wifiRemark = "无密码";
-				} else {
-					wifiRemark = "本地已保存";
-				}
+
+			if (WifiAdmin.ConfigSec.isOpenNetwork(wifiType)) {
+				wifiRemark = "无密码";
+			} else {
+				wifiRemark = "本地已保存";
 			}
+			
 			wifiInfoScanned = new WifiInfoScanned(wifiName, wifiMAC, wifiPwd, wifiType,
 					wifiStrength, wifiGeometry, wifiRemark);
 			wifiInfoScanned.setLocalSave(true);
+			wifiInfoScanned.setWifiEncryptString(WifiAdmin.ConfigSec.getDisplaySecirityString(hotspot));
 			mWifiFree.add(wifiInfoScanned);
 		} else {
 			//Check whether is a open WiFi
@@ -264,10 +267,12 @@ public class WifiListHelper {
 				wifiRemark = "无密码";
 				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
 						wifiGeometry, wifiRemark);
+				wifiInfoScanned.setWifiEncryptString(WifiAdmin.ConfigSec.getDisplaySecirityString(hotspot));
 				mWifiFree.add(wifiInfoScanned);
 			} else {
 				wifiInfoScanned = new WifiInfoScanned(wifiName,wifiMAC, null, wifiType, wifiStrength,
 						wifiGeometry, null);
+				wifiInfoScanned.setWifiEncryptString(WifiAdmin.ConfigSec.getDisplaySecirityString(hotspot));
 				mWifiEncrypt.add(wifiInfoScanned);
 			}
 		}

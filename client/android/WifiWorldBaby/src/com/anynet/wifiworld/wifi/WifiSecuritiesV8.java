@@ -95,7 +95,7 @@ public class WifiSecuritiesV8 extends WifiSecurities {
             }
             break;
 
-        case SECURITY_EAP:
+        	case SECURITY_EAP:
             config.allowedKeyManagement.set(KeyMgmt.WPA_EAP);
             config.allowedKeyManagement.set(KeyMgmt.IEEE8021X);
 //            config.eap.setValue((String) mEapMethodSpinner.getSelectedItem());
@@ -120,10 +120,10 @@ public class WifiSecuritiesV8 extends WifiSecurities {
 //            }
             break;
 
-        default:
+        	default:
                 Log.e(TAG, "Invalid security type: " + sec);
-    }
-
+        }
+        
 //    config.proxySettings = mProxySettings;
 //    config.ipAssignment = mIpAssignment;
 //    config.linkProperties = new LinkProperties(mLinkProperties);
