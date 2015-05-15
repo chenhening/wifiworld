@@ -197,6 +197,7 @@ public class WifiListHelper {
 				mWifiInfoCur.setBanner(wifiProfile.Banner);
 				mWifiInfoCur.setAlias(wifiProfile.Alias);
 				mWifiInfoCur.setSponser(wifiProfile.Sponser);
+				mWifiInfoCur.setWifiPwd(wifiProfile.Password);
 				pullWifiWhites(wifiProfile.Sponser, mWifiInfoCur);
 			}
 			boolean isLocalSave = wifiCfg == null ? false : true;

@@ -398,10 +398,11 @@ public final class CaptureActivity extends Activity implements
 
 		beepManager.playBeepSoundAndVibrate();
 
-		Toast.makeText(this,
-				"识别结果:" + ResultParser.parseResult(rawResult).toString(),
-				Toast.LENGTH_SHORT).show();
-
+		Log.d("hehe", "识别结果:" + ResultParser.parseResult(rawResult).toString());
+		Message m = mHandler.obtainMessage();
+		m.what = PARSE_BARCODE_SUC;
+		m.obj = ResultParser.parseResult(rawResult).toString();
+		mHandler.sendMessage(m);
 	}
 
 	public void restartPreviewAfterDelay(long delayMS) {

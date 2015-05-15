@@ -714,11 +714,11 @@ public class WifiFragment extends MainFragment {
         			}
         			
         			WifiInfoScanned curwifi = new WifiInfoScanned();
-				curwifi.setWifiName(wifiCurInfo.getWifiName());
-				curwifi.setWifiMAC(wifiCurInfo.getWifiMAC());
-				curwifi.setWifiPwd(wifiCurInfo.getWifiPwd());
-				curwifi.setEncryptType(wifiCurInfo.getEncryptType());
-				curwifi.setAuthWifi(true);
+					curwifi.setWifiName(wifiCurInfo.getWifiName());
+					curwifi.setWifiMAC(wifiCurInfo.getWifiMAC());
+					curwifi.setWifiPwd(wifiCurInfo.getWifiPwd());
+					curwifi.setEncryptType(wifiCurInfo.getEncryptType());
+					curwifi.setAuthWifi(true);
         			
         			LayoutInflater layoutInflater = 
         				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
