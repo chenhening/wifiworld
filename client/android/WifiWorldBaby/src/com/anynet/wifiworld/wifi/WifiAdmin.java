@@ -211,7 +211,7 @@ public class WifiAdmin {
 		//		return false;
 		//	}
 		//}
-		
+		//WifiProxySetting.setWifiProxySettings(config, "127.0.0.1", 8118);
 		// Set highest priority to this configured network
 		config.priority = getMaxPriority(mWifiManager) + 1;
 		int networkId = mWifiManager.updateNetwork(config);

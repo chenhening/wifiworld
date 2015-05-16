@@ -124,9 +124,10 @@ public class WifiSecuritiesV8 extends WifiSecurities {
                 Log.e(TAG, "Invalid security type: " + sec);
         }
         
-//    config.proxySettings = mProxySettings;
-//    config.ipAssignment = mIpAssignment;
-//    config.linkProperties = new LinkProperties(mLinkProperties);
+//        config.proxySettings = mProxySettings;
+//        config.ipAssignment = mIpAssignment;
+//        config.linkProperties = new LinkProperties(mLinkProperties);
+        //WifiProxySetting.setWifiProxySettings(config, "127.0.0.1", 8118);
 		
 	}
 	
