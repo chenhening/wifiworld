@@ -140,8 +140,8 @@ public final class CaptureActivity extends Activity implements
 
 			switch (msg.what) {
 				case PARSE_BARCODE_SUC: // 解析图片成功
-					Toast.makeText(activityReference.get(),
-							"解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+					Log.d("test", "解析成功，结果为：" + msg.obj);
+					String txt = msg.obj.toString();
 					JSONObject object = JSONObject.parseObject(msg.obj.toString());
 					WifiInfoScanned wifi = new WifiInfoScanned();
 					wifi.setWifiName(object.get("wifiName").toString());
@@ -387,7 +387,6 @@ public final class CaptureActivity extends Activity implements
 	 *            A greyscale bitmap of the camera data which was decoded.
 	 */
 	public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
-
 		// 重新计时
 		inactivityTimer.onActivity();
 
