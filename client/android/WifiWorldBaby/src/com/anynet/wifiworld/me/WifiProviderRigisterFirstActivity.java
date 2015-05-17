@@ -115,6 +115,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		if (curwifi == null) {
 			showToast("当前网络不稳定，请稍后再试。");
 			finish();
+			return;
 		}
 		
 		mWifiProfile = new WifiProfile();

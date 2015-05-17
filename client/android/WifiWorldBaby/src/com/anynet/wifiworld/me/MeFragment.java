@@ -288,6 +288,12 @@ public class MeFragment extends MainFragment {
 
 			@Override
             public void onClick(View v) {
+				// 查询是否登录
+				if (!checkIsLogined()) {
+					return;
+				}else{
+					setLoginedUI(isLogined());
+				}
 				Intent i = new Intent();
 				i.setClass(getApplicationContext(), MyWhiteListActivity.class);
 				startActivity(i);
