@@ -394,6 +394,10 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 		EditText et_desc = (EditText) this.findViewById(R.id.et_wifi_provider_desc_content);
 		mWifiProfile.Banner = et_desc.getText().toString();
+		if (mWifiProfile.Banner.equals("")) {
+			showToast("请务必填写WiFi的简介信息。");
+			return false;
+		}
 
 		return true;
 	}
