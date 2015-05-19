@@ -68,7 +68,8 @@
 	                    android:id="@+id/encrypt_result"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="match_parent"
-	                    android:src="@drawable/banner_icon_loging" />
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
 	            </LinearLayout>
 	        </RelativeLayout>
 	        
@@ -96,8 +97,21 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/dns_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/dns_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
+	            </LinearLayout>
 	        </RelativeLayout>
 	        
 	        <View
@@ -124,8 +138,21 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/arp_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/arp_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
+	            </LinearLayout>
 	        </RelativeLayout>
 	        
 	        <View
@@ -152,8 +179,21 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/wps_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/wps_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
+	            </LinearLayout>
 	        </RelativeLayout>
 	        
 	        <View
@@ -180,8 +220,21 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/reported_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/reported_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
+	            </LinearLayout>
 	        </RelativeLayout>
 	        
 	        <View
@@ -208,8 +261,21 @@
 	                android:layout_width="20dp"
 	                android:layout_height="20dp"
 	                android:orientation="vertical"
-	                android:layout_alignParentRight="true"
-	                android:background="@drawable/banner_icon_loging" ></LinearLayout>
+	                android:layout_alignParentRight="true" >
+	                
+	                <ProgressBar
+	                    android:id="@+id/firewall_process"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:visibility="gone" />
+	                
+	                <ImageView
+	                    android:id="@+id/firewall_result"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:src="@drawable/banner_icon_loging"
+	                    android:visibility="gone" />
+	            </LinearLayout>
 	        </RelativeLayout>
     		</LinearLayout>
     </LinearLayout>
