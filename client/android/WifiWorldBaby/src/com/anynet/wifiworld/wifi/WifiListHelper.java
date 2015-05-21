@@ -27,6 +27,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.AsyncTask.Status;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -161,7 +162,9 @@ public class WifiListHelper {
 			final WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(hotspot, null);
 			verifyList(wifiCfg, hotspot, wifiInfo, mWifiProfiles);
 		}
-		mHandler.sendEmptyMessage(WifiFragment.UPDATE_WIFI_LIST);
+		Message msg = new Message();
+		msg.what = WifiFragment.UPDATE_WIFI_LIST;
+		mHandler.sendMessageAtFrontOfQueue(msg);
 		refreshed = true;
 	}
 	

@@ -138,18 +138,20 @@ public class RouterUtilFactory {
 				SharepreferConstant.ROUTER_TPLINK);
 		RouterUtilInterface util = null;
 		String ip = WiFiUtil.getWiFiLYIP(context);
-
-				username = "admin";
-				password = "admin";
-				// Dlink的管理员密码默认为空
-				if (nowRouterType.equals(SharepreferConstant.ROUTER_DLINK)) {
-					username = "admin";
-					password = "";
-				} else if (nowRouterType
-						.equals(SharepreferConstant.ROUTER_NETCORE)) {
-					username = "guest";
-					password = "guest";
-				}
+		
+//		if (username == null && password == null) {
+//			username = "admin";
+//			password = "admin";
+//			// Dlink的管理员密码默认为空
+//			if (nowRouterType.equals(SharepreferConstant.ROUTER_DLINK)) {
+//				username = "admin";
+//				password = "";
+//			} else if (nowRouterType
+//					.equals(SharepreferConstant.ROUTER_NETCORE)) {
+//				username = "guest";
+//				password = "guest";
+//			}
+//		}
 
 		if (nowRouterType.equals(SharepreferConstant.ROUTER_STARWIFI)) {
 			// 如果是starwifi
@@ -207,5 +209,29 @@ public class RouterUtilFactory {
 	 * 将正确的账号密码存起来
 	 */
 	public void saveAccount() {
+		SharedPreferences share = context.getSharedPreferences(
+				SharepreferConstant.ROUTER, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = share.edit();
+		
+		editor.putString(SharepreferConstant.ROUTER_NAME, mUserName);
+		editor.putString(SharepreferConstant.ROUTER_PWD, mPassword);
+		
+		editor.commit();
+	}
+	
+	public static String getRouterAccountName(Context context) {
+		SharedPreferences share = context.getSharedPreferences(
+				SharepreferConstant.ROUTER, Context.MODE_PRIVATE);
+		String name = share.getString(SharepreferConstant.ROUTER_NAME, null);
+		
+		return name;
+	}
+	
+	public static String getRouterAccountPwd(Context context) {
+		SharedPreferences share = context.getSharedPreferences(
+				SharepreferConstant.ROUTER, Context.MODE_PRIVATE);
+		String pwd = share.getString(SharepreferConstant.ROUTER_PWD, null);
+		
+		return pwd;
 	}
 }

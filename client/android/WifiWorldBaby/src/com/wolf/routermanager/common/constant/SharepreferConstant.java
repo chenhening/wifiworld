@@ -26,4 +26,7 @@ public class SharepreferConstant {
 
 	public static final String Believe_Device = "Believe_Device";
 	public static final String Believe_Device_Name = "Believe_Device_Name";
+	
+	public static final String ROUTER_NAME = "router_account_name";
+	public static final String ROUTER_PWD = "router_account_pwd";
 }
