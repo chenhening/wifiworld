@@ -253,4 +253,38 @@ public class WifiProxySetting {
 			Log.e(TAG, "Failed to unset http Proxy");
 		}
 	}
+	
+	public static Object[] getWifiProxySettings(WifiConfiguration config) {
+		if (null == config)
+			return null;
+
+		try {
+			// get the link properties from the wifi configuration
+			Object linkProperties = getField(config, "linkProperties");
+			if (null == linkProperties)
+				return null;
+
+			// get the getHttpProxy method for LinkProperties
+			Class proxyPropertiesClass = Class
+					.forName("android.net.ProxyProperties");
+			Class[] setHttpProxyParams = new Class[1];
+			setHttpProxyParams[0] = proxyPropertiesClass;
+			Class lpClass = Class.forName("android.net.LinkProperties");
+			Method getHttpProxy = lpClass.getDeclaredMethod("getHttpProxy");
+			getHttpProxy.setAccessible(true);
+
+			Object param = getHttpProxy.invoke(linkProperties);
+
+			Object[] results = new Object[3];
+			results[0] = getDeclaredField(param, "mHost");
+			results[1] = getDeclaredField(param, "mPort");
+			results[2] = getDeclaredField(config, "proxySettings");
+			
+			return results;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, "Failed to unset http Proxy");
+		}
+		return null;
+	}
 }
