@@ -25,6 +25,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.UserProfile;
+import com.anynet.wifiworld.me.MyAccountActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class UserLoginActivity extends BaseActivity {
@@ -49,21 +50,8 @@ public class UserLoginActivity extends BaseActivity {
 	}
 
 	private void bingdingTitleUI() {
-		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.next_step);
-		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(UserLoginActivity.this, MainActivity.class);
-				startActivity(i);
-			}
-		});
 		mTitlebar.tvTitle.setText(getString(R.string.login_login));
+		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -85,6 +73,10 @@ public class UserLoginActivity extends BaseActivity {
 				mLL_Login.setEnabled(true);
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
+				//登陆成功后直接进入修改个人资料页面
+				Intent i = new Intent();
+				i.setClass(getApplicationContext(), MyAccountActivity.class);
+				UserLoginActivity.this.startActivity(i);
 				UserLoginActivity.this.finish();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
 				Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();

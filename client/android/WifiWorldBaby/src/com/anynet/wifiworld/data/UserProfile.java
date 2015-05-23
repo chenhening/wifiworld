@@ -12,14 +12,12 @@ import cn.bmob.v3.AsyncCustomEndpoints;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.CloudCodeListener;
-import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-import com.anynet.wifiworld.util.NetHelper;
+import com.alibaba.fastjson.JSON;
 import com.anynet.wifiworld.util.StringCrypto;
-
 
 public class UserProfile extends BmobUser {
 
@@ -34,13 +32,13 @@ public class UserProfile extends BmobUser {
 	public int Type; // 用户类型，
 	public float Wallet; // 用户钱包
 	public String NickName; //昵称
-	public String Email; //用于找回账号的邮箱
+	//public String Email; //用于找回账号的邮箱
 	public String CustomPwd; //用于固定登录的密码
 	private int Sex; //性别，男女
 	public String Age; //年龄，用滴答数表示
 	public String Job; //职业
 	public String Interest; //兴趣
-	public Bitmap Avatar; //头像 
+	public byte[] Avatar; //头像 
 
 	public static final String[] SexArray = {"女的","男的","弯的","奇怪的"};
 	
@@ -153,7 +151,21 @@ public class UserProfile extends BmobUser {
 
 						@Override
                         public void onSuccess(Object arg0) {
-							user.login(context, _callback);
+							user.QueryByPhoneNumber(context, user.getUsername(), new DataCallback<UserProfile>() {
+
+								@Override
+								public void onSuccess(UserProfile object) {
+									object.setUsername(user.getUsername());
+									object.setPassword(user.getPassword());
+									object.login(context, _callback);
+								}
+
+								@Override
+								public void onFailed(String msg) {
+									_callback.onFailed("注册账号失败." + msg);
+								}
+								
+							});
                         }
 					});
 				} else {

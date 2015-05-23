@@ -92,7 +92,6 @@ public class LoginHelper {
 	public LoginHelper(Context context) {
 		this.globalContext = context;
 		mCurRecord = globalContext.getSharedPreferences(mRecordDataFile, Context.MODE_PRIVATE);
-		//mPreferences = globalContext.getSharedPreferences(mUserprofileDataFile, Context.MODE_PRIVATE);
 	}
 
 	// ------------------------------------------------------------------------------------------------
