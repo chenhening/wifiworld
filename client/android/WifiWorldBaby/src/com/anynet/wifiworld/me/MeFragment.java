@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.config.GlobalConfig;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.me.whitelist.MyWhiteListActivity;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -331,6 +335,11 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.VISIBLE);
 			TextView tvName = (TextView) mPageRoot.findViewById(R.id.person_name);
 			tvName.setText(mLoginHelper.getCurLoginUserInfo().getUsername());
+			if (mLoginHelper.getCurLoginUserInfo().Avatar != null) {
+				Drawable drawable = new BitmapDrawable(this.getResources(), BitmapUtil.Bytes2Bimap(mLoginHelper.getCurLoginUserInfo().Avatar));
+				ImageView iv_avatar = (ImageView) this.findViewById(R.id.person_icon);
+				iv_avatar.setImageDrawable(drawable);
+			}
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);

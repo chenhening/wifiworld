@@ -448,7 +448,7 @@ public class MyAccountActivity extends BaseActivity {
 	private void getImageToView(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
-			Bitmap avatar = extras.getParcelable("data");
+			Bitmap avatar = BitmapUtil.toRoundBitmap((Bitmap) extras.getParcelable("data"));
 			Drawable drawable = new BitmapDrawable(this.getResources(), avatar);
 			ImageView iv_avatar = (ImageView) this.findViewById(R.id.person_icon);
 			iv_avatar.setImageDrawable(drawable);
