@@ -55,8 +55,11 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 						public void onSuccess(WifiProfile object) {
 							showToast("WiFi信息登记成功。");
 							LoginHelper.getInstance(getApplicationContext()).mWifiProfile = object;
+							
 							mIntent.setClass(WifiProviderRigisterCompleteActivity.this, MainActivity.class);
 							mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+							startActivity(mIntent);
+							mIntent.setClass(WifiProviderRigisterCompleteActivity.this, WifiProviderSettingActivity.class);
 							startActivity(mIntent);
 						}
 

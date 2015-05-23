@@ -18,8 +18,10 @@ import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
 public class WifiProviderSettingActivity extends BaseActivity {
 
@@ -109,8 +111,21 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), null, null);
+							//拉取敲门问题
+							WifiQuestions wifiQuestions = new WifiQuestions();
+							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiQuestions>() {
+								
+								@Override
+								public void onSuccess(WifiQuestions object) {
+									KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
+										WifiProviderSettingActivity.class.getName(), object);
+								}
+								
+								@Override
+								public void onFailed(String msg) {
+									showToast("获取敲门信息失败，请稍后重试:" + msg);
+								}
+							});
 						}
 					});
 				}

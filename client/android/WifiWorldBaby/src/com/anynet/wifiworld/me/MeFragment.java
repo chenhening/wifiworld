@@ -1,5 +1,8 @@
 package com.anynet.wifiworld.me;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -340,6 +343,35 @@ public class MeFragment extends MainFragment {
 				ImageView iv_avatar = (ImageView) this.findViewById(R.id.person_icon);
 				iv_avatar.setImageDrawable(drawable);
 			}
+			
+			new Timer().schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					//提醒WiFi提供者多去更新其WiFi设置(TODO)以后要专门移动到一个服务里面
+					if(mLoginHelper.mWifiProfile != null) {
+						getActivity().runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								new AlertDialog.Builder(getActivity()).setTitle("更新WiFi信息").setMessage("您已经很久没有更新过您提供的WiFi敲门问题和动态信息啦，是否去更新？")
+								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										Intent i = new Intent();
+										i.setClass(getApplicationContext(), WifiProviderSettingActivity.class);
+										startActivity(i);
+									}
+								}).setNegativeButton("取消", null).show();
+							}
+							
+						});
+					}
+				}
+				
+			}, 20000, 80000000);
+			
 		} else {
 			mTitlebar.tvTitle.setText(getString(R.string.my));
 			mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);

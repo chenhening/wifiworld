@@ -3,20 +3,15 @@ package com.anynet.wifiworld.knock;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
@@ -60,7 +55,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i),i);
 			}
 		} else {
-			mQuestions = new WifiQuestions();
+			mQuestions = (WifiQuestions) intent.getSerializableExtra("data");
 			mQuestions.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
 			for (int i = 0; i < 3; i++) {
 				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i),i);
@@ -223,9 +218,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 			if (mQuestions.MacAddr != null) {
 				LoginHelper.getInstance(getApplicationContext()).mKnockList.add(mQuestions.MacAddr);
 				showToast("恭喜敲门成功啦，可以上网啦！");
-				Intent i = new Intent();
-				i.setClass(this, MainActivity.class);
-				startActivity(i);
 			}
 		} else {
 			if (!mAskOrAnswer

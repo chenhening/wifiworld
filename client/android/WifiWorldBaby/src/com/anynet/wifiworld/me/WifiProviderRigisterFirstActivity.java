@@ -33,6 +33,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.XLLog;
@@ -360,8 +361,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private void getImageToView(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
-			mLogo = extras.getParcelable("data");
-			XLLog.e(TAG, "mLogo W:" + mLogo.getWidth() + " H:" + mLogo.getHeight());
+			mLogo = BitmapUtil.toRoundBitmap((Bitmap) extras.getParcelable("data"));
 			Drawable drawable = new BitmapDrawable(this.getResources(), mLogo);
 			mWifiLogo = (ImageView) this.findViewById(R.id.img_wifi_provider_logo_preview);
 			mWifiLogo.setImageDrawable(drawable);

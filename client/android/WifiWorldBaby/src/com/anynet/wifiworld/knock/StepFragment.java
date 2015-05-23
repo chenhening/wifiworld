@@ -1,6 +1,5 @@
 package com.anynet.wifiworld.knock;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,10 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.bean.SetupFragmentBean;
 
