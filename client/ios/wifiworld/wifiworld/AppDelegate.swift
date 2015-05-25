@@ -12,10 +12,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var locManager:CLLocationManager!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        MAMapServices.sharedServices().apiKey = "3cf9f4ed7bb055a8e240b9614eccee52"
+        //AMapNaviServices.sharedServices().apiKey = "3cf9f4ed7bb055a8e240b9614eccee52"
+        
+        locManager = CLLocationManager()
+        locManager.requestAlwaysAuthorization();
+        locManager.requestWhenInUseAuthorization()
+        
         return true
     }
 
