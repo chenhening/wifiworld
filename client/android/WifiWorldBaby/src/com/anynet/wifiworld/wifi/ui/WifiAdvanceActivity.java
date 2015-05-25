@@ -1,15 +1,10 @@
 package com.anynet.wifiworld.wifi.ui;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiBRService;
-import com.anynet.wifiworld.wifi.WifiConnectDialog;
-import com.anynet.wifiworld.wifi.WifiInfoScanned;
 import com.wolf.routermanager.bean.AllRouterInfoBean;
 import com.wolf.routermanager.common.RouterUtilFactory;
 import com.wolf.routermanager.inter.ConnInfoCallBack;
-import com.wolf.routermanager.login.CheckLogin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,13 +14,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class WifiAdvanceActivity extends Activity {
@@ -96,6 +88,8 @@ public class WifiAdvanceActivity extends Activity {
 		};
 		checkHandler.post(checkRunnable);
 		
+		setDeviceConnectedClickListner();
+		
 		mLoginDialog = new RouterLoginDialog(mContext);
 		setRouterBtnClickListner();
 	}
@@ -126,6 +120,18 @@ public class WifiAdvanceActivity extends Activity {
 	private void finishWithAnimation() {
 		finish();
 		overridePendingTransition(R.anim.hold, R.anim.slide_left_out);
+	}
+	
+	private void setDeviceConnectedClickListner() {
+		LinearLayout deviceLayout = (LinearLayout)findViewById(R.id.devices_connected);
+		deviceLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				Intent peerIntent = new Intent(mContext, WifiPeersListActivity.class);
+				startActivity(peerIntent);
+			}
+		});
 	}
 	
 	private void setRouterBtnClickListner() {
