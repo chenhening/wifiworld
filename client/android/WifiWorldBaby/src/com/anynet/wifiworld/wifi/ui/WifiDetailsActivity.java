@@ -10,7 +10,7 @@ import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiBlack;
+import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiFollow;
@@ -276,26 +276,26 @@ public class WifiDetailsActivity extends BaseActivity {
 
 		wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				WifiBlack wifiBlack = new WifiBlack();
+				WifiReport wifiBlack = new WifiReport();
 				wifiBlack.MacAddr = mWifiInfoScanned.getWifiMAC();
 				wifiBlack.Userid = LoginHelper.getInstance(getBaseContext())
 						.getCurLoginUserInfo().getUsername();
-				wifiBlack.BlackType = wifiConnectDialog.getBlackType();
+				wifiBlack.ReportType = wifiConnectDialog.getBlackType();
 				wifiBlack.Content = wifiConnectDialog.getBlackContent();
 				wifiBlack.MarkReportTime();
 
-				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiBlack>() {
+				wifiBlack.ReportWifi(getBaseContext(), new DataCallback<WifiReport>() {
 
 					@Override
-					public void onSuccess(WifiBlack object) {
+					public void onSuccess(WifiReport object) {
 						Log.i(TAG, "Success to report WiFi");
-						Toast.makeText(mContext, "Success to put current wifi to black list", Toast.LENGTH_LONG).show();
+						Toast.makeText(mContext, "Success to put current wifi to report table", Toast.LENGTH_LONG).show();
 					}
 
 					@Override
 					public void onFailed(String msg) {
 						Log.e(TAG, "Failed to report WiFi:" + msg);
-						Toast.makeText(mContext, "Failed to put current wifi to black list", Toast.LENGTH_LONG).show();
+						Toast.makeText(mContext, "Failed to put current wifi to report table", Toast.LENGTH_LONG).show();
 					}
 
 				});

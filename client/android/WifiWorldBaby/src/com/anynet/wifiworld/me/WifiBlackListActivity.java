@@ -20,7 +20,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
-import com.anynet.wifiworld.data.WifiBlack;
+import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -31,7 +31,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 public class WifiBlackListActivity extends BaseActivity {
 
 	//IPC
-	private List<WifiBlack> mListData;
+	private List<WifiReport> mListData;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
 	
@@ -57,12 +57,12 @@ public class WifiBlackListActivity extends BaseActivity {
 		bingdingTitleUI();
 		
 		//查询服务器
-		WifiBlack records = new WifiBlack();
+		WifiReport records = new WifiReport();
 		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
-		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiBlack>() {
+		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiReport>() {
 
 			@Override
-            public boolean onSuccess(List<WifiBlack> objects) {
+            public boolean onSuccess(List<WifiReport> objects) {
 	            //分析一周的上网记录
 				mListData = objects;
 				displayList();
@@ -165,7 +165,7 @@ public class WifiBlackListActivity extends BaseActivity {
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				WifiBlack item = mListData.get(position);
+				WifiReport item = mListData.get(position);
 				switch (index) {
 				case 0:
 					break;
@@ -209,7 +209,7 @@ public class WifiBlackListActivity extends BaseActivity {
 		}
 
 		@Override
-		public WifiBlack getItem(int position) {
+		public WifiReport getItem(int position) {
 			return mListData.get(position);
 		}
 
@@ -225,7 +225,7 @@ public class WifiBlackListActivity extends BaseActivity {
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-			WifiBlack item = getItem(position);
+			WifiReport item = getItem(position);
 			//holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
 			holder.tv_wifi_name.setText("employeehost");
 			holder.tv_wifi_alias.setText("王思聪家的wifi");

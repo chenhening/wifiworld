@@ -79,7 +79,7 @@ public class MyWhiteListActivity extends BaseActivity {
 	            //分析一周的上网记录
 				mListData = objects;
 				displayList();
-				return false;
+				return true;
             }
 
 			@Override

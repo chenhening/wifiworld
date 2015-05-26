@@ -20,7 +20,7 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
         self.view.addSubview(self.mapView);
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
-        self.mapView.zoomLevel = 13;
+        self.mapView.zoomLevel = 19;
     }
     
     override func viewDidAppear(animated: Bool) {

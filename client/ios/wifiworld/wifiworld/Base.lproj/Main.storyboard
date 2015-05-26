@@ -22,7 +22,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qUq-4n-1WW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="863" y="964"/>
+            <point key="canvasLocation" x="1039" y="1100"/>
         </scene>
         <!--Recent View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -42,7 +42,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="614" y="232"/>
+            <point key="canvasLocation" x="1279" y="-128"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="TtX-71-9mb">
@@ -62,13 +62,17 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Ya-21-0YR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-30" y="395"/>
+            <point key="canvasLocation" x="45" y="357"/>
         </scene>
         <!--附近-->
         <scene sceneID="JB0-Ck-8QC">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XlI-jL-XD4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="附近" id="h8K-Ur-P6F"/>
+                    <tabBarItem key="tabBarItem" title="附近" image="tab_map_nor" id="h8K-Ur-P6F">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="tab_map_sel"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Scg-SS-vea">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -81,13 +85,17 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c14-Lq-8Ro" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="224" y="232"/>
+            <point key="canvasLocation" x="598" y="184"/>
         </scene>
         <!--我-->
         <scene sceneID="jp5-nq-oNN">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="B1V-zv-RpX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="我" id="raH-tj-fBG"/>
+                    <tabBarItem key="tabBarItem" title="我" image="tab_mine_nor" id="raH-tj-fBG">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="tab_mine_sel"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dOo-zd-Lrd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -103,4 +111,10 @@
             <point key="canvasLocation" x="331" y="1063"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tab_map_nor" width="27" height="27"/>
+        <image name="tab_map_sel" width="30" height="30"/>
+        <image name="tab_mine_nor" width="27" height="27"/>
+        <image name="tab_mine_sel" width="30" height="30"/>
+    </resources>
 </document>
