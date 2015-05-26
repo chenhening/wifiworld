@@ -649,5 +649,4 @@ public class WifiAdmin {
         
         return string;
     }
-    
 }
