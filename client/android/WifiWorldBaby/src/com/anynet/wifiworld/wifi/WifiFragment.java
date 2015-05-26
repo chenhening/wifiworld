@@ -42,7 +42,7 @@ import com.anynet.wifiworld.MainActivity.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.DataListenerHelper;
-import com.anynet.wifiworld.data.WifiBlack;
+import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
@@ -95,7 +95,7 @@ public class WifiFragment extends MainFragment {
 	private WifiInfoScanned mWifiItemClick;
 	
 	private List<WifiWhite> mWifiWhite = null;
-	private List<WifiBlack> mWifiBlack = null;
+	private List<WifiReport> mWifiBlack = null;
 
 	private boolean isPwdConnect = false;
 	public PopupWindow popupwindow;
