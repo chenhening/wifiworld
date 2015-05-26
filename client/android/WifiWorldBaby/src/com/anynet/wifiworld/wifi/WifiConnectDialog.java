@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.amap.api.mapcore.util.r;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.WifiBlack;
+import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.dialog.XLBaseDialog;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 
@@ -256,17 +256,17 @@ public class WifiConnectDialog extends XLBaseDialog {
 		mPassword.setText("");
 	}
 	
-	public WifiBlack.ReportType getBlackType() {
-		WifiBlack.ReportType blackType = null;
+	public int getBlackType() {
+		int blackType = -1;
 		switch (mBlackTypeId) {
 		case R.id.wrong_pwd:
-			blackType = WifiBlack.ReportType.WRONG_PWD;
+			blackType = WifiReport.TypeReported.WRONG_PWD;
 			break;
 		case R.id.not_safe:
-			blackType = WifiBlack.ReportType.NOT_SAFE;
+			blackType = WifiReport.TypeReported.NOT_SAFE;
 			break;
 		case R.id.others:
-			blackType = WifiBlack.ReportType.OTHERS;
+			blackType = WifiReport.TypeReported.OTHERS;
 			break;
 		default:
 			break;

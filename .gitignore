@@ -20,3 +20,10 @@
 /client/android/WifiWorld/out
 /client/android/WifiWorldBaby/assets/www/.idea
 *.DS_Store
+
+client/ios/wifiworld/Build/
+client/ios/wifiworld/DerivedData/
+client/ios/wifiworld/wifiworld.xcodeproj/project.xcworkspace/xcshareddata/
+client/ios/wifiworld/wifiworld.xcodeproj/project.xcworkspace/xcuserdata/
+client/ios/wifiworld/wifiworld.xcodeproj/xcuserdata/jiansheng.xcuserdatad/
+client/ios/wifiworld/wifiworld.xcodeproj/project.pbxproj
