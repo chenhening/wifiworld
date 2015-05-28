@@ -3,7 +3,6 @@ package com.anynet.wifiworld.data;
 import java.util.List;
 
 import android.content.Context;
-import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
