@@ -21,15 +21,18 @@ function onRequest(request, response, modules) {
 		if (data == null)
 			return;
 			
-		var rows = JSON.parse(data);
-		for (var cursor in rows) {
-            if (!map_rank.contains(cursor.MacAddr))
-                map_rank[cursor.Macaddr] = 0;
-			if (cursor.Type == 0) {//บรฦภ
-                map_rank[cursor.Macaddr] += 5;
-			} else if (cursor.Type == 1) {
-                map_rank[cursor.Macaddr] -= 5;
-			}
+		var objects = JSON.parse(data);
+		for (var cursor in objects) {
+		    var rows = objects[cursor];
+		    for (var row in rows) {
+		        if (!map_rank.contains(cursor.MacAddr))
+					map_rank[cursor.Macaddr] = 0;
+				if (cursor.Type == 0) {//บรฦภ
+					map_rank[cursor.Macaddr] += 5;
+				} else if (cursor.Type == 1) {
+					map_rank[cursor.Macaddr] -= 5;
+				}
+		    }
 		}
 	});
 	
