@@ -4,3 +4,4 @@
 
 #import <AMapNaviKit/MAMapKit.h>
 #import <AMapNaviKit/AMapNaviKit.h>
+#import <BmobSDK/Bmob.h>

@@ -33,8 +33,9 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     }
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        if CLLocationCoordinate2DIsValid(userLocation.coordinate) {
+        if CLLocationCoordinate2DIsValid(userLocation.coordinate) && mapView.tag == 0{
             self.mapView.setCenterCoordinate(userLocation.coordinate , animated: true)
+            mapView.tag = 1;
         }
 
     }
