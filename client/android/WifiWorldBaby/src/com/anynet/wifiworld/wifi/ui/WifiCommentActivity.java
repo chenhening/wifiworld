@@ -44,8 +44,10 @@ public class WifiCommentActivity extends Activity {
 				UserProfile userProfile = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo();
 				if (userProfile != null && userProfile.NickName != null) {
 					wifiComments.UserId = userProfile.NickName;
+					wifiComments.UserAccount = userProfile.getUsername();
 				} else {
 					wifiComments.UserId = "无名氏";
+					wifiComments.UserAccount = "";
 				}
 				wifiComments.MarkSendTime();
 				wifiComments.StoreRemote(getBaseContext(), new DataCallback<WifiComments>() {
