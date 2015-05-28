@@ -131,10 +131,10 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
         return mPageRoot;
 	}
 
+
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && !mLoaded ) {
+    public void startUpdte() {
+        if (!mLoaded ) {
             if (aMap == null) {
                 aMap = mapView.getMap();
                 setUpMap();
@@ -578,12 +578,13 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	protected void onVisible() {
 		// TODO Auto-generated method stub
-		
-	}
+        Log.d(TAG, "onVisible");
+
+    }
 
 	@Override
 	protected void onInvisible() {
 		// TODO Auto-generated method stub
-		
-	}
+		Log.d(TAG, "onInvisible");
+    }
 }
