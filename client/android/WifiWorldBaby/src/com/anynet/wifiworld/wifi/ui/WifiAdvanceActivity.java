@@ -34,6 +34,7 @@ public class WifiAdvanceActivity extends Activity {
 	
 	private RouterLoginDialog mLoginDialog;
 	private boolean mLoginSuccessFlag = false;
+	private Handler mCheckHandler = new Handler();;
 	@SuppressLint("HandlerLeak")
 	private Handler mRouterHandler = new Handler() {
 
@@ -68,7 +69,6 @@ public class WifiAdvanceActivity extends Activity {
 		final int[] imageResults = {R.id.encrypt_result, R.id.dns_result, R.id.arp_result, R.id.wps_result,
 				R.id.reported_result, R.id.firewall_result};
 		final TextView textView = (TextView)findViewById(R.id.wifi_encrypt_text);
-		final Handler checkHandler = new Handler();
 		checkIdx = 0;
 		findViewById(progressBars[checkIdx]).setVisibility(View.VISIBLE);
 		Runnable checkRunnable = new Runnable() {
@@ -83,10 +83,10 @@ public class WifiAdvanceActivity extends Activity {
 					return;
 				}
 				findViewById(progressBars[checkIdx]).setVisibility(View.VISIBLE);
-				checkHandler.postDelayed(this, 1000);
+				mCheckHandler.postDelayed(this, 1000);
 			}
 		};
-		checkHandler.post(checkRunnable);
+		mCheckHandler.post(checkRunnable);
 		
 		setDeviceConnectedClickListner();
 		
@@ -118,6 +118,7 @@ public class WifiAdvanceActivity extends Activity {
 	}
 	
 	private void finishWithAnimation() {
+		mCheckHandler.removeCallbacksAndMessages(null);
 		finish();
 		overridePendingTransition(R.anim.hold, R.anim.slide_left_out);
 	}
