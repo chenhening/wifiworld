@@ -25,6 +25,12 @@ public class WifiComments extends BmobObject implements Serializable {
 	public String UserId;  //评论的用户账号昵称
 	public String UserAccount;  //评论的用户账号
 	public long SendTime; //用户登陆网络的时间
+	public int Type;
+	
+	public static class CommentType {
+		public static int COMMENT_GOOD = 0; //好评
+		public static int COMMENT_BAD = 1; //差评
+	}
 	
 	public void StoreRemote(final Context context, DataCallback<WifiComments> callback) {
 		final DataCallback<WifiComments> _callback = callback;

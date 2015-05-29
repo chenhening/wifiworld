@@ -20,7 +20,7 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
         self.view.addSubview(self.mapView);
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
-        self.mapView.zoomLevel = 13;
+        self.mapView.zoomLevel = 19;
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -33,8 +33,9 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     }
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        if CLLocationCoordinate2DIsValid(userLocation.coordinate) {
+        if CLLocationCoordinate2DIsValid(userLocation.coordinate) && mapView.tag == 0{
             self.mapView.setCenterCoordinate(userLocation.coordinate , animated: true)
+            mapView.tag = 1;
         }
 
     }

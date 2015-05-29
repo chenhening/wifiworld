@@ -98,6 +98,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	private MarkerOptions markOptions;
 	private CircleOptions circleOptions;
 	private Circle mCircle;
+
+    private boolean mLoaded = false;
 	
 	public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
 	// ---------------------------------------------------------------------------------------------
@@ -122,92 +124,109 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.e(TAG, "1 onCreateView:"+(System.currentTimeMillis()-current));
 		mPageRoot = inflater.inflate(R.layout.fregment_map, null);
-		mapView = (MapView) mPageRoot.findViewById(R.id.map);
-		mapView.onCreate(savedInstanceState);
-		if (aMap == null) {
-			aMap = mapView.getMap();
-			setUpMap();
-		}
-		super.onCreateView(inflater, container, savedInstanceState);
-		bingdingTitleUI();
+        mapView = (MapView) mPageRoot.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
-		//设置上拉显示按钮
-		SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-		layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
-		layout.setAnchorPoint(0.3f);
-		layout.setPanelSlideListener(new PanelSlideListener() {
-
-			@Override
-			public void onPanelSlide(View panel, float slideOffset) {
-
-			}
-
-			@Override
-			public void onPanelExpanded(View panel) {
-
-			}
-
-			@Override
-			public void onPanelCollapsed(View panel) {
-
-			}
-
-			@Override
-			public void onPanelAnchored(View panel) {
-
-			}
-		});
-
-		wifiList = new ArrayList<WifiProfile>();
-		mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
-		mWifiListMapAdapter = new WifiListMapAdapter(getActivity(), wifiList);
-		mWifiListView.setAdapter(mWifiListMapAdapter);
-		mWifiListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
-				WifiListMapAdapter list = (WifiListMapAdapter) parent.getAdapter();
-				if(list!=null && list.getCount()>0){
-					WifiProfile  wf= (WifiProfile) list.getItem(position);
-					zoomAndDisplay(wf);
-					Toast.makeText(list.getContext(), "mac:"+wf.MacAddr, Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-		mImageView = (ImageView) mPageRoot.findViewById(R.id.brought_by);
-		mImageView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View view) {
-				if (mImageClickDown) {
-					mImageView.setImageResource(R.drawable.map_wifi_down);
-				} else {
-					mImageView.setImageResource(R.drawable.map_wifi_up);
-				}
-				mImageClickDown = !mImageClickDown;
-			}
-		});
-		
-		//初始化路径规划api
-		routeSearch = new RouteSearch(this.getActivity());
-		routeSearch.setRouteSearchListener(this);
-		
-		//设置地图围栏
-		IntentFilter fliter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        fliter.addAction(GEOFENCE_BROADCAST_ACTION);
-        getActivity().registerReceiver(mGeoFenceReceiver, fliter);
-        
-		Intent intent = new Intent(GEOFENCE_BROADCAST_ACTION);
-        mPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-        
-        markOptions = new MarkerOptions();
-        markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                .decodeResource(getResources(), R.drawable.location_marker)));
-        circleOptions = new CircleOptions();
-        Log.e(TAG, "2 onCreateView:"+(System.currentTimeMillis()-current));
-		return mPageRoot;
+        return mPageRoot;
 	}
+
+
+    @Override
+    public void startUpdte() {
+        if (!mLoaded ) {
+            if (aMap == null) {
+                aMap = mapView.getMap();
+                setUpMap();
+            }
+            aMap.setOnMapClickListener(this);
+            aMap.setOnMarkerClickListener(this);
+            aMap.setOnInfoWindowClickListener(this);
+            aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
+            aMap.setOnMapClickListener(this);
+
+            bingdingTitleUI();
+
+            //设置上拉显示按钮
+            SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+            layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
+            layout.setAnchorPoint(0.3f);
+            layout.setPanelSlideListener(new PanelSlideListener() {
+
+                @Override
+                public void onPanelSlide(View panel, float slideOffset) {
+
+                }
+
+                @Override
+                public void onPanelExpanded(View panel) {
+
+                }
+
+                @Override
+                public void onPanelCollapsed(View panel) {
+
+                }
+
+                @Override
+                public void onPanelAnchored(View panel) {
+
+                }
+            });
+
+            wifiList = new ArrayList<WifiProfile>();
+            mWifiListView = (ListView) mPageRoot.findViewById(R.id.wifi_list_map);
+            mWifiListMapAdapter = new WifiListMapAdapter(getActivity(), wifiList);
+            mWifiListView.setAdapter(mWifiListMapAdapter);
+            mWifiListView.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // TODO Auto-generated method stub
+                    WifiListMapAdapter list = (WifiListMapAdapter) parent.getAdapter();
+                    if(list!=null && list.getCount()>0){
+                        WifiProfile  wf= (WifiProfile) list.getItem(position);
+                        zoomAndDisplay(wf);
+                        Toast.makeText(list.getContext(), "mac:"+wf.MacAddr, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            mImageView = (ImageView) mPageRoot.findViewById(R.id.brought_by);
+            mImageView.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if (mImageClickDown) {
+                        mImageView.setImageResource(R.drawable.map_wifi_down);
+                    } else {
+                        mImageView.setImageResource(R.drawable.map_wifi_up);
+                    }
+                    mImageClickDown = !mImageClickDown;
+                }
+            });
+
+            //初始化路径规划api
+            routeSearch = new RouteSearch(this.getActivity());
+            routeSearch.setRouteSearchListener(this);
+
+            //设置地图围栏
+            IntentFilter fliter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            fliter.addAction(GEOFENCE_BROADCAST_ACTION);
+            getActivity().registerReceiver(mGeoFenceReceiver, fliter);
+
+            Intent intent = new Intent(GEOFENCE_BROADCAST_ACTION);
+            mPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+            markOptions = new MarkerOptions();
+            markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                    .decodeResource(getResources(), R.drawable.location_marker)));
+            circleOptions = new CircleOptions();
+            Log.e(TAG, "2 onCreateView:"+(System.currentTimeMillis()-current));
+
+            mLoaded = true;
+        }
+    }
+
 	
 	private BroadcastReceiver mGeoFenceReceiver = new BroadcastReceiver() {
         @Override
@@ -260,11 +279,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		super.onResume();
 		mapView.onResume();
 
-		aMap.setOnMapClickListener(this);
-		aMap.setOnMarkerClickListener(this);
-		aMap.setOnInfoWindowClickListener(this);
-		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
-		aMap.setOnMapClickListener(this);
+
 		//onLocationChanged(mAMapLocation);
 		
 		// centerMarker.setAnimationListener(this);
@@ -563,12 +578,13 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	protected void onVisible() {
 		// TODO Auto-generated method stub
-		
-	}
+        Log.d(TAG, "onVisible");
+
+    }
 
 	@Override
 	protected void onInvisible() {
 		// TODO Auto-generated method stub
-		
-	}
+		Log.d(TAG, "onInvisible");
+    }
 }
