@@ -35,7 +35,7 @@ public class WifiInfoScanned implements Serializable {
 	private String mBanner;
 	
 	private float mRating;
-	private int mRanking;
+	private long mRanking;
 	private long ConnectedTimes;
 	private int ConnectedDuration;
 	
@@ -84,11 +84,11 @@ public class WifiInfoScanned implements Serializable {
 		mRating = rating;
 	}
 
-	public int getRanking() {
+	public long getRanking() {
 		return mRanking;
 	}
 
-	public void setRanking(int ranking) {
+	public void setRanking(long ranking) {
 		mRanking = ranking;
 	}
 

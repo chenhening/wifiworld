@@ -10,6 +10,7 @@ import com.anynet.wifiworld.UserLoginActivity;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
@@ -75,6 +76,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private Handler mUpdateViewHandler = new Handler();
 	private Runnable mMonitorDataRunnable = null;
 //	private int mProfileFlag = GET_DATA_DEFAULT;
+	private int mRankFlag = GET_DATA_DEFAULT;
 	private int mDynamicFlag = GET_DATA_DEFAULT;
 	private int mMessagesFlag = GET_DATA_DEFAULT;
 	private int mCommentsFlag = GET_DATA_DEFAULT;
@@ -336,6 +338,24 @@ public class WifiDetailsActivity extends BaseActivity {
 //			}
 //		});
 		
+		WifiRank wifiRank = new WifiRank();
+		wifiRank.QueryByMacAddress(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<WifiRank>() {
+			
+			@Override
+			public void onSuccess(WifiRank object) {
+				Log.i(TAG, "Success to query wifi rank from server:" + mWifiInfoScanned.getWifiMAC());
+				mWifiInfoScanned.setRanking(object.Rank);
+				mRankFlag = GET_DATA_SUCCESS;
+			}
+			
+			@Override
+			public void onFailed(String msg) {
+				Log.e(TAG, "Failed to query wifi rank:" + mWifiInfoScanned.getWifiMAC()
+						+ ": " + msg);
+				mRankFlag = GET_DATA_FAILED;
+			}
+		});
+		
 		WifiDynamic wifiDynamic = new WifiDynamic();
 		wifiDynamic.QueryConnectedTimes(this, mWifiInfoScanned.getWifiMAC(), new DataCallback<Long>() {
 
@@ -453,8 +473,10 @@ public class WifiDetailsActivity extends BaseActivity {
 //							mWifiBanner.setText(mWifiInfoScanned.getBanner());
 //						}
 //					}
-					if (mDynamicFlag == GET_DATA_SUCCESS) {
+					if (mRankFlag == GET_DATA_SUCCESS) {
 						mRankText.setText("排名：" + String.valueOf(mWifiInfoScanned.getRanking()));
+					}
+					if (mDynamicFlag == GET_DATA_SUCCESS) {
 						mRateText.setText(String.valueOf(mWifiInfoScanned.getWifiStrength()));
 						mConnectedCnt.setText(String.valueOf(mWifiInfoScanned.getConnectedTimes()) + "次");
 						mConnectedTime.setText(String.valueOf(mWifiInfoScanned.getConnectedDuration()) + "小时");
@@ -472,6 +494,7 @@ public class WifiDetailsActivity extends BaseActivity {
 //							+ ", " + mMessagesFlag + ", " + mFollowFlag);
 					if (mCommentsFlag != GET_DATA_DEFAULT && mDynamicFlag != GET_DATA_DEFAULT
 							&& mMessagesFlag != GET_DATA_DEFAULT && mFollowFlag != GET_DATA_DEFAULT
+							&& mRankFlag != GET_DATA_DEFAULT
 							/*&& mProfileFlag != GET_DATA_DEFAULT*/) {
 						mProcessBar.setVisibility(View.GONE);
 						mLayoutRoot.removeView(mProcessBar);
