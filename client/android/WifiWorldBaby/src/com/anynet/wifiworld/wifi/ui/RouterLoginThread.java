@@ -5,21 +5,18 @@ import com.wolf.routermanager.inter.ConnInfoCallBack;
 import com.wolf.routermanager.login.CheckLogin;
 
 import android.content.Context;
-import android.os.Handler;
 import android.widget.Toast;
 
-public class RouterLoginThread extends Thread {
+public class RouterLoginThread {
 	private final static String TAG = RouterLoginThread.class.getSimpleName();
 	
 	private Context mContext;
-	private Handler mHandler;
 	private CheckLogin mCheckLogin;
 	private String LoginName;
 	private String LoginPwd;
 	
-	public RouterLoginThread(Context context, Handler handler) {
+	public RouterLoginThread(Context context) {
 		mContext = context;
-		mHandler = handler;
 		mCheckLogin = new CheckLogin(mContext);
 	}
 
@@ -28,10 +25,19 @@ public class RouterLoginThread extends Thread {
 		LoginPwd = pwd;
 	}
 	
-	@Override
-	public void run() {
+	public interface LoginRouterCallback {
+		public void onLoginSuccess();
+		public void onLoginFailed();
+	}
+	
+	public void run(final LoginRouterCallback loginRouterCallback) {
 		if (LoginName == null || LoginName == "") {
 			Toast.makeText(mContext, "路由器登录名不能为空", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		if (AllRouterInfoBean.hasLogin) {
+			loginRouterCallback.onLoginSuccess();
 			return;
 		}
 		
@@ -41,12 +47,11 @@ public class RouterLoginThread extends Thread {
 			public void putData(boolean flag) {
 				if (!flag) {
 					Toast.makeText(mContext, "Failed to login router", Toast.LENGTH_LONG).show();
-					mHandler.sendEmptyMessage(WifiAdvanceActivity.LOGIN_FAILED);
+					loginRouterCallback.onLoginFailed();
 				} else {
-					mHandler.sendEmptyMessage(WifiAdvanceActivity.LOGIN_SUCCESSED);
+					loginRouterCallback.onLoginSuccess();
 				}
 			}
 		});
-		super.run();
 	}
 }

@@ -1,11 +1,14 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.security.PublicKey;
+
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.wolf.routermanager.bean.AllRouterInfoBean;
 import com.wolf.routermanager.common.RouterUtilFactory;
 import com.wolf.routermanager.inter.ConnInfoCallBack;
 
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -29,26 +32,11 @@ public class WifiAdvanceActivity extends Activity {
 	private WifiAdmin mWifiAdmin;
 	
 	private static int checkIdx = 0;
-	public static int LOGIN_SUCCESSED = 50;
-	public static int LOGIN_FAILED = 51;
+	private RouterLoginThread mRouterLoginThread;
 	
 	private RouterLoginDialog mLoginDialog;
-	private boolean mLoginSuccessFlag = false;
-	private Handler mCheckHandler = new Handler();;
-	@SuppressLint("HandlerLeak")
-	private Handler mRouterHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			int what = msg.what;
-			if (what == LOGIN_SUCCESSED) {
-				mLoginSuccessFlag = true;
-			} else if (what == LOGIN_FAILED) {
-				showRouterLoginDialog("登录路由器失败，请重新输入");
-			}
-		}
-		
-	};
+	private int mLoginSuccessFlag = -1;
+	private Handler mCheckHandler = new Handler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +51,8 @@ public class WifiAdvanceActivity extends Activity {
 		mWifiAdmin = WifiAdmin.getInstance(this);
 		mWifiName = (TextView)findViewById(R.id.wifi_advance_name);
 		mWifiName.setText(WifiAdmin.convertToNonQuotedString(mWifiAdmin.getWifiNameConnection()));
+		
+		mRouterLoginThread = new RouterLoginThread(mContext);
 		
 		final int[] progressBars = {R.id.encrypt_process, R.id.dns_process, R.id.arp_process, R.id.wps_process,
 				R.id.reported_process, R.id.firewall_process};
@@ -142,23 +132,28 @@ public class WifiAdvanceActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 				//need thread to supervise mLoginSuccessFlag
-				if (isRouterLogin()) {
-					if (mLoginSuccessFlag) {
-						AllRouterInfoBean.routerUtilInterface.reboot(new ConnInfoCallBack() {
+				if (RouterUtilFactory.isSupportRouter(mContext)) {
+					boolean autoLoginFlag = isAutoLogin(new LoginSuccessCallback() {
+						
+						@Override
+						public void routerOperator() {
+							AllRouterInfoBean.routerUtilInterface.reboot(new ConnInfoCallBack() {
 
-							@Override
-							public void putData(boolean flag) {
-								if (!flag) {
-									Toast.makeText(mContext,"Failed to reboot router",
-													Toast.LENGTH_LONG).show();
+								@Override
+								public void putData(boolean flag) {
+									if (!flag) {
+										Toast.makeText(mContext,"Failed to reboot router",
+														Toast.LENGTH_LONG).show();
+									}
 								}
-							}
-						});
-					} else {
+							});
+						}
+					});
+					if (!autoLoginFlag) {
 						showRouterLoginDialog("自动登录路由器失败，请输入路由信息");
 					}
 				} else {
-					
+					Toast.makeText(mContext, "Not Support Router", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -187,9 +182,20 @@ public class WifiAdvanceActivity extends Activity {
 				}
 				dialog.dismiss();
 				
-				RouterLoginThread routerLoginThread = new RouterLoginThread(mContext, mRouterHandler);
+				RouterLoginThread routerLoginThread = new RouterLoginThread(mContext);
 				routerLoginThread.setRouterAccount(name, pwd);
-				routerLoginThread.start();
+				routerLoginThread.run(new RouterLoginThread.LoginRouterCallback() {
+					
+					@Override
+					public void onLoginSuccess() {
+						Toast.makeText(mContext, "Login Router Success", Toast.LENGTH_LONG).show();
+					}
+					
+					@Override
+					public void onLoginFailed() {
+						Toast.makeText(mContext, "Login Router Failed", Toast.LENGTH_LONG).show();
+					}
+				});
 			}
 		});
 
@@ -204,20 +210,29 @@ public class WifiAdvanceActivity extends Activity {
 		mLoginDialog.show();
 	}
 	
-	private boolean isRouterLogin() {
-		if (RouterUtilFactory.isSupportRouter(mContext)) {
+	private boolean isAutoLogin(final LoginSuccessCallback callback) {
 			String loginName = RouterUtilFactory.getRouterAccountName(mContext);
 			if (loginName == null) {
-				return true;
+				return false;
 			} else {
-				RouterLoginThread routerLoginThread = new RouterLoginThread(mContext, mRouterHandler);
-				routerLoginThread.setRouterAccount(loginName, RouterUtilFactory.getRouterAccountPwd(mContext));
-				routerLoginThread.start();
+				mRouterLoginThread.setRouterAccount(loginName, RouterUtilFactory.getRouterAccountPwd(mContext));
+				mRouterLoginThread.run(new RouterLoginThread.LoginRouterCallback() {
+					
+					@Override
+					public void onLoginSuccess() {
+						 callback.routerOperator();
+					}
+					
+					@Override
+					public void onLoginFailed() {
+						showRouterLoginDialog("自动登录路由器失败，请重新输入");
+					}
+				});
 				return true;
 			}
-		} else {
-			Toast.makeText(mContext, "Not Supported Router", Toast.LENGTH_SHORT).show();
-			return false;
-		}
+	}
+	
+	public interface LoginSuccessCallback {
+		public void routerOperator();
 	}
 }
