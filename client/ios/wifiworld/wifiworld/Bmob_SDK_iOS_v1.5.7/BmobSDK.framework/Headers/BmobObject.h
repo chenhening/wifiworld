@@ -47,7 +47,7 @@
 /**
  *	创建一个带有className的BmobObject对象
  *
- *	@param	className	表示对象名称(类似数据库表名)
+ *	@param	className 表示对象名称(类似数据库表名)
  *
  *	@return	BmobObject
  */
@@ -58,10 +58,12 @@
  *  创建一个带有className 和objectId的BmobObject对象
  *
  *  @param className 表名
+
  *  @param objectId  对象的id
  *
  *  @return BmobObject对象
  */
+
 +(instancetype)objectWithoutDatatWithClassName:(NSString*)className objectId:(NSString *)objectId;
 
 /**
@@ -78,6 +80,7 @@
  *
  *	@param	obj	数据
  *	@param	aKey	键
+ *
  */
 -(void)setObject:(id)obj forKey:(NSString*)aKey;
 

@@ -14,33 +14,46 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
-        self.mapView = MAMapView(frame: CGRectMake(0, 64, self.view.frame.width, self.view.frame.height-113));
+        self.mapView = MAMapView(frame: CGRectMake(0, 20, self.view.frame.width, self.view.frame.height-69));
         self.view.addSubview(self.mapView);
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
         self.mapView.zoomLevel = 19;
+        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-            }
-
+        
+    }
+    
+    func queryObject(loc:CLLocation!){
+        let wifiProfile = WifiProfile();
+        let geo = BmobGeoPoint(longitude: loc.coordinate.longitude , withLatitude: loc.coordinate.latitude );
+        wifiProfile.queryObject(geo, radian: 1.0,){
+        
+        
+        };
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        if CLLocationCoordinate2DIsValid(userLocation.coordinate) && mapView.tag == 0{
+        println("location",userLocation.location.coordinate.longitude,userLocation.location.coordinate.latitude);
+        self.queryObject(userLocation.location);
+
+        if userLocation.location != nil && mapView.tag == 0{
             self.mapView.setCenterCoordinate(userLocation.coordinate , animated: true)
             mapView.tag = 1;
-        }
 
+        }
     }
 
-    
     /*
     // MARK: - Navigation
 
