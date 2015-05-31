@@ -1,7 +1,5 @@
 package com.anynet.wifiworld.wifi;
 
-import org.apache.cordova.LOG;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -60,12 +58,12 @@ public class WifiHandleDB {
 
 			@Override
             public void onSuccess(WifiProfile object) {
-				LOG.d(TAG, "添加数据成功，返回objectId为："+ object.getObjectId());
+				Log.d(TAG, "添加数据成功，返回objectId为："+ object.getObjectId());
             }
 
 			@Override
             public void onFailed( String msg) {
-				LOG.d(TAG, "添加数据失败：" + msg);
+				Log.d(TAG, "添加数据失败：" + msg);
             }
 		});
 	}

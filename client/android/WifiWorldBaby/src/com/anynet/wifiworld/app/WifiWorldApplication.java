@@ -25,11 +25,7 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.UmengRegistrar;
 import com.umeng.message.entity.UMessage;
-//import com.xunlei.common.member.XLUserUtil;
 import com.anynet.wifiworld.constant.Const;
-import com.anynet.wifiworld.dao.DaoMaster;
-import com.anynet.wifiworld.dao.DaoMaster.OpenHelper;
-import com.anynet.wifiworld.dao.DaoSession;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.PackageSignHelper;
 import com.anynet.wifiworld.util.PreferenceHelper;
@@ -249,45 +245,6 @@ public class WifiWorldApplication extends Application
             }
         }
         mActivityStack.clear();
-    }
-    
-    
-    
-    private static DaoMaster daoMaster;
-    private static DaoSession daoSession;
-    
-    /**
-     * 取得DaoMaster
-     *
-     * @param context
-     * @return
-     */
-    public static DaoMaster getDaoMaster(Context context)
-    {
-        if (daoMaster == null)
-        {
-            OpenHelper helper = new DaoMaster.DevOpenHelper(context, Const.DATABASE_NAME, null);
-            daoMaster = new DaoMaster(helper.getWritableDatabase());
-        }
-        return daoMaster;
-    }
-    /**
-     * 取得DaoSession
-     *
-     * @param context
-     * @return
-     */
-    public static DaoSession getDaoSession(Context context)
-    {
-        if (daoSession == null)
-        {
-            if (daoMaster == null)
-            {
-                daoMaster = getDaoMaster(context);
-            }
-            daoSession = daoMaster.newSession();
-        }
-        return daoSession;
     }
 
 	public static boolean isLogin() {

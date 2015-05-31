@@ -3,20 +3,16 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.avos.avoscloud.LogUtil.log;
-
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.NetworkInfo.State;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 

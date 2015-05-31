@@ -17,7 +17,6 @@ import cn.smssdk.SMSSDK;
 import com.anynet.wifiworld.app.BaseActivity;
 import com.anynet.wifiworld.app.BaseFragment;
 import com.anynet.wifiworld.config.GlobalConfig;
-import com.anynet.wifiworld.dao.DBHelper;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
@@ -27,7 +26,6 @@ import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.wifi.WifiFragment;
-import com.avos.avoscloud.AVOSCloud;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.message.IUmengRegisterCallback;
@@ -51,7 +49,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	private int index;
 	// 当前fragment的index
 	private int currentTabIndex;
-	private DBHelper dbHelper;
 	private ImageView ivMyNew;
 	private StaticHandler handler = new StaticHandler(this);
 	private PushAgent mPushAgent;
@@ -90,7 +87,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 		mLoginHelper = LoginHelper.getInstance(this);
 		// mLoginHelper.AutoLogin();
 		mLocationHelper = LocationHelper.getInstance(this);
-		dbHelper = DBHelper.getInstance(this);
 
 		Intent intent = getIntent();
 		intent.getBooleanExtra("isFromWelcomeActivity", false);

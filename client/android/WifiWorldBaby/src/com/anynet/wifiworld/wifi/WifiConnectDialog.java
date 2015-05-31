@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,11 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.amap.api.mapcore.util.r;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiReport;
 import com.anynet.wifiworld.dialog.XLBaseDialog;
-import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 
 public class WifiConnectDialog extends XLBaseDialog {
 	public static final String TAG = WifiConnectDialog.class.getSimpleName();
