@@ -112,7 +112,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							//拉取敲门问题
-							WifiQuestions wifiQuestions = new WifiQuestions();
+							final WifiQuestions wifiQuestions = new WifiQuestions();
 							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiQuestions>() {
 								
 								@Override
@@ -123,7 +123,8 @@ public class WifiProviderSettingActivity extends BaseActivity {
 								
 								@Override
 								public void onFailed(String msg) {
-									showToast("获取敲门信息失败，请稍后重试:" + msg);
+									KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
+											WifiProviderSettingActivity.class.getName(), wifiQuestions);
 								}
 							});
 						}
