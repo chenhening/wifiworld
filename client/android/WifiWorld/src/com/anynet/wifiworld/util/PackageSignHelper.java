@@ -1,4 +1,4 @@
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -28,7 +28,7 @@ public class PackageSignHelper
         
         try
         {
-            PackageInfo pis = context.getPackageManager().getPackageInfo("com.xunlei.redcrystalandroid", PackageManager.GET_SIGNATURES);
+            PackageInfo pis = context.getPackageManager().getPackageInfo("com.anynet.wifiworld", PackageManager.GET_SIGNATURES);
             Signature[] sigs = pis.signatures;
             
             String sig = new String(sigs[0].toChars());

@@ -1,4 +1,4 @@
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.util.List;
 
