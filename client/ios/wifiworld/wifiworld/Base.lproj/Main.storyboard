@@ -22,9 +22,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qUq-4n-1WW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="855" y="628"/>
+            <point key="canvasLocation" x="708" y="628"/>
         </scene>
-        <!--Recent View Controller-->
+        <!--附近-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="RecentViewController" customModule="wifiworld" customModuleProvider="target" sceneMemberID="viewController">
@@ -35,14 +35,14 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="7qD-9s-HPL"/>
+                    <navigationItem key="navigationItem" title="附近" id="7qD-9s-HPL"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="807" y="-120"/>
+            <point key="canvasLocation" x="708" y="-128"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="TtX-71-9mb">
@@ -67,7 +67,8 @@
         <!--附近-->
         <scene sceneID="JB0-Ck-8QC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XlI-jL-XD4" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="XlI-jL-XD4" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="附近" image="tab_map_nor" id="h8K-Ur-P6F">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="tab_map_sel"/>
@@ -79,6 +80,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="otg-Eu-LPM">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Ftf-mo-ZK8"/>
                     </connections>
@@ -108,7 +112,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Plm-3E-4g8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="323" y="639"/>
+            <point key="canvasLocation" x="302" y="628"/>
         </scene>
     </scenes>
     <resources>

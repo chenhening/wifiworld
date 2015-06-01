@@ -11,7 +11,7 @@
  * <p>
  */
 
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.lang.ref.WeakReference;
 
@@ -19,9 +19,9 @@ import com.testin.agent.TestinAgent;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
-import com.xunlei.crystalandroid.app.BaseActivity;
-import com.xunlei.crystalandroid.app.CrystalApplication;
-import com.xunlei.redcrystalandroid.R;
+import com.anynet.wifiworld.app.BaseActivity;
+import com.anynet.wifiworld.app.WifiWorldApplication;
+import com.anynet.wifiworld.R;
 
 /**
  * 请在这里增加文件描述
@@ -39,16 +39,16 @@ public class UmengHelper
         //默认只有在wifi下才自动提醒， 这个设置在什么网络下都提醒
  
         //根据签名判断不同的包
-        if (PackageSignHelper.isRelease(CrystalApplication.getInstance()))
+        if (PackageSignHelper.isRelease(WifiWorldApplication.getInstance()))
         {
-            TestinAgent.init(weakAct.get(), weakAct.get().getResources().getString(R.string.release_testin_crash_key));
+            //TestinAgent.init(weakAct.get(), weakAct.get().getResources().getString(R.string.release_testin_crash_key));
             UmengUpdateAgent.setAppkey(weakAct.get().getResources().getString(R.string.release_umeng_appkey));
             AnalyticsConfig.setAppkey(weakAct.get().getResources().getString(R.string.release_umeng_appkey));
             AnalyticsConfig.setChannel(weakAct.get().getResources().getString(R.string.release_umeng_channel));
         }
         else
         {
-            TestinAgent.init(weakAct.get(), act.getResources().getString(R.string.test_testin_crash_key));
+           // TestinAgent.init(weakAct.get(), act.getResources().getString(R.string.test_testin_crash_key));
             UmengUpdateAgent.setAppkey(weakAct.get().getResources().getString(R.string.test_umeng_appkey));
             AnalyticsConfig.setAppkey(weakAct.get().getResources().getString(R.string.test_umeng_appkey));
             AnalyticsConfig.setChannel(weakAct.get().getResources().getString(R.string.test_umeng_channel));

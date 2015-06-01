@@ -15,7 +15,6 @@
 		3F67BF6A1B13480300CE62ED /* wifiworldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF691B13480300CE62ED /* wifiworldTests.swift */; };
 		3F67BF7B1B134BDB00CE62ED /* RecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF7A1B134BDB00CE62ED /* RecentViewController.swift */; };
 		3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF7D1B134C6E00CE62ED /* Singleton.swift */; };
-		3F67BF821B134D0E00CE62ED /* Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF811B134D0E00CE62ED /* Singleton.m */; };
 		3F67BF851B134F1F00CE62ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF841B134F1F00CE62ED /* libz.dylib */; };
 		3F67BF871B134F2D00CE62ED /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF861B134F2D00CE62ED /* libstdc++.6.0.9.dylib */; };
 		3F67BF891B134F3700CE62ED /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF881B134F3700CE62ED /* AddressBook.framework */; };
@@ -23,10 +22,11 @@
 		3F67BF8D1B134F4B00CE62ED /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF8C1B134F4B00CE62ED /* AudioToolbox.framework */; };
 		3F95DA661B175297000EFE2A /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3F95DA631B175297000EFE2A /* AMap.bundle */; };
 		3F95DA671B175297000EFE2A /* AMapNavi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3F95DA641B175297000EFE2A /* AMapNavi.bundle */; };
-		3F95DA681B175297000EFE2A /* AMapNaviKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F95DA651B175297000EFE2A /* AMapNaviKit.framework */; };
 		3FA5FC001B17560000DB9C6A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FBFF1B1755FF00DB9C6A /* libsqlite3.dylib */; };
 		3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */; };
 		3FA5FC081B17590000DB9C6A /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC071B17590000DB9C6A /* libicucore.dylib */; };
+		FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */; };
+		FDF458F11B1AE1E800D1E268 /* WLBRemoteDataQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +52,6 @@
 		3F67BF691B13480300CE62ED /* wifiworldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wifiworldTests.swift; sourceTree = "<group>"; };
 		3F67BF7A1B134BDB00CE62ED /* RecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentViewController.swift; sourceTree = "<group>"; };
 		3F67BF7D1B134C6E00CE62ED /* Singleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
-		3F67BF801B134D0E00CE62ED /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
-		3F67BF811B134D0E00CE62ED /* Singleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Singleton.m; sourceTree = "<group>"; };
 		3F67BF831B134D3100CE62ED /* wifiworld-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "wifiworld-Bridging-Header.h"; sourceTree = "<group>"; };
 		3F67BF841B134F1F00CE62ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		3F67BF861B134F2D00CE62ED /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "usr/lib/libstdc++.6.0.9.dylib"; sourceTree = SDKROOT; };
@@ -62,10 +60,11 @@
 		3F67BF8C1B134F4B00CE62ED /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		3F95DA631B175297000EFE2A /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
 		3F95DA641B175297000EFE2A /* AMapNavi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMapNavi.bundle; sourceTree = "<group>"; };
-		3F95DA651B175297000EFE2A /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapNaviKit.framework; sourceTree = "<group>"; };
 		3FA5FBFF1B1755FF00DB9C6A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		3FA5FC071B17590000DB9C6A /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapNaviKit.framework; sourceTree = "<group>"; };
+		FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WLBRemoteDataQuery.swift; path = ../../../../../../../Documents/WLBRemoteDataQuery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +79,8 @@
 				3F67BF891B134F3700CE62ED /* AddressBook.framework in Frameworks */,
 				3F67BF871B134F2D00CE62ED /* libstdc++.6.0.9.dylib in Frameworks */,
 				3F67BF851B134F1F00CE62ED /* libz.dylib in Frameworks */,
-				3F95DA681B175297000EFE2A /* AMapNaviKit.framework in Frameworks */,
 				3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */,
+				FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +131,7 @@
 				3F5CA8511B18A6C700221F27 /* DataHandler */,
 				3F67BF771B134B8800CE62ED /* Recently */,
 				3F67BF761B134B8800CE62ED /* MyInfo */,
+				FDF458ED1B1AE0B600D1E268 /* DataHandler */,
 				3F67BF7C1B134C5300CE62ED /* Singleton */,
 				3F67BF511B13480300CE62ED /* Supporting Files */,
 			);
@@ -199,8 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				3F67BF7D1B134C6E00CE62ED /* Singleton.swift */,
-				3F67BF801B134D0E00CE62ED /* Singleton.h */,
-				3F67BF811B134D0E00CE62ED /* Singleton.m */,
 			);
 			path = Singleton;
 			sourceTree = "<group>";
@@ -208,9 +206,9 @@
 		3F95DA621B175297000EFE2A /* AMap_SDK */ = {
 			isa = PBXGroup;
 			children = (
+				FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */,
 				3F95DA631B175297000EFE2A /* AMap.bundle */,
 				3F95DA641B175297000EFE2A /* AMapNavi.bundle */,
-				3F95DA651B175297000EFE2A /* AMapNaviKit.framework */,
 			);
 			name = AMap_SDK;
 			path = wifiworld/AMap_SDK;
@@ -223,6 +221,14 @@
 			);
 			name = Bmob_SDK_iOS_v1.5.7;
 			path = wifiworld/Bmob_SDK_iOS_v1.5.7;
+			sourceTree = "<group>";
+		};
+		FDF458ED1B1AE0B600D1E268 /* DataHandler */ = {
+			isa = PBXGroup;
+			children = (
+				FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */,
+			);
+			path = DataHandler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,8 +337,8 @@
 				3F67BF7B1B134BDB00CE62ED /* RecentViewController.swift in Sources */,
 				3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */,
 				3F67BF561B13480300CE62ED /* ViewController.swift in Sources */,
+				FDF458F11B1AE1E800D1E268 /* WLBRemoteDataQuery.swift in Sources */,
 				3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */,
-				3F67BF821B134D0E00CE62ED /* Singleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,7 +416,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -449,7 +455,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -471,6 +477,7 @@
 					"$(PROJECT_DIR)/wifiworld/Bmob_SDK_iOS_v1.5.7",
 				);
 				INFOPLIST_FILE = wifiworld/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -493,6 +500,7 @@
 					"$(PROJECT_DIR)/wifiworld/Bmob_SDK_iOS_v1.5.7",
 				);
 				INFOPLIST_FILE = wifiworld/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

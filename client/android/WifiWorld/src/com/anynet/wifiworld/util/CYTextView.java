@@ -10,7 +10,7 @@
  * 评审记录 :
  * <p>
  */
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.util.Vector;
 
@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.xunlei.redcrystalandroid.R;
+import com.anynet.wifiworld.R;
 
 public class CYTextView extends TextView
 {

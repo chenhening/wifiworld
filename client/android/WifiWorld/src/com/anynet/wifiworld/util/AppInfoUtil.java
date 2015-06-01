@@ -11,7 +11,7 @@
  * <p>
  */
 
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.io.File;
 import java.io.RandomAccessFile;

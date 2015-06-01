@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">网络宝mini</string>
+    <string name="action_settings">设置</string>
+    <string name="more_function">更多Wifi功能</string>
+    <string name="content_description">默认描述信息</string>
+
+</resources>

@@ -11,7 +11,7 @@
  * <p>
  */
 
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +31,38 @@ public class XLLog
     {
         LOG = openLog;
     }
+    
+
+    public static void d(String tag, String content)
+    {
+        
+        if (LOG && !TextUtils.isEmpty(content))
+        {
+            Log.d(tag, content);
+        }
+    }
+    
+    public static void d(String tag, Object... args)
+    {
+        if (LOG && null != args)
+        {
+            
+            // 计算日志的长度，减少内存开销。 估计意义不大。
+            // int length = 0;
+            // for(Object obj : args) {
+            // length += obj.toString().length();
+            // }
+            
+            StringBuffer buffer = new StringBuffer(args.length * 10);
+            for (Object obj : args)
+            {
+                buffer.append(obj).append(" ");
+            }
+            
+            Log.d(tag, buffer.toString());
+        }
+    }
+    
     
     public static void w(String tag, String content)
     {

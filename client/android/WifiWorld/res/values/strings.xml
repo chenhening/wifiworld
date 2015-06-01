@@ -1,9 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="security">安全性</string>
+    <string name="signal">信号强度</string>
+    
+    <string name="connect">连接</string>
+    <string name="nearby">附近</string>
+    <string name="find">发现</string>
+    <string name="my">我的</string>
     <string name="app_name">网络宝</string>
     <string name="action_settings">Settings</string>
     <string name="wifi_icon">wifi_connected_icon</string>
     <string name="wifi_default_text">未连接WiFi</string>
+    <string name="complete">完成</string>
+    <string name="close">关闭</string>
+    <string name="loading">正在加载数据，请稍候</string>
+    <string name="net_error_try_later">网络异常，请稍候再试</string>
+    <string name="normal">标准</string>
+    <string name="satellite">卫星</string>
+    <string name="night_mode">夜间</string>
+    <string name="wifi_provider">我是WIFI提供者</string>
+    <string name="wifi_user">我是WIFI使用者</string>
+    <string name="wifi_user_total_income">累积总收入</string>
+    <string name="share_friends">邀请好友（奖励）</string>
+    <string name="my_settting">设置</string>
+    <string name="aboutus">关于我们</string>
+    <string name="userid">用户名</string>
+    <string name="cashin">收益(最近一周)</string>
+    <string name="cashout">支出</string>
+    <string name="wifissid">Wifi SSID:</string>
+    <string name="wifipsw">Wifi 密码:</string>
+    <string name="wifiasia">Wifi 别名:</string>
+    <string name="wifilogo">Wifi Logo:</string>
+    <string name="wifiinfo">展示信息:</string>
+    <string name="wifigeo">地理位置:</string>
+    <string name="next_step">下一步</string>
+    <string name="push_btn">提交</string>
+    <string name="str_top_provider">WiFi提供者排行榜</string>
+    <string name="str_top_wifiuser">WiFi使用者排行榜</string>
+    <string name="str_everybody_more">更多>></string>
+    <string name="str_everybody_using">大家都在用的</string>
+    <string name="str_everybody_play">大家都在玩的</string>
+    <string name="str_everybody_watch">大家都在看的</string>
+    <string name="str_everybody_buy">大家都会买的</string>
+    <string name="str_openbussess">商家入驻</string>
+    <string name="person_center_title">我</string>
+    <string name="person_center_update">更新资料</string>
+    <string name="person_center_message">我的消息</string>
+    <string name="person_my_setting">我的设置</string>
+    <string name="person_center_attention">我的关注</string>
+    <string name="person_center_fensi">我的粉丝</string>
+    <string name="person_center_blacklist">我的黑名单</string>
+    <string name="person_center_seller_hotwifi">访问过的热点</string>
+    <string name="person_center_wifi_master">我抢到的WiFi</string>
+    <string name="person_center_wifi">Wi-Fi云备份</string>
+    <string name="person_center_credit">我的联币</string>
+    <string name="person_center_seller">我是商家</string>
+    <string name="person_center_attention_shopper">我收藏的Wi-Fi</string>
+    <string name="merchant_certify">商户认证</string>
+    <string name="merchant_certify_name">请输入商家名称</string>
+    <string name="merchant_certify_address">请选择商家地址</string>
+    <string name="merchant_certify_detail_address">请输入商家详细地址</string>
+    <string name="merchant_certify_tel">请输入商家电话</string>
+    <string name="merchant_certify_image">请提交商家照片</string>
+    <string name="merchant_certify_contact_name">请输入联系人</string>
+    <string name="merchant_certify_contact_phone">请输入手机号码</string>
+    <string name="merchant_certify_license">请输入营业执照注册号</string>
+    <string name="merchant_certify_license_photo">请提交营业执照</string>
+    <string name="merchant_certify_type">请选择商家类型</string>
+    <string name="merchant_certify_produce">请填写商家介绍</string>
 
+    <string name="account_edit">修改</string>
+    <string name="input">输入</string>
+    <string name="edit">修改</string>
+    <string name="save">保存</string>
+    <string name="user_login_title_name">登录</string>
+    <string name="user_register_title_name">注册</string>
+    <string name="user_find_password_title_name">找回密码</string>
+    <string name="login_username_edit_hint">请输入手机号码</string>
+    <string name="finding_password_verifiction_code_hint">请输入6位验证码</string>
+    <string name="login_password_edit_hint">请输入密码</string>
+    <string name="setting_password_title">密码设置</string>
+    <string name="person_black_list_title">我的黑名单</string>
+    <string name="setting_new_password_edit_hint">请输入新密码</string>
+    <string name="setting_old_password_edit_hint">请输入旧密码</string>
+    <string name="setting_repeate_new_password_edit_hint">请再次输入密码</string>
+    <string name="setting_password_tip_text">登录密码是由6-16位数字、字母组成</string>
+    <string name="setting_password_btn">提交</string>
+    <string name="user_login_btn_title">登录</string>
+    <string name="user_login_forget_password_title">忘记密码?</string>
+    <string name="user_forget_password_next">下一步</string>
+    <string name="find_password_invalid_phone_prompt">无效手机号码</string>
+    <string name="find_password_submit_phone_fail">提交号码失败</string>
+    <string name="find_password_verifying_code_sent_prompt">已下发验证码</string>
+    <string name="find_password_not_input_number_prompt">未填写号码</string>
+    <string name="verifying_code_sent_prompt_prefix">您的手机</string>
+    <string name="verifying_code_sent_prompt">已向 %1$s 发送6位数字短信验证码</string>
+    <string name="verifying_code_resend_prompt">重发验证码</string>
+    <string name="verifying_code_resend_verification_code_prompt"><Data>%1$s秒后&lt;BR />重新发验证码</Data></string>
+    <string name="user_login_invalid_password">密码输入不正确</string>
+    <string name="user_login_timeout_prompt">您的账户信息已过期，请重新登录。</string>
+    <string name="input_verification_code_error">验证码不正确</string>
+    <string name="input_verification_code_overdue">验证码失效</string>
+    <string name="input_verification_code_outdate">验证码失效,请重新获取验证码</string>
+    <string name="input_verification_code_check_failed">验证码检测失败</string>
+    <string name="user_reset_password_prompt">设置密码</string>
+    <string name="user_input_password_hint">请输入新密码</string>
+    <string name="user_display_input_password_prompt">显示密码</string>
+    <string name="correct_password_format_prompt">6–16位字母或数字</string>
+    <string name="password_input_done_text">开启联连</string>
+    <string name="password_input_empty_prompt">请输入密码</string>
+    <string name="password_input_format_error_prompt">密码不符合要求</string>
+    <string name="password_return_login_prompt">返回登录页面</string>
+    <string name="password_reset_success_prompt">新密码设置成功</string>
+    <string name="back">返回</string>
+    
+    <string name="merchant_promotion"><Data>&lt;font color=#acacac>每月只能修改&lt;/font> &lt;font color=#03a3a6>1&lt;/font> &lt;font color=#acacac>次&lt;/font> </Data></string>
+    <!-- testin崩溃测试key -->
+    <string name="test_testin_crash_key">717bac3334fdda5623031e69678a7a5a</string>
+    <!-- testin 崩溃正式key -->
+    <string name="release_testin_crash_key">4a206f73512bf81400a7ceb0edd7e7e7</string>
+
+    <!-- 友盟key -->
+    <string name="test_umeng_appkey">5516ac08fd98c5df10000053</string>
+    <string name="release_umeng_appkey">5516ac08fd98c5df10000053</string>
+    <string name="test_umeng_message_secret">c621650b4e9a0bc5092f17e1ad5086a6</string>
+    <string name="release_umeng_message_secret">c621650b4e9a0bc5092f17e1ad5086a6</string>
+    <string name="test_umeng_channel">anynet-test</string>
+    <string name="release_umeng_channel">anynet</string>
+    <string name="empty_data">--</string>
+
+    <!-- login -->
+    <string name="login_account">输入手机号码</string>
+    <string name="login_passwd">输入密码</string>
+    <string name="sms_check_num">输入验证码</string>
+    <string name="smschecknum">获取验证码</string>
+    <string name="login_login">登录</string>
+    <string name="login_logining">登录中</string>
+    <string name="error_tip_test">密码错误</string>
+    <string name="login_fail_noprivilege">你还没获得水晶矿场资格,快用电脑\n登录   %1$s 抢水晶\n资格吧</string>
+    <string name="sessoin_fail_for_kickout">您的帐号已在别处登录</string>
+    <string name="sessoin_fail_for_timeout">登录已失效，请重新登录</string>
+    <string name="small_to_dot001">&lt;0.001</string>
+    <string name="zero">0</string>
+    <!-- my account -->
+    <string name="my_account_phone">手机号</string>
+    <string name="my_account_password">密码</string>
+    <string name="my_account">帐号</string>
+    <string name="my_account_nikename">昵称</string>
+    <string name="my_account_head">头像</string>
+    <string name="my_account_id">账户ID</string>
+    <string name="my_account_sex">性别</string>
+    <!-- my asset -->
+
+    <string name="asset_can_use">可用</string>
+    <string name="asset_ordering">订单中</string>
+    <string name="asset_not_in_account">未到账</string>
+    <string name="asset_total">总量</string>
+    <string name="asset_unit">%1$s个</string>
+    <string name="wechat_unit">可提现%1$s元</string>
+
+    <!-- setting -->
+
+    <string name="setting_new_crystal_sound">水晶提示音</string>
+    <string name="setting_binding_words">已连线设备：</string>
+    <string name="setting_binding_amount">0</string>
+    <string name="setting_office_notice">官方公告</string>
+    <string name="setting_push_msg">接收宝箱通知</string>
+    <string name="setting_version_update">版本更新</string>
+    <string name="setting_in_setting">设置</string>
+    <string name="setting_my_asset">我的资产</string>
+    <string name="setting_3g_flow_protect">3G流量保护</string>
+    <string name="setting_binding_sina_weibo">新浪微博</string>
+    <string name="setting_binding_weixin">微信</string>
+    <string name="setting_binding_qq">QQ</string>
+    <string name="setting_binding">已绑定</string>
+    <string name="setting_unbinding">未绑定</string>
+    <string name="setting_check_update">版本</string>
+    <string name="setting_about_find_new_version">发现新版本</string>
+    <string name="setting_about_has_update">已更新</string>
+    <string name="setting_about_is_newest_version">当前已经是最新版本</string>
+    <string name="setting_clear_cache">清除缓存</string>
+    <string name="setting_feedback">意见反馈</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_exit">退出当前帐号</string>
+    <string name="setting_feedback_input_tip">你的反馈,是我们前进的动力!</string>
+    <string name="setting_feedback_contact_tip">请输入QQ方便我们联系你</string>
+    <string name="setting_title_setting">设置</string>
+    <string name="setting_title_feedback">意见反馈</string>
+    <string name="setting_title_about">关于</string>
+    <string name="setting_title_office_notice">官方公告</string>
+    <string name="setting_title_system_msg">系统消息</string>
+    <string name="setting_version_newest">V%1$s</string>
+    <string name="setting_version_new">发现新版本</string>
+    <string name="setting_version_isnewst_toast">已是最新版本，棒棒哒！</string>
+
+    <!-- setting header -->
+    <string name="feedback_finish">提交</string>
+    <string name="userprofile">账户</string>
+    <string name="header_testip_txt">0.0.0.0</string>
+    <string name="header_test_machine_txt">None</string>
+
+    <!-- 对话框 -->
+    <string name="tips">提示</string>
+    <string name="default_unified_loading_text">正在重试&#8230;&#8230;&#8230;</string>
+    <string name="my_asset_title">提现</string>
+    <string name="my_account_title">我的帐户</string>
+    <string name="my_title">我的</string>
+    <string name="login_fail_title">登录失败</string>
+
+    <!-- 水晶矿场记录 -->
+    <string name="crystal_record_filter_all">全部记录</string>
+    <string name="crystal_record_filter_expense">出账</string>
+    <string name="crystal_record_filter_income">累计入账</string>
+    <string name="crystal_record_no_more">无更多数据</string>
+    
+    <!-- WIFI登记 -->
+    <string name="str_wifi_provider_ssid">网络SSID</string>
+    <string name="str_wifi_ssid_ongetting">正在获取WiFi SSID，请稍等......</string>
+    <string name="str_wifi_provider_alias">请输入WiFi别名</string>
+    <string name="str_wifi_provider_alias_detail">别名格式：自定义WiFi中文名字(用于吸引别人注意)，商家可以定义品牌名字。例如：KFC（中关村店），不超过20个汉字。</string>
+    <string name="str_wifi_provider_location">地理位置</string>
+    <string name="str_wifi_provider_location_hint">点击获取地理位置</string>
+    <string name="str_wifi_provider_detail_hint">请输入详细街道，门牌号等</string>
+    <string name="str_wifi_provider_type_txt">网络类型</string>
+    <string name="str_wifi_provider_type_hint">请选择网络提供类型</string>
+    <string name="str_wifi_provider_detail_location">详细地址</string>
+    <string name="str_wifi_provider_type_desc">家庭WiFi提供者选择家用，商家类型应与营业执照上的经营范围对应</string>
+    <string name="str_wifi_provider_logo">网络LOGO</string>
+    <string name="str_wifi_provider_detail_desc">详细介绍</string>
+    <string name="str_wifi_provider_detail_desc_hint">家庭WiFi可以介绍，商家介绍商铺，广告等。</string>
+    <string name="str_wifi_provider_password_hint">请输入WiFi登陆密码</string>
+    <string name="str_wifi_provider_password">登陆密码</string>
+    <string name="str_wifi_provider_password_hint1">请输入WiFi登陆密码</string>
+    <string name="str_wifi_provider_password_desc">您的密码我们会采用加密方式存储，其他用户在使用您的网络时候不会直接获取密码。每个WiFi都会提供网络理赔保险，保障您的网络财产安全。</string>
+    <string name="str_wifi_provider_logo_hint">可以为您的WiFi设置logo图标，给用户留下深刻印象，商家可以设置成自己的品牌商标</string>
+    <string name="str_iam_wifi_provider">我提供的Wi-Fi</string>
+    <string name="str_iam_wifi_user">我是WiFi使用者</string>
+    <string name="str_wifi_provider_business_warning">商家用户信息可以不填，如果不填网络宝将不会给予提供后台广告推送，营销数据分析等服务。</string>
+    <string name="str_wifi_provider_home_warning">家庭网络以下认证信息可以不填，如果不填网络宝将不会给予提供后台广告推送，收益提现等服务。</string>
+    <string name="str_wifi_provider_person_warning">以下个人认证信息可以不填，如果不填网络宝将不会提供路由占用纠纷调解，内测邀请，重要信息通知等服务。</string>
+    <string name="str_wifi_provider_router">路由器型号</string>
+    <string name="str_wifi_provider_bandwidth">网络带宽</string>
+    <string name="str_wifi_provider_register">注册登记</string>
+    <string name="str_wifi_provider_cover">网络覆盖</string>
+
+    <!-- Discover Page -->
+    <string name="str_people_using">大家都在用的</string>
+    <string name="str_people_playing">大家都在玩的</string>
+    <string name="str_people_watching">大家都在看的</string>
+    <string name="str_people_buying">大家都会买的</string>
+
+    
+    <string name="receive_rewards">恭喜你得到%s个金币！</string>
+	
+    <string name="placeHolder">placeHolder</string>
+    <string name="seekbar_add">+</string>
+    <string name="seekbar_minus">-</string>
+    <string name="create">生成</string>
+    <string name="scan_failed">扫描失败</string>
+    <string name="bottom_hint">建议与镜头保持10CM距离，尽量避免逆光和阴影</string>
+    <string name="top_hint">将条形码或二维码置于取景框内系统会自动扫描</string>
+    <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
+    <string name="button_ok">确定</string>
 </resources>

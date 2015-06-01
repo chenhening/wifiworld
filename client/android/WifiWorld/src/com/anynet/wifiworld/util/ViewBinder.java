@@ -11,7 +11,7 @@
  * <p>
  */
 
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.lang.reflect.Field;
 

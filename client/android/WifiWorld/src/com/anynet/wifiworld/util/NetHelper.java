@@ -1,4 +1,4 @@
-package com.xunlei.crystalandroid.util;
+package com.anynet.wifiworld.util;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
