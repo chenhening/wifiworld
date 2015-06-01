@@ -3,8 +3,6 @@ package com.anynet.wifiworld.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.util.StringCrypto;
-
 import android.content.Context;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
