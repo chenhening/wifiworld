@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locManager = CLLocationManager()
         locManager.requestAlwaysAuthorization();
         locManager.requestWhenInUseAuthorization()
-        
         return true
     }
 

@@ -11,7 +11,9 @@ import UIKit
 class RecentViewController: UIViewController ,MAMapViewDelegate{
 
     var mapView:MAMapView!
+    var hotSpotList = [AnyObject]();
     
+    @IBOutlet weak var btn_location: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -20,7 +22,8 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
         self.mapView.zoomLevel = 19;
-        
+        self.mapView.showsLabels = true;
+        self.mapView.insertSubview(self.btn_location, aboveSubview: self.mapView);
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -31,9 +34,10 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     func queryObject(loc:CLLocation!){
         let wifiProfile = WifiProfile();
         let geo = BmobGeoPoint(longitude: loc.coordinate.longitude , withLatitude: loc.coordinate.latitude );
-        wifiProfile.queryObject(geo, radian: 1.0,){
+        wifiProfile.queryObject(geo, radian: 1.0){ [weak self](list) ->Void in
         
-        
+            self!.hotSpotList = list;
+            
         };
         
     }
@@ -45,12 +49,11 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
         println("location",userLocation.location.coordinate.longitude,userLocation.location.coordinate.latitude);
-        self.queryObject(userLocation.location);
 
         if userLocation.location != nil && mapView.tag == 0{
             self.mapView.setCenterCoordinate(userLocation.coordinate , animated: true)
             mapView.tag = 1;
-
+            self.queryObject(userLocation.location);
         }
     }
 
