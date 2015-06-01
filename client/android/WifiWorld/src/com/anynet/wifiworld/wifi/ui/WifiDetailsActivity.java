@@ -205,7 +205,7 @@ public class WifiDetailsActivity extends BaseActivity {
 				@Override
 				public void onClick(View arg0) {
 					//拉取敲门问题
-					WifiQuestions wifiQuestions = new WifiQuestions();
+					final WifiQuestions wifiQuestions = new WifiQuestions();
 					wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiInfoScanned.getWifiMAC(), new DataCallback<WifiQuestions>() {
 						
 						@Override
@@ -215,7 +215,7 @@ public class WifiDetailsActivity extends BaseActivity {
 						
 						@Override
 						public void onFailed(String msg) {
-							showToast("获取敲门信息失败，请稍后重试:" + msg);
+							KnockStepFirstActivity.start(WifiDetailsActivity.this.getActivity(), "WifiDetailsActivity", wifiQuestions);
 						}
 					});
 				}

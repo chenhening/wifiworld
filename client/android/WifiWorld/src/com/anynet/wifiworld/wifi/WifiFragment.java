@@ -360,7 +360,7 @@ public class WifiFragment extends MainFragment {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 							// 拉取敲门问题
-							WifiQuestions wifiQuestions = new WifiQuestions();
+							final WifiQuestions wifiQuestions = new WifiQuestions();
 							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiItemClick.getWifiMAC(),
 								new DataCallback<WifiQuestions>() {
 
@@ -371,7 +371,7 @@ public class WifiFragment extends MainFragment {
 
 									@Override
 									public void onFailed(String msg) {
-										showToast("获取敲门信息失败，请稍后重试:" + msg);
+										KnockStepFirstActivity.start(WifiFragment.this.getActivity(), "WifiDetailsActivity", wifiQuestions);
 									}
 								});
 							}
