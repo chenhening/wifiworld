@@ -3,6 +3,7 @@ package com.anynet.wifiworld_mini;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import com.anynet.wifiworld.R;
 
 public class MainActivity extends Activity {
 

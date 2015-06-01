@@ -6,14 +6,14 @@
     tools:context=".MainActivity" >
 
     <RelativeLayout
-        android:id="@+id/wifi_title"
+        android:id="@+id/rl_wifi_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/wifi_title_bg"
         android:visibility="visible" >
 
         <ToggleButton
-            android:id="@+id/wifi_switch_btn"
+            android:id="@+id/tb_wifi_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -39,7 +39,7 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/wifi_plus_btn"
+            android:id="@+id/iv_wifi_plus"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
@@ -49,15 +49,15 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/wifi_connected_parent"
+        android:id="@+id/ll_wifi_connected_parent"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:layout_below="@id/wifi_title"
+        android:layout_below="@id/rl_wifi_title"
         android:layout_gravity="center"
         android:orientation="horizontal" >
 
         <RelativeLayout
-            android:id="@+id/wifi_connected"
+            android:id="@+id/rl_wifi_connected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
@@ -65,7 +65,7 @@
             android:gravity="center_vertical" >
 
             <LinearLayout
-                android:id="@+id/wifi_connected_icon"
+                android:id="@+id/ll_wifi_connected_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
@@ -74,7 +74,6 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/content_description"
                     android:src="@drawable/wifi_connected_icon" />
@@ -82,8 +81,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginLeft="30dp"
                     android:background="@drawable/seperator"
                     android:contentDescription="@string/content_description" />
 
@@ -91,39 +90,160 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical" >
-                    
+
                     <TextView
-                        android:id="@+id/wifi_connected_name"
+                        android:id="@+id/tv_wifi_connected_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:text="EmployeeHotspot"
-                        android:textSize="16sp"
                         android:textColor="@color/black"
-                        android:maxLines="1" />
-                    
+                        android:textSize="16sp" />
+
                     <TextView
-                        android:id="@+id/wifi_options"
+                        android:id="@+id/tv_wifi_options"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Connect, Safe"
                         android:layout_marginTop="5dp"
-                        android:textSize="14sp"
+                        android:maxLines="1"
+                        android:text="Connect, Safe"
                         android:textColor="@color/grey"
-                        android:maxLines="1" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/wifi_search"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_below="@id/wifi_connected_icon"
-                android:background="@drawable/wifi_search_bg"
-                android:orientation="horizontal" >
-                
-                
-            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_wifi_search"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/ll_wifi_connected_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-50dp" >
+
+        <ImageView
+            android:id="@+id/iv_wifi_search"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/wifi_search_bg" />
+        
+        <ImageView
+            android:id="@+id/iv_wifi_search_needle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/wifi_search_needle" />
+
+        <ImageView
+            android:id="@+id/iv_wifi_search_heart"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="9dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/wifi_search_heart" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_wifi_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wifi_search"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" >
+        
+        <LinearLayout
+            android:id="@+id/ll_wifi_free_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal" >
+            
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/wifi_free_title_icon" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Free Wifi"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_wifi_free_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_wifi_free_title"
+            android:orientation="vertical" >
+            
+            <LinearLayout
+                android:id="@+id/ll_wifi_free_item0"
+                android:layout_width="match_parent" 
+                android:layout_height="70dp"
+                android:background="@drawable/wifi_free_item0"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/wifi_free_signal0" />
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="Guest"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:maxLines="1"
+                        android:text="No passport"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_wifi_item_more"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/wifi_item_more" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    
 </RelativeLayout>
