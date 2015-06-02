@@ -48,12 +48,13 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     }
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        println("location",userLocation.location.coordinate.longitude,userLocation.location.coordinate.latitude);
 
         if userLocation.location != nil && mapView.tag == 0{
             self.mapView.setCenterCoordinate(userLocation.coordinate , animated: true)
             mapView.tag = 1;
             self.queryObject(userLocation.location);
+            NSThread.detachNewThreadSelector("queryObject:", toTarget: self, withObject: userLocation.location);
+            
         }
     }
 
@@ -66,5 +67,15 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
         // Pass the selected object to the new view controller.
     }
     */
+    @IBAction func clickLocationButton(sender: AnyObject) {
+        
+        let location = self.mapView.userLocation.location
+        
+        if CLLocationCoordinate2DIsValid(location.coordinate) {
+            self.mapView.setCenterCoordinate(location.coordinate , animated: true)
+            NSThread.detachNewThreadSelector("queryObject:", toTarget: self, withObject: location);
+
+        }
+    }
 
 }

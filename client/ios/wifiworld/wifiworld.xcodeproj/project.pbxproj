@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */; };
 		3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF531B13480300CE62ED /* AppDelegate.swift */; };
 		3F67BF561B13480300CE62ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF551B13480300CE62ED /* ViewController.swift */; };
 		3F67BF591B13480300CE62ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F67BF571B13480300CE62ED /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISwitch＋Extension.swift"; sourceTree = "<group>"; };
 		3F67BF4E1B13480300CE62ED /* wifiworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wifiworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F67BF521B13480300CE62ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F67BF531B13480300CE62ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F56124E1B1DEF6900BD210E /* UIExtension */ = {
+			isa = PBXGroup;
+			children = (
+				3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */,
+			);
+			path = UIExtension;
+			sourceTree = "<group>";
+		};
 		3F67BF451B13480300CE62ED = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +133,7 @@
 				3F67BF5C1B13480300CE62ED /* LaunchScreen.xib */,
 				3F67BF771B134B8800CE62ED /* Recently */,
 				FDF458ED1B1AE0B600D1E268 /* DataHandler */,
+				3F56124E1B1DEF6900BD210E /* UIExtension */,
 				3F67BF7C1B134C5300CE62ED /* Singleton */,
 				3F67BF511B13480300CE62ED /* Supporting Files */,
 			);
@@ -323,6 +334,7 @@
 				3F67BF561B13480300CE62ED /* ViewController.swift in Sources */,
 				FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */,
 				3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */,
+				3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

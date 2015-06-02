@@ -45,8 +45,6 @@ class WifiProfile:BmobObject {
             if error != nil{
                 println("error",error.description)
             }else{
-                println("list",list)
-            
                 dataList = list;
             }
         }
