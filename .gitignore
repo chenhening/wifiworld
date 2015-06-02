@@ -27,3 +27,6 @@ client/ios/wifiworld/wifiworld.xcodeproj/project.xcworkspace/xcshareddata/
 client/ios/wifiworld/wifiworld.xcodeproj/project.xcworkspace/xcuserdata/
 client/ios/wifiworld/wifiworld.xcodeproj/xcuserdata/jiansheng.xcuserdatad/
 client/ios/wifiworld/wifiworld.xcodeproj/project.pbxproj
+
+client/android/WifiWorld_mini/bin/
+client/android/WifiWorld_mini/gen/

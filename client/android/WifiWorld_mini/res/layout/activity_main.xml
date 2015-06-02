@@ -152,7 +152,7 @@
             android:src="@drawable/search_gif_1" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_wifi_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -160,7 +160,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-20dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp" >
+        android:layout_marginRight="15dp"
+        android:orientation="vertical" >
         
         <LinearLayout
             android:id="@+id/ll_wifi_free_title"
@@ -359,6 +360,145 @@
                     android:src="@drawable/wifi_item_more" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-    
+        
+        <LinearLayout
+            android:id="@+id/ll_wifi_lock_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal" >
+            
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/wifi_lock_title_icon" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Lock Wifi"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_wifi_lock_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <LinearLayout
+                android:id="@+id/ll_wifi_lock_item0"
+                android:layout_width="match_parent" 
+                android:layout_height="70dp"
+                android:background="@drawable/wifi_lock_item0"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/wifi_free_signal3" />
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="Xiaoming's Wifi"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:maxLines="1"
+                        android:text="No passport"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_wifi_item_more"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/wifi_item_more" />
+            </LinearLayout>
+            
+            <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px" />
+            
+            <LinearLayout
+                android:id="@+id/ll_wifi_lock_item1"
+                android:layout_width="match_parent" 
+                android:layout_height="70dp"
+                android:background="@color/white"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/wifi_free_signal1" />
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="CMCC_WEB"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:maxLines="1"
+                        android:text="No passport"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_wifi_item_more"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/wifi_item_more" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
