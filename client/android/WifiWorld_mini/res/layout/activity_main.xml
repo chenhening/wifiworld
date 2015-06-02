@@ -17,8 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/wifi_switch_btn"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/wifi_switch_off"
             android:checked="true"
             android:focusableInTouchMode="true"
             android:longClickable="true"
@@ -40,10 +40,11 @@
 
         <ImageView
             android:id="@+id/iv_wifi_plus"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="10dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/more_function"
             android:src="@drawable/wifi_plus_btn" />
     </RelativeLayout>
@@ -144,11 +145,11 @@
             android:id="@+id/iv_wifi_search_heart"
             android:layout_width="38dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="6dp"
             android:layout_marginLeft="9dp"
             android:scaleType="fitCenter"
             android:contentDescription="@null"
-            android:src="@drawable/wifi_search_heart" />
+            android:src="@drawable/search_gif_1" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -207,7 +208,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:contentDescription="@string/content_description"
-                    android:src="@drawable/wifi_free_signal0" />
+                    android:src="@drawable/wifi_free_signal3" />
 
                 <LinearLayout
                     android:layout_width="150dp"
@@ -221,6 +222,120 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:text="Guest"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:maxLines="1"
+                        android:text="No passport"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_wifi_item_more"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/wifi_item_more" />
+            </LinearLayout>
+            
+            <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px" />
+            
+            <LinearLayout
+                android:id="@+id/ll_wifi_free_item1"
+                android:layout_width="match_parent" 
+                android:layout_height="70dp"
+                android:background="@drawable/wifi_free_item1"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/wifi_free_signal1" />
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="CMCC_WEB"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:maxLines="1"
+                        android:text="No passport"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_wifi_item_more"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/wifi_item_more" />
+            </LinearLayout>
+            
+            <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px" />
+            
+            <LinearLayout
+                android:id="@+id/ll_wifi_free_item2"
+                android:layout_width="match_parent" 
+                android:layout_height="70dp"
+                android:background="@drawable/wifi_free_item2"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/wifi_free_signal2" />
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_wifi_free_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="And-Buesiness"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
