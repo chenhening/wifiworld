@@ -26,7 +26,7 @@
 		3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */; };
 		3FA5FC081B17590000DB9C6A /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC071B17590000DB9C6A /* libicucore.dylib */; };
 		FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */; };
-		FDF458F11B1AE1E800D1E268 /* WLBRemoteDataQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */; };
+		FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +64,7 @@
 		3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		3FA5FC071B17590000DB9C6A /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapNaviKit.framework; sourceTree = "<group>"; };
-		FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WLBRemoteDataQuery.swift; path = ../../../../../../../Documents/WLBRemoteDataQuery.swift; sourceTree = "<group>"; };
+		FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLBRemoteDataQuery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +122,6 @@
 				3F67BF5A1B13480300CE62ED /* Images.xcassets */,
 				3F67BF5C1B13480300CE62ED /* LaunchScreen.xib */,
 				3F67BF771B134B8800CE62ED /* Recently */,
-				3F67BF761B134B8800CE62ED /* MyInfo */,
 				FDF458ED1B1AE0B600D1E268 /* DataHandler */,
 				3F67BF7C1B134C5300CE62ED /* Singleton */,
 				3F67BF511B13480300CE62ED /* Supporting Files */,
@@ -172,13 +171,6 @@
 			name = Framework;
 			sourceTree = "<group>";
 		};
-		3F67BF761B134B8800CE62ED /* MyInfo */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MyInfo;
-			sourceTree = "<group>";
-		};
 		3F67BF771B134B8800CE62ED /* Recently */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,7 +210,7 @@
 		FDF458ED1B1AE0B600D1E268 /* DataHandler */ = {
 			isa = PBXGroup;
 			children = (
-				FDF458F01B1AE1E800D1E268 /* WLBRemoteDataQuery.swift */,
+				FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */,
 			);
 			path = DataHandler;
 			sourceTree = "<group>";
@@ -329,7 +321,7 @@
 				3F67BF7B1B134BDB00CE62ED /* RecentViewController.swift in Sources */,
 				3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */,
 				3F67BF561B13480300CE62ED /* ViewController.swift in Sources */,
-				FDF458F11B1AE1E800D1E268 /* WLBRemoteDataQuery.swift in Sources */,
+				FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */,
 				3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

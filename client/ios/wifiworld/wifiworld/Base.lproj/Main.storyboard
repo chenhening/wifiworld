@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ppe-pe-sNf">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -35,14 +36,29 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imA-t2-WRh">
+                                <rect key="frame" x="258" y="38" width="40" height="40"/>
+                                <state key="normal" image="map_location_selected">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="imA-t2-WRh" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="18" id="3pd-zL-8j5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="imA-t2-WRh" secondAttribute="trailing" constant="6" id="Yx3-S0-D1j"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="附近" id="7qD-9s-HPL"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="btn_location" destination="imA-t2-WRh" id="s7t-e6-b1F"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="708" y="-128"/>
+            <point key="canvasLocation" x="560" y="-128"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="TtX-71-9mb">
@@ -89,7 +105,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c14-Lq-8Ro" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="302" y="-128"/>
+            <point key="canvasLocation" x="190" y="-128"/>
         </scene>
         <!--我-->
         <scene sceneID="jp5-nq-oNN">
@@ -116,6 +132,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="map_location_selected" width="40" height="40"/>
         <image name="tab_map_nor" width="27" height="27"/>
         <image name="tab_map_sel" width="30" height="30"/>
         <image name="tab_mine_nor" width="27" height="27"/>
