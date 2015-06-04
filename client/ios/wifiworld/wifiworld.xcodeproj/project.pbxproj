@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */; };
+		3F5B65E01B207A0C00280D1D /* ConnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */; };
 		3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF531B13480300CE62ED /* AppDelegate.swift */; };
 		3F67BF561B13480300CE62ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF551B13480300CE62ED /* ViewController.swift */; };
 		3F67BF591B13480300CE62ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F67BF571B13480300CE62ED /* Main.storyboard */; };
 		3F67BF5B1B13480300CE62ED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F67BF5A1B13480300CE62ED /* Images.xcassets */; };
 		3F67BF5E1B13480300CE62ED /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F67BF5C1B13480300CE62ED /* LaunchScreen.xib */; };
 		3F67BF6A1B13480300CE62ED /* wifiworldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF691B13480300CE62ED /* wifiworldTests.swift */; };
-		3F67BF7B1B134BDB00CE62ED /* RecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF7A1B134BDB00CE62ED /* RecentViewController.swift */; };
 		3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF7D1B134C6E00CE62ED /* Singleton.swift */; };
 		3F67BF851B134F1F00CE62ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF841B134F1F00CE62ED /* libz.dylib */; };
 		3F67BF871B134F2D00CE62ED /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67BF861B134F2D00CE62ED /* libstdc++.6.0.9.dylib */; };
@@ -26,6 +26,7 @@
 		3FA5FC001B17560000DB9C6A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FBFF1B1755FF00DB9C6A /* libsqlite3.dylib */; };
 		3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */; };
 		3FA5FC081B17590000DB9C6A /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC071B17590000DB9C6A /* libicucore.dylib */; };
+		3FAD47831B20792F00BC9149 /* RecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAD47821B20792F00BC9149 /* RecentViewController.swift */; };
 		FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */; };
 		FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISwitch＋Extension.swift"; sourceTree = "<group>"; };
+		3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnViewController.swift; path = wifiworld/ConnViewController.swift; sourceTree = SOURCE_ROOT; };
 		3F67BF4E1B13480300CE62ED /* wifiworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wifiworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F67BF521B13480300CE62ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F67BF531B13480300CE62ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,7 +54,6 @@
 		3F67BF631B13480300CE62ED /* wifiworldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wifiworldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F67BF681B13480300CE62ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F67BF691B13480300CE62ED /* wifiworldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wifiworldTests.swift; sourceTree = "<group>"; };
-		3F67BF7A1B134BDB00CE62ED /* RecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentViewController.swift; sourceTree = "<group>"; };
 		3F67BF7D1B134C6E00CE62ED /* Singleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		3F67BF831B134D3100CE62ED /* wifiworld-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "wifiworld-Bridging-Header.h"; sourceTree = "<group>"; };
 		3F67BF841B134F1F00CE62ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -65,6 +66,7 @@
 		3FA5FBFF1B1755FF00DB9C6A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		3FA5FC071B17590000DB9C6A /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		3FAD47821B20792F00BC9149 /* RecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentViewController.swift; sourceTree = "<group>"; };
 		FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapNaviKit.framework; sourceTree = "<group>"; };
 		FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLBRemoteDataQuery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,7 +133,8 @@
 				3F67BF571B13480300CE62ED /* Main.storyboard */,
 				3F67BF5A1B13480300CE62ED /* Images.xcassets */,
 				3F67BF5C1B13480300CE62ED /* LaunchScreen.xib */,
-				3F67BF771B134B8800CE62ED /* Recently */,
+				3FAD47841B20799200BC9149 /* Connect */,
+				3FAD47811B20792F00BC9149 /* Nearby */,
 				FDF458ED1B1AE0B600D1E268 /* DataHandler */,
 				3F56124E1B1DEF6900BD210E /* UIExtension */,
 				3F67BF7C1B134C5300CE62ED /* Singleton */,
@@ -182,14 +185,6 @@
 			name = Framework;
 			sourceTree = "<group>";
 		};
-		3F67BF771B134B8800CE62ED /* Recently */ = {
-			isa = PBXGroup;
-			children = (
-				3F67BF7A1B134BDB00CE62ED /* RecentViewController.swift */,
-			);
-			path = Recently;
-			sourceTree = "<group>";
-		};
 		3F67BF7C1B134C5300CE62ED /* Singleton */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +211,22 @@
 			);
 			name = Bmob_SDK_iOS_v1.5.7;
 			path = wifiworld/Bmob_SDK_iOS_v1.5.7;
+			sourceTree = "<group>";
+		};
+		3FAD47811B20792F00BC9149 /* Nearby */ = {
+			isa = PBXGroup;
+			children = (
+				3FAD47821B20792F00BC9149 /* RecentViewController.swift */,
+			);
+			path = Nearby;
+			sourceTree = "<group>";
+		};
+		3FAD47841B20799200BC9149 /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */,
+			);
+			path = Connect;
 			sourceTree = "<group>";
 		};
 		FDF458ED1B1AE0B600D1E268 /* DataHandler */ = {
@@ -329,10 +340,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F67BF7B1B134BDB00CE62ED /* RecentViewController.swift in Sources */,
+				3F5B65E01B207A0C00280D1D /* ConnViewController.swift in Sources */,
 				3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */,
 				3F67BF561B13480300CE62ED /* ViewController.swift in Sources */,
 				FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */,
+				3FAD47831B20792F00BC9149 /* RecentViewController.swift in Sources */,
 				3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */,
 				3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */,
 			);
@@ -479,6 +491,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "wifiworld/wifiworld-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -501,6 +514,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "wifiworld/wifiworld-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

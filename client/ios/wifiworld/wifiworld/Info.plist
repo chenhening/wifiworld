@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>网络宝需要您允许总是使用您的位置！</string>
+	<string>网络宝需要您允许使用您的位置！</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>网络宝需要您允许在程序运行期间使用您的位置！</string>
 	<key>UILaunchStoryboardName</key>
@@ -45,5 +45,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
