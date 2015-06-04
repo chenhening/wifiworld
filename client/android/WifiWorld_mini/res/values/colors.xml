@@ -7,5 +7,9 @@
     <color name="black">#000000</color>
     <color name="grey">#a9a9a9</color>
     <color name="darkgrey">#A9A9A9</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- 对话框 -->
+    <color name="dialog_hover">#0D000000</color>
     
 </resources>
