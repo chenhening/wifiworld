@@ -104,211 +104,220 @@ public class MeFragment extends MainFragment {
 		mPageRoot = inflater.inflate(R.layout.fragment_person, null);
 		super.onCreateView(inflater, container, savedInstanceState);
 		bingdingTitleUI();
-		setLoginedUI(isLogined());
-
-		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (!checkIsLogined()) {
-					return;
-				}else{
-					setLoginedUI(isLogined());
-				}
-			}
-		});
-
-		mPageRoot.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}else{
-					setLoginedUI(isLogined());
-				}
-
-				mWifiProfile = mLoginHelper.mWifiProfile;
-				if (mWifiProfile != null) {
-					Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-					startActivity(i);
-				} else {
-					new AlertDialog.Builder(getActivity()).setTitle("认证WiFi").setMessage("您目前还没有认证过您的WiFi，是否要认证当前WiFi?")
-							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// mLoginHelper.mWifiProfile = new
-									// WifiProfile();
-									Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
-									startActivity(i);
-								}
-							}).setNegativeButton("取消", null).show();
-				}
-			}
-		});
-
-		// 我用的wifi
-		mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}else{
-					setLoginedUI(isLogined());
-				}
-				Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
-				startActivity(i);
-			}
-
-		});
-
-		mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (!checkIsLogined()) {
-					return;
-				}else{
-					setLoginedUI(isLogined());
-				}
-				Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
-				startActivity(i);
-			}
-		});
-
-		mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// if (!checkIsLogined()) {
-				// return;
-				// }
-				/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
-				SocializeConstants.APPKEY = GlobalConfig.UMENG_SHARE_KEY;
-				com.umeng.socialize.utils.Log.LOG = true;
-
-				UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-				/*
-				 * UMQQSsoHandler qqSsoHandler = new
-				 * UMQQSsoHandler(getActivity(), "", "");
-				 * qqSsoHandler.addToSocialSDK(); UMWXHandler wxSsoHandler = new
-				 * UMWXHandler(getActivity(), "", "");
-				 * wxSsoHandler.addToSocialSDK(); UMWXHandler wxCircleSsoHandler
-				 * = new UMWXHandler(getActivity(), "", "");
-				 * wxCircleSsoHandler.setToCircle(true);
-				 * wxCircleSsoHandler.addToSocialSDK();
-				 */
-				// 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
-				UMYXHandler yixinHandler = new UMYXHandler(getActivity(), GlobalConfig.YIXIN_APPKEY);
-				// 关闭分享时的等待Dialog
-				yixinHandler.enableLoadingDialog(false);
-				// 把易信添加到SDK中
-				yixinHandler.addToSocialSDK();
-				// UMLWHandler umlwHandler = new UMLWHandler(getActivity(),
-				// "laiwangd497e70d4", "d497e70d4c3e4efeab1381476bac4c5e");
-				// umlwHandler.addToSocialSDK();
-				// umlwHandler.setMessageFrom("友盟分享组件");
-				// 设置分享面板上显示的平台
-				mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA,
-						SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
-				// UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
-				mController.setShareContent("您的朋友邀请你使用：" + getString(R.string.app_name) + "。闲置WIFI是不是很浪费？" + getString(R.string.app_name)
-						+ "可以利用闲置的WIFI给自己赚钱啦！");
-				mController.openShare(getActivity(), new SnsPostListener() {
-
-					@Override
-					public void onStart() {
-						// TODO Auto-generated method stub
-						Toast.makeText(getActivity(), "开始分享", Toast.LENGTH_SHORT).show();
-					}
-
-					@Override
-					public void onComplete(SHARE_MEDIA arg0, int arg1, SocializeEntity arg2) {
-						// TODO Auto-generated method stub
-						if (arg1 == 200) {
-							Toast.makeText(getActivity(), "分享完成", Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-			}
-		});
-
-		mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
-				startActivity(i);
-			}
-		});
-
-		// 我的关注
-		mPageRoot.findViewById(R.id.slv_my_attention).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}
-				Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
-				startActivity(i);
-			}
-
-		});
-
-		//我的黑名单
-		mPageRoot.findViewById(R.id.siv_my_blacklist).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}
-				Intent i = new Intent(getApplicationContext(), WifiBlackListActivity.class);
-				startActivity(i);
-			}
-
-		});
-
-		// 设置about
-		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent();
-				i.setClass(getApplicationContext(), AboutAppActivity.class);
-				startActivity(i);
-			}
-
-		});
-
-		//设置白名单
-		this.findViewById(R.id.siv_my_whitelist).setOnClickListener(new OnClickListener() {
-
-			@Override
-            public void onClick(View v) {
-				// 查询是否登录
-				if (!checkIsLogined()) {
-					return;
-				}else{
-					setLoginedUI(isLogined());
-				}
-				Intent i = new Intent();
-				i.setClass(getApplicationContext(), MyWhiteListActivity.class);
-				startActivity(i);
-            }
-			
-		});
 		
 		return mPageRoot;
+	}
+	
+	private boolean mLoaded = false;
+	@Override
+    public void startUpdte() {
+		if (!mLoaded) {
+			setLoginedUI(isLogined());
+
+			mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (!checkIsLogined()) {
+						return;
+					}else{
+						setLoginedUI(isLogined());
+					}
+				}
+			});
+
+			mPageRoot.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}else{
+						setLoginedUI(isLogined());
+					}
+
+					mWifiProfile = mLoginHelper.mWifiProfile;
+					if (mWifiProfile != null) {
+						Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+						startActivity(i);
+					} else {
+						new AlertDialog.Builder(getActivity()).setTitle("认证WiFi").setMessage("您目前还没有认证过您的WiFi，是否要认证当前WiFi?")
+								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// mLoginHelper.mWifiProfile = new
+										// WifiProfile();
+										Intent i = new Intent(getApplicationContext(), WifiProviderRigisterFirstActivity.class);
+										startActivity(i);
+									}
+								}).setNegativeButton("取消", null).show();
+					}
+				}
+			});
+
+			// 我用的wifi
+			mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}else{
+						setLoginedUI(isLogined());
+					}
+					Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
+					startActivity(i);
+				}
+
+			});
+
+			mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if (!checkIsLogined()) {
+						return;
+					}else{
+						setLoginedUI(isLogined());
+					}
+					Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
+					startActivity(i);
+				}
+			});
+
+			mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// if (!checkIsLogined()) {
+					// return;
+					// }
+					/* 代码添加Appkey，如果设置了非null值，SocialSDK将使用该值. */
+					SocializeConstants.APPKEY = GlobalConfig.UMENG_SHARE_KEY;
+					com.umeng.socialize.utils.Log.LOG = true;
+
+					UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+					/*
+					 * UMQQSsoHandler qqSsoHandler = new
+					 * UMQQSsoHandler(getActivity(), "", "");
+					 * qqSsoHandler.addToSocialSDK(); UMWXHandler wxSsoHandler = new
+					 * UMWXHandler(getActivity(), "", "");
+					 * wxSsoHandler.addToSocialSDK(); UMWXHandler wxCircleSsoHandler
+					 * = new UMWXHandler(getActivity(), "", "");
+					 * wxCircleSsoHandler.setToCircle(true);
+					 * wxCircleSsoHandler.addToSocialSDK();
+					 */
+					// 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+					UMYXHandler yixinHandler = new UMYXHandler(getActivity(), GlobalConfig.YIXIN_APPKEY);
+					// 关闭分享时的等待Dialog
+					yixinHandler.enableLoadingDialog(false);
+					// 把易信添加到SDK中
+					yixinHandler.addToSocialSDK();
+					// UMLWHandler umlwHandler = new UMLWHandler(getActivity(),
+					// "laiwangd497e70d4", "d497e70d4c3e4efeab1381476bac4c5e");
+					// umlwHandler.addToSocialSDK();
+					// umlwHandler.setMessageFrom("友盟分享组件");
+					// 设置分享面板上显示的平台
+					mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA,
+							SHARE_MEDIA.YIXIN, SHARE_MEDIA.LAIWANG, SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+					// UserProfile mUP = mLoginHelper.getCurLoginUserInfo();
+					mController.setShareContent("您的朋友邀请你使用：" + getString(R.string.app_name) + "。闲置WIFI是不是很浪费？" + getString(R.string.app_name)
+							+ "可以利用闲置的WIFI给自己赚钱啦！");
+					mController.openShare(getActivity(), new SnsPostListener() {
+
+						@Override
+						public void onStart() {
+							// TODO Auto-generated method stub
+							Toast.makeText(getActivity(), "开始分享", Toast.LENGTH_SHORT).show();
+						}
+
+						@Override
+						public void onComplete(SHARE_MEDIA arg0, int arg1, SocializeEntity arg2) {
+							// TODO Auto-generated method stub
+							if (arg1 == 200) {
+								Toast.makeText(getActivity(), "分享完成", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				}
+			});
+
+			mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+					startActivity(i);
+				}
+			});
+
+			// 我的关注
+			mPageRoot.findViewById(R.id.slv_my_attention).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
+					Intent i = new Intent(getApplicationContext(), WifiFollowListActivity.class);
+					startActivity(i);
+				}
+
+			});
+
+			//我的黑名单
+			mPageRoot.findViewById(R.id.siv_my_blacklist).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
+					Intent i = new Intent(getApplicationContext(), WifiBlackListActivity.class);
+					startActivity(i);
+				}
+
+			});
+
+			// 设置about
+			this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent i = new Intent();
+					i.setClass(getApplicationContext(), AboutAppActivity.class);
+					startActivity(i);
+				}
+
+			});
+
+			//设置白名单
+			this.findViewById(R.id.siv_my_whitelist).setOnClickListener(new OnClickListener() {
+
+				@Override
+	            public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}else{
+						setLoginedUI(isLogined());
+					}
+					Intent i = new Intent();
+					i.setClass(getApplicationContext(), MyWhiteListActivity.class);
+					startActivity(i);
+	            }
+				
+			});
+			
+			mLoaded = true;
+		}
 	}
 
 	@Override
