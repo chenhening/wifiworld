@@ -218,7 +218,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_name"
+                        android:id="@+id/tv_wifi_free_item0_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -227,7 +227,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_options"
+                        android:id="@+id/tv_wifi_free_item0_options"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -274,7 +274,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_name"
+                        android:id="@+id/tv_wifi_free_item1_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -283,7 +283,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_options"
+                        android:id="@+id/tv_wifi_free_item1_options"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -294,7 +294,7 @@
                 </LinearLayout>
                 
                 <ImageView
-                    android:id="@+id/iv_wifi_item_more"
+                    android:id="@+id/iv_wifi_item1_more"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
@@ -350,7 +350,7 @@
                 </LinearLayout>
                 
                 <ImageView
-                    android:id="@+id/iv_wifi_item_more"
+                    android:id="@+id/iv_wifi_item0_more"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
@@ -412,7 +412,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_name"
+                        android:id="@+id/tv_wifi_lock_item0_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -421,7 +421,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_options"
+                        android:id="@+id/tv_wifi_lock_item0_options"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -432,7 +432,7 @@
                 </LinearLayout>
                 
                 <ImageView
-                    android:id="@+id/iv_wifi_item_more"
+                    android:id="@+id/iv_wifi_lock_item0_more"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
@@ -468,7 +468,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_name"
+                        android:id="@+id/tv_wifi_lock_item1_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -477,7 +477,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tv_wifi_free_options"
+                        android:id="@+id/tv_wifi_lock_item1_options"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -488,7 +488,7 @@
                 </LinearLayout>
                 
                 <ImageView
-                    android:id="@+id/iv_wifi_item_more"
+                    android:id="@+id/iv_wifi_lock_item1_more"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
