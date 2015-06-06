@@ -26,6 +26,8 @@
 
 package com.anynet.wifiworld.wifi;
 
+import com.anynet.wifiworld.util.NetHelper;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -93,7 +95,7 @@ public class WifiBRService {
 			        		boolean isConnected = state==State.CONNECTED;
 			        		boolean isDisconnected = state==State.DISCONNECTED;
 			        		if(isConnected){
-			        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(WifiAdmin.getInstance(context).getWifiNameConnection());
+			        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(NetHelper.getCurrentSsid(context));
 			        			if (onWifiStatusListener != null) {
 					            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
 			        			}
@@ -137,7 +139,7 @@ public class WifiBRService {
 				}
 				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicant == true) {
 		        		Log.i(TAG, "supplicant state changed action");
-		            WifiInfo info = WifiAdmin.getInstance(context).getWifiConnecting();
+		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
 		                statusStr = "正在连接...";

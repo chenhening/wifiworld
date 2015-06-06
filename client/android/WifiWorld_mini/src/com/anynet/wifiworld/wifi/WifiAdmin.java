@@ -387,22 +387,8 @@ public class WifiAdmin {
         return WifiManager.calculateSignalLevel(level, 5) + 1;
     }
     
-    public WifiInfo getWifiConnecting() {
-    		return mWifiManager.getConnectionInfo();
-    }
-    
-    public WifiInfo getWifiConnected() {
-    		if (mWifiManager.getConnectionInfo() != null
-    			&& mWifiManager.getConnectionInfo().getNetworkId() != -1) {
-    			return mWifiManager.getConnectionInfo();
-    		}
-    		return null;
-    }
-    
-    public String getWifiNameConnection() {
-    		WifiInfo wifiinfo = getWifiConnected();
-    		return wifiinfo == null ? null : wifiinfo.getSSID();
-
+    public WifiInfo getWifiInfo() {
+    	return mWifiManager.getConnectionInfo();
     }
     
     public void connectWifi(WifiConfiguration configuration) {

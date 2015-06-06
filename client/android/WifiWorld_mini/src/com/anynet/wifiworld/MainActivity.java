@@ -30,13 +30,19 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.WifiConnect;
 
 public class MainActivity extends Activity {
+	
+	private WifiConnect mWifiConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        mWifiConnect = new WifiConnect(this);
+        mWifiConnect.setWifiConnectedContent();
     }
 
 

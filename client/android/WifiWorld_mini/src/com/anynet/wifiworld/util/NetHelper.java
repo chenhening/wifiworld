@@ -40,6 +40,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -56,14 +57,36 @@ public abstract class NetHelper
     
     //public static String mNetType = null;
     
-    public static boolean isWifiNet(Context c)
+    public static boolean isWifiConnected(Context c)
     {
         boolean bRet = false;
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (null != wifiInfo && wifiInfo.isConnectedOrConnecting())
+        if (null != wifiInfo)
         {
-            bRet = true;
+        	State state = wifiInfo.getState();
+        	if (state == State.CONNECTED) {
+				bRet = true;
+			} else {
+				bRet = false;
+			}
+        }
+        return bRet;
+    }
+    
+    public static boolean isWifiConnecting(Context c)
+    {
+        boolean bRet = false;
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (null != wifiInfo)
+        {
+        	State state = wifiInfo.getState();
+        	if (state == State.CONNECTING) {
+				bRet = true;
+			} else {
+				bRet = false;
+			}
         }
         return bRet;
     }
