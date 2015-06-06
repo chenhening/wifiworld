@@ -26,15 +26,25 @@
 
 package com.anynet.wifiworld;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.net.wifi.WifiInfo;
+import android.os.Bundle;
 import android.view.Menu;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ToggleButton;
+
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiConnect;
 
 public class MainActivity extends Activity {
 	
 	private WifiConnect mWifiConnect;
+	
+	private ToggleButton mWifiSwitch;
+	
+	private WifiAdmin mWifiAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,21 @@ public class MainActivity extends Activity {
         
         mWifiConnect = new WifiConnect(this);
         mWifiConnect.setWifiConnectedContent();
+		mWifiAdmin = WifiAdmin.getInstance(this);
+        
+        //断开连接
+        mWifiSwitch = (ToggleButton)findViewById(R.id.tb_wifi_switch);
+        mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				WifiInfo wifiInfo = mWifiAdmin.getWifiInfo();
+				if (wifiInfo != null) {
+					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+				}
+			}
+            	
+        });
     }
 
 

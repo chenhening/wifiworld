@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
-            android:background="@drawable/wifi_switch_off"
+            android:background="@drawable/an_wifi_switch_selector"
             android:checked="true"
             android:focusableInTouchMode="true"
             android:longClickable="true"
