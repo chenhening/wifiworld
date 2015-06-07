@@ -130,7 +130,7 @@ public class WifiWorldApplication extends Application {
 			} else {
 				// 友盟自动更新
 		        UmengUpdateAgent.setUpdateOnlyWifi(true);
-		        UmengUpdateAgent.update(mInstance);
+		        UmengUpdateAgent.silentUpdate(mInstance);
 			}
 
 		}
