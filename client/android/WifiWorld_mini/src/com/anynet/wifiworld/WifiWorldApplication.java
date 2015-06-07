@@ -32,8 +32,13 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Process;
 
+import com.anynet.wifiworld.util.GlobalBroadcast;
+import com.anynet.wifiworld.util.NetworkStateListener;
 import com.umeng.update.UmengUpdateAgent;
 
 public class WifiWorldApplication extends Application {
@@ -47,9 +52,7 @@ public class WifiWorldApplication extends Application {
         super.onCreate();
         
         mInstance = this;
-        // 友盟自动更新
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(this);
+        GlobalBroadcast.registerBroadcastListener(mNetworkListener);
     }
     
     public static WifiWorldApplication getInstance() {
@@ -64,6 +67,7 @@ public class WifiWorldApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
+        GlobalBroadcast.unregisterBroadcastListener(mNetworkListener);
     }
     
     // 以下用户管理整个应用的activity
@@ -114,5 +118,22 @@ public class WifiWorldApplication extends Application {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private NetworkStateListener mNetworkListener = new NetworkStateListener() {
+		@Override
+		public void onNetworkStateChange(Intent intent) {
+
+			NetworkInfo networkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+
+			// 网络断了的时候
+			if (!networkInfo.isConnected()) {
+			} else {
+				// 友盟自动更新
+		        UmengUpdateAgent.setUpdateOnlyWifi(true);
+		        UmengUpdateAgent.update(mInstance);
+			}
+
+		}
+	};
     
 }
