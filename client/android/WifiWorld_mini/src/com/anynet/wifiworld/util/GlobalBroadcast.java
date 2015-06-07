@@ -12,10 +12,11 @@ import android.util.Log;
 import com.anynet.wifiworld.WifiWorldApplication;
 
 public class GlobalBroadcast {
+	private static final String TAG = GlobalBroadcast.class.getSimpleName();
+	
     private static Set<BroadcastListener> sListenerList =new HashSet<BroadcastListener>();
     private static Set<String> sFilterFlag = new HashSet<String>();
     private static BasicReceiver sRecerver = new BasicReceiver();
-    private static final String TAG = GlobalBroadcast.class.getSimpleName(); 
     
     /**
      * when we register a broadcastListener ,we must unregister at other time.
