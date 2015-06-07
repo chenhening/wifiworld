@@ -31,6 +31,10 @@ public class WifiConnect {
 		}
 	}
 	
+	public void setWifiListContent() {
+		
+	}
+	
 	private void getViewHolder() {
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
 	}
