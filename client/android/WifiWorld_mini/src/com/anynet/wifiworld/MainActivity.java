@@ -27,11 +27,15 @@
 package com.anynet.wifiworld;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import com.anynet.wifiworld.R;
@@ -41,10 +45,11 @@ import com.anynet.wifiworld.wifi.WifiConnect;
 public class MainActivity extends Activity {
 	
 	private WifiConnect mWifiConnect;
-	
 	private ToggleButton mWifiSwitch;
-	
 	private WifiAdmin mWifiAdmin;
+	
+	private AnimationDrawable mAnimSearch;
+	private ImageView mImageSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,23 @@ public class MainActivity extends Activity {
 				}
 			}
             	
+        });
+        
+        //点击搜索附近WiFi
+        mImageSearch = (ImageView) findViewById(R.id.iv_wifi_search_heart);
+        mImageSearch.setImageResource(R.animator.animation_search);
+		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
+        this.findViewById(R.id.rl_wifi_search).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!mAnimSearch.isRunning())
+					mAnimSearch.start();
+				else {
+					mAnimSearch.stop();
+				}
+			}
+        	
         });
     }
 
