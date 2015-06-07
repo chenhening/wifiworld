@@ -74,7 +74,6 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
         if CLLocationCoordinate2DIsValid(location.coordinate) {
             self.mapView.setCenterCoordinate(location.coordinate , animated: true)
             NSThread.detachNewThreadSelector("queryObject:", toTarget: self, withObject: location);
-
         }
     }
 

@@ -39,6 +39,9 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imA-t2-WRh">
                                 <rect key="frame" x="260" y="130" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Ttj-KR-GKs"/>
+                                </constraints>
                                 <state key="normal" image="map_location_selected">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -144,15 +147,6 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi_free_title_icon" translatesAutoresizingMaskIntoConstraints="NO" id="iWM-DQ-oM5">
-                                        <rect key="frame" x="7" y="111" width="18" height="29"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="认证Wi-Fi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFg-c2-EsD">
-                                        <rect key="frame" x="29" y="111" width="73" height="29"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <color key="textColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="TsK-I3-T90" firstAttribute="top" secondItem="zQ4-a5-EH9" secondAttribute="top" constant="64" id="7DB-Lq-uqZ"/>
@@ -168,24 +162,31 @@
                                     <constraint firstAttribute="centerX" secondItem="TsK-I3-T90" secondAttribute="centerX" constant="-0.5" id="zk6-f0-tGx"/>
                                 </constraints>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2r-Ua-Ah0">
-                                <rect key="frame" x="0.0" y="243" width="414" height="444"/>
-                                <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="HEi-u6-O5N">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="177"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
-                                </subviews>
-                            </scrollView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="42" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DDi-jO-fZX">
+                                <rect key="frame" x="20" y="198" width="372" height="440"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" id="Gev-fP-3Cm">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="5c7-gI-ojT" id="haP-kB-TmK"/>
+                                    <outlet property="delegate" destination="5c7-gI-ojT" id="KRZ-Ab-6ss"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="K2r-Ua-Ah0" firstAttribute="top" secondItem="zQ4-a5-EH9" secondAttribute="bottom" constant="8" id="4Lv-De-YE9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DDi-jO-fZX" secondAttribute="trailing" constant="6" id="Aea-XN-n65"/>
                             <constraint firstItem="zQ4-a5-EH9" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" id="EiV-Js-mUx"/>
-                            <constraint firstItem="K2r-Ua-Ah0" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" constant="-16" id="MV6-kr-t7l"/>
+                            <constraint firstItem="DDi-jO-fZX" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" constant="4" id="LUM-DR-uKh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zQ4-a5-EH9" secondAttribute="trailing" id="Zri-Wg-tgq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="K2r-Ua-Ah0" secondAttribute="trailing" constant="-16" id="jMY-qe-u6n"/>
-                            <constraint firstItem="awv-XQ-St3" firstAttribute="top" secondItem="K2r-Ua-Ah0" secondAttribute="bottom" id="rn3-n6-BQ3"/>
+                            <constraint firstItem="awv-XQ-St3" firstAttribute="top" secondItem="DDi-jO-fZX" secondAttribute="bottom" constant="49" id="rMe-A5-JhZ"/>
+                            <constraint firstItem="DDi-jO-fZX" firstAttribute="top" secondItem="voF-ch-zfF" secondAttribute="bottom" constant="134" id="tYL-NV-I2b"/>
                             <constraint firstItem="zQ4-a5-EH9" firstAttribute="top" secondItem="voF-ch-zfF" secondAttribute="bottom" constant="20" id="uUl-lI-JJh"/>
                         </constraints>
                     </view>
@@ -224,6 +225,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="btn_CustomSwitch" destination="kOm-gH-uRr" id="bC0-Hc-66R"/>
+                        <outlet property="lb_CurrentWifi" destination="xTl-kj-u0r" id="f3W-Hj-5rV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YE-06-xmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -317,7 +319,6 @@
         <image name="tab_wifi_sel" width="27" height="27"/>
         <image name="wifi_connected_bg" width="956" height="327"/>
         <image name="wifi_connected_icon" width="118" height="81"/>
-        <image name="wifi_free_title_icon" width="27" height="63"/>
         <image name="wifi_search_bg" width="222" height="231"/>
         <image name="wifi_search_needle" width="63" height="77"/>
         <image name="wifi_switch_off" width="159" height="82"/>
