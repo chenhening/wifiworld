@@ -33,6 +33,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -49,7 +51,9 @@ public class MainActivity extends Activity {
 	private WifiAdmin mWifiAdmin;
 	
 	private AnimationDrawable mAnimSearch;
+	private Animation mAnimNeedle;
 	private ImageView mImageSearch;
+	private ImageView mImageNeedle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,8 @@ public class MainActivity extends Activity {
         });
         
         //点击搜索附近WiFi
+        mImageNeedle = (ImageView) findViewById(R.id.iv_wifi_search_needle);
+        mAnimNeedle = AnimationUtils.loadAnimation(this, R.animator.animation_needle);
         mImageSearch = (ImageView) findViewById(R.id.iv_wifi_search_heart);
         mImageSearch.setImageResource(R.animator.animation_search);
 		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
@@ -82,14 +88,11 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if (!mAnimSearch.isRunning())
-					mAnimSearch.start();
-				else {
-					mAnimSearch.stop();
-				}
+				DoSearchAnimation(!mAnimSearch.isRunning());
 			}
         	
         });
+        DoSearchAnimation(true); //程序一启动起来默认搜索
     }
 
 
@@ -100,4 +103,16 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    //-----------------------------------------------------------------------------------------------------------------
+    //custom functions
+    private void DoSearchAnimation(boolean start) {
+    	if (start) {
+    		mAnimSearch.start();
+    		mImageNeedle.startAnimation(mAnimNeedle);
+    	} else {
+    		mAnimSearch.stop();
+    		mImageNeedle.clearAnimation();
+    	}
+    }
+
 }
