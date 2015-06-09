@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F18733A1B270B6200935F02 /* ConnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1873391B270B6200935F02 /* ConnViewController.swift */; };
+		3F18733E1B270BCD00935F02 /* CurrentWifiSSID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F18733D1B270BCD00935F02 /* CurrentWifiSSID.m */; };
 		3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */; };
-		3F5B65E01B207A0C00280D1D /* ConnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */; };
 		3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF531B13480300CE62ED /* AppDelegate.swift */; };
 		3F67BF561B13480300CE62ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F67BF551B13480300CE62ED /* ViewController.swift */; };
 		3F67BF591B13480300CE62ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F67BF571B13480300CE62ED /* Main.storyboard */; };
@@ -27,8 +28,9 @@
 		3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */; };
 		3FA5FC081B17590000DB9C6A /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA5FC071B17590000DB9C6A /* libicucore.dylib */; };
 		3FAD47831B20792F00BC9149 /* RecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAD47821B20792F00BC9149 /* RecentViewController.swift */; };
+		73EBA0584B8137F3E30EB187 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC79CB84D537280112C5E47E /* libPods.a */; };
 		FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */; };
-		FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */; };
+		FDF458F31B1C920F00D1E268 /* WifiProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF458F21B1C920F00D1E268 /* WifiProfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,8 +44,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0CAEFFD447F4FD476CBCA9FB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		3F1873391B270B6200935F02 /* ConnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnViewController.swift; sourceTree = "<group>"; };
+		3F18733C1B270BCD00935F02 /* CurrentWifiSSID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentWifiSSID.h; sourceTree = "<group>"; };
+		3F18733D1B270BCD00935F02 /* CurrentWifiSSID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentWifiSSID.m; sourceTree = "<group>"; };
 		3F56124F1B1DEFA000BD210E /* UISwitch＋Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISwitch＋Extension.swift"; sourceTree = "<group>"; };
-		3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnViewController.swift; path = wifiworld/ConnViewController.swift; sourceTree = SOURCE_ROOT; };
 		3F67BF4E1B13480300CE62ED /* wifiworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wifiworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F67BF521B13480300CE62ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F67BF531B13480300CE62ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,8 +72,10 @@
 		3FA5FC051B1757D400DB9C6A /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		3FA5FC071B17590000DB9C6A /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		3FAD47821B20792F00BC9149 /* RecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentViewController.swift; sourceTree = "<group>"; };
+		513C74EDCF0BB424B37B2836 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		FC79CB84D537280112C5E47E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDF458E91B1AD30400D1E268 /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapNaviKit.framework; sourceTree = "<group>"; };
-		FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLBRemoteDataQuery.swift; sourceTree = "<group>"; };
+		FDF458F21B1C920F00D1E268 /* WifiProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiProfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +92,7 @@
 				3F67BF851B134F1F00CE62ED /* libz.dylib in Frameworks */,
 				3FA5FC061B1757D400DB9C6A /* BmobSDK.framework in Frameworks */,
 				FDF458EA1B1AD30400D1E268 /* AMapNaviKit.framework in Frameworks */,
+				73EBA0584B8137F3E30EB187 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +106,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F1873381B270B6200935F02 /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				3F1873391B270B6200935F02 /* ConnViewController.swift */,
+			);
+			path = Connect;
+			sourceTree = "<group>";
+		};
+		3F18733B1B270B9500935F02 /* CurrentWifi */ = {
+			isa = PBXGroup;
+			children = (
+				3F18733C1B270BCD00935F02 /* CurrentWifiSSID.h */,
+				3F18733D1B270BCD00935F02 /* CurrentWifiSSID.m */,
+			);
+			path = CurrentWifi;
+			sourceTree = "<group>";
+		};
 		3F56124E1B1DEF6900BD210E /* UIExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +138,8 @@
 				3F67BF661B13480300CE62ED /* wifiworldTests */,
 				3F67BF751B134B3200CE62ED /* Framework */,
 				3F67BF4F1B13480300CE62ED /* Products */,
+				5784D93381E2D995149EB951 /* Pods */,
+				B99B0612DB0AC014211CA2C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,7 +160,8 @@
 				3F67BF571B13480300CE62ED /* Main.storyboard */,
 				3F67BF5A1B13480300CE62ED /* Images.xcassets */,
 				3F67BF5C1B13480300CE62ED /* LaunchScreen.xib */,
-				3FAD47841B20799200BC9149 /* Connect */,
+				3F1873381B270B6200935F02 /* Connect */,
+				3F18733B1B270B9500935F02 /* CurrentWifi */,
 				3FAD47811B20792F00BC9149 /* Nearby */,
 				FDF458ED1B1AE0B600D1E268 /* DataHandler */,
 				3F56124E1B1DEF6900BD210E /* UIExtension */,
@@ -221,18 +249,27 @@
 			path = Nearby;
 			sourceTree = "<group>";
 		};
-		3FAD47841B20799200BC9149 /* Connect */ = {
+		5784D93381E2D995149EB951 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3F5B65DF1B207A0C00280D1D /* ConnViewController.swift */,
+				513C74EDCF0BB424B37B2836 /* Pods.debug.xcconfig */,
+				0CAEFFD447F4FD476CBCA9FB /* Pods.release.xcconfig */,
 			);
-			path = Connect;
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B99B0612DB0AC014211CA2C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FC79CB84D537280112C5E47E /* libPods.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FDF458ED1B1AE0B600D1E268 /* DataHandler */ = {
 			isa = PBXGroup;
 			children = (
-				FDF458F21B1C920F00D1E268 /* WLBRemoteDataQuery.swift */,
+				FDF458F21B1C920F00D1E268 /* WifiProfile.swift */,
 			);
 			path = DataHandler;
 			sourceTree = "<group>";
@@ -244,9 +281,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F67BF6D1B13480300CE62ED /* Build configuration list for PBXNativeTarget "wifiworld" */;
 			buildPhases = (
+				07CF3DE3966750EDBFA2B230 /* Check Pods Manifest.lock */,
 				3F67BF4A1B13480300CE62ED /* Sources */,
 				3F67BF4B1B13480300CE62ED /* Frameworks */,
 				3F67BF4C1B13480300CE62ED /* Resources */,
+				90F6E70F3623E74D255943CC /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -335,15 +374,49 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		07CF3DE3966750EDBFA2B230 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		90F6E70F3623E74D255943CC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3F67BF4A1B13480300CE62ED /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F5B65E01B207A0C00280D1D /* ConnViewController.swift in Sources */,
+				3F18733A1B270B6200935F02 /* ConnViewController.swift in Sources */,
+				3F18733E1B270BCD00935F02 /* CurrentWifiSSID.m in Sources */,
 				3F67BF7E1B134C6E00CE62ED /* Singleton.swift in Sources */,
 				3F67BF561B13480300CE62ED /* ViewController.swift in Sources */,
-				FDF458F31B1C920F00D1E268 /* WLBRemoteDataQuery.swift in Sources */,
+				FDF458F31B1C920F00D1E268 /* WifiProfile.swift in Sources */,
 				3FAD47831B20792F00BC9149 /* RecentViewController.swift in Sources */,
 				3F67BF541B13480300CE62ED /* AppDelegate.swift in Sources */,
 				3F5612501B1DEFA000BD210E /* UISwitch＋Extension.swift in Sources */,
@@ -473,6 +546,7 @@
 		};
 		3F67BF6E1B13480300CE62ED /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 513C74EDCF0BB424B37B2836 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -497,6 +571,7 @@
 		};
 		3F67BF6F1B13480300CE62ED /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0CAEFFD447F4FD476CBCA9FB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

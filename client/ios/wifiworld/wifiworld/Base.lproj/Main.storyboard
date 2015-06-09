@@ -171,6 +171,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -226,6 +227,7 @@
                     <connections>
                         <outlet property="btn_CustomSwitch" destination="kOm-gH-uRr" id="bC0-Hc-66R"/>
                         <outlet property="lb_CurrentWifi" destination="xTl-kj-u0r" id="f3W-Hj-5rV"/>
+                        <outlet property="mp_tableView" destination="DDi-jO-fZX" id="4ka-8f-6Qp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YE-06-xmn" userLabel="First Responder" sceneMemberID="firstResponder"/>

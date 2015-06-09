@@ -9,7 +9,7 @@
 import UIKit
 
 
-typealias handleDataResult = ([AnyObject])->Void
+typealias handleDataResult = ([AnyObject]?,NSError?)->Void
 
 class WifiProfile:BmobObject {
     
@@ -37,19 +37,23 @@ class WifiProfile:BmobObject {
     
     func queryObject(geo:BmobGeoPoint!,radian:Double!,resultBlock:handleDataResult!)  {
 
-        var dataList = [AnyObject]();
+        //var dataList = [AnyObject]();
         var query:BmobQuery = BmobQuery(className:"WifiProfile")
         query.whereKey("Geometry", nearGeoPoint: geo, withinRadians: radian)
         query.findObjectsInBackgroundWithBlock { (list, error) -> Void in
-           
+            
+            resultBlock?(list,error);
+
             if error != nil{
                 println("error",error.description)
             }else{
-                dataList = list;
+                //dataList = list;
+                //resultBlock?(list,nil);
+                //println("dataList=\(list)");
+
             }
         }
-        
-        resultBlock?(dataList);
+        //resultBlock?(dataList);
     }
 
 }

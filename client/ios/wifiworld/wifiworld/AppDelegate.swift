@@ -13,19 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var locManager:CLLocationManager!
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         MAMapServices.sharedServices().apiKey = "3cf9f4ed7bb055a8e240b9614eccee52"
         AMapNaviServices.sharedServices().apiKey = "3cf9f4ed7bb055a8e240b9614eccee52"
-        
-        // config Bmob ApiKey
+        //config Bmob ApiKey
         Bmob.registerWithAppKey("b20905c46c6f0ae1edee547057f04589");
-        
         locManager = CLLocationManager()
         locManager.requestAlwaysAuthorization();
-        locManager.requestWhenInUseAuthorization()
+        locManager.requestWhenInUseAuthorization();
         return true
     }
 

@@ -13,15 +13,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-    
         println("hello world")
+        let afNet = AFURLConnectionOperation(request: NSURLRequest(URL: NSURL(string: "http://www.baidu.com")!))
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // Dispose of any resources that can be     .
     }
-
 
 }
 
