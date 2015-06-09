@@ -91,6 +91,21 @@ public abstract class NetHelper
         return bRet;
     }
     
+    public static boolean isWifiNet(final Context c)
+    {
+        boolean ret = false;
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (null != cm)
+        {
+            NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (null != wifiInfo && wifiInfo.isConnectedOrConnecting())
+            {
+                ret = true;
+            }
+        }
+        return ret;
+    }
+    
     public static boolean isMobileNet(final Context c)
     {
         boolean ret = false;

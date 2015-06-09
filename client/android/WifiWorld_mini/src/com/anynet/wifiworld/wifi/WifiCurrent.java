@@ -10,6 +10,7 @@ public class WifiCurrent {
 	
 	private static WifiCurrent mWifiCurrent = null;
 	private Context mContext;
+	private WifiListItem mWifiListItem;
 	
 	public static WifiCurrent getInstance(Context context) {
 		if (mWifiCurrent == null) {
@@ -20,6 +21,15 @@ public class WifiCurrent {
 	
 	private WifiCurrent(Context context) {
 		mContext = context;
+		mWifiListItem = null;
+	}
+	
+	public void setWifiListItem(WifiListItem wifiListItem) {
+		mWifiListItem = wifiListItem;
+	}
+	
+	public WifiListItem getWifiListItem() {
+		return mWifiListItem;
 	}
 	
 	public boolean isConnected() {

@@ -62,6 +62,7 @@ public class MainActivity extends Activity {
         
         mWifiConnect = new WifiConnect(this);
         mWifiConnect.setWifiConnectedContent();
+        mWifiConnect.setWifiListContent();
 		mWifiAdmin = WifiAdmin.getInstance(this);
         
         //断开连接
