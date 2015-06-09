@@ -52,6 +52,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         
+        
+        <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />
+        <service android:name="com.anynet.wifiworld.wifi.WifiBRService$WifiMonitorService" />
     </application>
 
 </manifest>

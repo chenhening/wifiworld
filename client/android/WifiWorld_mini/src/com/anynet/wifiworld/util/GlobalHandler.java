@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public abstract class GlobalHandler extends Handler {
-	private int UPDATE_WIFI_LIST = 1;
+	public static int UPDATE_WIFI_LIST = 1;
 
 	@Override
 	public void handleMessage(Message msg) {

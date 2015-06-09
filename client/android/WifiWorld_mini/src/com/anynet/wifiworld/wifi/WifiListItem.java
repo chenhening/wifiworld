@@ -27,25 +27,33 @@
 package com.anynet.wifiworld.wifi;
 
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 
 public class WifiListItem {
 	private final static String TAG = WifiListItem.class.getSimpleName();
 	
 	private ScanResult mScanResult;
+	private WifiConfiguration mWifiConfiguration;
 	private WifiDBInfo mWifiDBInfo;
 	
 	public WifiListItem() {
 		mScanResult = null;
+		mWifiConfiguration = null;
 		mWifiDBInfo = null;
 	}
 	
-	public WifiListItem(WifiDBInfo wifiDBInfo, ScanResult scanResult) {
-		mWifiDBInfo = wifiDBInfo;
+	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration, WifiDBInfo wifiDBInfo) {
 		mScanResult = scanResult;
+		mWifiConfiguration = wifiConfiguration;
+		mWifiDBInfo = wifiDBInfo;
 	}
 	
 	public void setScanResult(ScanResult scanResult) {
 		mScanResult = scanResult;
+	}
+	
+	public void setWifiConfiguration(WifiConfiguration wifiConfiguration) {
+		mWifiConfiguration = wifiConfiguration;
 	}
 	
 	public void setWifiDBInfo(WifiDBInfo wifiDBInfo) {

@@ -131,9 +131,9 @@ public class WifiBRService {
 					}
 				}
 		        if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable == true) {
-					Log.i(TAG, "wifi can resualts avaliable");
+					Log.i(TAG, "wifi can results avaliable");
 					if (onWifiStatusListener != null) {
-						onWifiStatusListener.onScannableChanged();
+						onWifiStatusListener.onScannableAvaliable();
 					}
 					mScannable = false;
 				}
@@ -228,7 +228,7 @@ public class WifiBRService {
 	public interface OnWifiStatusListener {
 		void onNetWorkChanged(boolean isConnected, String str);
 		void onWifiStatChanged(boolean isEnabled);
-		void onScannableChanged();
+		void onScannableAvaliable();
 		void onSupplicantChanged(String statusStr);
 		void onSupplicantDisconnected(String statusStr);
 	}
