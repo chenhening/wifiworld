@@ -48,12 +48,34 @@ public class WifiFreeListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			view = mLayoutInflater.inflate(R.layout.wifi_free_item, null);
+			view = mLayoutInflater.inflate(R.layout.wifi_list_item, null);
 		}
+		
+		setItemBg(position, getCount(), view);
+		
 		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
 		wifiName.setText(mWifiListItems.get(position).getWifiName());
 		
-		return null;
+		return view;
 	}
-
+	
+	private void setItemBg(int pos, int itemSize, View view) {
+		switch (itemSize) {
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		default:
+			if (pos == 0) {
+				view.setBackgroundResource(R.drawable.wifi_free_item0);
+			} else if (pos == getCount()-1){
+				view.setBackgroundResource(R.drawable.wifi_free_item2);
+			} else {
+				view.setBackgroundResource(R.drawable.wifi_free_item1);
+			}
+			break;
+		}
+	}
 }

@@ -42,11 +42,11 @@ import android.widget.ToggleButton;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiConnect;
+import com.anynet.wifiworld.wifi.WifiConnectUI;
 
 public class MainActivity extends Activity {
 	
-	private WifiConnect mWifiConnect;
+	private WifiConnectUI mWifiConnect;
 	private ToggleButton mWifiSwitch;
 	private WifiAdmin mWifiAdmin;
 	
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        mWifiConnect = new WifiConnect(this);
+        mWifiConnect = new WifiConnectUI(this);
         mWifiConnect.setWifiConnectedContent();
         mWifiConnect.setWifiListContent();
 		mWifiAdmin = WifiAdmin.getInstance(this);

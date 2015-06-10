@@ -2,21 +2,21 @@ package com.anynet.wifiworld.wifi;
 
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
-import android.net.wifi.WifiInfo;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class WifiConnect {
-	private final static String TAG = WifiConnect.class.getSimpleName();
+public class WifiConnectUI {
+	private final static String TAG = WifiConnectUI.class.getSimpleName();
 	
 	private MainActivity mContext;
 	private WifiAdmin mWifiAdmin;
@@ -26,6 +26,8 @@ public class WifiConnect {
 	private WifiEncryptListAdapter mWifiEncryptList;
 	
 	private TextView mWifiName;
+	private ListView mWifiFreeListView;
+	private ListView mWifiEncryptListView;
 	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
@@ -34,9 +36,11 @@ public class WifiConnect {
 			setWifiConnectedContent();
 			if (mWifiFreeList != null) {
 				mWifiFreeList.refreshWifiList(mWifiListScanned.getFreeList());
+				setListViewHeightBasedOnChildren(mWifiFreeListView);
 			}
 			if (mWifiEncryptList != null) {
 				mWifiEncryptList.refreshWifiList(mWifiListScanned.getEncryptList());
+				setListViewHeightBasedOnChildren(mWifiEncryptListView);
 			}
 		}
 	};
@@ -160,12 +164,12 @@ public class WifiConnect {
 		}
 	};
 	
-	public WifiConnect(Context context) {
+	public WifiConnectUI(Context context) {
 		mContext = (MainActivity)context;
-		getViewHolder();
 		mWifiCurrent = WifiCurrent.getInstance(context);
 		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
 		WifiBRService.bindWifiService(mContext, conn);
+		getViewHolder();
 	}
 	
 	public void setWifiConnectedContent() {
@@ -179,10 +183,43 @@ public class WifiConnect {
 	}
 	
 	public void setWifiListContent() {
+		mWifiListScanned.refreshWifiList();
+	}
+	
+	public void refreshWifiListContent() {
+		//supervise WiFi scannable broadcast
 		mWifiListScanned.refresh();
 	}
 	
 	private void getViewHolder() {
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
+		
+		mWifiFreeListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
+		mWifiFreeList = new WifiFreeListAdapter(mContext, mWifiListScanned.getFreeList());
+		mWifiFreeListView.setAdapter(mWifiFreeList);
+		setListViewHeightBasedOnChildren(mWifiFreeListView);
+		
+		mWifiEncryptListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
+		mWifiEncryptList = new WifiEncryptListAdapter(mContext, mWifiListScanned.getEncryptList());
+		mWifiEncryptListView.setAdapter(mWifiEncryptList);
+		setListViewHeightBasedOnChildren(mWifiEncryptListView);
+	}
+	
+	private void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
 	}
 }

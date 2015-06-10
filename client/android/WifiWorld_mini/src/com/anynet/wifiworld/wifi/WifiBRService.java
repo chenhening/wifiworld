@@ -86,7 +86,7 @@ public class WifiBRService {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				String action = intent.getAction();
-			        if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
+			    if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
 			        	Log.i(TAG, "network state changed action");
 			        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 			        	if (null != parcelableExtra) {
@@ -108,8 +108,7 @@ public class WifiBRService {
 			        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
 						}
 			        	}
-		        }
-		        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
+		        } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
 					Log.i(TAG, "wifi state changed action");
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
@@ -129,15 +128,13 @@ public class WifiBRService {
 					default:
 						break;
 					}
-				}
-		        if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable == true) {
+				} else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable == true) {
 					Log.i(TAG, "wifi can results avaliable");
 					if (onWifiStatusListener != null) {
 						onWifiStatusListener.onScannableAvaliable();
 					}
 					mScannable = false;
-				}
-				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicant == true) {
+				} else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicant == true) {
 		        		Log.i(TAG, "supplicant state changed action");
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();

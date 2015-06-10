@@ -87,15 +87,16 @@ public class WifiListScanned{
 				@Override
 				public boolean onFailed(String msg) {
 					Log.e(TAG, msg);
+					reGroupWifiList(scanResults, null);
 					isRefreshThreadFinish = true;
 					return false;
 				}
 			});
-			reGroupWifiList(scanResults, null);
 		}
 	}
 	
 	public void refreshWifiList() {
+		isRefreshThreadFinish = false;
 		Thread thread = new Thread(new RefreshListThread());
 		thread.start();
 	}
