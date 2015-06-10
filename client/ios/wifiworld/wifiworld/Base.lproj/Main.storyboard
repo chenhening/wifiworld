@@ -162,14 +162,31 @@
                                     <constraint firstAttribute="centerX" secondItem="TsK-I3-T90" secondAttribute="centerX" constant="-0.5" id="zk6-f0-tGx"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="42" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DDi-jO-fZX">
-                                <rect key="frame" x="20" y="198" width="372" height="440"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DDi-jO-fZX">
+                                <rect key="frame" x="21" y="231" width="372" height="440"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" id="Gev-fP-3Cm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" textLabel="mdF-Qh-0BL" detailTextLabel="77c-QH-gO8" imageView="IwW-Mt-S8J" style="IBUITableViewCellStyleSubtitle" id="Gev-fP-3Cm" customClass="CustomConnectCell" customModule="wifiworld" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mdF-Qh-0BL">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="    No passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="77c-QH-gO8">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="wifi_free_signal1" id="IwW-Mt-S8J">
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
@@ -182,12 +199,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="DDi-jO-fZX" secondAttribute="trailing" constant="6" id="Aea-XN-n65"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DDi-jO-fZX" secondAttribute="trailing" constant="5" id="Aea-XN-n65"/>
                             <constraint firstItem="zQ4-a5-EH9" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" id="EiV-Js-mUx"/>
-                            <constraint firstItem="DDi-jO-fZX" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" constant="4" id="LUM-DR-uKh"/>
+                            <constraint firstItem="DDi-jO-fZX" firstAttribute="leading" secondItem="u9L-JB-AcT" secondAttribute="leadingMargin" constant="5" id="LUM-DR-uKh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zQ4-a5-EH9" secondAttribute="trailing" id="Zri-Wg-tgq"/>
-                            <constraint firstItem="awv-XQ-St3" firstAttribute="top" secondItem="DDi-jO-fZX" secondAttribute="bottom" constant="49" id="rMe-A5-JhZ"/>
-                            <constraint firstItem="DDi-jO-fZX" firstAttribute="top" secondItem="voF-ch-zfF" secondAttribute="bottom" constant="134" id="tYL-NV-I2b"/>
+                            <constraint firstItem="awv-XQ-St3" firstAttribute="top" secondItem="DDi-jO-fZX" secondAttribute="bottom" constant="16" id="rMe-A5-JhZ"/>
+                            <constraint firstItem="DDi-jO-fZX" firstAttribute="top" secondItem="voF-ch-zfF" secondAttribute="bottom" constant="167" id="tYL-NV-I2b"/>
                             <constraint firstItem="zQ4-a5-EH9" firstAttribute="top" secondItem="voF-ch-zfF" secondAttribute="bottom" constant="20" id="uUl-lI-JJh"/>
                         </constraints>
                     </view>
@@ -228,11 +245,30 @@
                         <outlet property="btn_CustomSwitch" destination="kOm-gH-uRr" id="bC0-Hc-66R"/>
                         <outlet property="lb_CurrentWifi" destination="xTl-kj-u0r" id="f3W-Hj-5rV"/>
                         <outlet property="mp_tableView" destination="DDi-jO-fZX" id="4ka-8f-6Qp"/>
+                        <segue destination="nDg-Vf-SUq" kind="show" id="oBm-Fn-kjB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YE-06-xmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="842" y="-528"/>
+            <point key="canvasLocation" x="691" y="-366"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="vXs-67-O4T">
+            <objects>
+                <viewController id="nDg-Vf-SUq" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0R5-8V-X12"/>
+                        <viewControllerLayoutGuide type="bottom" id="bgZ-AI-uHv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="x5y-NZ-FSM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hhe-k9-E0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1196" y="-366"/>
         </scene>
         <!--附近-->
         <scene sceneID="JB0-Ck-8QC">
@@ -321,6 +357,7 @@
         <image name="tab_wifi_sel" width="27" height="27"/>
         <image name="wifi_connected_bg" width="956" height="327"/>
         <image name="wifi_connected_icon" width="118" height="81"/>
+        <image name="wifi_free_signal1" width="38" height="29"/>
         <image name="wifi_search_bg" width="222" height="231"/>
         <image name="wifi_search_needle" width="63" height="77"/>
         <image name="wifi_switch_off" width="159" height="82"/>

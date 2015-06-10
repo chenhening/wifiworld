@@ -27,8 +27,8 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     }
 
     override func viewWillAppear(animated: Bool) {
-        
         mapView.tag = 0;
+        
     }
     func initInterface(){
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "wifi_title_bg"), forBarMetrics: UIBarMetrics.Default)
@@ -54,7 +54,6 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         }else {
             button.tag = 0;
             button.setBackgroundImage(UIImage(named: "wifi_switch_off"), forState: UIControlState.Normal);
-
         }
     
     }
@@ -62,44 +61,35 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     func queryObject(loc:CLLocation!){
         let wifiProfile = WifiProfile();
         let geo = BmobGeoPoint(longitude: loc.coordinate.longitude , withLatitude: loc.coordinate.latitude );
-        wifiProfile.queryObject(geo, radian: 0.10){ [weak self](list,eror) ->Void in
-            
-            
+        wifiProfile.queryObject(geo, kilometers: 0.10){ [weak self](list,eror) ->Void in
             //println("dataList=\(list)");
-            Singleton.sync.main{ [weak self] () -> Void in
-            
                 if list != nil {
                     self!.freeWifiList = list!;
                     self?.mp_tableView.reloadData();
-                    println("dataList=\(list)");
-
+                    println("dataList=\(list?.count)");
+                    NSLog("%ld", list!.count);
                 }else {
-                
                     //self?.mapView.tag = 0;
                 }
-                
-            }
         };
-
     }
     //MARK: - mapviewDlegate
     
     func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        
+        NSLog("%f", userLocation.coordinate.latitude);
+
+        println("\(userLocation.coordinate.latitude)");
         if updatingLocation && mapView.tag == 0 && userLocation.location.coordinate.latitude != 0{
             mapView.tag = 1;
-        
-            NSThread.detachNewThreadSelector("queryObject:", toTarget: self, withObject: userLocation.location)
+            self.queryObject(userLocation.location)
+            //NSThread.detachNewThreadSelector("queryObject:", toTarget: self, withObject: userLocation.location)
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
     /*
     // MARK: - Navigation
 
@@ -109,11 +99,9 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         // Pass the selected object to the new view controller.
     }
     */
-
-    //MARK: - tableviewDelegate  
+    //MARK: - tableviewDelegate
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
         return 2;
     }
     
@@ -139,15 +127,10 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
                 bkgName = "wifi_free_item1";
             }
             let obj = freeWifiList[indexPath.row] as? BmobObject ;
-        
-            
             
             if let name = obj?.objectForKey("Alias") as? String  {
-            
                 wifiname = name;
-                
             }else {
-            
                 println("not dictionary");
 
             }
@@ -164,34 +147,33 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
             }else {
                 bkgName = "wifi_lock_item1";
             }
-            
-            
         }
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell;
         let bkgV = UIImageView(image: UIImage(named: bkgName));
         bkgV.frame = CGRectMake(0, 0, tableView.frame.width, cell.frame.height);
         cell.backgroundView = bkgV;
-        cell.textLabel?.text = wifiname;
+        cell.textLabel?.text = "    \(wifiname)";
+        cell.imageView?.image = UIImage(named: "wifi_free_signal3")
+        cell.accessoryView = UIImageView(image: UIImage(named: "1_1_86"));
         return cell;
     }
-
-   
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let view  = UIView(frame: CGRectMake(0, 0, 100, 30));
+        //view.backgroundColor = UIColor.lightTextColor();
         var imgName = "";
         var rect = CGRectZero;
-        let label = UILabel(frame: CGRectMake(20, 20, 100, 20));
+        let label = UILabel(frame: CGRectMake(20, 0, 100, 20));
         label.textColor = UIColor.grayColor();
         if section == 0{
             label.text = "认证Wi-Fi"
             imgName = "wifi_free_title_icon";
-            rect = CGRectMake(0, 20, 10, 20);
+            rect = CGRectMake(0, 0, 10, 20);
         }else{
             imgName = "wifi_lock_title_icon"
             label.text = "锁定Wi-Fi"
-            rect = CGRectMake(0, 20, 15, 20);
+            rect = CGRectMake(0, 0, 15, 20);
         };
         let imgV = UIImageView(image: UIImage(named: imgName));
         imgV.frame = rect;
@@ -201,5 +183,11 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true);
+        
     }
+    
+}
+
+class CustomConnectCell: UITableViewCell {
+    
 }

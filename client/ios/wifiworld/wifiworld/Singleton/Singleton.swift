@@ -26,8 +26,6 @@ class Singleton: NSObject {
     }
     
     
-    
-    
     class async
     {
         class func bg(block: dispatch_block_t) {

@@ -34,7 +34,7 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     func queryObject(loc:CLLocation!){
         let wifiProfile = WifiProfile();
         let geo = BmobGeoPoint(longitude: loc.coordinate.longitude , withLatitude: loc.coordinate.latitude );
-        wifiProfile.queryObject(geo, radian: 1.0){ [weak self](list,error) ->Void in
+        wifiProfile.queryObject(geo, kilometers: 1.0){ [weak self](list,error) ->Void in
         
             if list != nil {
                 self!.hotSpotList = list!;

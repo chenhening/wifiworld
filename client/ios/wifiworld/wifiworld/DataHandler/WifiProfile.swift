@@ -35,11 +35,11 @@ class WifiProfile:BmobObject {
          case  WIFI_SUPPLY_BY_HOME   ; // 家庭提供wifi
     }
     
-    func queryObject(geo:BmobGeoPoint!,radian:Double!,resultBlock:handleDataResult!)  {
+    func queryObject(geo:BmobGeoPoint!,kilometers:Double!,resultBlock:handleDataResult!)  {
 
         //var dataList = [AnyObject]();
         var query:BmobQuery = BmobQuery(className:"WifiProfile")
-        query.whereKey("Geometry", nearGeoPoint: geo, withinRadians: radian)
+        query.whereKey("Geometry", nearGeoPoint: geo, withinKilometers: kilometers)
         query.findObjectsInBackgroundWithBlock { (list, error) -> Void in
             
             resultBlock?(list,error);
@@ -50,7 +50,6 @@ class WifiProfile:BmobObject {
                 //dataList = list;
                 //resultBlock?(list,nil);
                 //println("dataList=\(list)");
-
             }
         }
         //resultBlock?(dataList);
