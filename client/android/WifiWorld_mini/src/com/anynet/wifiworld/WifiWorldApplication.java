@@ -27,6 +27,8 @@ package com.anynet.wifiworld;
 
 import java.lang.ref.SoftReference;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -35,11 +37,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.os.Process;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
+import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 public class WifiWorldApplication extends Application {
 	private String TAG = WifiWorldApplication.class.getSimpleName();
@@ -131,6 +140,59 @@ public class WifiWorldApplication extends Application {
 				// 友盟自动更新
 		        UmengUpdateAgent.setUpdateOnlyWifi(true);
 		        UmengUpdateAgent.silentUpdate(mInstance);
+		        
+		        Toast.makeText(mInstance, "非正式版每次连接只能免费5分钟，请及时更新到正式版本。" , Toast.LENGTH_SHORT).show();
+		        final Timer timer_of_cutoff = new Timer();
+		        timer_of_cutoff.schedule(new TimerTask() {
+
+					@Override
+					public void run() {
+						WifiAdmin wifi = WifiAdmin.getInstance(mInstance);
+						WifiInfo wifiInfo = wifi.getWifiInfo();
+						if (wifiInfo != null) {
+							wifi.disConnectionWifi(wifiInfo.getNetworkId());
+						}
+					}
+                	
+                }, 300*1000);
+		        
+		        // 当更新到达时候开始计时，防止用户作弊
+		        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+		            @Override
+		            public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
+		                switch (updateStatus) {
+		                case UpdateStatus.Yes: // has update
+		                    UmengUpdateAgent.showUpdateDialog(mInstance, updateInfo);
+		                    break;
+		                case UpdateStatus.No: // has no update
+		                    Toast.makeText(mInstance, "没有更新", Toast.LENGTH_SHORT).show();
+		                    break;
+		                case UpdateStatus.NoneWifi: // none wifi
+		                    Toast.makeText(mInstance, "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
+		                    break;
+		                case UpdateStatus.Timeout: // time out
+		                    Toast.makeText(mInstance, "超时", Toast.LENGTH_SHORT).show();
+		                    break;
+		                }
+		            }
+		        });
+		        
+		        // 当用户点击弹窗的时候对选择进行计时
+		        UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
+
+		            @Override
+		            public void onClick(int status) {
+		                switch (status) {
+		                case UpdateStatus.Update:
+		                    Toast.makeText(mInstance, "正在进行更新正式版，请耐心等待......" , Toast.LENGTH_SHORT).show();
+		                    timer_of_cutoff.cancel();
+		                    break;
+		                case UpdateStatus.Ignore:
+		                case UpdateStatus.NotNow:
+		                    break;
+		                }
+		            }
+		        });
 			}
 
 		}
