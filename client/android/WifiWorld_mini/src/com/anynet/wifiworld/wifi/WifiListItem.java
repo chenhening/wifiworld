@@ -26,6 +26,8 @@
 
 package com.anynet.wifiworld.wifi;
 
+import com.anynet.wifiworld.data.WifiProfile;
+
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 
@@ -55,6 +57,9 @@ public class WifiListItem {
 	public void setWifiConfiguration(WifiConfiguration wifiConfiguration) {
 		mWifiConfiguration = wifiConfiguration;
 	}
+	public WifiConfiguration getWifiConfiguration() {
+		return mWifiConfiguration;
+	}
 	
 	public void setWifiDBInfo(WifiDBInfo wifiDBInfo) {
 		mWifiDBInfo = wifiDBInfo;
@@ -74,5 +79,13 @@ public class WifiListItem {
 	
 	public void setNetworkId(int id) {
 		
+	}
+	
+	public String getAlias() {
+		WifiProfile wifi = mWifiDBInfo.getWifiProfile();
+		if (wifi != null) {
+			return wifi.Alias;
+		}
+		return "未命名";
 	}
 }
