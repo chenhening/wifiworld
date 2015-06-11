@@ -41,6 +41,8 @@ import android.net.wifi.WifiInfo;
 import android.os.Process;
 import android.widget.Toast;
 
+import cn.bmob.v3.Bmob;
+
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
@@ -62,6 +64,7 @@ public class WifiWorldApplication extends Application {
         
         mInstance = this;
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
+        Bmob.initialize(this, GlobalConfig.BMOB_KEY);
     }
     
     public static WifiWorldApplication getInstance() {

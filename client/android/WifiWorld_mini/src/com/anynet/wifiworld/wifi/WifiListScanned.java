@@ -22,8 +22,8 @@ public class WifiListScanned{
 	private static WifiListScanned mWifiListScanned = null;
 	private Context mContext;
 	private Handler mHandler;
-	private List<WifiListItem> mWifiFree;
-	private List<WifiListItem> mWifiEncrypt;
+	private List<WifiListItem> mWifiAuth;
+	private List<WifiListItem> mWifiNotAuth;
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private boolean isRefreshThreadFinish;
@@ -38,19 +38,19 @@ public class WifiListScanned{
 	private WifiListScanned(Context context, Handler handler) {
 		mContext = context;
 		mHandler = handler;
-		mWifiFree = new ArrayList<WifiListItem>();
-		mWifiEncrypt = new ArrayList<WifiListItem>();
+		mWifiAuth = new ArrayList<WifiListItem>();
+		mWifiNotAuth = new ArrayList<WifiListItem>();
 		mWifiAdmin = WifiAdmin.getInstance(mContext);
 		mWifiCurrent = WifiCurrent.getInstance(mContext);
 		isRefreshThreadFinish = true;
 	}
 	
 	public List<WifiListItem> getFreeList() {
-		return mWifiFree;
+		return mWifiAuth;
 	}
 	
 	public List<WifiListItem> getEncryptList() {
-		return mWifiEncrypt;
+		return mWifiNotAuth;
 	}
  	
 	public void refresh() {
@@ -102,8 +102,8 @@ public class WifiListScanned{
 	}
 	
 	public void reGroupWifiList(List<ScanResult> scanResults, List<WifiProfile> wifiProfiles) {
-		mWifiFree.clear();
-		mWifiEncrypt.clear();
+		mWifiAuth.clear();
+		mWifiNotAuth.clear();
 		
 		for (ScanResult scanResult : scanResults) {
 			WifiConfiguration wifiCfg = mWifiAdmin.getWifiConfiguration(scanResult, null);
@@ -132,15 +132,24 @@ public class WifiListScanned{
 	private void wifiDistribution(ScanResult scanResult, WifiConfiguration wifiCfg, WifiProfile wifiProfile) {
 		WifiDBInfo wifiDBInfo = new WifiDBInfo(wifiProfile);
 		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg, wifiDBInfo);
-		boolean isOpenWifi = WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(scanResult));
-		if (NetHelper.isWifiNet(mContext)
-				&& mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
+		if (NetHelper.isWifiNet(mContext)&& mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
 			Log.d(TAG, scanResult.SSID + " is the current connected wifi");
 			mWifiCurrent.setWifiListItem(wifiItem);
-		} else if (isOpenWifi || wifiCfg != null || wifiProfile != null) {
-			mWifiFree.add(wifiItem);
+			return;
+		}
+		
+		//TODO(buffer) 以后还要将list进行排序
+		if (wifiProfile != null) {
+			mWifiAuth.add(wifiItem);
 		} else {
-			mWifiEncrypt.add(wifiItem);
+			boolean isOpenWifi = WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(scanResult));
+			if (isOpenWifi) {
+				mWifiNotAuth.add(0, wifiItem); //free的放在前面
+			} else {
+				int index = mWifiNotAuth.size()-1;
+				if (index < 0) index = 0;
+				mWifiNotAuth.add(index, wifiItem); //非免费的放后面
+			}
 		}
 	}
 }
