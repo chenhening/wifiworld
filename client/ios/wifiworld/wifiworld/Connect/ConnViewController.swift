@@ -152,7 +152,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         let bkgV = UIImageView(image: UIImage(named: bkgName));
         bkgV.frame = CGRectMake(0, 0, tableView.frame.width, cell.frame.height);
         cell.backgroundView = bkgV;
-        cell.textLabel?.text = "    \(wifiname)";
+        cell.textLabel?.text = "            \(wifiname)";
         cell.imageView?.image = UIImage(named: "wifi_free_signal3")
         cell.accessoryView = UIImageView(image: UIImage(named: "1_1_86"));
         return cell;
@@ -172,7 +172,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
             rect = CGRectMake(0, 0, 10, 20);
         }else{
             imgName = "wifi_lock_title_icon"
-            label.text = "锁定Wi-Fi"
+            label.text = "非认证Wi-Fi"
             rect = CGRectMake(0, 0, 15, 20);
         };
         let imgV = UIImageView(image: UIImage(named: imgName));

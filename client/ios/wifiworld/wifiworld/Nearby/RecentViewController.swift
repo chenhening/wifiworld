@@ -28,7 +28,6 @@ class RecentViewController: UIViewController ,MAMapViewDelegate{
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     func queryObject(loc:CLLocation!){

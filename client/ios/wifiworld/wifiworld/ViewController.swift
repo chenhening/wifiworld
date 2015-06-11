@@ -14,7 +14,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         println("hello world")
-        let afNet = AFURLConnectionOperation(request: NSURLRequest(URL: NSURL(string: "http://www.baidu.com")!))
     }
     
     override func didReceiveMemoryWarning() {

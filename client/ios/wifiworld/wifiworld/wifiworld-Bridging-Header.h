@@ -5,6 +5,5 @@
 #import <AMapNaviKit/MAMapKit.h>
 #import <AMapNaviKit/AMapNaviKit.h>
 #import <BmobSDK/Bmob.h>
-#import "AFNetworking.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "CurrentWifiSSID.h"
