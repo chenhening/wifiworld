@@ -117,9 +117,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:fadingEdge="none"
-        android:scrollbarThumbVertical="@drawable/scrollbar"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical" >
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,7 +145,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="Free Wifi"
+	                android:text="认证Wi-Fi"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 			
@@ -183,7 +183,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="Lock Wifi"
+	                android:text="非认证Wi-Fi"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 	
