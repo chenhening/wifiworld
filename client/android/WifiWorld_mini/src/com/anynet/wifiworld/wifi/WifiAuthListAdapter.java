@@ -5,12 +5,14 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
@@ -65,6 +67,11 @@ public class WifiAuthListAdapter extends BaseAdapter {
 		wifialias.setText("[" + mWifiListItems.get(position).getWifiName() + "]");
 		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
 		wifioptions.setText("已认证, 安全, 可免费上网");
+		//设置logo
+		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
+		Bitmap bitmap = mWifiListItems.get(position).getLogo();
+		if (bitmap != null)
+			logo.setImageBitmap(mWifiListItems.get(position).getLogo());
 		
 		//设置其单击登录事件
 		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {

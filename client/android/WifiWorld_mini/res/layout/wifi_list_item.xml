@@ -10,10 +10,11 @@
     android:paddingTop="10dp" >
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_wifi_item_logo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="7dp"
         android:contentDescription="@string/content_description"
         android:src="@drawable/wifi_free_signal3" />
 

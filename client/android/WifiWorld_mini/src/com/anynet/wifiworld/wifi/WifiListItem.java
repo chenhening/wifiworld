@@ -27,7 +27,9 @@
 package com.anynet.wifiworld.wifi;
 
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.BitmapUtil;
 
+import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 
@@ -87,5 +89,13 @@ public class WifiListItem {
 			return wifi.Alias;
 		}
 		return "未命名";
+	}
+	
+	public Bitmap getLogo() {
+		WifiProfile wifi = mWifiDBInfo.getWifiProfile();
+		if (wifi != null) {
+			return BitmapUtil.Bytes2Bimap(wifi.Logo);
+		}
+		return null;
 	}
 }
