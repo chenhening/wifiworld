@@ -12,14 +12,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class WifiEncryptListAdapter extends BaseAdapter {
-	private final static String TAG = WifiEncryptListAdapter.class.getSimpleName();
+public class WifiNotAuthListAdapter extends BaseAdapter {
+	private final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
 	
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
 	private LayoutInflater mLayoutInflater;
 	
-	public WifiEncryptListAdapter(Context context, List<WifiListItem> wifiListItems) {
+	public WifiNotAuthListAdapter(Context context, List<WifiListItem> wifiListItems) {
 		mContext = context;
 		mWifiListItems = wifiListItems;
 		mLayoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,6 +56,10 @@ public class WifiEncryptListAdapter extends BaseAdapter {
 		
 		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
 		wifiName.setText(mWifiListItems.get(position).getWifiName());
+		TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+		wifialias.setVisibility(View.GONE);
+		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
+		wifioptions.setText("未认证，需要密码");
 		
 		return view;
 	}

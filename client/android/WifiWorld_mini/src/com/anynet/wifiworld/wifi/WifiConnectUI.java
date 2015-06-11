@@ -31,8 +31,8 @@ public class WifiConnectUI {
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private WifiListScanned mWifiListScanned;
-	private WifiFreeListAdapter mWifiAuthList;
-	private WifiEncryptListAdapter mWifiNotAuthList;
+	private WifiAuthListAdapter mWifiAuthList;
+	private WifiNotAuthListAdapter mWifiNotAuthList;
 	
 	private TextView mWifiName;
 	private ListView mWifiAuthListView;
@@ -141,6 +141,7 @@ public class WifiConnectUI {
 	
 	public WifiConnectUI(Context context) {
 		mContext = (MainActivity)context;
+		mWifiAdmin = WifiAdmin.getInstance(mContext);
 		mWifiCurrent = WifiCurrent.getInstance(context);
 		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
 		WifiBRService.bindWifiService(mContext, conn);
@@ -199,12 +200,12 @@ public class WifiConnectUI {
 		
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
 		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
-		mWifiAuthList = new WifiFreeListAdapter(mContext, mWifiListScanned.getFreeList());
+		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getFreeList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
 		setListViewHeightBasedOnChildren(mWifiAuthListView);
 		
 		mWifiNotAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
-		mWifiNotAuthList = new WifiEncryptListAdapter(mContext, mWifiListScanned.getEncryptList());
+		mWifiNotAuthList = new WifiNotAuthListAdapter(mContext, mWifiListScanned.getEncryptList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 	}
