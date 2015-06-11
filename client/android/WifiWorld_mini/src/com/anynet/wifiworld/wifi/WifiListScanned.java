@@ -81,6 +81,11 @@ public class WifiListScanned{
 					Log.d(TAG, "Batch query by mac address success");
 					reGroupWifiList(scanResults, objects);
 					isRefreshThreadFinish = true;
+					
+					//send update wifi list message to wifi connect
+					Message msgs = new Message();
+					msgs.what = GlobalHandler.UPDATE_WIFI_LIST;
+					mHandler.sendMessageAtFrontOfQueue(msgs);
 					return false;
 				}
 				
@@ -89,6 +94,11 @@ public class WifiListScanned{
 					Log.e(TAG, msg);
 					reGroupWifiList(scanResults, null);
 					isRefreshThreadFinish = true;
+					
+					//send update wifi list message to wifi connect
+					Message msgf = new Message();
+					msgf.what = GlobalHandler.UPDATE_WIFI_LIST;
+					mHandler.sendMessageAtFrontOfQueue(msgf);
 					return false;
 				}
 			});
@@ -110,11 +120,6 @@ public class WifiListScanned{
 			WifiProfile wifiProfile = getWifiProfile(scanResult.BSSID, wifiProfiles);
 			wifiDistribution(scanResult, wifiCfg, wifiProfile);
 		}
-		
-		//send update wifi list message to wifi connect
-		Message msg = new Message();
-		msg.what = GlobalHandler.UPDATE_WIFI_LIST;
-		mHandler.sendMessageAtFrontOfQueue(msg);
 	}
 	
 	private WifiProfile getWifiProfile(String macAddress, List<WifiProfile> wifiProfiles) {

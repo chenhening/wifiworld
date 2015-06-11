@@ -8,12 +8,21 @@ import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.wifi.WifiInfo;
 import android.os.IBinder;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
@@ -22,26 +31,35 @@ public class WifiConnectUI {
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private WifiListScanned mWifiListScanned;
-	private WifiFreeListAdapter mWifiFreeList;
-	private WifiEncryptListAdapter mWifiEncryptList;
+	private WifiFreeListAdapter mWifiAuthList;
+	private WifiEncryptListAdapter mWifiNotAuthList;
 	
 	private TextView mWifiName;
-	private ListView mWifiFreeListView;
-	private ListView mWifiEncryptListView;
+	private ListView mWifiAuthListView;
+	private ListView mWifiNotAuthListView;
+	
+	private ToggleButton mWifiSwitch;
+	private AnimationDrawable mAnimSearch;
+	private Animation mAnimNeedle;
+	private ImageView mImageSearch;
+	private ImageView mImageNeedle;
 	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
 		@Override
 		public void onWifiListRefreshed() {
 			setWifiConnectedContent();
-			if (mWifiFreeList != null) {
-				mWifiFreeList.refreshWifiList(mWifiListScanned.getFreeList());
-				setListViewHeightBasedOnChildren(mWifiFreeListView);
+			if (mWifiAuthList != null) {
+				mWifiAuthList.refreshWifiList(mWifiListScanned.getFreeList());
+				setListViewHeightBasedOnChildren(mWifiAuthListView);
 			}
-			if (mWifiEncryptList != null) {
-				mWifiEncryptList.refreshWifiList(mWifiListScanned.getEncryptList());
-				setListViewHeightBasedOnChildren(mWifiEncryptListView);
+			if (mWifiNotAuthList != null) {
+				mWifiNotAuthList.refreshWifiList(mWifiListScanned.getEncryptList());
+				setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 			}
+			
+			//停止搜索动画
+			DoSearchAnimation(false); 
 		}
 	};
 	
@@ -85,49 +103,6 @@ public class WifiConnectUI {
 //
 //					// refreshWifiTitleInfo();
 //					//isPwdConnect = false;
-//
-//					if (isConnected) {
-//
-//						WifiInfo curwifi = WifiAdmin.getInstance(getApplicationContext()).getWifiConnected();
-//						if (curwifi == null)
-//							return;
-//						boolean isExist = false;
-//						for (WifiInfoScanned item : mWifiAuth) {
-//							if (item.getWifiName().equals(curwifi.getSSID())) {
-//								isExist = true;
-//							}
-//						}// 发现wifi未认证不做数据监听
-//						if (!isExist)
-//							return;
-//
-//						// 一旦打开连接wifi，如果是认证的wifi需要做监听wifi提供者实时共享子信息
-//						String CurMac = curwifi.getBSSID();
-//						WifiProfile data_listener = new WifiProfile();
-//						data_listener.startListenRowUpdate(getActivity(), "WifiProfile", WifiProfile.unique_key, CurMac,
-//								DataListenerHelper.Type.UPDATE, new DataCallback<WifiProfile>() {
-//
-//									@Override
-//									public void onFailed(String msg) {
-//										Log.d(TAG, msg);
-//									}
-//
-//									@Override
-//									public void onSuccess(WifiProfile object) {
-//										// 通知下线
-//										if (!object.isShared()) {
-//											getActivity().runOnUiThread(new Runnable() {
-//
-//												@Override
-//												public void run() {
-//													showToast("对不起，此网络主人停止了网络分享，请保存数据退出网络。");
-//													WifiAdmin.getInstance(getApplicationContext()).disConnectionWifi(
-//															mWifiAdmin.getWifiConnected().getNetworkId());
-//												}
-//											});
-//										}
-//									}
-//								});
-//					}
 				}
 
 				@Override
@@ -192,17 +167,46 @@ public class WifiConnectUI {
 	}
 	
 	private void getViewHolder() {
+		//断开连接
+		mWifiSwitch = (ToggleButton)mContext.findViewById(R.id.tb_wifi_switch);
+		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				WifiInfo wifiInfo = mWifiAdmin.getWifiInfo();
+				if (wifiInfo != null) {
+					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+				}
+			}
+		    	
+		});
+		
+		//点击搜索附近WiFi
+		mImageNeedle = (ImageView)mContext.findViewById(R.id.iv_wifi_search_needle);
+		mAnimNeedle = AnimationUtils.loadAnimation(mContext, R.animator.animation_needle);
+		mImageSearch = (ImageView)mContext.findViewById(R.id.iv_wifi_search_heart);
+		mImageSearch.setImageResource(R.animator.animation_search);
+		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
+		mContext.findViewById(R.id.rl_wifi_search).setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View v) {
+				DoSearchAnimation(!mAnimSearch.isRunning());
+			}
+			
+		});
+		DoSearchAnimation(true); //程序一启动起来默认搜索
+		
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
+		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
+		mWifiAuthList = new WifiFreeListAdapter(mContext, mWifiListScanned.getFreeList());
+		mWifiAuthListView.setAdapter(mWifiAuthList);
+		setListViewHeightBasedOnChildren(mWifiAuthListView);
 		
-		mWifiFreeListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
-		mWifiFreeList = new WifiFreeListAdapter(mContext, mWifiListScanned.getFreeList());
-		mWifiFreeListView.setAdapter(mWifiFreeList);
-		setListViewHeightBasedOnChildren(mWifiFreeListView);
-		
-		mWifiEncryptListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
-		mWifiEncryptList = new WifiEncryptListAdapter(mContext, mWifiListScanned.getEncryptList());
-		mWifiEncryptListView.setAdapter(mWifiEncryptList);
-		setListViewHeightBasedOnChildren(mWifiEncryptListView);
+		mWifiNotAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
+		mWifiNotAuthList = new WifiEncryptListAdapter(mContext, mWifiListScanned.getEncryptList());
+		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
+		setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 	}
 	
 	private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -222,4 +226,18 @@ public class WifiConnectUI {
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 	}
+	
+    //-----------------------------------------------------------------------------------------------------------------
+    //custom functions
+    private void DoSearchAnimation(boolean start) {
+    	if (start) {
+    		setWifiListContent();
+    		mAnimSearch.start();
+    		mImageNeedle.startAnimation(mAnimNeedle);
+    	} else {
+    		mAnimSearch.stop();
+    		mAnimSearch.selectDrawable(0);
+    		mImageNeedle.clearAnimation();
+    	}
+    }
 }

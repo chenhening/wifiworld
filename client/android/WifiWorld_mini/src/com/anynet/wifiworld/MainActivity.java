@@ -27,33 +27,13 @@
 package com.anynet.wifiworld;
 
 import android.app.Activity;
-import android.graphics.drawable.AnimationDrawable;
-import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
-import android.widget.ToggleButton;
 
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiConnectUI;
 
 public class MainActivity extends Activity {
-	
 	private WifiConnectUI mWifiConnect;
-	private ToggleButton mWifiSwitch;
-	private WifiAdmin mWifiAdmin;
-	
-	private AnimationDrawable mAnimSearch;
-	private Animation mAnimNeedle;
-	private ImageView mImageSearch;
-	private ImageView mImageNeedle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,37 +43,6 @@ public class MainActivity extends Activity {
         mWifiConnect = new WifiConnectUI(this);
         mWifiConnect.setWifiConnectedContent();
         mWifiConnect.setWifiListContent();
-		mWifiAdmin = WifiAdmin.getInstance(this);
-        
-        //断开连接
-        mWifiSwitch = (ToggleButton)findViewById(R.id.tb_wifi_switch);
-        mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				WifiInfo wifiInfo = mWifiAdmin.getWifiInfo();
-				if (wifiInfo != null) {
-					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-				}
-			}
-            	
-        });
-        
-        //点击搜索附近WiFi
-        mImageNeedle = (ImageView) findViewById(R.id.iv_wifi_search_needle);
-        mAnimNeedle = AnimationUtils.loadAnimation(this, R.animator.animation_needle);
-        mImageSearch = (ImageView) findViewById(R.id.iv_wifi_search_heart);
-        mImageSearch.setImageResource(R.animator.animation_search);
-		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
-        this.findViewById(R.id.rl_wifi_search).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				DoSearchAnimation(!mAnimSearch.isRunning());
-			}
-        	
-        });
-        DoSearchAnimation(true); //程序一启动起来默认搜索
     }
 
 
@@ -103,17 +52,4 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
-    //-----------------------------------------------------------------------------------------------------------------
-    //custom functions
-    private void DoSearchAnimation(boolean start) {
-    	if (start) {
-    		mAnimSearch.start();
-    		mImageNeedle.startAnimation(mAnimNeedle);
-    	} else {
-    		mAnimSearch.stop();
-    		mImageNeedle.clearAnimation();
-    	}
-    }
-
 }
