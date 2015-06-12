@@ -175,7 +175,7 @@ public class WifiAdmin {
 				return false;
 			}
 		}
-		wifiListItem.setNetworkId(config.networkId);
+		//wifiListItem.setNetworkId(config.networkId);
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;

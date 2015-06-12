@@ -39,14 +39,17 @@ public class WifiListItem {
 	private ScanResult mScanResult;
 	private WifiConfiguration mWifiConfiguration;
 	private WifiDBInfo mWifiDBInfo;
+	private boolean mFlag = false;
 	
 	public WifiListItem() {
+		mFlag = false;
 		mScanResult = null;
 		mWifiConfiguration = null;
 		mWifiDBInfo = null;
 	}
 	
 	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration, WifiDBInfo wifiDBInfo) {
+		mFlag = true;
 		mScanResult = scanResult;
 		mWifiConfiguration = wifiConfiguration;
 		mWifiDBInfo = wifiDBInfo;
@@ -79,10 +82,6 @@ public class WifiListItem {
 		return mScanResult.capabilities;
 	}
 	
-	public void setNetworkId(int id) {
-		
-	}
-	
 	public String getAlias() {
 		WifiProfile wifi = mWifiDBInfo.getWifiProfile();
 		if (wifi != null) {
@@ -97,5 +96,13 @@ public class WifiListItem {
 			return BitmapUtil.Bytes2Bimap(wifi.Logo);
 		}
 		return null;
+	}
+
+	public boolean getFlag() {
+		return mFlag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.mFlag = flag;
 	}
 }

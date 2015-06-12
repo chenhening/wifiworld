@@ -24,6 +24,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="40dp"
+        android:gravity="left|center"
         android:orientation="vertical" >
 
         <LinearLayout

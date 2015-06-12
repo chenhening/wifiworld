@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,10 @@ public class WifiAuthListAdapter extends BaseAdapter {
 
 	public void refreshWifiList(List<WifiListItem> wifiListItems) {
 		mWifiListItems = wifiListItems;
+		for (int i=0; i<3-mWifiListItems.size(); ++i) {
+			mWifiListItems.add(new WifiListItem());
+		}
+		
 		notifyDataSetChanged();
 	}
 	
@@ -61,44 +66,58 @@ public class WifiAuthListAdapter extends BaseAdapter {
 		
 		setItemBg(position, getCount(), view);
 		
-		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
-		wifiName.setText(mWifiListItems.get(position).getAlias());
-		TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
-		wifialias.setText("[" + mWifiListItems.get(position).getWifiName() + "]");
-		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
-		wifioptions.setText("已认证, 安全, 可免费上网");
-		//设置logo
-		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
-		Bitmap bitmap = mWifiListItems.get(position).getLogo();
-		if (bitmap != null)
-			logo.setImageBitmap(mWifiListItems.get(position).getLogo());
-		
-		//设置其单击登录事件
-		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
+		if (mWifiListItems.get(position).getFlag()) {
+			TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
+			wifiName.setText(mWifiListItems.get(position).getAlias());
+			TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+			wifialias.setText("[" + mWifiListItems.get(position).getWifiName() + "]");
+			TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
+			wifioptions.setText("已认证, 安全, 可免费上网");
+			//设置logo
+			ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
+			Bitmap bitmap = mWifiListItems.get(position).getLogo();
+			if (bitmap != null)
+				logo.setImageBitmap(bitmap);
+			
+			//设置其单击登录事件
+			view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// 弹出询问对话框
-				new AlertDialog.Builder(mContext).setTitle("Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
-							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// 弹出询问对话框
+					new AlertDialog.Builder(mContext).setTitle("Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
+								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						WifiBRService.setWifiSupplicant(true);
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							WifiBRService.setWifiSupplicant(true);
 
-						boolean connResult = false;
-						WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
-						if (cfgSelected != null) {
-							connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
-						} else {
-							connResult = mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
+							boolean connResult = false;
+							WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
+							if (cfgSelected != null) {
+								connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
+							} else {
+								connResult = mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
+							}
+							dialog.dismiss();
 						}
-						dialog.dismiss();
-					}
-				}).setNegativeButton("取消", null).show();
-			}	
-		});
-		
+					}).setNegativeButton("取消", null).show();
+				}	
+			});
+		} else {
+			if (position == 0) {
+				TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
+				wifiName.setText("未找到认证网络");
+				TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+				wifialias.setText("[点击了解]");
+			} else {
+				TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
+				wifiName.setText("什么是认证网络");
+				TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+				wifialias.setText("[点击了解]");
+			}
+		}
+
 		return view;
 	}
 	
