@@ -18,7 +18,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     var lockWifiList = [AnyObject]()
     var freeWifiList = [AnyObject]()
-    
+    var wifiInfo = [:]
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,14 +36,15 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         statusView.backgroundColor = UIColor.whiteColor();
         self.navigationController?.navigationBar.addSubview(statusView);
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true);
-    
+        if let infoDic = CurrentWifiSSID.fetchSSIDInfo() as? NSDictionary{
+            wifiInfo = infoDic;
+        }
         self.btn_CustomSwitch.addTarget(self, action: "clickLeftCustomSwitch:", forControlEvents: UIControlEvents.TouchUpInside)
-    
-        self.lb_CurrentWifi.text = CurrentWifiSSID.fetchSSIDInfo()! as? String;
+        let wifiName = wifiInfo["SSID"] as? String;
+        self.lb_CurrentWifi.text = wifiName;
         self.mapView = MAMapView(frame: CGRectZero);
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
-        
     }
     
     func clickLeftCustomSwitch(button:UIButton!){
@@ -118,6 +119,8 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         var cellIdentifier = "CustomCell";
         var bkgName = "";
         var wifiname = "";
+        let obj = freeWifiList[indexPath.row] as? BmobObject ;
+
         if indexPath.section == 0{
             if indexPath.row == 0{
                 bkgName = "wifi_free_item0";
@@ -126,7 +129,6 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
             }else {
                 bkgName = "wifi_free_item1";
             }
-            let obj = freeWifiList[indexPath.row] as? BmobObject ;
             
             if let name = obj?.objectForKey("Alias") as? String  {
                 wifiname = name;
@@ -148,13 +150,16 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
                 bkgName = "wifi_lock_item1";
             }
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell;
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! CustomConnectCell;
         let bkgV = UIImageView(image: UIImage(named: bkgName));
         bkgV.frame = CGRectMake(0, 0, tableView.frame.width, cell.frame.height);
         cell.backgroundView = bkgV;
-        cell.textLabel?.text = "            \(wifiname)";
-        cell.imageView?.image = UIImage(named: "wifi_free_signal3")
+        cell.lb_wifiName?.text = "\(wifiname)";
+        cell.imgV_wifiheadImage?.image = UIImage(named: "wifi_free_signal3")
         cell.accessoryView = UIImageView(image: UIImage(named: "1_1_86"));
+        if let id = obj?.objectForKey("objectId") as? String  {
+            cell.lb_wifiAddress.text = id;
+        }
         return cell;
     }
     
@@ -189,5 +194,13 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
 }
 
 class CustomConnectCell: UITableViewCell {
+    @IBOutlet weak var lb_wifiName: UILabel!
+   
+    @IBOutlet weak var lb_passport: UILabel!
+    
+    @IBOutlet weak var lb_wifiAddress: UILabel!
+    
+    @IBOutlet weak var imgV_wifiheadImage: UIImageView!
+    
     
 }

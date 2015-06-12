@@ -103,29 +103,41 @@
                                 <rect key="frame" x="21" y="231" width="372" height="440"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" textLabel="mdF-Qh-0BL" detailTextLabel="77c-QH-gO8" imageView="IwW-Mt-S8J" style="IBUITableViewCellStyleSubtitle" id="Gev-fP-3Cm" customClass="CustomConnectCell" customModule="wifiworld" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" id="Gev-fP-3Cm" customClass="CustomConnectCell" customModule="wifiworld" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mdF-Qh-0BL">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2l-H9-zze">
+                                                    <rect key="frame" x="112" y="6" width="158" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="             No passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="77c-QH-gO8">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tol-QA-TOE">
+                                                    <rect key="frame" x="112" y="35" width="194" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="wifi_free_signal1" id="IwW-Mt-S8J">
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lER-t6-sCx">
+                                                    <rect key="frame" x="275" y="19" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi_free_signal1" translatesAutoresizingMaskIntoConstraints="NO" id="rQk-Ha-t3Z">
+                                                    <rect key="frame" x="33" y="17" width="35" height="25"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="imgV_wifiheadImage" destination="rQk-Ha-t3Z" id="ujV-9B-ZrH"/>
+                                            <outlet property="lb_passport" destination="tol-QA-TOE" id="vGb-jB-kCf"/>
+                                            <outlet property="lb_wifiAddress" destination="lER-t6-sCx" id="12l-sG-nJb"/>
+                                            <outlet property="lb_wifiName" destination="A2l-H9-zze" id="m3n-Ys-ftM"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -245,7 +257,7 @@
                         <outlet property="btn_CustomSwitch" destination="kOm-gH-uRr" id="bC0-Hc-66R"/>
                         <outlet property="lb_CurrentWifi" destination="xTl-kj-u0r" id="f3W-Hj-5rV"/>
                         <outlet property="mp_tableView" destination="DDi-jO-fZX" id="4ka-8f-6Qp"/>
-                        <segue destination="nDg-Vf-SUq" kind="show" id="oBm-Fn-kjB"/>
+                        <segue destination="nDg-Vf-SUq" kind="show" identifier="wifiDetail" id="oBm-Fn-kjB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YE-06-xmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -261,14 +273,67 @@
                         <viewControllerLayoutGuide type="bottom" id="bgZ-AI-uHv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="x5y-NZ-FSM">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6c-wQ-oUL">
+                                <rect key="frame" x="-2" y="71" width="320" height="151"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi_connected_icon" translatesAutoresizingMaskIntoConstraints="NO" id="TgM-Ui-7ZU">
+                                        <rect key="frame" x="12" y="32" width="56" height="39"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="seperator" translatesAutoresizingMaskIntoConstraints="NO" id="v6U-6H-hfX">
+                                        <rect key="frame" x="79" y="16" width="1" height="72"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Guest" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUm-jd-Vz6">
+                                        <rect key="frame" x="90" y="13" width="148" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connect，Safe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjr-an-K0N">
+                                        <rect key="frame" x="90" y="41" width="148" height="21"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="17"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wifi_connected_bg" translatesAutoresizingMaskIntoConstraints="NO" id="MPs-2I-x61">
+                                        <rect key="frame" x="0.0" y="0.0" width="381" height="96"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="MPs-2I-x61" firstAttribute="top" secondItem="T6c-wQ-oUL" secondAttribute="top" id="7EA-mQ-gRB"/>
+                                    <constraint firstAttribute="trailing" secondItem="MPs-2I-x61" secondAttribute="trailing" constant="-61" id="7fH-bD-6S0"/>
+                                    <constraint firstAttribute="bottom" secondItem="MPs-2I-x61" secondAttribute="bottom" constant="55" id="FC6-iY-vGK"/>
+                                    <constraint firstItem="MPs-2I-x61" firstAttribute="leading" secondItem="T6c-wQ-oUL" secondAttribute="leading" id="W2Y-LT-JSx"/>
+                                    <constraint firstItem="MPs-2I-x61" firstAttribute="top" secondItem="T6c-wQ-oUL" secondAttribute="top" id="aqU-Cc-QIv"/>
+                                    <constraint firstAttribute="trailing" secondItem="MPs-2I-x61" secondAttribute="trailing" constant="1" id="cvL-dX-1Gc"/>
+                                    <constraint firstAttribute="bottom" secondItem="MPs-2I-x61" secondAttribute="bottom" constant="55" id="fOO-wA-DG3"/>
+                                    <constraint firstItem="MPs-2I-x61" firstAttribute="leading" secondItem="T6c-wQ-oUL" secondAttribute="leading" id="lv9-Mz-GEj"/>
+                                    <constraint firstAttribute="height" constant="151" id="n1u-wn-amN"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="W2Y-LT-JSx"/>
+                                        <exclude reference="aqU-Cc-QIv"/>
+                                        <exclude reference="cvL-dX-1Gc"/>
+                                        <exclude reference="fOO-wA-DG3"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="T6c-wQ-oUL" secondAttribute="trailing" constant="-14" id="769-xE-cyf"/>
+                            <constraint firstItem="T6c-wQ-oUL" firstAttribute="leading" secondItem="x5y-NZ-FSM" secondAttribute="leadingMargin" constant="-18" id="hbF-Mg-m2y"/>
+                            <constraint firstItem="T6c-wQ-oUL" firstAttribute="top" secondItem="0R5-8V-X12" secondAttribute="bottom" constant="7" id="k2d-YW-oik"/>
+                        </constraints>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhe-k9-E0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1196" y="-366"/>
+            <point key="canvasLocation" x="1157" y="-740"/>
         </scene>
         <!--附近-->
         <scene sceneID="JB0-Ck-8QC">
