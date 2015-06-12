@@ -66,7 +66,6 @@ public class WifiWorldApplication extends Application {
         mInstance = this;
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
         Bmob.initialize(this, GlobalConfig.BMOB_KEY);
-        WifiBRService.schedule(mInstance);
     }
     
     public static WifiWorldApplication getInstance() {

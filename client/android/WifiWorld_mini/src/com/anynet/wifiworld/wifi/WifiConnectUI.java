@@ -145,6 +145,7 @@ public class WifiConnectUI {
 		mWifiAdmin = WifiAdmin.getInstance(mContext);
 		mWifiCurrent = WifiCurrent.getInstance(context);
 		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
+		WifiBRService.setWifiScannable(true);
 		WifiBRService.bindWifiService(mContext, conn);
 		getViewHolder();
 	}
