@@ -1,6 +1,5 @@
 package com.anynet.wifiworld.wifi;
 
-import android.R.string;
 import android.content.Context;
 
 import com.anynet.wifiworld.util.NetHelper;

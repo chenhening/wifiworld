@@ -179,7 +179,7 @@ public class WifiBRService {
 		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            }
 		            if (onWifiStatusListener != null) {
-		            		onWifiStatusListener.onSupplicantChanged(statusStr);
+		            	onWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        }
 			}

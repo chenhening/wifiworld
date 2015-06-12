@@ -35,6 +35,7 @@ public class WifiConnectUI {
 	private WifiNotAuthListAdapter mWifiNotAuthList;
 	
 	private TextView mWifiName;
+	private TextView mWifiStatus;
 	private ListView mWifiAuthListView;
 	private ListView mWifiNotAuthListView;
 	
@@ -112,7 +113,7 @@ public class WifiConnectUI {
 
 				@Override
 				public void onSupplicantChanged(String statusStr) {
-//					mWifiNameView.setText(statusStr);
+					mWifiStatus.setText(statusStr);
 //					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
 //					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
 //						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
@@ -150,7 +151,11 @@ public class WifiConnectUI {
 	
 	public void setWifiConnectedContent() {
 		if (mWifiCurrent.isConnected()) {
-			mWifiName.setText(mWifiCurrent.getWifiName());
+			if (mWifiCurrent.getWifiListItem() != null) {
+				mWifiName.setText(mWifiCurrent.getWifiListItem().getAlias());
+			} else {
+				mWifiName.setText(mWifiCurrent.getWifiName());
+			}
 		} else if (mWifiCurrent.isConnecting()) {
 			//active WiFi status supervise
 		} else {
@@ -199,6 +204,7 @@ public class WifiConnectUI {
 		DoSearchAnimation(true); //程序一启动起来默认搜索
 		
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
+		mWifiStatus = (TextView)mContext.findViewById(R.id.tv_wifi_options);
 		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
 		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getFreeList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
