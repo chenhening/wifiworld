@@ -16,15 +16,16 @@
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
     
     NSString* ssid = @"";
+    NSDictionary* info;
     for (NSString *ifnam in ifs) {
-        id  info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
         
         ssid = [info objectForKey:@"SSID"];
-        
+        NSLog(@"wifiInfo=%@",info);
         if (ssid) { break; }
         
     }
-    return ssid;
+    return info;
 }
 
 @end
