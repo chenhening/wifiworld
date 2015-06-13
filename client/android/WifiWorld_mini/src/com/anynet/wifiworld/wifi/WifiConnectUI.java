@@ -79,26 +79,24 @@ public class WifiConnectUI {
 
 				@Override
 				public void onWifiStatChanged(boolean isEnabled) {
-//					if (isEnabled) {
-//						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.INVISIBLE);
-//						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.VISIBLE);
-//						WifiBRService.setWifiScannable(true);
-//					} else {
-//						mPageRoot.findViewById(R.id.wifi_disable_layout).setVisibility(View.VISIBLE);
-//						mPageRoot.findViewById(R.id.wifi_enable_layout).setVisibility(View.INVISIBLE);
-//					}
+					if (isEnabled) {
+						WifiBRService.setWifiScannable(true);
+					} else {
+						
+					}
 				}
 
 				@Override
 				public void onNetWorkChanged(boolean isConnected, String str) {
-//					if (isConnected) {
+					if (isConnected) {
+						mWifiListScanned.refreshWifiList();
 //						// 一旦网络状态发生变化后停止监听服务
 //						WifiBRService.setWifiSupplicant(false);
 //						if (isPwdConnect) {
 //							mWifiAdmin.saveConfig();
 //							isPwdConnect = false;
 //						}
-//					}
+					}
 //					// refresh WiFi list and WiFi title info
 //					mWifiListHelper.fillWifiList();
 //
@@ -146,6 +144,7 @@ public class WifiConnectUI {
 		mWifiCurrent = WifiCurrent.getInstance(context);
 		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
 		WifiBRService.setWifiScannable(true);
+		WifiBRService.setWifiSupplicant(true);
 		WifiBRService.bindWifiService(mContext, conn);
 		getViewHolder();
 	}
