@@ -16,6 +16,11 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     @IBOutlet weak var mp_tableView: UITableView!
     var mapView:MAMapView!
     
+    @IBOutlet weak var btn_Search: UIButton!
+    
+    @IBOutlet weak var imV_search: UIImageView!
+    
+    
     var lockWifiList = [AnyObject]()
     var freeWifiList = [AnyObject]()
     var wifiInfo = [:]
@@ -45,6 +50,20 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         self.mapView = MAMapView(frame: CGRectZero);
         self.mapView.delegate = self;
         self.mapView.showsUserLocation = true;
+        self.btn_Search.addTarget(self, action: "clickSearch", forControlEvents: UIControlEvents.TouchUpInside);
+        
+    }
+    
+    func clickSearch(){
+        UIView.animateWithDuration(1.0,
+            delay: 0.0,
+            options: .CurveEaseInOut | .AllowUserInteraction,
+            animations: {
+                self.imV_search.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            },
+            completion: { finished in
+                println("Bug faced right!")
+        })
     }
     
     func clickLeftCustomSwitch(button:UIButton!){
@@ -136,7 +155,6 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
                 println("not dictionary");
 
             }
-            
 //            if alias != nil{
 //                wifiname = alias!
 //            }
@@ -156,12 +174,21 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         cell.backgroundView = bkgV;
         cell.lb_wifiName?.text = "\(wifiname)";
         cell.imgV_wifiheadImage?.image = UIImage(named: "wifi_free_signal3")
-        cell.accessoryView = UIImageView(image: UIImage(named: "1_1_86"));
-        if let id = obj?.objectForKey("objectId") as? String  {
+        let btn_Accessory = UIButton(frame: CGRectMake(30, 0, 40, 40));
+        btn_Accessory.setImage(UIImage(named: "1_1_86"), forState: UIControlState.Normal);
+        btn_Accessory.addTarget(self, action: "tapAccessory", forControlEvents: UIControlEvents.TouchUpInside);
+        cell.accessoryView = btn_Accessory;
+        if let id = obj?.objectForKey("Ssid") as? String  {
             cell.lb_wifiAddress.text = id;
         }
         return cell;
     }
+    
+    func tapAccessory(){
+        self.performSegueWithIdentifier("wifiDetail", sender: nil);
+    }
+    
+    
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -186,9 +213,9 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         view.addSubview(label);
         return view;
     }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true);
-        
     }
     
 }
