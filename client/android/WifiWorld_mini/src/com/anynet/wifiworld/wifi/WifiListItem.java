@@ -40,6 +40,7 @@ public class WifiListItem {
 	private WifiConfiguration mWifiConfiguration;
 	private WifiDBInfo mWifiDBInfo;
 	private boolean mFlag = false;
+	private String mOptions;
 	
 	public WifiListItem() {
 		mFlag = false;
@@ -57,6 +58,10 @@ public class WifiListItem {
 	
 	public void setScanResult(ScanResult scanResult) {
 		mScanResult = scanResult;
+	}
+	
+	public ScanResult getScanResult() {
+		return mScanResult;
 	}
 	
 	public void setWifiConfiguration(WifiConfiguration wifiConfiguration) {
@@ -104,5 +109,13 @@ public class WifiListItem {
 
 	public void setFlag(boolean flag) {
 		this.mFlag = flag;
+	}
+
+	public String getOptions() {
+		return mOptions;
+	}
+
+	public void setOptions(String mOptions) {
+		this.mOptions = mOptions;
 	}
 }

@@ -66,15 +66,16 @@ public class WifiAuthListAdapter extends BaseAdapter {
 		
 		setItemBg(position, getCount(), view);
 		
+		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
+		TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
+		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 		if (mWifiListItems.get(position).getFlag()) {
-			TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
 			wifiName.setText(mWifiListItems.get(position).getAlias());
-			TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+			wifialias.setVisibility(View.VISIBLE);
 			wifialias.setText("[" + mWifiListItems.get(position).getWifiName() + "]");
-			TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
 			wifioptions.setText("已认证, 安全, 可免费上网");
 			//设置logo
-			ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 			Bitmap bitmap = mWifiListItems.get(position).getLogo();
 			if (bitmap != null)
 				logo.setImageBitmap(bitmap);
@@ -102,16 +103,15 @@ public class WifiAuthListAdapter extends BaseAdapter {
 				}	
 			});
 		} else {
+			logo.setImageResource(R.drawable.wifi_free_signal3);
+			wifialias.setVisibility(View.INVISIBLE);
+			view.findViewById(R.id.ll_wifi_content).setOnClickListener(null);
 			if (position == 0) {
-				TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
 				wifiName.setText("未找到认证网络");
-				TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
-				wifialias.setText("[点击了解]");
+				wifioptions.setText("[点击了解]");
 			} else {
-				TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
 				wifiName.setText("什么是认证网络");
-				TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
-				wifialias.setText("[点击了解]");
+				wifioptions.setText("[点击了解]");
 			}
 		}
 

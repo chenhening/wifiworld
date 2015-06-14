@@ -92,16 +92,15 @@ public class WifiListScanned{
 				@Override
 				public boolean onFailed(String msg) {
 					isRefreshThreadFinish = true;
+					reGroupWifiList(scanResults, mWifiProfiles);
+					
+					//send update wifi list message to wifi connect
+					Message msgf = new Message();
+					msgf.what = GlobalHandler.UPDATE_WIFI_LIST;
+					mHandler.sendMessageAtFrontOfQueue(msgf);
 					return false;
 				}
 			});
-			
-			reGroupWifiList(scanResults, mWifiProfiles);
-			
-			//send update wifi list message to wifi connect
-			Message msgf = new Message();
-			msgf.what = GlobalHandler.UPDATE_WIFI_LIST;
-			mHandler.sendMessageAtFrontOfQueue(msgf);
 		}
 	}
 	
@@ -122,6 +121,27 @@ public class WifiListScanned{
 			WifiProfile wifiProfile = getWifiProfile(scanResult.BSSID, wifiProfiles);
 			wifiDistribution(scanResult, wifiCfg, wifiProfile);
 		}
+		
+		//TODO(buffer) 以后还要将list进行排序
+		int save = 0;
+		List<WifiListItem> wifiNotAuth = new ArrayList<WifiListItem>();
+		for (WifiListItem item : mWifiNotAuth) {
+			if (item.getWifiConfiguration() != null) {
+				++save;
+				item.setOptions("未认证, 本地已保存");
+				wifiNotAuth.add(0, item);
+			} else {
+				boolean isOpenWifi = WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(item.getScanResult()));
+				if (isOpenWifi) {
+					wifiNotAuth.add(save, item); //free的放在前面
+					item.setOptions("未认证, 无密码");
+				} else {
+					wifiNotAuth.add(item); //非免费的放后面
+					item.setOptions("未认证, 需要密码");
+				}
+			}
+		}
+		mWifiNotAuth = wifiNotAuth;
 	}
 	
 	private WifiProfile getWifiProfile(String macAddress, List<WifiProfile> wifiProfiles) {
@@ -145,17 +165,14 @@ public class WifiListScanned{
 			return;
 		}
 		
-		//TODO(buffer) 以后还要将list进行排序
 		if (wifiProfile != null) {
 			mWifiAuth.add(wifiItem);
 		} else {
-			boolean isOpenWifi = WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(scanResult));
-			if (isOpenWifi) {
-				mWifiNotAuth.add(0, wifiItem); //free的放在前面
+			mWifiNotAuth.add(wifiItem);
+			if (wifiCfg != null) {
+				
 			} else {
-				int index = mWifiNotAuth.size()-1;
-				if (index < 0) index = 0;
-				mWifiNotAuth.add(index, wifiItem); //非免费的放后面
+				
 			}
 		}
 	}

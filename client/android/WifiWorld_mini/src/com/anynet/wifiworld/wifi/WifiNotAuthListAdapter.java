@@ -5,10 +5,14 @@ import java.util.List;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.wifi.WifiSecuritiesV8.PskType;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -18,11 +22,13 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
 	private LayoutInflater mLayoutInflater;
+	private WifiAdmin mWifiAdmin;
 	
 	public WifiNotAuthListAdapter(Context context, List<WifiListItem> wifiListItems) {
 		mContext = context;
 		mWifiListItems = wifiListItems;
 		mLayoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mWifiAdmin = WifiAdmin.getInstance(mContext);
 	}
 	
 	public void refreshWifiList(List<WifiListItem> wifiListItems) {
@@ -46,7 +52,7 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
 			view = mLayoutInflater.inflate(R.layout.wifi_list_item, null);
@@ -59,7 +65,30 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
 		wifialias.setVisibility(View.GONE);
 		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
-		wifioptions.setText("未认证，需要密码");
+		wifioptions.setText(mWifiListItems.get(position).getOptions());
+		
+		//设置其单击登录事件
+		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// 弹出询问对话框
+				new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
+							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
+						if (cfgSelected != null) {
+							mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
+						} else {
+							mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
+						}
+						dialog.dismiss();
+					}
+				}).setNegativeButton("取消", null).show();
+			}
+		});
 		
 		return view;
 	}
