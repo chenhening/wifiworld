@@ -56,7 +56,6 @@ public class WifiListScanned{
 	public void refresh() {
 		if (mWifiAdmin.isWifiEnabled() && isRefreshThreadFinish) {
 			isRefreshThreadFinish = false;
-			WifiBRService.setWifiScannable(true);
 		} else {
 			Toast.makeText(mContext, "WiFi状态不可用，请稍后刷新", Toast.LENGTH_LONG).show();
 		}

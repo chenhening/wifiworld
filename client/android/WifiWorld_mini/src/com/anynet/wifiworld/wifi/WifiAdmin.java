@@ -147,7 +147,7 @@ public class WifiAdmin {
 		WifiConfiguration config = new WifiConfiguration();
 		config.SSID = convertToQuotedString(wifiListItem.getWifiName());
 		config.BSSID = wifiListItem.getWifiMac();
-		ConfigSec.setupSecurity(config, wifiListItem.getEncryptType(), wifiListItem.getWifiMac());
+		//ConfigSec.setupSecurity(config, wifiListItem.getEncryptType(), wifiListItem.getWifiMac());
 		
 		int id = -1;
 		try {

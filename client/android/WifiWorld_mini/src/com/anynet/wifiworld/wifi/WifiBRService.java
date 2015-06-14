@@ -48,8 +48,7 @@ import android.widget.Toast;
 public class WifiBRService {
 	private final static String TAG = WifiBRService.class.getName();
 	private static Intent mIntent = null;
-	private static boolean mScannable = false;
-	private static boolean mSupplicant = false;
+	private static OnWifiStatusListener mWifiStatusListener;
 	
 	public static void schedule(final Context ctx) {
 		mIntent = new Intent(ctx, WifiMonitorService.class);
@@ -67,19 +66,15 @@ public class WifiBRService {
 		}
 		mIntent = null;
 	}
-
-	public static void setWifiScannable(boolean flag) {
-		mScannable = flag;
-	}
 	
-	public static void setWifiSupplicant(boolean flag) {
-		mSupplicant = flag;
+	public static void setOnWifiStatusListener(OnWifiStatusListener onWifiStatusListener) {
+		WifiBRService.mWifiStatusListener = onWifiStatusListener;
 	}
 	
 	public static class WifiMonitorService extends Service {
 		private IntentFilter mIntentFilter;
-		private OnWifiStatusListener onWifiStatusListener;
 		private String statusStr;
+		private boolean mSupplicantState = true;
 		
 		private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -87,55 +82,50 @@ public class WifiBRService {
 			public void onReceive(Context context, Intent intent) {
 				String action = intent.getAction();
 			    if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
-			        	Log.i(TAG, "network state changed action");
-			        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-			        	if (null != parcelableExtra) {
-			        		NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
-			        		State state = networkInfo.getState();
-			        		boolean isConnected = state==State.CONNECTED;
-			        		boolean isDisconnected = state==State.DISCONNECTED;
-			        		if(isConnected){
-			        			statusStr = "已连接" + WifiAdmin.convertToNonQuotedString(NetHelper.getCurrentSsid(context));
-			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(true, statusStr);
-			        			}
-			        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
-			        		} else if(isDisconnected) {
-			        			statusStr = "已断开连接";
-			        			if (onWifiStatusListener != null) {
-					            	onWifiStatusListener.onNetWorkChanged(false, statusStr);
-			        			}
-			        			//Toast.makeText(context, statusStr, Toast.LENGTH_SHORT).show();
-						}
-			        	}
+		        	Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+		        	if (null != parcelableExtra) {
+		        		NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
+		        		State state = networkInfo.getState();
+		        		boolean isConnected = state==State.CONNECTED;
+		        		boolean isDisconnected = state==State.DISCONNECTED;
+		        		if(isConnected){
+		        			statusStr = "已连接";
+		        			if (mWifiStatusListener != null) {
+		        				mWifiStatusListener.onNetWorkChanged(true, statusStr);
+		        				mSupplicantState = false;
+		        			}
+		        		} else if(isDisconnected) {
+		        			statusStr = "已断开";
+		        			if (mWifiStatusListener != null) {
+		        				mWifiStatusListener.onNetWorkChanged(false, statusStr);
+		        				mSupplicantState = true;
+		        			}
+		        		}
+		        	}
 		        } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
-					Log.i(TAG, "wifi state changed action");
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
 					case WifiManager.WIFI_STATE_ENABLED:
-						if (onWifiStatusListener != null) {
-							onWifiStatusListener.onWifiStatChanged(true);
+						if (mWifiStatusListener != null) {
+							mWifiStatusListener.onWifiStatChanged(true);
 						}
 						break;
 					case WifiManager.WIFI_STATE_DISABLED:
 					case WifiManager.WIFI_STATE_DISABLING:
 					case WifiManager.WIFI_STATE_ENABLING:
 					case WifiManager.WIFI_STATE_UNKNOWN:
-						if (onWifiStatusListener != null) {
-							onWifiStatusListener.onWifiStatChanged(false);
+						if (mWifiStatusListener != null) {
+							mWifiStatusListener.onWifiStatChanged(false);
 						}
 						break;
 					default:
 						break;
 					}
-				} else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable == true) {
-					Log.i(TAG, "wifi can results avaliable");
-					if (onWifiStatusListener != null) {
-						onWifiStatusListener.onScannableAvaliable();
+				} else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)) {
+					if (mWifiStatusListener != null) {
+						mWifiStatusListener.onScannableAvaliable();
 					}
-					mScannable = false;
-				} else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicant == true) {
-		        		Log.i(TAG, "supplicant state changed action");
+				} else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicantState) {
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
@@ -152,10 +142,6 @@ public class WifiBRService {
 		                statusStr = "正在获取IP地址";
 		            } else if (state == SupplicantState.DISCONNECTED){
 		                statusStr = "已断开";
-		                if (onWifiStatusListener != null) {
-		            			onWifiStatusListener.onSupplicantDisconnected(statusStr);
-		            			mSupplicant = false;
-		                }
 		            } else if (state == SupplicantState.DORMANT){
 		                statusStr = "暂停活动";
 		            } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE){
@@ -173,13 +159,13 @@ public class WifiBRService {
 		            }else{
 		                statusStr = "unkown";
 		            }
-		            Log.e(TAG, state.toString());
+
 		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            }
-		            if (onWifiStatusListener != null) {
-		            	onWifiStatusListener.onSupplicantChanged(statusStr);
+		            if (mWifiStatusListener != null) {
+		            	mWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        }
 			}
@@ -215,11 +201,6 @@ public class WifiBRService {
 				return WifiMonitorService.this;
 			}
 		}
-		
-		public void setOnWifiStatusListener(OnWifiStatusListener onWifiStatusListener) {
-			this.onWifiStatusListener = onWifiStatusListener;
-		}
-		
 	}
 	
 	public interface OnWifiStatusListener {

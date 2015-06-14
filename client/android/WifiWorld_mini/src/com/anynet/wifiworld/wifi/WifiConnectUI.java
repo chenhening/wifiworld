@@ -64,77 +64,44 @@ public class WifiConnectUI {
 		}
 	};
 	
-	private WifiBRService.WifiMonitorService mWifiMonitorService;
 	ServiceConnection conn = new ServiceConnection() {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-
 		}
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			mWifiMonitorService = ((WifiBRService.WifiMonitorService.WifiStatusBinder) service).getService();
-			mWifiMonitorService.setOnWifiStatusListener(new OnWifiStatusListener() {
+		}
+	};
+	
+	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
 
-				@Override
-				public void onWifiStatChanged(boolean isEnabled) {
-					if (isEnabled) {
-						WifiBRService.setWifiScannable(true);
-					} else {
-						
-					}
-				}
+		@Override
+		public void onWifiStatChanged(boolean isEnabled) {
+		}
 
-				@Override
-				public void onNetWorkChanged(boolean isConnected, String str) {
-					if (isConnected) {
-						mWifiListScanned.refreshWifiList();
-//						// 一旦网络状态发生变化后停止监听服务
-//						WifiBRService.setWifiSupplicant(false);
-//						if (isPwdConnect) {
-//							mWifiAdmin.saveConfig();
-//							isPwdConnect = false;
-//						}
-					}
-//					// refresh WiFi list and WiFi title info
-//					mWifiListHelper.fillWifiList();
-//
-//					// refreshWifiTitleInfo();
-//					//isPwdConnect = false;
-				}
+		@Override
+		public void onNetWorkChanged(boolean isConnected, String str) {
+			mWifiListScanned.refreshWifiList();
+			mWifiStatus.setText(str);
+		}
 
-				@Override
-				public void onScannableAvaliable() {
-					mWifiListScanned.refreshWifiList();
-				}
+		@Override
+		public void onSupplicantChanged(String statusStr) {
+			mWifiStatus.setText(statusStr);
+		}
 
-				@Override
-				public void onSupplicantChanged(String statusStr) {
-					mWifiStatus.setText(statusStr);
-//					WifiInfoScanned wifiInfoCurrent = WifiListHelper.getInstance(getActivity()).mWifiInfoCur;
-//					if (wifiInfoCurrent != null && wifiInfoCurrent.getWifiLogo() != null) {
-//						mWifiLogoView.setImageBitmap(wifiInfoCurrent.getWifiLogo());
-//					} else {
-//						mWifiLogoView.setImageResource(R.drawable.icon_invalid);
-//					}
-				}
+		@Override
+		public void onSupplicantDisconnected(String statusStr) {
+			// TODO Auto-generated method stub
+			
+		}
 
-				@Override
-				public void onSupplicantDisconnected(String statusStr) {
-//					if (isPwdConnect) {
-//						if (mWifiItemClick.getNetworkId() != -1) {
-//							mWifiAdmin.forgetNetwork(mWifiItemClick.getNetworkId());
-//						}
-//						mWifiListHelper.fillWifiList();
-//						isPwdConnect = false;
-//						String titleStr = "密码输入错误，请重新输入密码";
-//						showWifiConnectPwdConfirmDialog(titleStr, mWifiItemClick, mWifiConnectPwdDialog);
-//					} else {
-//						mWifiListHelper.fillWifiList();
-//					}
-				}
-			});
+		@Override
+		public void onScannableAvaliable() {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 	
@@ -143,8 +110,7 @@ public class WifiConnectUI {
 		mWifiAdmin = WifiAdmin.getInstance(mContext);
 		mWifiCurrent = WifiCurrent.getInstance(context);
 		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
-		WifiBRService.setWifiScannable(true);
-		WifiBRService.setWifiSupplicant(true);
+		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
 		WifiBRService.bindWifiService(mContext, conn);
 		getViewHolder();
 	}
@@ -208,12 +174,12 @@ public class WifiConnectUI {
 		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
 		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getFreeList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
-		setListViewHeightBasedOnChildren(mWifiAuthListView);
+		//setListViewHeightBasedOnChildren(mWifiAuthListView);
 		
 		mWifiNotAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
 		mWifiNotAuthList = new WifiNotAuthListAdapter(mContext, mWifiListScanned.getEncryptList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
-		setListViewHeightBasedOnChildren(mWifiNotAuthListView);
+		//setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 	}
 	
 	private void setListViewHeightBasedOnChildren(ListView listView) {

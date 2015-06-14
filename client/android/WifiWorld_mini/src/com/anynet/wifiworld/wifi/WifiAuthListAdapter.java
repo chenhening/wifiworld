@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,19 +84,16 @@ public class WifiAuthListAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					// 弹出询问对话框
-					new AlertDialog.Builder(mContext).setTitle("Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
+					new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
 								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							WifiBRService.setWifiSupplicant(true);
-
-							boolean connResult = false;
 							WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
 							if (cfgSelected != null) {
-								connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
+								mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 							} else {
-								connResult = mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
+								mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
 							}
 							dialog.dismiss();
 						}
