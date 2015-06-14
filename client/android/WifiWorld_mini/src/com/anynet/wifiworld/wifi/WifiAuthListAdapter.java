@@ -34,7 +34,8 @@ public class WifiAuthListAdapter extends BaseAdapter {
 
 	public void refreshWifiList(List<WifiListItem> wifiListItems) {
 		mWifiListItems = wifiListItems;
-		for (int i=0; i<3-mWifiListItems.size(); ++i) {
+		int size = 2-mWifiListItems.size();
+		for (int i=0; i<size; ++i) {
 			mWifiListItems.add(new WifiListItem());
 		}
 		

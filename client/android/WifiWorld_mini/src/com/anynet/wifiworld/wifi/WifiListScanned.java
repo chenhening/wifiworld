@@ -27,6 +27,7 @@ public class WifiListScanned{
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private boolean isRefreshThreadFinish;
+	private List<WifiProfile> mWifiProfiles;
 	
 	public static WifiListScanned getInstance(Context context, Handler handler) {
 		if (mWifiListScanned == null) {
@@ -77,7 +78,7 @@ public class WifiListScanned{
 				
 				@Override
 				public boolean onSuccess(List<WifiProfile> objects) {
-					Log.d(TAG, "Batch query by mac address success");
+					mWifiProfiles = objects;
 					reGroupWifiList(scanResults, objects);
 					isRefreshThreadFinish = true;
 					
@@ -90,24 +91,26 @@ public class WifiListScanned{
 				
 				@Override
 				public boolean onFailed(String msg) {
-					Log.e(TAG, msg);
-					reGroupWifiList(scanResults, null);
 					isRefreshThreadFinish = true;
-					
-					//send update wifi list message to wifi connect
-					Message msgf = new Message();
-					msgf.what = GlobalHandler.UPDATE_WIFI_LIST;
-					mHandler.sendMessageAtFrontOfQueue(msgf);
 					return false;
 				}
 			});
+			
+			reGroupWifiList(scanResults, mWifiProfiles);
+			
+			//send update wifi list message to wifi connect
+			Message msgf = new Message();
+			msgf.what = GlobalHandler.UPDATE_WIFI_LIST;
+			mHandler.sendMessageAtFrontOfQueue(msgf);
 		}
 	}
 	
 	public void refreshWifiList() {
-		isRefreshThreadFinish = false;
-		Thread thread = new Thread(new RefreshListThread());
-		thread.start();
+		if (isRefreshThreadFinish) { //同一时间只允许一次搜索
+			isRefreshThreadFinish = false;
+			Thread thread = new Thread(new RefreshListThread());
+			thread.start();
+		}
 	}
 	
 	public void reGroupWifiList(List<ScanResult> scanResults, List<WifiProfile> wifiProfiles) {

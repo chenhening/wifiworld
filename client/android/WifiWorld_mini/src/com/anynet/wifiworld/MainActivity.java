@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
         
         mWifiConnect = new WifiConnectUI(this);
         mWifiConnect.setWifiConnectedContent();
-        mWifiConnect.setWifiListContent();
+        //mWifiConnect.setWifiListContent();
     }
 
 
