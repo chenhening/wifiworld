@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="@string/tips"
+            android:text="提示"
             android:visibility="visible" />
     </LinearLayout>
 

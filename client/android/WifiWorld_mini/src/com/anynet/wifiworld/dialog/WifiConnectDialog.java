@@ -79,7 +79,7 @@ public class WifiConnectDialog extends ANBaseDialog {
 		if (titleStr != null) {
 			mTitle.setText(titleStr);
 		} else {
-			mTitle.setText(R.string.tips);
+			mTitle.setText("提示");
 		}
 	}
 	

@@ -15,7 +15,6 @@
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="7dp"
-        android:contentDescription="@string/content_description"
         android:src="@drawable/wifi_free_signal3" />
 
     <LinearLayout
@@ -35,7 +34,7 @@
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.93"
                 android:maxLines="1"
