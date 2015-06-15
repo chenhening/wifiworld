@@ -8,6 +8,7 @@ import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.wifi.WifiInfo;
 import android.os.IBinder;
@@ -34,6 +35,7 @@ public class WifiConnectUI {
 	private WifiAuthListAdapter mWifiAuthList;
 	private WifiNotAuthListAdapter mWifiNotAuthList;
 	
+	private ImageView mWifiConLogo;
 	private TextView mWifiName;
 	private TextView mWifiStatus;
 	private ListView mWifiAuthListView;
@@ -119,13 +121,19 @@ public class WifiConnectUI {
 		if (mWifiCurrent.isConnected()) {
 			if (mWifiCurrent.getWifiListItem() != null) {
 				mWifiName.setText(mWifiCurrent.getWifiListItem().getAlias());
+				Bitmap logo = mWifiCurrent.getWifiListItem().getLogo();
+				if (logo != null) {
+					mWifiConLogo.setImageBitmap(logo);
+				} else {
+					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+				}
 			} else {
 				mWifiName.setText(mWifiCurrent.getWifiName());
+				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 			}
-		} else if (mWifiCurrent.isConnecting()) {
-			//active WiFi status supervise
 		} else {
 			mWifiName.setText("未连接WiFi");
+			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 		}
 	}
 	
@@ -168,6 +176,8 @@ public class WifiConnectUI {
 			
 		});
 		DoSearchAnimation(true); //程序一启动起来默认搜索
+		
+		mWifiConLogo = (ImageView)mContext.findViewById(R.id.iv_wifi_connected_logo);
 		
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
 		mWifiStatus = (TextView)mContext.findViewById(R.id.tv_wifi_options);

@@ -69,12 +69,13 @@
                 android:id="@+id/ll_wifi_connected_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_wifi_connected_logo"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/content_description"
                     android:src="@drawable/wifi_connected_icon" />
@@ -82,7 +83,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical" >
 
                     <TextView

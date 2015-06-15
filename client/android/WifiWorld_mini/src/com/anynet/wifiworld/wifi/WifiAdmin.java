@@ -228,13 +228,13 @@ public class WifiAdmin {
 		//}
 		//WifiProxySetting.setWifiProxySettings(config, "127.0.0.1", 8118);
 		// Set highest priority to this configured network
-		config.priority = getMaxPriority(mWifiManager) + 1;
-		int networkId = mWifiManager.updateNetwork(config);
-		config.networkId = networkId;
-		if(networkId == -1) {
-			Log.e(TAG, "Unable to update new priority info to network");
-			return false;
-		}
+		//config.priority = getMaxPriority(mWifiManager) + 1;
+		//int networkId = mWifiManager.updateNetwork(config);
+		//config.networkId = networkId;
+		//if(networkId == -1) {
+		//	Log.e(TAG, "Unable to update new priority info to network");
+		//	return false;
+		//}
 		
 		// Do not disable others
 		//if(!mWifiManager.enableNetwork(config.networkId, false)) {
