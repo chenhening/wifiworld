@@ -28,8 +28,10 @@ package com.anynet.wifiworld;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 
+import com.anynet.wifiworld.wifi.WifiBRService;
 import com.anynet.wifiworld.wifi.WifiConnectUI;
 
 public class MainActivity extends Activity {
@@ -41,15 +43,41 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         mWifiConnect = new WifiConnectUI(this);
-        mWifiConnect.setWifiConnectedContent();
-        //mWifiConnect.setWifiListContent();
+        mWifiConnect.refreshAnim();
     }
-
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    @Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			moveTaskToBack(true);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+    
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+    
+    
 }

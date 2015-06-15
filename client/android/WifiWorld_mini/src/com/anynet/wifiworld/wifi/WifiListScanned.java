@@ -54,12 +54,24 @@ public class WifiListScanned{
 		return mWifiNotAuth;
 	}
  	
-	public void refresh() {
-		if (mWifiAdmin.isWifiEnabled() && isRefreshThreadFinish) {
+	public boolean refresh(boolean scanned) {
+		if (mWifiAdmin.isWifiEnabled() && isRefreshThreadFinish) { //同一时间只允许一次搜索
 			isRefreshThreadFinish = false;
+			if (scanned) {
+				WifiBRService.setWifiScannable(true);
+			} else {
+				startWifiScanThread();
+			}
+			return true;
 		} else {
 			Toast.makeText(mContext, "WiFi状态不可用，请稍后刷新", Toast.LENGTH_LONG).show();
+			return false;
 		}
+	}
+	
+	public void startWifiScanThread() {
+		Thread thread = new Thread(new RefreshListThread());
+		thread.start();
 	}
 	
 	private class RefreshListThread implements Runnable{
@@ -101,14 +113,6 @@ public class WifiListScanned{
 					return false;
 				}
 			});
-		}
-	}
-	
-	public void refreshWifiList() {
-		if (isRefreshThreadFinish) { //同一时间只允许一次搜索
-			isRefreshThreadFinish = false;
-			Thread thread = new Thread(new RefreshListThread());
-			thread.start();
 		}
 	}
 	

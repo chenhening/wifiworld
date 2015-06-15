@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.wifi.WifiInfo;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class WifiConnectUI {
 			}
 			
 			//停止搜索动画
-			DoSearchAnimation(false); 
+			doSearchAnimation(false);
 		}
 	};
 	
@@ -78,14 +79,15 @@ public class WifiConnectUI {
 	};
 	
 	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
-
 		@Override
-		public void onWifiStatChanged(boolean isEnabled) {
+		public void onNetWorkConnected(String str) {
+			//refreshBg();
+			mWifiStatus.setText(str);
 		}
-
+		
 		@Override
-		public void onNetWorkChanged(boolean isConnected, String str) {
-			mWifiListScanned.refreshWifiList();
+		public void onNetWorkDisconnected(String str) {
+			//refreshBg();
 			mWifiStatus.setText(str);
 		}
 
@@ -102,8 +104,12 @@ public class WifiConnectUI {
 
 		@Override
 		public void onScannableAvaliable() {
-			// TODO Auto-generated method stub
-			
+			//仍需要做修改
+			mWifiListScanned.startWifiScanThread();
+		}
+		
+		@Override
+		public void onWifiStatChanged(boolean isEnabled) {
 		}
 	};
 	
@@ -117,7 +123,19 @@ public class WifiConnectUI {
 		getViewHolder();
 	}
 	
-	public void setWifiConnectedContent() {
+	public void refreshAnim() {
+		//启动动画，更新WiFi扫描列表
+		doSearchAnimation(true);
+		//更新WiFi链接Title
+		//setWifiConnectedContent();
+	}
+	
+	public void refreshBg() {
+		setWifiListContent();
+		//setWifiConnectedContent();
+	}
+	
+	private void setWifiConnectedContent() {
 		if (mWifiCurrent.isConnected()) {
 			if (mWifiCurrent.getWifiListItem() != null) {
 				mWifiName.setText(mWifiCurrent.getWifiListItem().getAlias());
@@ -131,19 +149,19 @@ public class WifiConnectUI {
 				mWifiName.setText(mWifiCurrent.getWifiName());
 				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 			}
+		} else if (mWifiCurrent.isConnecting()) {
+			WifiBRService.setWifiSupplicant(true);
 		} else {
 			mWifiName.setText("未连接WiFi");
 			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 		}
 	}
 	
-	public void setWifiListContent() {
-		mWifiListScanned.refreshWifiList();
-	}
-	
-	public void refreshWifiListContent() {
-		//supervise WiFi scannable broadcast
-		mWifiListScanned.refresh();
+	private void setWifiListContent() {
+		boolean success = mWifiListScanned.refresh(false);
+		if (!success) {
+			doSearchAnimation(false);
+		}
 	}
 	
 	private void getViewHolder() {
@@ -171,11 +189,10 @@ public class WifiConnectUI {
 		
 			@Override
 			public void onClick(View v) {
-				DoSearchAnimation(!mAnimSearch.isRunning());
+				doSearchAnimation(!mAnimSearch.isRunning());
 			}
 			
 		});
-		DoSearchAnimation(true); //程序一启动起来默认搜索
 		
 		mWifiConLogo = (ImageView)mContext.findViewById(R.id.iv_wifi_connected_logo);
 		
@@ -184,12 +201,10 @@ public class WifiConnectUI {
 		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
 		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getFreeList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
-		//setListViewHeightBasedOnChildren(mWifiAuthListView);
 		
 		mWifiNotAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
 		mWifiNotAuthList = new WifiNotAuthListAdapter(mContext, mWifiListScanned.getEncryptList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
-		//setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 	}
 	
 	private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -199,24 +214,27 @@ public class WifiConnectUI {
 		}
 
 		int totalHeight = 0;
+		Log.i(TAG, "list item size: " + listAdapter.getCount());
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
 			listItem.measure(0, 0);
 			totalHeight += listItem.getMeasuredHeight();
+			Log.i(TAG, "list item height: " + listItem.getMeasuredHeight());
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		Log.i(TAG, "list height: " + params.height);
 		listView.setLayoutParams(params);
 	}
 	
     //-----------------------------------------------------------------------------------------------------------------
     //custom functions
-    private void DoSearchAnimation(boolean start) {
+    private void doSearchAnimation(boolean start) {
     	if (start) {
-    		setWifiListContent();
     		mAnimSearch.start();
     		mImageNeedle.startAnimation(mAnimNeedle);
+    		setWifiListContent();
     	} else {
     		mAnimSearch.stop();
     		mAnimSearch.selectDrawable(0);

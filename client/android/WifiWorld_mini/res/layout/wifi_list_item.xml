@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_wifi_listitem"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/wifi_free_item0"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
@@ -36,7 +36,6 @@
                 android:id="@+id/tv_wifi_free_item_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.93"
                 android:maxLines="1"
                 android:text="我家的网络我做主"
                 android:textColor="@color/black"
@@ -72,7 +71,8 @@
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center|right"
 	    android:gravity="right"
-	    android:orientation="horizontal" >
+	    android:orientation="horizontal"
+	    android:visibility="gone" >
         
 	    <ImageView
 	        android:id="@+id/iv_wifi_item_more"
