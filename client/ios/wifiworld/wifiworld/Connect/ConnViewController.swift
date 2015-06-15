@@ -33,7 +33,13 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
 
     override func viewWillAppear(animated: Bool) {
         mapView.tag = 0;
+        self.mapView.showsUserLocation = true;
+        self.mapView.delegate = self;
         
+    }
+    override func viewWillDisappear(animated: Bool) {
+        mapView.showsUserLocation = false;
+        self.mapView.delegate = nil;
     }
     func initInterface(){
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "wifi_title_bg"), forBarMetrics: UIBarMetrics.Default)
@@ -47,24 +53,43 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         self.btn_CustomSwitch.addTarget(self, action: "clickLeftCustomSwitch:", forControlEvents: UIControlEvents.TouchUpInside)
         let wifiName = wifiInfo["SSID"] as? String;
         self.lb_CurrentWifi.text = wifiName;
-        self.mapView = MAMapView(frame: CGRectZero);
-        self.mapView.delegate = self;
-        self.mapView.showsUserLocation = true;
         self.btn_Search.addTarget(self, action: "clickSearch", forControlEvents: UIControlEvents.TouchUpInside);
         
+        self.mapView = MAMapView(frame: CGRectZero);
+        
+        let view  = UIView(frame: CGRectMake(0, 0, 100, 30));
+        //view.backgroundColor = UIColor.lightTextColor();
+        var imgName = "";
+        var rect = CGRectZero;
+        let label = UILabel(frame: CGRectMake(20, 0, 100, 20));
+        label.textColor = UIColor.grayColor();
+        label.text = "认证Wi-Fi"
+        imgName = "wifi_free_title_icon";
+        rect = CGRectMake(0, 0, 10, 20);
+        let imgV = UIImageView(image: UIImage(named: imgName));
+        imgV.frame = rect;
+        view.addSubview(imgV);
+        view.addSubview(label);
+       self.mp_tableView.tableHeaderView = view;
     }
     
     func clickSearch(){
-        UIView.animateWithDuration(1.0,
-            delay: 0.0,
-            options: .CurveEaseInOut | .AllowUserInteraction,
-            animations: {
-                self.imV_search.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-            },
-            completion: { finished in
-                println("Bug faced right!")
-        })
+        self.searchAnnimation();
+        
     }
+    
+    // CAAnimation for search 
+    func searchAnnimation(){
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z");
+        animation.fromValue = 0;
+        animation.toValue = M_PI*2;
+        animation.duration = 1;
+        animation.cumulative = true;
+        animation.repeatCount = 1;
+        animation.removedOnCompletion = true;
+        self.imV_search.layer.addAnimation(animation, forKey: nil);
+    }
+    
     
     func clickLeftCustomSwitch(button:UIButton!){
     
@@ -119,6 +144,8 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         // Pass the selected object to the new view controller.
     }
     */
+   
+    
     //MARK: - tableviewDelegate
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -177,7 +204,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         let btn_Accessory = UIButton(frame: CGRectMake(30, 0, 40, 40));
         btn_Accessory.setImage(UIImage(named: "1_1_86"), forState: UIControlState.Normal);
         btn_Accessory.addTarget(self, action: "tapAccessory", forControlEvents: UIControlEvents.TouchUpInside);
-        cell.accessoryView = btn_Accessory;
+        //cell.accessoryView = btn_Accessory;
         if let id = obj?.objectForKey("Ssid") as? String  {
             cell.lb_wifiAddress.text = id;
         }
@@ -188,34 +215,41 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         self.performSegueWithIdentifier("wifiDetail", sender: nil);
     }
     
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if(section == 0){
+            return 0;
+        }else{
+            return 60;
+        }
+    }
     
-    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10;
+    }
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let view  = UIView(frame: CGRectMake(0, 0, 100, 30));
-        //view.backgroundColor = UIColor.lightTextColor();
-        var imgName = "";
-        var rect = CGRectZero;
-        let label = UILabel(frame: CGRectMake(20, 0, 100, 20));
-        label.textColor = UIColor.grayColor();
-        if section == 0{
-            label.text = "认证Wi-Fi"
+        var view:UIView? = nil;
+        if section == 1{
+            view  = UIView(frame: CGRectMake(0, 0, 100, 30));
+            var imgName = "";
+            var rect = CGRectZero;
+            let label = UILabel(frame: CGRectMake(20, 0, 100, 20));
+            label.textColor = UIColor.grayColor();
+            label.text = "非认证Wi-Fi"
             imgName = "wifi_free_title_icon";
             rect = CGRectMake(0, 0, 10, 20);
-        }else{
-            imgName = "wifi_lock_title_icon"
-            label.text = "非认证Wi-Fi"
-            rect = CGRectMake(0, 0, 15, 20);
+            let imgV = UIImageView(image: UIImage(named: imgName));
+            imgV.frame = rect;
+            view!.addSubview(imgV);
+            view!.addSubview(label);
+            
         };
-        let imgV = UIImageView(image: UIImage(named: imgName));
-        imgV.frame = rect;
-        view.addSubview(imgV);
-        view.addSubview(label);
         return view;
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true);
+    
     }
     
 }
