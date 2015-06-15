@@ -15,11 +15,9 @@ public abstract class BroadcastListener {
     protected void setIntent(Intent it) {
         mIntent = it;
     }
-
     
     protected abstract void onEvent(String action);
-
+    
     protected abstract IntentFilter getIntentFilter();
-
-   
+    
 }

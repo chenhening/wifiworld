@@ -45,4 +45,5 @@ public class ChangingAwareEditText extends EditText {
 	protected void onTextChanged (CharSequence text, int start, int before, int after) {
 		mChanged = true;
 	}
+	
 }

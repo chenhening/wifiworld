@@ -15,7 +15,7 @@
     
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
     
-    NSString* ssid = @"";
+    NSString* ssid = nil;
     NSDictionary* info;
     for (NSString *ifnam in ifs) {
         info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);

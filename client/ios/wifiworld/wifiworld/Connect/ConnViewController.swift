@@ -21,14 +21,16 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
     @IBOutlet weak var imV_search: UIImageView!
     
     
+    @IBOutlet weak var lb_connectStatus: UILabel!
+    
     var lockWifiList = [AnyObject]()
     var freeWifiList = [AnyObject]()
     var wifiInfo = [:]
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         self.initInterface();
+        
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -37,10 +39,12 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         self.mapView.delegate = self;
         
     }
+    
     override func viewWillDisappear(animated: Bool) {
         mapView.showsUserLocation = false;
         self.mapView.delegate = nil;
     }
+    
     func initInterface(){
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "wifi_title_bg"), forBarMetrics: UIBarMetrics.Default)
         let statusView = UIView(frame: CGRectMake(0, -20, UIScreen.mainScreen().bounds.width, 20));
@@ -51,7 +55,14 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
             wifiInfo = infoDic;
         }
         self.btn_CustomSwitch.addTarget(self, action: "clickLeftCustomSwitch:", forControlEvents: UIControlEvents.TouchUpInside)
-        let wifiName = wifiInfo["SSID"] as? String;
+        var wifiName = wifiInfo["SSID"] as? String;
+        if wifiName == nil  {
+           wifiName = "未连接wifi";
+           self.lb_connectStatus.text = "已断开"
+
+        }else{
+           self.lb_connectStatus.text = "已连接"
+        }
         self.lb_CurrentWifi.text = wifiName;
         self.btn_Search.addTarget(self, action: "clickSearch", forControlEvents: UIControlEvents.TouchUpInside);
         
@@ -89,7 +100,6 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         animation.removedOnCompletion = true;
         self.imV_search.layer.addAnimation(animation, forKey: nil);
     }
-    
     
     func clickLeftCustomSwitch(button:UIButton!){
     
@@ -201,10 +211,8 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         cell.backgroundView = bkgV;
         cell.lb_wifiName?.text = "\(wifiname)";
         cell.imgV_wifiheadImage?.image = UIImage(named: "wifi_free_signal3")
-        let btn_Accessory = UIButton(frame: CGRectMake(30, 0, 40, 40));
-        btn_Accessory.setImage(UIImage(named: "1_1_86"), forState: UIControlState.Normal);
-        btn_Accessory.addTarget(self, action: "tapAccessory", forControlEvents: UIControlEvents.TouchUpInside);
-        //cell.accessoryView = btn_Accessory;
+        let  tap  = UITapGestureRecognizer(target: self, action: "tapAccessory");
+        cell.ImgV_Accessory.addGestureRecognizer(tap);
         if let id = obj?.objectForKey("Ssid") as? String  {
             cell.lb_wifiAddress.text = id;
         }
@@ -219,7 +227,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         if(section == 0){
             return 0;
         }else{
-            return 60;
+            return 20;
         }
     }
     
@@ -263,5 +271,6 @@ class CustomConnectCell: UITableViewCell {
     
     @IBOutlet weak var imgV_wifiheadImage: UIImageView!
     
+    @IBOutlet weak var ImgV_Accessory: UIImageView!
     
 }
