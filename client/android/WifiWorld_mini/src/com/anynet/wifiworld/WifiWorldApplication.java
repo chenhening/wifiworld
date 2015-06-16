@@ -40,13 +40,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.os.Process;
 import android.widget.Toast;
-
 import cn.bmob.v3.Bmob;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiBRService;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -64,6 +62,9 @@ public class WifiWorldApplication extends Application {
         super.onCreate();
         
         mInstance = this;
+        //检测系统的WiFi是否打开，强行打开
+        WifiAdmin.getInstance(this).openWifi();
+        //初始化组件
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
         Bmob.initialize(this, GlobalConfig.BMOB_KEY);
     }

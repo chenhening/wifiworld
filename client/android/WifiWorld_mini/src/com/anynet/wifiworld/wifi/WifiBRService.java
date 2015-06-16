@@ -106,6 +106,7 @@ public class WifiBRService {
 			        			statusStr = "已断开";
 			        			if (mWifiStatusListener != null) {
 			        				mWifiStatusListener.onNetWorkDisconnected(statusStr);
+			        				mSupplicantState = true;
 			        			}
 			        		}
 			        	}
@@ -113,35 +114,35 @@ public class WifiBRService {
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
-		                statusStr = "正在连接...";
+		                statusStr = "连接中";
 		            }
 		            //为了兼容4.0以下的设备，不要写成state == SupplicantState.AUTHENTICATING
 		            else if(state.toString().equals("AUTHENTICATING")){
-		                statusStr = "正在验证";
+		                statusStr = "验证中";
 		            }
 		            else if (state == SupplicantState.ASSOCIATING){
-		                statusStr = "正在连接中...";
+		                statusStr = "连接中";
 		            } else if (state == SupplicantState.COMPLETED){
 		                //只是验证密码正确，并不代表连接成功
-		                statusStr = "正在获取IP地址";
+		                statusStr = "获取IP";
 		            } else if (state == SupplicantState.DISCONNECTED){
 		                statusStr = "已断开";
 		                if (mWifiStatusListener != null) {
 							mWifiStatusListener.onSupplicantDisconnected(statusStr);
+							mSupplicantState = false;
 		                }
-		                mSupplicantState = false;
 		            } else if (state == SupplicantState.DORMANT){
-		                statusStr = "暂停活动";
+		                statusStr = "暂停中";
 		            } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE){
-		                statusStr = "正在连接（四次握手）...";
+		                statusStr = "四次握手";
 		            } else if (state == SupplicantState.GROUP_HANDSHAKE){
-		                statusStr = "正在连接（组握手）...";
+		                statusStr = "组握手";
 		            } else if (state == SupplicantState.INACTIVE){
 		                statusStr = "未激活";
 		            } else if (state == SupplicantState.INVALID){
 		                statusStr = "无效";
 		            } else if (state == SupplicantState.SCANNING){
-		                statusStr = "正在扫描...";
+		                statusStr = "正在扫描";
 		            } else if (state == SupplicantState.UNINITIALIZED){
 		                statusStr = "未初始化";
 		            }else{

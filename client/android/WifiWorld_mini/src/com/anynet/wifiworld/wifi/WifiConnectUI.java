@@ -47,6 +47,8 @@ public class WifiConnectUI {
 	private ImageView mWifiConLogo;
 	private TextView mWifiName;
 	private TextView mWifiStatus;
+	private TextView mWifiAlias;
+	private TextView mWifiAuthDesc;
 	private ListView mWifiAuthListView;
 	private ListView mWifiNotAuthListView;
 	
@@ -164,15 +166,18 @@ public class WifiConnectUI {
 	
 	private void setWifiConnectedContent() {
 		if (mWifiCurrent.isConnected()) {
-			if (mWifiCurrent.getWifiListItem() != null) {
-				mWifiName.setText(mWifiCurrent.getWifiListItem().getAlias());
-				Bitmap logo = mWifiCurrent.getWifiListItem().getLogo();
+			WifiListItem item = mWifiCurrent.getWifiListItem();
+			if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
+				mWifiName.setText(item.getAlias());
+				mWifiAlias.setText("[" + mWifiCurrent.getWifiName() + "]");
+				mWifiAuthDesc.setText("[" + item.getBanner() + "]");
+				Bitmap logo = item.getLogo();
 				if (logo != null) {
 					mWifiConLogo.setImageBitmap(logo);
 				} else {
 					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				}
-			} else {
+			} else { //如果非认证显示默认信息
 				mWifiName.setText(mWifiCurrent.getWifiName());
 				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 			}
@@ -224,6 +229,8 @@ public class WifiConnectUI {
 		mWifiConLogo = (ImageView)mContext.findViewById(R.id.iv_wifi_connected_logo);
 		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
 		mWifiStatus = (TextView)mContext.findViewById(R.id.tv_wifi_options);
+		mWifiAlias = (TextView)mContext.findViewById(R.id.tv_wifi_connected_alias);
+		mWifiAuthDesc = (TextView)mContext.findViewById(R.id.tv_wifi_connected_desc);
 		
 		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
 		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getAuthList());

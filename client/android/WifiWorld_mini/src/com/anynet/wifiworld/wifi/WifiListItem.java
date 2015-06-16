@@ -118,7 +118,7 @@ public class WifiListItem {
 		if (mWifiProfile != null) {
 			return mWifiProfile.Alias;
 		}
-		return "未命名";
+		return "";
 	}
 	
 	public Bitmap getLogo() {
@@ -154,5 +154,12 @@ public class WifiListItem {
 	
 	public boolean isEncryptWifi() {
 		return !isOpenWifi();
+	}
+	
+	public String getBanner() {
+		if (mWifiProfile != null) {
+			return mWifiProfile.Banner;
+		}
+		return "";
 	}
 }
