@@ -7,6 +7,8 @@ import com.anynet.wifiworld.data.DBCallback.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.util.NetHelper;
+import com.anynet.wifiworld.wifi.WifiListItem;
+import com.anynet.wifiworld.wifi.WifiListItem.WifiType;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;
@@ -46,11 +48,11 @@ public class WifiListScanned{
 		isRefreshThreadFinish = true;
 	}
 	
-	public List<WifiListItem> getFreeList() {
+	public List<WifiListItem> getAuthList() {
 		return mWifiAuth;
 	}
 	
-	public List<WifiListItem> getEncryptList() {
+	public List<WifiListItem> getNotAuthList() {
 		return mWifiNotAuth;
 	}
  	
@@ -126,23 +128,20 @@ public class WifiListScanned{
 			wifiDistribution(scanResult, wifiCfg, wifiProfile);
 		}
 		
-		//TODO(buffer) 以后还要将list进行排序
+		sortWifiList();
+	}
+	
+	private void sortWifiList() {
 		int save = 0;
 		List<WifiListItem> wifiNotAuth = new ArrayList<WifiListItem>();
 		for (WifiListItem item : mWifiNotAuth) {
-			if (item.getWifiConfiguration() != null) {
+			if (item.isLocalWifi()) {
 				++save;
-				item.setOptions("未认证, 本地已保存");
 				wifiNotAuth.add(0, item);
+			} else if (item.isOpenWifi()) {
+				wifiNotAuth.add(save, item);
 			} else {
-				boolean isOpenWifi = WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(item.getScanResult()));
-				if (isOpenWifi) {
-					wifiNotAuth.add(save, item); //free的放在前面
-					item.setOptions("未认证, 无密码");
-				} else {
-					wifiNotAuth.add(item); //非免费的放后面
-					item.setOptions("未认证, 需要密码");
-				}
+				wifiNotAuth.add(item);
 			}
 		}
 		mWifiNotAuth = wifiNotAuth;
@@ -161,23 +160,26 @@ public class WifiListScanned{
 	}
 	
 	private void wifiDistribution(ScanResult scanResult, WifiConfiguration wifiCfg, WifiProfile wifiProfile) {
-		WifiDBInfo wifiDBInfo = new WifiDBInfo(wifiProfile);
-		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg, wifiDBInfo);
+		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg);
+		wifiItem.setWifiProfile(wifiProfile);
 		if (NetHelper.isWifiNet(mContext)&& mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
 			Log.d(TAG, scanResult.SSID + " is the current connected wifi");
 			mWifiCurrent.setWifiListItem(wifiItem);
 			return;
 		}
 		
-		if (wifiProfile != null) {
+		if (wifiItem.isAuthWifi()) {
+			wifiItem.setWifiType(WifiType.AUTH_WIFI);
 			mWifiAuth.add(wifiItem);
 		} else {
-			mWifiNotAuth.add(wifiItem);
-			if (wifiCfg != null) {
-				
+			if (wifiItem.isLocalWifi()) {
+				wifiItem.setWifiType(WifiType.LOCAL_WIFI);
+			} else if (wifiItem.isOpenWifi()) {
+				wifiItem.setWifiType(WifiType.OPEN_WIFI);
 			} else {
-				
+				wifiItem.setWifiType(WifiType.ENCRYPT_WIFI);
 			}
+			mWifiNotAuth.add(wifiItem);
 		}
 	}
 }

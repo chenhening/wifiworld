@@ -38,22 +38,38 @@ public class WifiListItem {
 	
 	private ScanResult mScanResult;
 	private WifiConfiguration mWifiConfiguration;
-	private WifiDBInfo mWifiDBInfo;
-	private boolean mFlag = false;
-	private String mOptions;
+	
+	private WifiProfile mWifiProfile;
+	
+	private String[] WifiStr = {
+			"未识别类型",
+			"已认证, 安全, 可免费上网",
+			"未认证, 本地已保存",
+			"未认证, 无密码",
+			"未认证, 需要密码"
+	};
+	public enum WifiType {
+		UNKOWN,
+		AUTH_WIFI,
+		LOCAL_WIFI,
+		OPEN_WIFI,
+		ENCRYPT_WIFI
+	};
+	private WifiType mWifiType;
+	private String mWifiPwd;
 	
 	public WifiListItem() {
-		mFlag = false;
+		mWifiType = WifiType.UNKOWN;
+		mWifiPwd = null;
 		mScanResult = null;
 		mWifiConfiguration = null;
-		mWifiDBInfo = null;
 	}
 	
-	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration, WifiDBInfo wifiDBInfo) {
-		mFlag = true;
+	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration) {
+		mWifiType = WifiType.UNKOWN;
+		mWifiPwd = null;
 		mScanResult = scanResult;
 		mWifiConfiguration = wifiConfiguration;
-		mWifiDBInfo = wifiDBInfo;
 	}
 	
 	public void setScanResult(ScanResult scanResult) {
@@ -71,8 +87,8 @@ public class WifiListItem {
 		return mWifiConfiguration;
 	}
 	
-	public void setWifiDBInfo(WifiDBInfo wifiDBInfo) {
-		mWifiDBInfo = wifiDBInfo;
+	public void setWifiProfile(WifiProfile wifiProfile) {
+		mWifiProfile = wifiProfile;
 	}
 	
 	public String getWifiName() {
@@ -83,39 +99,60 @@ public class WifiListItem {
 		return mScanResult.BSSID;
 	}
 	
+	public String getWifiPwd() {
+		if (mWifiProfile != null) {
+			mWifiPwd = mWifiProfile.Password;
+		}
+		return mWifiPwd;
+	}
+	
+	public void setWifiPwd(String pwd) {
+		mWifiPwd = pwd;
+	}
+	
 	public String getEncryptType() {
-		return mScanResult.capabilities;
+		return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
 	}
 	
 	public String getAlias() {
-		WifiProfile wifi = mWifiDBInfo.getWifiProfile();
-		if (wifi != null) {
-			return wifi.Alias;
+		if (mWifiProfile != null) {
+			return mWifiProfile.Alias;
 		}
 		return "未命名";
 	}
 	
 	public Bitmap getLogo() {
-		WifiProfile wifi = mWifiDBInfo.getWifiProfile();
-		if (wifi != null) {
-			return BitmapUtil.Bytes2Bimap(wifi.Logo);
+		if (mWifiProfile != null) {
+			return BitmapUtil.Bytes2Bimap(mWifiProfile.Logo);
 		}
 		return null;
 	}
 
-	public boolean getFlag() {
-		return mFlag;
+	public WifiType getWifiType() {
+		return mWifiType;
 	}
-
-	public void setFlag(boolean flag) {
-		this.mFlag = flag;
+	
+	public void setWifiType(WifiType wifiType) {
+		mWifiType = wifiType;
 	}
 
 	public String getOptions() {
-		return mOptions;
+		return WifiStr[mWifiType.ordinal()];
 	}
-
-	public void setOptions(String mOptions) {
-		this.mOptions = mOptions;
+	
+	public boolean isLocalWifi() {
+		return (mWifiConfiguration != null ? true : false);
+	}
+	
+	public boolean isAuthWifi() {
+		return (mWifiProfile != null ? true : false);
+	}
+	
+	public boolean isOpenWifi() {
+		return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+	}
+	
+	public boolean isEncryptWifi() {
+		return !isOpenWifi();
 	}
 }

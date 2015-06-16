@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +46,11 @@ import com.anynet.wifiworld.wifi.ChangingAwareEditText;
 public class WifiConnectDialog extends ANBaseDialog {
 	public static final String TAG = WifiConnectDialog.class.getSimpleName();
 	
+	public enum DialogType {
+		DEFAULT,
+		PASSWORD
+	};
+	
 	private Context mContext;
 
 	private TextView mTitle;
@@ -53,13 +59,17 @@ public class WifiConnectDialog extends ANBaseDialog {
 	private ImageView mLeftIcon;
 	private Object mUserData;
 	
+	private LinearLayout mDefaultLayout;
+	private TextView mConnectTip;
+	
+	private LinearLayout mPwdLayout;
 	private ChangingAwareEditText mPassword;
 	private CheckBox mPwdCheckBox;
 
-	public WifiConnectDialog(Context context) {
+	public WifiConnectDialog(Context context, DialogType dialogType) {
 		super(context, R.style.bt_dialog);// 透明背景对话框
 		mContext = context;
-		initUI();
+		initUI(dialogType);
 	}
 
 	public void setUserData(Object userData) {
@@ -180,14 +190,23 @@ public class WifiConnectDialog extends ANBaseDialog {
 	public void clearPwdEditText() {
 		mPassword.setText("");
 	}
+	
+	public void setDefaultContent(String str) {
+		mConnectTip.setText(str);
+	}
 
-	private void initUI() {
+	private void initUI(DialogType dialogType) {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.wifi_connect_dialog, null);
 		mTitle = (TextView)dlgView.findViewById(R.id.wifi_title);
 		mRightBtn = (TextView)dlgView.findViewById(R.id.btn_connect);
 		mLeftBtn = (TextView)dlgView.findViewById(R.id.btn_cancel);
 		
+		//default layout
+		mDefaultLayout = (LinearLayout)dlgView.findViewById(R.id.ll_dialog_default);
+		mConnectTip = (TextView)dlgView.findViewById(R.id.tv_connect_tip);
+		
 		//password layout
+		mPwdLayout = (LinearLayout)dlgView.findViewById(R.id.ll_dialog_pwd);
 		mPassword = (ChangingAwareEditText)dlgView.findViewById(R.id.Password_EditText);
 		mPwdCheckBox = (CheckBox)dlgView.findViewById(R.id.ShowPassword_CheckBox);
 		mPwdCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -200,6 +219,7 @@ public class WifiConnectDialog extends ANBaseDialog {
 				
 			}
 		});
+		setDialogContent(dialogType);
 		
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -214,7 +234,19 @@ public class WifiConnectDialog extends ANBaseDialog {
 		setCanceledOnTouchOutside(true);
 	}
 
-//	public void setContentGravity(int gravity) {
-//		mContent.setGravity(gravity);
-//	}
+	public void setDialogContent(DialogType dialogType) {
+		switch (dialogType) {
+		case DEFAULT:
+			mDefaultLayout.setVisibility(View.VISIBLE);
+			mPwdLayout.setVisibility(View.GONE);
+			break;
+		case PASSWORD:
+			mDefaultLayout.setVisibility(View.GONE);
+			mPwdLayout.setVisibility(View.VISIBLE);
+			break;
+
+		default:
+			break;
+		}
+	}
 }

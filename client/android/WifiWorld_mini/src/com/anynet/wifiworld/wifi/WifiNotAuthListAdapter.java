@@ -58,37 +58,39 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 			view = mLayoutInflater.inflate(R.layout.wifi_list_item, null);
 		}
 		
+		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
+		TextView wifiAlias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
+		TextView wifiOptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
+		
+		WifiListItem wifiListItem = mWifiListItems.get(position);
+		wifiAlias.setVisibility(View.GONE);
+		wifiName.setText(wifiListItem.getWifiName());
+		wifiOptions.setText(wifiListItem.getOptions());
+		
 		setItemBg(position, view);
 		
-		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);
-		wifiName.setText(mWifiListItems.get(position).getWifiName());
-		TextView wifialias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
-		wifialias.setVisibility(View.GONE);
-		TextView wifioptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
-		wifioptions.setText(mWifiListItems.get(position).getOptions());
-		
 		//设置其单击登录事件
-		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 弹出询问对话框
-				new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
-							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
-						if (cfgSelected != null) {
-							mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
-						} else {
-							mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
-						}
-						dialog.dismiss();
-					}
-				}).setNegativeButton("取消", null).show();
-			}
-		});
+//		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// 弹出询问对话框
+//				new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
+//							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
+//						if (cfgSelected != null) {
+//							mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
+//						} else {
+//							mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
+//						}
+//						dialog.dismiss();
+//					}
+//				}).setNegativeButton("取消", null).show();
+//			}
+//		});
 		
 		return view;
 	}
