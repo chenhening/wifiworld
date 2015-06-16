@@ -176,7 +176,7 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         var bkgName = "";
         var wifiname = "";
         let obj = freeWifiList[indexPath.row] as? BmobObject ;
-
+         
         if indexPath.section == 0{
             if indexPath.row == 0{
                 bkgName = "wifi_free_item0";
@@ -213,8 +213,11 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         cell.imgV_wifiheadImage?.image = UIImage(named: "wifi_free_signal3")
         let  tap  = UITapGestureRecognizer(target: self, action: "tapAccessory");
         cell.ImgV_Accessory.addGestureRecognizer(tap);
-        if let id = obj?.objectForKey("Ssid") as? String  {
-            cell.lb_wifiAddress.text = id;
+        if let ssid = obj?.objectForKey("Ssid") as? NSString  {
+            var ssidStr:NSString! = ssid.substringFromIndex(1);
+            ssidStr = ssidStr.substringToIndex(ssidStr.length-1)
+            cell.lb_wifiAddress.text = "[\(ssidStr)]";
+            ssidStr.sizeWithAttributes([:])
         }
         return cell;
     }
