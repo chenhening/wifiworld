@@ -34,7 +34,7 @@
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="我家的网络我做主"

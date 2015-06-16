@@ -126,13 +126,10 @@ public class WifiConnectUI {
 	public void refreshAnim() {
 		//启动动画，更新WiFi扫描列表
 		doSearchAnimation(true);
-		//更新WiFi链接Title
-		//setWifiConnectedContent();
 	}
 	
 	public void refreshBg() {
 		setWifiListContent();
-		//setWifiConnectedContent();
 	}
 	
 	private void setWifiConnectedContent() {
