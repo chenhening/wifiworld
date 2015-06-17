@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         mWifiConnect = new WifiConnectUI(this);
-        mWifiConnect.refreshAnim();
     }
     
     @Override

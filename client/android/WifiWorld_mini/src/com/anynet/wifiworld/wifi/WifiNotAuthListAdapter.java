@@ -2,19 +2,14 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.List;
 
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.wifi.WifiSecuritiesV8.PskType;
-
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.anynet.wifiworld.R;
 
 public class WifiNotAuthListAdapter extends BaseAdapter {
 	private final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
@@ -68,29 +63,6 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		wifiOptions.setText(wifiListItem.getOptions());
 		
 		setItemBg(position, view);
-		
-		//设置其单击登录事件
-//		view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// 弹出询问对话框
-//				new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
-//							.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
-//						if (cfgSelected != null) {
-//							mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
-//						} else {
-//							mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
-//						}
-//						dialog.dismiss();
-//					}
-//				}).setNegativeButton("取消", null).show();
-//			}
-//		});
 		
 		return view;
 	}

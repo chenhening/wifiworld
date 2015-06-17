@@ -18,3 +18,15 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-ignorewarnings
+-libraryjars libs/BmobSDK_V3.3.7_0513.jar
+-keepattributes Signature
+-keep class cn.bmob.v3.** {*;}
+-keep public class * extends cn.bmob.v3.**
+
+
+-libraryjars libs/umeng-update-v2.6.0.1.jar
+-keepattributes Signature
+-keep class com.umeng.** {*;}
+-keep public class * extends com.umeng.**

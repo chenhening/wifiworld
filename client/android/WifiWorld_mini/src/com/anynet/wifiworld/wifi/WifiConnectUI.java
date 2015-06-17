@@ -1,12 +1,5 @@
 package com.anynet.wifiworld.wifi;
 
-import com.anynet.wifiworld.MainActivity;
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.dialog.WifiConnectDialog;
-import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
-import com.anynet.wifiworld.util.GlobalHandler;
-import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +9,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,8 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -33,6 +25,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.anynet.wifiworld.MainActivity;
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
+import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
@@ -91,14 +90,14 @@ public class WifiConnectUI {
 	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
 		@Override
 		public void onNetWorkConnected(String str) {
-			//refreshBg();
 			mWifiStatus.setText(str);
+			mWifiListScanned.refresh();
 		}
 		
 		@Override
 		public void onNetWorkDisconnected(String str) {
-			//refreshBg();
 			mWifiStatus.setText(str);
+			mWifiListScanned.refresh();
 		}
 
 		@Override
@@ -115,7 +114,7 @@ public class WifiConnectUI {
 		@Override
 		public void onScannableAvaliable() {
 			//仍需要做修改
-			mWifiListScanned.startWifiScanThread();
+			mWifiListScanned.refresh();
 		}
 		
 		@Override
@@ -153,15 +152,10 @@ public class WifiConnectUI {
 		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
 		WifiBRService.bindWifiService(mContext, conn);
 		getViewHolder();
-	}
-	
-	public void refreshAnim() {
+		
 		//启动动画，更新WiFi扫描列表
 		doSearchAnimation(true);
-	}
-	
-	public void refreshBg() {
-		setWifiListContent();
+		mWifiListScanned.refresh();
 	}
 	
 	private void setWifiConnectedContent() {
@@ -169,8 +163,9 @@ public class WifiConnectUI {
 			WifiListItem item = mWifiCurrent.getWifiListItem();
 			if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
 				mWifiName.setText(item.getAlias());
+				mWifiAlias.setVisibility(View.VISIBLE);
 				mWifiAlias.setText("[" + mWifiCurrent.getWifiName() + "]");
-				mWifiAuthDesc.setText("[" + item.getBanner() + "]");
+				mWifiAuthDesc.setText(item.getBanner());
 				Bitmap logo = item.getLogo();
 				if (logo != null) {
 					mWifiConLogo.setImageBitmap(logo);
@@ -178,21 +173,16 @@ public class WifiConnectUI {
 					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				}
 			} else { //如果非认证显示默认信息
+				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
 				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 			}
 		} else if (mWifiCurrent.isConnecting()) {
 			WifiBRService.setWifiSupplicant(true);
 		} else {
+			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
-		}
-	}
-	
-	private void setWifiListContent() {
-		boolean success = mWifiListScanned.refresh(false);
-		if (!success) {
-			doSearchAnimation(false);
 		}
 	}
 	
@@ -221,7 +211,12 @@ public class WifiConnectUI {
 		
 			@Override
 			public void onClick(View v) {
-				doSearchAnimation(!mAnimSearch.isRunning());
+				if (!mAnimSearch.isRunning()) {
+					doSearchAnimation(true);
+					mWifiListScanned.refresh();
+				} else {
+					doSearchAnimation(false);
+				}
 			}
 			
 		});
@@ -245,7 +240,7 @@ public class WifiConnectUI {
 	
 	private void setListViewHeight(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
+		if (listAdapter == null || listAdapter.getCount() == 0) {
 			return;
 		}
 
@@ -267,7 +262,6 @@ public class WifiConnectUI {
     	if (start) {
     		mAnimSearch.start();
     		mImageNeedle.startAnimation(mAnimNeedle);
-    		setWifiListContent();
     	} else {
     		mAnimSearch.stop();
     		mAnimSearch.selectDrawable(0);

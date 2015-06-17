@@ -143,7 +143,7 @@ public class WifiWorldApplication extends Application {
 			if (!networkInfo.isConnected()) {
 			} else {
 				// 友盟自动更新
-		        UmengUpdateAgent.setUpdateOnlyWifi(true);
+		        /*UmengUpdateAgent.setUpdateOnlyWifi(true);
 		        UmengUpdateAgent.silentUpdate(mInstance);
 		        
 		        Toast.makeText(mInstance, "非正式版每次连接只能免费5分钟，请及时更新到正式版本。" , Toast.LENGTH_SHORT).show();
@@ -197,7 +197,7 @@ public class WifiWorldApplication extends Application {
 		                    break;
 		                }
 		            }
-		        });
+		        });*/
 			}
 
 		}

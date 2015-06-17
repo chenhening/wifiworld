@@ -159,8 +159,8 @@ public class WifiBRService {
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
 					if (mWifiStatusListener != null) {
 						mWifiStatusListener.onScannableAvaliable();
+						mScannable = false;
 					}
-					mScannable = false;
 				} else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
