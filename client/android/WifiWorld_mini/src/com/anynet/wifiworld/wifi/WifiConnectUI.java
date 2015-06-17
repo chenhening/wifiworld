@@ -165,6 +165,7 @@ public class WifiConnectUI {
 				mWifiName.setText(item.getAlias());
 				mWifiAlias.setVisibility(View.VISIBLE);
 				mWifiAlias.setText("[" + mWifiCurrent.getWifiName() + "]");
+				mWifiAuthDesc.setVisibility(View.VISIBLE);
 				mWifiAuthDesc.setText(item.getBanner());
 				Bitmap logo = item.getLogo();
 				if (logo != null) {
@@ -173,6 +174,7 @@ public class WifiConnectUI {
 					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				}
 			} else { //如果非认证显示默认信息
+				mWifiAuthDesc.setVisibility(View.INVISIBLE);
 				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
 				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
@@ -180,6 +182,7 @@ public class WifiConnectUI {
 		} else if (mWifiCurrent.isConnecting()) {
 			WifiBRService.setWifiSupplicant(true);
 		} else {
+			mWifiAuthDesc.setVisibility(View.INVISIBLE);
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);

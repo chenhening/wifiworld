@@ -129,7 +129,7 @@ public class WifiBRService {
 		                statusStr = "已断开";
 		                if (mWifiStatusListener != null) {
 							mWifiStatusListener.onSupplicantDisconnected(statusStr);
-							mSupplicantState = false;
+							//mSupplicantState = false;
 		                }
 		            } else if (state == SupplicantState.DORMANT){
 		                statusStr = "暂停中";
