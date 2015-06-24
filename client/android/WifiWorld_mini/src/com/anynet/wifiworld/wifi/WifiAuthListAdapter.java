@@ -78,33 +78,9 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			Bitmap bitmap = wifiListItem.getLogo();
 			if (bitmap != null)
 				logo.setImageBitmap(bitmap);
-			
-//			//设置其单击登录事件
-//			view.findViewById(R.id.ll_wifi_content).setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					// 弹出询问对话框
-//					new AlertDialog.Builder(mContext).setTitle("是否Wi-Fi连接").setMessage("当前Wi-Fi已经认证可以安全上网！")
-//								.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-//
-//						@Override
-//						public void onClick(DialogInterface dialog, int which) {
-//							WifiConfiguration cfgSelected = mWifiListItems.get(position).getWifiConfiguration();
-//							if (cfgSelected != null) {
-//								mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
-//							} else {
-//								mWifiAdmin.connectToNewNetwork(mWifiListItems.get(position), true, false);
-//							}
-//							dialog.dismiss();
-//						}
-//					}).setNegativeButton("取消", null).show();
-//				}	
-//			});
 		} else {
 			logo.setImageResource(R.drawable.wifi_free_signal3);
 			wifiAlias.setVisibility(View.INVISIBLE);
-			view.findViewById(R.id.ll_wifi_content).setOnClickListener(null);
 			if (position == 0) {
 				wifiName.setText("未找到认证网络");
 				wifiOptions.setText("[点击了解]");

@@ -162,4 +162,8 @@ public class WifiListItem {
 		}
 		return "";
 	}
+	
+	public int getWifiStrength() {
+		return WifiAdmin.getWifiStrength(mScanResult.level);
+	}
 }

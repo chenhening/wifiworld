@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
@@ -61,6 +62,17 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		wifiAlias.setVisibility(View.GONE);
 		wifiName.setText(wifiListItem.getWifiName());
 		wifiOptions.setText(wifiListItem.getOptions());
+		
+		//根据wifi信号强度显示不同的信号图
+		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
+		int signalStrength = wifiListItem.getWifiStrength();
+		if (signalStrength >= 80) {
+			logo.setImageResource(R.drawable.wifi_free_signal3);
+		} else if (signalStrength >= 60) {
+			logo.setImageResource(R.drawable.wifi_free_signal2);
+		} else {
+			logo.setImageResource(R.drawable.wifi_free_signal1);
+		}
 		
 		setItemBg(position, view);
 		

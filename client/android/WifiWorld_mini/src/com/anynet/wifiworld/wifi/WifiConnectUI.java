@@ -127,7 +127,11 @@ public class WifiConnectUI {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			WifiListItem wifiListItem = mWifiListScanned.getAuthList().get(position);
-			showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+			if (wifiListItem.isAuthWifi()) {
+				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+			} else {
+				//TODO(binfei)显示认证说明简介
+			}
 		}
 	};
 	
@@ -174,18 +178,20 @@ public class WifiConnectUI {
 					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				}
 			} else { //如果非认证显示默认信息
-				mWifiAuthDesc.setVisibility(View.INVISIBLE);
+				//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
 				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+				mWifiAuthDesc.setText("[未认证]");
 			}
 		} else if (mWifiCurrent.isConnecting()) {
 			WifiBRService.setWifiSupplicant(true);
 		} else {
-			mWifiAuthDesc.setVisibility(View.INVISIBLE);
+			//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
 	
