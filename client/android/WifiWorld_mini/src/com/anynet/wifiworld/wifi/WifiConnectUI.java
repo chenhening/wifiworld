@@ -12,13 +12,9 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -274,14 +270,14 @@ public class WifiConnectUI {
     //-----------------------------------------------------------------------------------------------------------------
     //custom functions
     private void doSearchAnimation(boolean start) {
-    	if (start) {
-    		mAnimSearch.start();
-    		mImageNeedle.startAnimation(mAnimNeedle);
-    	} else {
-    		mAnimSearch.stop();
-    		mAnimSearch.selectDrawable(0);
-    		mImageNeedle.clearAnimation();
-    	}
+	    	if (start) {
+	    		mAnimSearch.start();
+	    		mImageNeedle.startAnimation(mAnimNeedle);
+	    	} else {
+	    		mAnimSearch.stop();
+	    		mAnimSearch.selectDrawable(0);
+	    		mImageNeedle.clearAnimation();
+	    	}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
@@ -293,7 +289,7 @@ public class WifiConnectUI {
     	
     	if (dialogType == DialogType.PASSWORD) {
     		wifiConnectDialog.clearPwdEditText();
-		}
+	}
     	
     	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
