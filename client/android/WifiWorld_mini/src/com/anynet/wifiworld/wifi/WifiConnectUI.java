@@ -45,6 +45,7 @@ public class WifiConnectUI {
 	private WifiNotAuthListAdapter mWifiNotAuthList;
 	
 	private ImageView mWifiConLogo;
+	private AnimationDrawable mAnimWifiCon;
 	private TextView mWifiName;
 	private TextView mWifiStatus;
 	private TextView mWifiAlias;
@@ -93,6 +94,7 @@ public class WifiConnectUI {
 		public void onNetWorkConnected(String str) {
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
+			doConnectingAnimation(false);
 		}
 		
 		@Override
@@ -104,6 +106,8 @@ public class WifiConnectUI {
 		@Override
 		public void onSupplicantChanged(String statusStr) {
 			mWifiStatus.setText(statusStr);
+			//启动连接动画
+			doConnectingAnimation(true);
 		}
 
 		@Override
@@ -176,13 +180,13 @@ public class WifiConnectUI {
 				if (logo != null) {
 					mWifiConLogo.setImageBitmap(logo);
 				} else {
-					mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+					//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				}
 			} else { //如果非认证显示默认信息
 				//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
-				mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+				//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 				mWifiAuthDesc.setText("[未认证]");
 			}
 		} else if (mWifiCurrent.isConnecting()) {
@@ -191,7 +195,7 @@ public class WifiConnectUI {
 			//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
-			mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+			//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
 			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
@@ -278,6 +282,23 @@ public class WifiConnectUI {
 	    		mAnimSearch.selectDrawable(0);
 	    		mImageNeedle.clearAnimation();
 	    	}
+    }
+    
+    private void doConnectingAnimation(boolean start) {
+    	if (start) {
+    		if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+    			return;
+    		
+    		mWifiConLogo.setImageResource(R.animator.animation_connecting);
+    		mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+    		mAnimWifiCon.start();
+    	} else if(mAnimWifiCon != null) {
+    		if (!mAnimWifiCon.isRunning())
+    			return;
+    		
+    		mAnimWifiCon.stop();
+    		mAnimWifiCon.selectDrawable(0);
+    	}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
