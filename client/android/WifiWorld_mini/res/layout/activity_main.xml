@@ -79,13 +79,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
                     android:orientation="vertical" >
 
                     <ImageView
                         android:id="@+id/iv_wifi_connected_logo"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/wifi_connected_icon" />
 
                     <TextView
@@ -96,7 +97,7 @@
                         android:maxLines="1"
                         android:text="已连接"
                         android:textColor="@color/grey"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
