@@ -274,14 +274,14 @@ public class WifiConnectUI {
     //-----------------------------------------------------------------------------------------------------------------
     //custom functions
     private void doSearchAnimation(boolean start) {
-    	if (start) {
-    		mAnimSearch.start();
-    		mImageNeedle.startAnimation(mAnimNeedle);
-    	} else {
-    		mAnimSearch.stop();
-    		mAnimSearch.selectDrawable(0);
-    		mImageNeedle.clearAnimation();
-    	}
+	    	if (start) {
+	    		mAnimSearch.start();
+	    		mImageNeedle.startAnimation(mAnimNeedle);
+	    	} else {
+	    		mAnimSearch.stop();
+	    		mAnimSearch.selectDrawable(0);
+	    		mImageNeedle.clearAnimation();
+	    	}
     }
     
     private void doConnectingAnimation(boolean start) {
@@ -310,7 +310,7 @@ public class WifiConnectUI {
     	
     	if (dialogType == DialogType.PASSWORD) {
     		wifiConnectDialog.clearPwdEditText();
-		}
+	}
     	
     	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
