@@ -67,7 +67,7 @@ public class WifiAuthListAdapter extends BaseAdapter {
 		TextView wifiOptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
 		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 		
-		setItemBg(position, getCount(), view);
+		setItemBg(position, getCount(), view.findViewById(R.id.ll_wifi_listitem));
 		WifiListItem wifiListItem = mWifiListItems.get(position);
 		if (wifiListItem.isAuthWifi()) {
 			wifiName.setText(wifiListItem.getAlias());
@@ -100,18 +100,18 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			break;
 		case 2:
 			if (pos == 0) {
-				view.setBackgroundResource(R.drawable.wifi_free_item0);
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
 			} else {
-				view.setBackgroundResource(R.drawable.wifi_free_item2);
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
 			}
 			break;
 		default:
 			if (pos == 0) {
-				view.setBackgroundResource(R.drawable.wifi_free_item0);
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
 			} else if (pos == getCount()-1){
-				view.setBackgroundResource(R.drawable.wifi_free_item2);
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
 			} else {
-				view.setBackgroundResource(R.drawable.wifi_free_item1);
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item1);
 			}
 			break;
 		}

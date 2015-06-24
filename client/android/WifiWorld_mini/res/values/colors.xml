@@ -5,11 +5,11 @@
     <color name="wifi_background">#ededed</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="grey">#a9a9a9</color>
+    <color name="grey">#d6d6d6</color>
     <color name="darkgrey">#A9A9A9</color>
-    <color name="transparent">#00000000</color>
+    <color name="transparent">#000000</color>
     
     <!-- 对话框 -->
-    <color name="dialog_hover">#0D000000</color>
+    <color name="dialog_hover">#0D0000</color>
     
 </resources>
