@@ -12,8 +12,13 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -213,6 +218,7 @@ public class WifiConnectUI {
 		//点击搜索附近WiFi
 		mImageNeedle = (ImageView)mContext.findViewById(R.id.iv_wifi_search_needle);
 		mAnimNeedle = AnimationUtils.loadAnimation(mContext, R.animator.animation_needle);
+		mAnimNeedle.setInterpolator(new BounceInterpolator());
 		mImageSearch = (ImageView)mContext.findViewById(R.id.iv_wifi_search_heart);
 		mImageSearch.setImageResource(R.animator.animation_search);
 		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
