@@ -46,6 +46,7 @@ public class WifiConnectUI {
 	
 	private ImageView mWifiConLogo;
 	private AnimationDrawable mAnimWifiCon;
+	private boolean mIsWifiConnecting;
 	private TextView mWifiName;
 	private TextView mWifiStatus;
 	private TextView mWifiAlias;
@@ -94,20 +95,24 @@ public class WifiConnectUI {
 		public void onNetWorkConnected(String str) {
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
-			doConnectingAnimation(false);
+			mIsWifiConnecting = false;
+			doConnectingAnimation(mIsWifiConnecting);
 		}
 		
 		@Override
 		public void onNetWorkDisconnected(String str) {
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
+			mIsWifiConnecting = false;
+			doConnectingAnimation(mIsWifiConnecting);
 		}
 
 		@Override
 		public void onSupplicantChanged(String statusStr) {
 			mWifiStatus.setText(statusStr);
 			//启动连接动画
-			doConnectingAnimation(true);
+			mIsWifiConnecting = true;
+			doConnectingAnimation(mIsWifiConnecting);
 		}
 
 		@Override
@@ -180,22 +185,21 @@ public class WifiConnectUI {
 				if (logo != null) {
 					mWifiConLogo.setImageBitmap(logo);
 				} else {
-					//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+					mWifiConLogo.setImageResource(mWifiCurrent.getDefaultLogoID());
 				}
 			} else { //如果非认证显示默认信息
-				//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
-				//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+				mWifiConLogo.setImageResource(mWifiCurrent.getDefaultLogoID());
 				mWifiAuthDesc.setText("[未认证]");
 			}
-		} else if (mWifiCurrent.isConnecting()) {
+		} else if (mIsWifiConnecting) {
 			WifiBRService.setWifiSupplicant(true);
 		} else {
-			//mWifiAuthDesc.setVisibility(View.INVISIBLE);
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
-			//mWifiConLogo.setImageResource(R.drawable.wifi_connected_icon);
+			if (!mIsWifiConnecting)
+				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
 			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
@@ -274,14 +278,14 @@ public class WifiConnectUI {
     //-----------------------------------------------------------------------------------------------------------------
     //custom functions
     private void doSearchAnimation(boolean start) {
-	    	if (start) {
-	    		mAnimSearch.start();
-	    		mImageNeedle.startAnimation(mAnimNeedle);
-	    	} else {
-	    		mAnimSearch.stop();
-	    		mAnimSearch.selectDrawable(0);
-	    		mImageNeedle.clearAnimation();
-	    	}
+    	if (start) {
+    		mAnimSearch.start();
+    		mImageNeedle.startAnimation(mAnimNeedle);
+    	} else {
+    		mAnimSearch.stop();
+    		mAnimSearch.selectDrawable(0);
+    		mImageNeedle.clearAnimation();
+    	}
     }
     
     private void doConnectingAnimation(boolean start) {

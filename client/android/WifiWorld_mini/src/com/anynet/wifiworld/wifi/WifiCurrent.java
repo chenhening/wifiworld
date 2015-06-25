@@ -1,7 +1,9 @@
 package com.anynet.wifiworld.wifi;
 
 import android.content.Context;
+import android.widget.ImageView;
 
+import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.NetHelper;
 
 public class WifiCurrent {
@@ -35,11 +37,24 @@ public class WifiCurrent {
 		return NetHelper.isWifiConnected(mContext);
 	}
 	
-	public boolean isConnecting() {
-		return NetHelper.isWifiConnecting(mContext);
-	}
+	//public boolean isConnecting() {
+	//	return NetHelper.isWifiConnecting(mContext);
+	//}
 	
 	public String getWifiName() {
 		return WifiAdmin.convertToNonQuotedString(NetHelper.getCurrentSsid(mContext));
+	}
+	
+	//业务逻辑都放在非UI类里面实现，这里相当于MVP的P层
+	public int getDefaultLogoID() {
+		//根据wifi信号强度显示不同的信号图
+		int signalStrength = mWifiListItem.getWifiStrength();
+		if (signalStrength >= 80) {
+			return R.drawable.ic_wifi_connected_3;
+		} else if (signalStrength >= 60) {
+			return R.drawable.ic_wifi_connected_2;
+		} else {
+			return R.drawable.ic_wifi_connected_1;
+		}
 	}
 }

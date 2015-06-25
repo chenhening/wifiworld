@@ -26,12 +26,14 @@
 
 package com.anynet.wifiworld.wifi;
 
+import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.BitmapUtil;
 
 import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.widget.ImageView;
 
 public class WifiListItem {
 	private final static String TAG = WifiListItem.class.getSimpleName();
@@ -165,5 +167,28 @@ public class WifiListItem {
 	
 	public int getWifiStrength() {
 		return WifiAdmin.getWifiStrength(mScanResult.level);
+	}
+	
+	public int getDefaultLogo() {
+		//根据wifi信号强度显示不同的信号图
+		int signalStrength = getWifiStrength();
+		switch (mWifiType) {
+		case ENCRYPT_WIFI:
+			if (signalStrength >= 80) {
+				return R.drawable.ic_wifi_locked_signal_3;
+			} else if (signalStrength >= 60) {
+				return R.drawable.ic_wifi_locked_signal_2;
+			} else {
+				return R.drawable.ic_wifi_locked_signal_1;
+			}
+		default:
+			if (signalStrength >= 80) {
+				return R.drawable.ic_wifi_connecting_3; //这里图片重用connecting的
+			} else if (signalStrength >= 60) {
+				return R.drawable.ic_wifi_connecting_2;
+			} else {
+				return R.drawable.ic_wifi_connecting_1;
+			}
+		}
 	}
 }

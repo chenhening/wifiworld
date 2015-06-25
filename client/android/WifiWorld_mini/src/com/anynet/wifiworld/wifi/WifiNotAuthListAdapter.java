@@ -65,14 +65,7 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		
 		//根据wifi信号强度显示不同的信号图
 		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
-		int signalStrength = wifiListItem.getWifiStrength();
-		if (signalStrength >= 80) {
-			logo.setImageResource(R.drawable.wifi_free_signal3);
-		} else if (signalStrength >= 60) {
-			logo.setImageResource(R.drawable.wifi_free_signal2);
-		} else {
-			logo.setImageResource(R.drawable.wifi_free_signal1);
-		}
+		logo.setImageResource(wifiListItem.getDefaultLogo());
 		
 		setItemBg(position, view.findViewById(R.id.ll_wifi_listitem));
 		

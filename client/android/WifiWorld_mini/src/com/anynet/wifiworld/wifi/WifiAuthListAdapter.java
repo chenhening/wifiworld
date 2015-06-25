@@ -2,14 +2,10 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.net.wifi.WifiConfiguration;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -79,7 +75,7 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			if (bitmap != null)
 				logo.setImageBitmap(bitmap);
 		} else {
-			logo.setImageResource(R.drawable.wifi_free_signal3);
+			logo.setImageResource(R.drawable.ic_wifi_connecting_3);
 			wifiAlias.setVisibility(View.INVISIBLE);
 			if (position == 0) {
 				wifiName.setText("未找到认证网络");
