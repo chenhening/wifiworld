@@ -27,8 +27,6 @@ package com.anynet.wifiworld;
 
 import java.lang.ref.SoftReference;
 import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -37,19 +35,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
 import android.os.Process;
-import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.umeng.update.UmengDialogButtonListener;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 
 public class WifiWorldApplication extends Application {
 	private String TAG = WifiWorldApplication.class.getSimpleName();

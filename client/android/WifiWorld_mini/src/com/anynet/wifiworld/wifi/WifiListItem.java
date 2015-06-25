@@ -26,14 +26,13 @@
 
 package com.anynet.wifiworld.wifi;
 
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.BitmapUtil;
-
 import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
-import android.widget.ImageView;
+
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.BitmapUtil;
 
 public class WifiListItem {
 	private final static String TAG = WifiListItem.class.getSimpleName();

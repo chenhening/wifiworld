@@ -3,20 +3,18 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.data.DBCallback.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.GlobalHandler;
-import com.anynet.wifiworld.util.NetHelper;
-import com.anynet.wifiworld.wifi.WifiListItem;
-import com.anynet.wifiworld.wifi.WifiListItem.WifiType;
-
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.anynet.wifiworld.data.DBCallback.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.util.NetHelper;
+import com.anynet.wifiworld.wifi.WifiListItem.WifiType;
 
 public class WifiListScanned{
 	private final static String TAG = WifiListScanned.class.getSimpleName();

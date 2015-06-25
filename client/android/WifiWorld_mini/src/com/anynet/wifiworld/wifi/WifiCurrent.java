@@ -1,7 +1,6 @@
 package com.anynet.wifiworld.wifi;
 
 import android.content.Context;
-import android.widget.ImageView;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.NetHelper;

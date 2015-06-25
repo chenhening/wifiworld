@@ -31,8 +31,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 
-import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiBRService;
 import com.anynet.wifiworld.wifi.WifiConnectUI;
 
 public class MainActivity extends Activity {

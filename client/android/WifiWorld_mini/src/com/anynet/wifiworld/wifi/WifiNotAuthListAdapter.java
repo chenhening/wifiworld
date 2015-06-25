@@ -18,13 +18,12 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
 	private LayoutInflater mLayoutInflater;
-	private WifiAdmin mWifiAdmin;
 	
 	public WifiNotAuthListAdapter(Context context, List<WifiListItem> wifiListItems) {
 		mContext = context;
 		mWifiListItems = wifiListItems;
 		mLayoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mWifiAdmin = WifiAdmin.getInstance(mContext);
+		WifiAdmin.getInstance(mContext);
 	}
 	
 	public void refreshWifiList(List<WifiListItem> wifiListItems) {
