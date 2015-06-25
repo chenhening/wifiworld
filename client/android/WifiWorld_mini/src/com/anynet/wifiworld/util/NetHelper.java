@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -94,6 +95,16 @@ public abstract class NetHelper
         }
         
         return ssid;
+    }
+    
+    public static boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (State.CONNECTED == wifiInfo.getState()) {
+        	return true;
+        }
+        
+        return false;
     }
     
     // 以网络编码格式返回，如 3gnet/3gwap/uninet/uniwap/cmnet/cmwap/ctnet/ctwap
