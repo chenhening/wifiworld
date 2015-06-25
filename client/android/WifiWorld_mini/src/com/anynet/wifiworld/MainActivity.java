@@ -26,22 +26,48 @@
 
 package com.anynet.wifiworld;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
-import com.anynet.wifiworld.wifi.WifiConnectUI;
+import com.anynet.wifiworld.map.MapFragment;
+import com.anynet.wifiworld.me.MeFragment;
+import com.anynet.wifiworld.wifi.WifiFragment;
 
-public class MainActivity extends Activity {
-	private WifiConnectUI mWifiConnect;
+public class MainActivity extends BaseActivity {
+	
+	private final static int TAB_COUNTS = 3;
+	private final static int CONNECT_TAB_IDX = 0;
+	private final static int NEARBY_TAB_IDX = 1;
+	private final static int MY_TAB_IDX = 2;
+	
+	public FragmentTabHost mTabHost;
+	private Button[] mTabs;
+	private WifiFragment wifiFragment;
+	private MapFragment mapFragment;
+	private MeFragment meFragment;
+	private MainFragment[] fragments;
+	private int index;
+	private int currentTabIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	initFragments();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        mWifiConnect = new WifiConnectUI(this);
+        initView();
+        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+		for (int i = 0; i < fragments.length; i++) {
+			if (!fragments[i].isAdded()) {
+				trx.add(R.id.fragment_container, fragments[i]).hide(fragments[i]);
+			}
+		}
+		trx.show(fragments[0]).commit();
     }
     
     @Override
@@ -76,6 +102,91 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
+	
+	//-------------------------------------------------------------------------------------------------------------
+	//custom functions
+	private void initFragments() {
+		if (wifiFragment == null)
+			wifiFragment = new WifiFragment();
+		if (mapFragment == null)
+			mapFragment = new MapFragment();
+		if (meFragment == null)
+			meFragment = new MeFragment();
+
+		if (fragments == null || fragments.length < 2)
+			fragments = new MainFragment[] { wifiFragment, mapFragment, meFragment };
+	}
+
+	private void initView() {
+		mTabs = new Button[TAB_COUNTS];
+		mTabs[CONNECT_TAB_IDX] = (Button) findViewById(R.id.btn_connect);
+		mTabs[NEARBY_TAB_IDX] = (Button) findViewById(R.id.btn_map);
+		mTabs[MY_TAB_IDX] = (Button) findViewById(R.id.btn_my);
+	}
+	
+	private void reflesh() {
+		FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+		if (currentTabIndex != index) {
+			trx.hide(fragments[currentTabIndex]);
+			if (!fragments[index].isAdded()) {
+				trx.add(R.id.fragment_container, fragments[index]);
+			}
+			trx.show(fragments[index]).commit();
+		}
+		if (mTabs != null && mTabs[currentTabIndex] != null)
+			mTabs[currentTabIndex].setSelected(false);
+		// 把当前tab设为选中状态
+		if (mTabs != null && mTabs[index] != null)
+			mTabs[index].setSelected(true);
+		currentTabIndex = index;
+	}
+	
+	/**
+	 * button点击事件
+	 * 
+	 * @param view
+	 */
+	public void onTabClicked(View view) {
+		switch (view.getId()) {
+		case R.id.btn_connect:
+			index = CONNECT_TAB_IDX;
+			break;
+		case R.id.btn_map:
+			index = NEARBY_TAB_IDX;
+			reflesh();
+			break;
+		case R.id.btn_my:
+			index = MY_TAB_IDX;
+			break;
+		}
+		reflesh();
+	}
     
-    
+	//-------------------------------------------------------------------------------------------------------------
+	//custom base UI
+	public static abstract class MainFragment extends BaseFragment {
+
+		protected boolean isVisible;
+
+		/**
+		 * 在这里实现Fragment数据的缓加载.
+		 * 
+		 * @param isVisibleToUser
+		 */
+		@Override
+		public void setUserVisibleHint(boolean isVisibleToUser) {
+			super.setUserVisibleHint(isVisibleToUser);
+			if (getUserVisibleHint()) {
+				isVisible = true;
+				onVisible();
+			} else {
+				isVisible = false;
+				onInvisible();
+			}
+		}
+
+		protected abstract void onVisible();
+
+		protected abstract void onInvisible();
+	}
 }

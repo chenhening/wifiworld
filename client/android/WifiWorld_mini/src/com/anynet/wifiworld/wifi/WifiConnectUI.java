@@ -37,7 +37,7 @@ import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
 	
-	private MainActivity mContext;
+	private View mView;
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private WifiListScanned mWifiListScanned;
@@ -158,13 +158,13 @@ public class WifiConnectUI {
 		}
 	};
 	
-	public WifiConnectUI(Context context) {
-		mContext = (MainActivity)context;
-		mWifiAdmin = WifiAdmin.getInstance(mContext);
-		mWifiCurrent = WifiCurrent.getInstance(context);
-		mWifiListScanned = WifiListScanned.getInstance(context, wifiListHandler);
+	public WifiConnectUI(View view) {
+		mView = view;
+		mWifiAdmin = WifiAdmin.getInstance(mView.getContext());
+		mWifiCurrent = WifiCurrent.getInstance(mView.getContext());
+		mWifiListScanned = WifiListScanned.getInstance(mView.getContext(), wifiListHandler);
 		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
-		WifiBRService.bindWifiService(mContext, conn);
+		WifiBRService.bindWifiService(mView.getContext(), conn);
 		getViewHolder();
 		
 		//启动动画，更新WiFi扫描列表
@@ -206,7 +206,7 @@ public class WifiConnectUI {
 	
 	private void getViewHolder() {
 		//断开连接
-		mWifiSwitch = (ToggleButton)mContext.findViewById(R.id.tb_wifi_switch);
+		mWifiSwitch = (ToggleButton)mView.findViewById(R.id.tb_wifi_switch);
 		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		
 			@Override
@@ -220,13 +220,13 @@ public class WifiConnectUI {
 		});
 		
 		//点击搜索附近WiFi
-		mImageNeedle = (ImageView)mContext.findViewById(R.id.iv_wifi_search_needle);
-		mAnimNeedle = AnimationUtils.loadAnimation(mContext, R.animator.animation_needle);
+		mImageNeedle = (ImageView)mView.findViewById(R.id.iv_wifi_search_needle);
+		mAnimNeedle = AnimationUtils.loadAnimation(mView.getContext(), R.animator.animation_needle);
 		mAnimNeedle.setInterpolator(new BounceInterpolator());
-		mImageSearch = (ImageView)mContext.findViewById(R.id.iv_wifi_search_heart);
+		mImageSearch = (ImageView)mView.findViewById(R.id.iv_wifi_search_heart);
 		mImageSearch.setImageResource(R.animator.animation_search);
 		mAnimSearch = (AnimationDrawable)mImageSearch.getDrawable();
-		mContext.findViewById(R.id.rl_wifi_search).setOnClickListener(new OnClickListener() {
+		mView.findViewById(R.id.rl_wifi_search).setOnClickListener(new OnClickListener() {
 		
 			@Override
 			public void onClick(View v) {
@@ -240,19 +240,19 @@ public class WifiConnectUI {
 			
 		});
 		
-		mWifiConLogo = (ImageView)mContext.findViewById(R.id.iv_wifi_connected_logo);
-		mWifiName = (TextView)mContext.findViewById(R.id.tv_wifi_connected_name);
-		mWifiStatus = (TextView)mContext.findViewById(R.id.tv_wifi_options);
-		mWifiAlias = (TextView)mContext.findViewById(R.id.tv_wifi_connected_alias);
-		mWifiAuthDesc = (TextView)mContext.findViewById(R.id.tv_wifi_connected_desc);
+		mWifiConLogo = (ImageView)mView.findViewById(R.id.iv_wifi_connected_logo);
+		mWifiName = (TextView)mView.findViewById(R.id.tv_wifi_connected_name);
+		mWifiStatus = (TextView)mView.findViewById(R.id.tv_wifi_options);
+		mWifiAlias = (TextView)mView.findViewById(R.id.tv_wifi_connected_alias);
+		mWifiAuthDesc = (TextView)mView.findViewById(R.id.tv_wifi_connected_desc);
 		
-		mWifiAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_free_list);
-		mWifiAuthList = new WifiAuthListAdapter(mContext, mWifiListScanned.getAuthList());
+		mWifiAuthListView = (ListView)mView.findViewById(R.id.lv_wifi_free_list);
+		mWifiAuthList = new WifiAuthListAdapter(mView.getContext(), mWifiListScanned.getAuthList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
 		mWifiAuthListView.setOnItemClickListener(mAuthItemClickListener);
 		
-		mWifiNotAuthListView = (ListView)mContext.findViewById(R.id.lv_wifi_encrypt_list);
-		mWifiNotAuthList = new WifiNotAuthListAdapter(mContext, mWifiListScanned.getNotAuthList());
+		mWifiNotAuthListView = (ListView)mView.findViewById(R.id.lv_wifi_encrypt_list);
+		mWifiNotAuthList = new WifiNotAuthListAdapter(mView.getContext(), mWifiListScanned.getNotAuthList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		mWifiNotAuthListView.setOnItemClickListener(mNotAuthItemClickListener);
 	}
@@ -306,7 +306,7 @@ public class WifiConnectUI {
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
-    	final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mContext, dialogType);
+    	final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mView.getContext(), dialogType);
     	
     	wifiConnectDialog.setTitle("连接到：" + wifiListItem.getWifiName());
     	wifiConnectDialog.setLeftBtnStr("取消");
@@ -334,20 +334,20 @@ public class WifiConnectUI {
 						WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiListItem);
 						connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 					} else {
-						Toast.makeText(mContext, "错误的WiFi类型", Toast.LENGTH_LONG).show();
+						Toast.makeText(mView.getContext(), "错误的WiFi类型", Toast.LENGTH_LONG).show();
 					}
 					break;
 				case PASSWORD:
 					if (wifiListItem.isEncryptWifi()) {
 						String inputedPwd = wifiConnectDialog.getPwdContent();
 						if (inputedPwd.equals("")) {
-							Toast.makeText(mContext, "请输入密码。", Toast.LENGTH_LONG).show();
+							Toast.makeText(mView.getContext(), "请输入密码。", Toast.LENGTH_LONG).show();
 							return;
 						}
 						wifiListItem.setWifiPwd(inputedPwd);
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
 						//shutdown soft keyboard if soft keyboard is actived
-						InputMethodManager imm = (InputMethodManager)mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
+						InputMethodManager imm = (InputMethodManager)mView.getContext().getSystemService(mView.getContext().INPUT_METHOD_SERVICE);
 						if (imm.isActive()) {
 							imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 						}
@@ -359,7 +359,7 @@ public class WifiConnectUI {
 				}
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(mContext, "无法连接到网络：" + wifiListItem.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(mView.getContext(), "无法连接到网络：" + wifiListItem.getWifiName(), Toast.LENGTH_LONG).show();
 				}
 			}
 		});

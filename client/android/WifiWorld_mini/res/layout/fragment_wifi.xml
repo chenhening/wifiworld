@@ -1,0 +1,288 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/wifi_background"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/rl_wifi_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/wifi_title_bg"
+        android:visibility="visible" >
+
+        <ToggleButton
+            android:id="@+id/tb_wifi_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/an_wifi_switch_selector"
+            android:checked="true"
+            android:focusableInTouchMode="true"
+            android:longClickable="true"
+            android:textOff=""
+            android:textOn=""
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:longClickable="false"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_wifi_plus"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@drawable/wifi_plus_btn"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_wifi_connected_parent"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@id/rl_wifi_title"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/rl_wifi_connected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:background="@drawable/wifi_connected_bg"
+            android:gravity="center_vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_wifi_connected_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/iv_wifi_connected_logo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/wifi_connected_icon" />
+
+                    <TextView
+                        android:id="@+id/tv_wifi_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:text="已连接"
+                        android:textColor="@color/grey"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/wifi_name_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tv_wifi_connected_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="EmployeeHotspot"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_wifi_connected_alias"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="2dp"
+                            android:maxLines="1"
+                            android:text="[Guest]"
+                            android:textColor="@color/grey"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_wifi_connected_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="1"
+                        android:text="未认证,没有认证信息"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.anynet.wifiworld.util.ReboundScrollView
+        android:id="@+id/rl_wifi_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_wifi_connected_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical" >
+            
+	        <LinearLayout
+	            android:id="@+id/ll_wifi_free_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:orientation="horizontal" >
+	
+	            <ImageView
+	                android:layout_width="10dp"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center"
+	                android:layout_marginLeft="5dp"
+	                android:layout_marginRight="5dp"
+	                android:scaleType="fitCenter"
+	                android:src="@drawable/wifi_free_title_icon" />
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:text="认证Wi-Fi"
+	                android:textColor="@color/grey" />
+	        </LinearLayout>
+			
+	        <LinearLayout
+	            android:id="@+id/ll_wifi_free_list"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+	            
+	            <ListView
+	                android:id="@+id/lv_wifi_free_list"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:cacheColorHint="#00000000"
+	                android:fadingEdge="none" />
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:id="@+id/ll_wifi_lock_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:orientation="horizontal" >
+	
+	            <ImageView
+	                android:layout_width="10dp"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center"
+	                android:layout_marginLeft="5dp"
+	                android:layout_marginRight="5dp"
+	                android:scaleType="fitCenter"
+	                android:src="@drawable/wifi_lock_title_icon" />
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:text="非认证Wi-Fi"
+	                android:textColor="@color/grey" />
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:id="@+id/ll_wifi_encrypt_list"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+	            
+	            <ListView
+	                android:id="@+id/lv_wifi_encrypt_list"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:cacheColorHint="#00000000"
+	                android:fadingEdge="none" />
+	
+	    		</LinearLayout>
+		</LinearLayout>
+    </com.anynet.wifiworld.util.ReboundScrollView>
+    
+    <RelativeLayout
+        android:id="@+id/rl_wifi_search"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/ll_wifi_connected_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-50dp"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/iv_wifi_search"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@null"
+            android:src="@drawable/wifi_search_bg" />
+
+        <ImageView
+            android:id="@+id/iv_wifi_search_needle"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="6dp"
+            android:contentDescription="@null"
+            android:src="@drawable/wifi_search_needle" />
+
+        <ImageView
+            android:id="@+id/iv_wifi_search_heart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/iv_wifi_search_needle"
+            android:layout_alignTop="@+id/iv_wifi_search_needle"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@animator/animation_search" />
+
+    </RelativeLayout>
+</RelativeLayout>

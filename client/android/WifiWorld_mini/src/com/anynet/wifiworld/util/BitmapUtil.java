@@ -1,29 +1,3 @@
-/*
- * Copyright 2015 Anynet Corporation All Rights Reserved.
- *
- * The source code contained or described herein and all documents related to
- * the source code ("Material") are owned by Anynet Corporation or its suppliers
- * or licensors. Title to the Material remains with Anynet Corporation or its
- * suppliers and licensors. The Material contains trade secrets and proprietary
- * and confidential information of Anynet or its suppliers and licensors. The
- * Material is protected by worldwide copyright and trade secret laws and
- * treaty provisions.
- * No part of the Material may be used, copied, reproduced, modified, published
- * , uploaded, posted, transmitted, distributed, or disclosed in any way
- * without Anynet's prior express written permission.
- *
- * No license under any patent, copyright, trade secret or other intellectual
- * property right is granted to or conferred upon you by disclosure or delivery
- * of the Materials, either expressly, by implication, inducement, estoppel or
- * otherwise. Any license under such intellectual property rights must be
- * express and approved by Anynet in writing.
- *
- * @brief BitmapUtil is bitmap convert and processing class.
- * @date 2015-06-04
- * @author
- *
- */
-
 package com.anynet.wifiworld.util;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 public class BitmapUtil {
 	public static Bitmap Bytes2Bimap(byte[] b) {
@@ -98,7 +73,8 @@ public class BitmapUtil {
         final int color = 0xff424242;  
         final Paint paint = new Paint();  
         final Rect src = new Rect((int) left, (int) top, (int) right, (int) bottom);  
-        final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);
+        final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);  
+        final RectF rectF = new RectF(dst);  
   
         paint.setAntiAlias(true);// 设置画笔无锯齿  
   

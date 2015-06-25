@@ -1,29 +1,3 @@
-/*
- * Copyright 2015 Anynet Corporation All Rights Reserved.
- *
- * The source code contained or described herein and all documents related to
- * the source code ("Material") are owned by Anynet Corporation or its suppliers
- * or licensors. Title to the Material remains with Anynet Corporation or its
- * suppliers and licensors. The Material contains trade secrets and proprietary
- * and confidential information of Anynet or its suppliers and licensors. The
- * Material is protected by worldwide copyright and trade secret laws and
- * treaty provisions.
- * No part of the Material may be used, copied, reproduced, modified, published
- * , uploaded, posted, transmitted, distributed, or disclosed in any way
- * without Anynet's prior express written permission.
- *
- * No license under any patent, copyright, trade secret or other intellectual
- * property right is granted to or conferred upon you by disclosure or delivery
- * of the Materials, either expressly, by implication, inducement, estoppel or
- * otherwise. Any license under such intellectual property rights must be
- * express and approved by Anynet in writing.
- *
- * @brief check mobile network type.
- * @date 2015-06-04
- * @author
- *
- */
-
 package com.anynet.wifiworld.util;
 
 import java.net.Inet4Address;
@@ -40,7 +14,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -49,7 +22,7 @@ import android.telephony.TelephonyManager;
 
 /**
  * 判断网络的的工具类
- * @author
+ * @author liuzongyao
  *
  */
 public abstract class NetHelper
@@ -57,53 +30,16 @@ public abstract class NetHelper
     
     //public static String mNetType = null;
     
-    public static boolean isWifiConnected(Context c)
+    public static boolean isWifiNet(Context c)
     {
         boolean bRet = false;
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (null != wifiInfo)
+        if (null != wifiInfo && wifiInfo.isConnectedOrConnecting())
         {
-        	State state = wifiInfo.getState();
-        	if (state == State.CONNECTED) {
-				bRet = true;
-			} else {
-				bRet = false;
-			}
+            bRet = true;
         }
         return bRet;
-    }
-    
-    public static boolean isWifiConnecting(Context c)
-    {
-        boolean bRet = false;
-        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (null != wifiInfo)
-        {
-        	State state = wifiInfo.getState();
-        	if (state == State.CONNECTING) {
-				bRet = true;
-			} else {
-				bRet = false;
-			}
-        }
-        return bRet;
-    }
-    
-    public static boolean isWifiNet(final Context c)
-    {
-        boolean ret = false;
-        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (null != cm)
-        {
-            NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (null != wifiInfo && wifiInfo.isConnectedOrConnecting())
-            {
-                ret = true;
-            }
-        }
-        return ret;
     }
     
     public static boolean isMobileNet(final Context c)
@@ -306,7 +242,7 @@ public abstract class NetHelper
 			return ret;
 		}
 		
-		if (Version.SDK >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); 
 					en.hasMoreElements();) {
 				
@@ -342,7 +278,7 @@ public abstract class NetHelper
 	 * 获取Ip地址，原来的ip地址获取，在魅族MX351手机上获取ip地址有错，增加这个在老方法里头。
 	 * @param context
 	 * @return
-	 * @author
+	 * @author GeXianglin
 	 */
 	private static String getIPAddressPrivate(Context context) {
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
