@@ -59,7 +59,6 @@ class ConnViewController: UIViewController,UITableViewDataSource,UITableViewDele
         if wifiName == nil  {
            wifiName = "未连接wifi";
            self.lb_connectStatus.text = "已断开"
-
         }else{
            self.lb_connectStatus.text = "已连接"
         }
