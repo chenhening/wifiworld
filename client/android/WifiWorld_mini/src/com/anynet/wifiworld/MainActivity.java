@@ -83,6 +83,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			}
 		}
 		trx.show(fragments[0]).commit();
+		reflesh();
     }
     
     @Override
