@@ -11,6 +11,7 @@
     <color name="grey">#d6d6d6</color>
     <color name="darkgrey">#A9A9A9</color>
     <color name="transparent">#000000</color>
+    <color name="app_color_style">#ffa400</color>
     
     <!-- 对话框 -->
     <color name="dialog_hover">#0D0000</color>

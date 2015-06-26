@@ -3,10 +3,12 @@ package com.anynet.wifiworld;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
+import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.view.TitlebarHolder;
 
 /** 
@@ -24,16 +26,6 @@ public class BaseActivity extends FragmentActivity {
 
 	private boolean isKick = false;
 
-	// 处理登录退出情形
-	/*
-	 * private LogoutObserver mLogoutListener = new LogoutObserver() {
-	 * 
-	 * @Override public void OnLogout(int logoutType) {
-	 * 
-	 * updateLoginState(logoutType);
-	 * 
-	 * } };
-	 */
 	private NetworkStateListener mNetworkListener = new NetworkStateListener() {
 		@Override
 		public void onNetworkStateChange(Intent intent) {
@@ -54,6 +46,8 @@ public class BaseActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		// 将Activity放入堆栈中
 		WifiWorldApplication.getInstance().activityCreated(this);
+		bindingView();
+		mTitlebar = new TitlebarHolder(this);
 	}
 
 	protected void onStart() {
@@ -69,7 +63,6 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	protected void onDestroy() {
-
 		super.onDestroy();
 		WifiWorldApplication.getInstance().activityDestroyed(this);
 	}
@@ -78,13 +71,10 @@ public class BaseActivity extends FragmentActivity {
 		super.onNewIntent(intent);
 	}
 
-	// 用于友盟统计
 	protected void onResume() {
-
 		super.onResume();
 	}
 
-	// 用于友盟统计
 	protected void onPause() {
 		super.onPause();
 	}
@@ -105,6 +95,11 @@ public class BaseActivity extends FragmentActivity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
+	}
+	
+	public void bindingView() {
+		View decorView = getWindow().getDecorView();
+		ViewBinder.bindingView(decorView, this);
 	}
 
 }

@@ -37,7 +37,7 @@
         android:visibility="visible" />
 
     <RelativeLayout
-        android:id="@+id/setting_header_finish"
+        android:id="@+id/setting_header_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -47,18 +47,8 @@
         android:paddingRight="10dp"
         android:visibility="invisible" >
 
-        <TextView
-            android:id="@+id/tv_header_right"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="确定"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-
         <ImageView
-            android:id="@+id/lv_my_setting_image"
+            android:id="@+id/iv_setting_header_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

@@ -1,31 +1,52 @@
 package com.anynet.wifiworld.view;
 
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 
 public class TitlebarHolder {
 
 	/**
 	 * 头部资源
 	 */
-	public View llHeaderLeft;
 	public ImageView ivHeaderLeft;
-	public TextView tvHeaderLeft;
 	public TextView tvTitle;
-	public RelativeLayout llFinish;
-	public TextView tvHeaderRight;
+	public ImageView ivHeaderRight;
+	
 	private BaseActivity activity;
 	
-	public ImageView ivMySetting;
-
 	public TitlebarHolder(BaseActivity a) {
 		activity = a;
+		ivHeaderLeft = (ImageView) activity.findViewById(R.id.iv_setting_header_left);
+		tvTitle = (TextView) activity.findViewById(R.id.setting_main_title);
+		ivHeaderLeft = (ImageView) activity.findViewById(R.id.iv_setting_header_right);
+		
+		if (ivHeaderLeft != null) {
+			ivHeaderLeft.setOnClickListener(new OnClickListener() {
+	
+				@Override
+				public void onClick(View v) {
+					activity.finish();
+				}
+			});
+		}
 	}
 
 	public TitlebarHolder(View v) {
+		ivHeaderLeft = (ImageView) v.findViewById(R.id.iv_setting_header_left);
+		tvTitle = (TextView) v.findViewById(R.id.setting_main_title);
+		ivHeaderLeft = (ImageView) v.findViewById(R.id.iv_setting_header_right);
+		
+		ivHeaderLeft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				activity.finish();
+			}
+		});
 	}
 }
