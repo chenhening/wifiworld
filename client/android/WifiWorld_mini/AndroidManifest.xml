@@ -14,9 +14,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
+	<!-- 友盟统计分享更新需要添加的权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 友盟推送需要添加的权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 可选 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+	<uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+	<uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+	<uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+	<uses-permission android:name="android.permission.RESTART_PACKAGES" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />;
+    
     <application
         android:name="com.anynet.wifiworld.WifiWorldApplication"
         android:allowBackup="true"
@@ -25,6 +42,7 @@
         android:logo="@drawable/ic_launcher"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         
+        <!-- 主界面 -->
         <activity
             android:name="com.anynet.wifiworld.MainActivity"
             android:launchMode="singleTop"
@@ -36,23 +54,102 @@
             </intent-filter>
         </activity>
         
-        <!-- 友盟自动更新 -->
+        <!-- 友盟 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="39192cd2a95f37f072fa829b8349e753" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="c621650b4e9a0bc5092f17e1ad5086a6" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5516ac08fd98c5df10000053" >
-        </meta-data>
+            android:value="5516ac08fd98c5df10000053" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="10000UMENG" >
-        </meta-data>
+            android:value="10000UMENG" />
+        
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
+            android:process=":DownloadingService" />
+        <receiver
+            android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="com.umeng.message.SystemReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.MessageReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.ElectionReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.RegistrationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.COMMAND" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.umeng.message.BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.umeng.message.UmengService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.START" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.intent.action.COCKROACH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.PING_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
         </service>
+        <service android:name="com.umeng.message.UmengIntentService" />
+        <service android:name="com.umeng.message.UmengDownloadResourceService" />
+        <service
+            android:name="com.anynet.wifiworld.me.whitelist.ContactService"
+            android:exported="false" />
+        
+        <activity
+        	android:name="com.umeng.fb.ConversationActivity"
+        	android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode = "adjustResize" />
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         
         <!-- WiFi后台服务 -->
         <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />

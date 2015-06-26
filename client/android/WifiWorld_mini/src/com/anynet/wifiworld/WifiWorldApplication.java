@@ -31,18 +31,37 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Process;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 import cn.smssdk.SMSSDK;
 
+import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.GlobalBroadcast;
+import com.anynet.wifiworld.util.PackageSignHelper;
+import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.NetworkStateListener;
+import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.umeng.fb.FeedbackAgent;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.IUmengUnregisterCallback;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.UmengRegistrar;
+import com.umeng.message.entity.UMessage;
 import com.umeng.update.UmengUpdateAgent;
 
 public class WifiWorldApplication extends Application {
@@ -51,6 +70,8 @@ public class WifiWorldApplication extends Application {
     private static WifiWorldApplication mInstance;
     private Stack<SoftReference<Activity>> mActivityStack = new Stack<SoftReference<Activity>>();
     
+    private PushAgent mPushAgent;
+    
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,11 +79,15 @@ public class WifiWorldApplication extends Application {
         mInstance = this;
         //检测系统的WiFi是否打开，强行打开
         WifiAdmin.getInstance(this).openWifi();
-        //初始化第三方组件
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
+        // 初始化第三方组件
+        // 打开数据库
         Bmob.initialize(this, GlobalConfig.BMOB_KEY);
+        // 打开验证码
         SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
+        // 打开友盟自动更新
         UmengUpdateAgent.update(this);
+        // 打开友盟反馈
 		FeedbackAgent agent = new FeedbackAgent(this);
 		agent.sync();
     }
@@ -140,65 +165,7 @@ public class WifiWorldApplication extends Application {
 			// 网络断了的时候
 			if (!networkInfo.isConnected()) {
 			} else {
-				// 友盟自动更新
-		        /*UmengUpdateAgent.setUpdateOnlyWifi(true);
-		        UmengUpdateAgent.silentUpdate(mInstance);
-		        
-		        Toast.makeText(mInstance, "非正式版每次连接只能免费5分钟，请及时更新到正式版本。" , Toast.LENGTH_SHORT).show();
-		        final Timer timer_of_cutoff = new Timer();
-		        timer_of_cutoff.schedule(new TimerTask() {
-
-					@Override
-					public void run() {
-						WifiAdmin wifi = WifiAdmin.getInstance(mInstance);
-						WifiInfo wifiInfo = wifi.getWifiInfo();
-						if (wifiInfo != null) {
-							wifi.disConnectionWifi(wifiInfo.getNetworkId());
-						}
-					}
-                	
-                }, 300*1000);
-		        
-		        // 当更新到达时候开始计时，防止用户作弊
-		        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-		            @Override
-		            public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
-		                switch (updateStatus) {
-		                case UpdateStatus.Yes: // has update
-		                    UmengUpdateAgent.showUpdateDialog(mInstance, updateInfo);
-		                    break;
-		                case UpdateStatus.No: // has no update
-		                    Toast.makeText(mInstance, "没有更新", Toast.LENGTH_SHORT).show();
-		                    break;
-		                case UpdateStatus.NoneWifi: // none wifi
-		                    Toast.makeText(mInstance, "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
-		                    break;
-		                case UpdateStatus.Timeout: // time out
-		                    Toast.makeText(mInstance, "超时", Toast.LENGTH_SHORT).show();
-		                    break;
-		                }
-		            }
-		        });
-		        
-		        // 当用户点击弹窗的时候对选择进行计时
-		        UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-
-		            @Override
-		            public void onClick(int status) {
-		                switch (status) {
-		                case UpdateStatus.Update:
-		                    Toast.makeText(mInstance, "正在进行更新正式版，请耐心等待......" , Toast.LENGTH_SHORT).show();
-		                    timer_of_cutoff.cancel();
-		                    break;
-		                case UpdateStatus.Ignore:
-		                case UpdateStatus.NotNow:
-		                    break;
-		                }
-		            }
-		        });*/
 			}
-
 		}
 	};
-    
 }

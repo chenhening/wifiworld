@@ -27,6 +27,7 @@
 package com.anynet.wifiworld;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -36,9 +37,15 @@ import android.widget.Button;
 
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
+import com.anynet.wifiworld.util.AppInfoUtil;
+import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
+import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.WifiFragment;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.IUmengUnregisterCallback;
+import com.umeng.message.PushAgent;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MessageListener {
 	
 	private final static int TAB_COUNTS = 3;
 	private final static int CONNECT_TAB_IDX = 0;
@@ -53,12 +60,20 @@ public class MainActivity extends BaseActivity {
 	private MainFragment[] fragments;
 	private int index;
 	private int currentTabIndex;
+	
+	private PushAgent mPushAgent;
+    private StaticHandler handler = new StaticHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	initFragments();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        // 打开友盟推送
+ 		mPushAgent = PushAgent.getInstance(this);
+ 		mPushAgent.onAppStart();
+ 		mPushAgent.enable(mRegisterCallback);
         
         initView();
         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
@@ -102,6 +117,47 @@ public class MainActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
+	
+	private void reportDeviceToken(final String appVersion, final String deviceToken) {
+		Runnable reportDeviceTokenRunnable = new Runnable() {
+			@Override
+			public void run() {
+			}
+		};
+		handler.post(reportDeviceTokenRunnable);
+	}
+	
+	public IUmengRegisterCallback mRegisterCallback = new IUmengRegisterCallback() {
+
+		@Override
+		public void onRegistered(String registrationId) {
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					String device_token = mPushAgent.getRegistrationId();
+					String appVersion = AppInfoUtil.getVersionName(MainActivity.this);
+					reportDeviceToken(appVersion, device_token);
+					return;
+				}
+			});
+		}
+	};
+
+	public IUmengUnregisterCallback mUnregisterCallback = new IUmengUnregisterCallback() {
+
+		@Override
+		public void onUnregistered(String registrationId) {
+			// TODO Auto-generated method stub
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+				}
+			});
+		}
+	};
 	
 	//-------------------------------------------------------------------------------------------------------------
 	//custom functions
@@ -188,5 +244,11 @@ public class MainActivity extends BaseActivity {
 		protected abstract void onVisible();
 
 		protected abstract void onInvisible();
+	}
+
+	@Override
+	public void handleMessage(Message msg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
