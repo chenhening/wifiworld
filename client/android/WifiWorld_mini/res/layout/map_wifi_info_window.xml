@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="120dp"
+    android:background="@drawable/btn_notice_go_pressed"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_map_infowindows_desc"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="59dp"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.97"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="30m"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/distance_ext"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1.00"
+                android:drawableLeft="@drawable/common_new_msg_ico"
+                android:gravity="center_vertical"
+                android:text="与我距离"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="108dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_wifi_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:singleLine="true"
+                android:text="alibaba"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/wifi_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:singleLine="true"
+                android:text="alibaba"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/wifi_name_ext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_marginTop="2dp"
+                android:maxLines="3"
+                android:text="深圳市南山高新技术园区"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_arrow_right" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/window_ext_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="离的太远啦，点击我找一下路吧！"
+        android:textColor="@color/white"
+        android:textColorLink="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold|italic"
+        android:typeface="serif" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+</LinearLayout>

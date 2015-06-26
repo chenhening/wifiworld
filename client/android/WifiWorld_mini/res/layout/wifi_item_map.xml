@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wifi_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:paddingLeft="9dip"
+    android:paddingTop="9dip"
+    android:paddingBottom="9dip" >
+        
+	<ImageView
+	    android:id="@+id/wifi_icon"
+	    android:layout_width="30dip"
+	    android:layout_height="30dip"
+	    android:layout_gravity="center_vertical" />
+	
+	<LinearLayout
+	    android:id="@+id/wifi_name_layout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="15dp"
+	    android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/wifi_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:textColor="@color/black"
+	        android:textSize="22sp" />
+
+	    <TextView
+	        android:id="@+id/wifi_remark"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:textColor="@color/grey"
+	        android:textSize="12sp" />
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:id="@+id/wifi_status"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center|right"
+	    android:gravity="right"
+	    android:orientation="horizontal" >
+
+	    <LinearLayout
+	        android:id="@+id/wifi_tail"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:orientation="vertical" >
+
+	        <ImageView
+	            android:id="@+id/wifi_dis_icon"
+	            android:layout_width="20dip"
+	            android:layout_height="20dip"
+	            android:src="@drawable/tab_map_nor" />
+
+	        <TextView
+	            android:id="@+id/wifi_dis_digit"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="-4dip"
+	            android:text="100%"
+	            android:textColor="@color/darkgrey"
+	            android:textSize="10sp" />
+	    </LinearLayout>
+	</LinearLayout>
+
+</LinearLayout>
