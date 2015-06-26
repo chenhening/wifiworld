@@ -21,8 +21,8 @@ public class WifiDetailsActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_wifi_details);
-		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		super.onCreate(savedInstanceState);
 		mContext = this;
 	}
 

@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.wifi;
+package com.anynet.wifiworld.wifi.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

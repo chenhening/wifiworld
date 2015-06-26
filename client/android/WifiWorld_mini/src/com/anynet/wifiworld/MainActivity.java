@@ -40,7 +40,7 @@ import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
-import com.anynet.wifiworld.wifi.WifiFragment;
+import com.anynet.wifiworld.wifi.ui.WifiFragment;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
 import com.umeng.message.PushAgent;

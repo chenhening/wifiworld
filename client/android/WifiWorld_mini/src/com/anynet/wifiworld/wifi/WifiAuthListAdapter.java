@@ -3,15 +3,18 @@ package com.anynet.wifiworld.wifi;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
 public class WifiAuthListAdapter extends BaseAdapter {
 	private final static String TAG = WifiAuthListAdapter.class.getSimpleName();
@@ -19,6 +22,7 @@ public class WifiAuthListAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
 	private LayoutInflater mLayoutInflater;
+	private ImageView mBtnDetail;
 	
 	public WifiAuthListAdapter(Context context, List<WifiListItem> wifiListItems) {
 		mContext = context;
@@ -74,6 +78,18 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			Bitmap bitmap = wifiListItem.getLogo();
 			if (bitmap != null)
 				logo.setImageBitmap(bitmap);
+			//设置detail按钮
+			mBtnDetail = (ImageView)view.findViewById(R.id.iv_wifi_item_more);
+			mBtnDetail.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent();
+					i.setClass(mContext, WifiDetailsActivity.class);
+					mContext.startActivity(i);
+				}
+				
+			});
 		} else {
 			logo.setImageResource(R.drawable.ic_wifi_connecting_3);
 			wifiAlias.setVisibility(View.INVISIBLE);

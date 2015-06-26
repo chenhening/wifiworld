@@ -12,23 +12,18 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.DialerFilter;
 import android.widget.Toast;
 
-import com.testin.agent.TestinAgent;
-import com.umeng.analytics.MobclickAgent;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.broadcast.GlobalBroadcast;
 import com.anynet.wifiworld.broadcast.NetworkStateListener;
 import com.anynet.wifiworld.dialog.XLTwoButtonDialog;
 import com.anynet.wifiworld.dialog.XLWaitingDialog;
-import com.anynet.wifiworld.me.MyAccountActivity;
 import com.anynet.wifiworld.util.ActivityUtil;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.view.TitlebarHolder;
+import com.umeng.analytics.MobclickAgent;
 
 /** 如果acitivity 断网后自动返回登录界面 请继承这个activity
  * 

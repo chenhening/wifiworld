@@ -1,9 +1,7 @@
-package com.anynet.wifiworld.wifi;
+package com.anynet.wifiworld.wifi.ui;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
@@ -19,7 +17,6 @@ import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -29,13 +26,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiAuthListAdapter;
+import com.anynet.wifiworld.wifi.WifiBRService;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
-import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
+import com.anynet.wifiworld.wifi.WifiCurrent;
+import com.anynet.wifiworld.wifi.WifiListItem;
+import com.anynet.wifiworld.wifi.WifiListScanned;
+import com.anynet.wifiworld.wifi.WifiNotAuthListAdapter;
 
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
@@ -62,8 +64,6 @@ public class WifiConnectUI {
 	private Animation mAnimNeedle;
 	private ImageView mImageSearch;
 	private ImageView mImageNeedle;
-	
-	private Button mBtnDetail;
 	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
@@ -260,18 +260,6 @@ public class WifiConnectUI {
 		mWifiNotAuthList = new WifiNotAuthListAdapter(mView.getContext(), mWifiListScanned.getNotAuthList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		mWifiNotAuthListView.setOnItemClickListener(mNotAuthItemClickListener);
-		
-		mBtnDetail = (Button)mView.findViewById(R.id.iv_wifi_item_more);
-		mBtnDetail.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent();
-				i.setClass(mView.getContext(), WifiDetailsActivity.class);
-				mView.getContext().startActivity(i);
-			}
-			
-		});
 	}
 	
 	private void setListViewHeight(ListView listView) {
