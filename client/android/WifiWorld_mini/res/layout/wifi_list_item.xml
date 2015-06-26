@@ -76,7 +76,7 @@
 	        android:layout_height="32dp"
 	        android:layout_marginRight="10dp"
 	        android:focusable="false"
-	        android:background="@drawable/an_wifi_more_selector"
+	        android:background="@drawable/selector_wifi_more"
 	        android:visibility="visible" />
 
 	</LinearLayout>

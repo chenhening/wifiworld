@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rl_wifi_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="@drawable/wifi_title_bg"
         android:visibility="visible" >
 
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
-            android:background="@drawable/an_wifi_switch_selector"
+            android:background="@drawable/selector_wifi_switch"
             android:checked="true"
             android:focusableInTouchMode="true"
             android:longClickable="true"

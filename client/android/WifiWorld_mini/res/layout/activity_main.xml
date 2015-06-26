@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_main_bottom"
-                android:drawableTop="@drawable/an_btn_connect_selector"
+                android:drawableTop="@drawable/selector_btn_connect"
                 android:gravity="center"
                 android:onClick="onTabClicked"
                 android:padding="6dp"
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_main_bottom"
-                android:drawableTop="@drawable/an_btn_map_selector"
+                android:drawableTop="@drawable/selector_btn_map"
                 android:onClick="onTabClicked"
                 android:padding="6dp"
                 android:scaleType="matrix" />
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_main_bottom"
-                android:drawableTop="@drawable/an_btn_me_selector"
+                android:drawableTop="@drawable/selector_btn_me"
                 android:onClick="onTabClicked"
                 android:padding="6dp"
                 android:scaleType="matrix" />

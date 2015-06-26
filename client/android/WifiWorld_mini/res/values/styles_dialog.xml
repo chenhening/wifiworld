@@ -10,7 +10,7 @@
     <!-- 弹窗左button -->
     <style name="dlg_left_button_txt">
         <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/an_dlg_btn_left_selector</item>
+        <item name="android:background">@drawable/selector_dlg_btn_left</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#464647</item>
         <item name="android:layout_height">50dp</item>
@@ -19,7 +19,7 @@
     <!-- 弹窗右button -->
     <style name="dlg_right_button_txt">
         <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/an_dlg_btn_right_selector</item>
+        <item name="android:background">@drawable/selector_dlg_btn_right</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#CA2525</item>
         <item name="android:layout_height">50dp</item>
