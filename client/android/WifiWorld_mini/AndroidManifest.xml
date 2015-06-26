@@ -8,6 +8,8 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="22" />
     
+
+    
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -53,6 +55,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="126df04cb029b83dbefcdb5e58baeaa5" />
         
         <!-- 友盟 -->
         <meta-data

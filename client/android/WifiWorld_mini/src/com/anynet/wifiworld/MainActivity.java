@@ -224,6 +224,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 	public static abstract class MainFragment extends BaseFragment {
 
 		protected boolean isVisible;
+		
+		public void startUpdte() {
+			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
+		}
+
+		public void stopUpdte() {
+			com.anynet.wifiworld.util.XLLog.log(TAG, "stopUpdte");
+		}
 
 		/**
 		 * 在这里实现Fragment数据的缓加载.

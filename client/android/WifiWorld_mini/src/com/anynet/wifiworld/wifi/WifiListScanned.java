@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.anynet.wifiworld.data.DBCallback.MultiDataCallback;
+import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.util.NetHelper;

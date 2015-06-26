@@ -38,8 +38,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-import com.anynet.wifiworld.data.DBCallback.DataCallback;
-import com.anynet.wifiworld.data.DBCallback.MultiDataCallback;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.StringCrypto;
 
