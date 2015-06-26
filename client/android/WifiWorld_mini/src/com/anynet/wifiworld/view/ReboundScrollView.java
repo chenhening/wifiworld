@@ -1,9 +1,8 @@
-package com.anynet.wifiworld.util;
+package com.anynet.wifiworld.view;
 
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -45,21 +44,21 @@ public class ReboundScrollView extends ScrollView {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 y = ev.getY();
-                Log.d(TAG, "action down: " + y);
+                //Log.d(TAG, "action down: " + y);
                 break;
             case MotionEvent.ACTION_UP:
-            		Log.d(TAG, "action up: " + isNeedAnimation());
+            	//Log.d(TAG, "action up: " + isNeedAnimation());
                 if (isNeedAnimation()) {
                     animation();
                 }
                 firstMoveDown = true;
                 break;
             case MotionEvent.ACTION_MOVE:
-            		Log.d(TAG, "action move: " + isNeedMove());
-            		if (firstMoveDown) {
-						y = ev.getY();
-						firstMoveDown = false;
-					}
+        		//Log.d(TAG, "action move: " + isNeedMove());
+        		if (firstMoveDown) {
+					y = ev.getY();
+					firstMoveDown = false;
+				}
                 final float preY = y;
                 float nowY = ev.getY();
                 int deltaY = (int)((preY - nowY) / 2);

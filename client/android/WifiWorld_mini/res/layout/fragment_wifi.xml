@@ -25,7 +25,7 @@
             android:longClickable="true"
             android:textOff=""
             android:textOn=""
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_centerVertical="true"
             android:padding="10dp"
             android:src="@drawable/wifi_plus_btn"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 
     <LinearLayout
@@ -118,8 +118,8 @@
                             android:id="@+id/tv_wifi_connected_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:hint="正在获取..."
                             android:maxLines="1"
-                            android:text="EmployeeHotspot"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -129,10 +129,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:layout_marginLeft="2dp"
+                            android:hint="[正在获取...]"
                             android:maxLines="1"
-                            android:text="[Guest]"
                             android:textColor="@color/grey"
                             android:textSize="10sp" />
+
                     </LinearLayout>
 
                     <TextView
@@ -140,8 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:hint="正在获取..."
                         android:maxLines="1"
-                        android:text="未认证,没有认证信息"
                         android:textColor="@color/grey"
                         android:textSize="14sp" />
 
@@ -151,7 +152,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.anynet.wifiworld.util.ReboundScrollView
+    <com.anynet.wifiworld.view.ReboundScrollView
         android:id="@+id/rl_wifi_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -245,7 +246,7 @@
 	
 	    		</LinearLayout>
 		</LinearLayout>
-    </com.anynet.wifiworld.util.ReboundScrollView>
+    </com.anynet.wifiworld.view.ReboundScrollView>
     
     <RelativeLayout
         android:id="@+id/rl_wifi_search"

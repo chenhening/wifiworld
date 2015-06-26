@@ -33,7 +33,7 @@ public class WifiCurrent {
 	}
 	
 	public boolean isConnected() {
-		return NetHelper.getCurrentSsid(mContext) != null;
+		return NetHelper.isConnected(mContext);
 	}
 	
 	public String getWifiName() {

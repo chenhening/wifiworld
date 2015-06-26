@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:id="@+id/ll_wifi_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="24dp"
@@ -63,19 +63,21 @@
     </LinearLayout>
 
     <LinearLayout
-	    android:id="@+id/ll_wifi_item_more"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center|right"
-	    android:gravity="right"
-	    android:orientation="horizontal"
-	    android:visibility="gone" >
+        android:id="@+id/ll_wifi_item_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        android:gravity="right"
+        android:orientation="horizontal" >
         
-	    <ImageView
+	    <Button
 	        android:id="@+id/iv_wifi_item_more"
-	        android:layout_width="30dp"
-	        android:layout_height="30dp"
+	        android:layout_width="32dp"
+	        android:layout_height="32dp"
 	        android:layout_marginRight="10dp"
-	        android:src="@drawable/wifi_item_more" />
+	        android:focusable="false"
+	        android:background="@drawable/an_wifi_more_selector"
+	        android:visibility="visible" />
+
 	</LinearLayout>
 </LinearLayout>

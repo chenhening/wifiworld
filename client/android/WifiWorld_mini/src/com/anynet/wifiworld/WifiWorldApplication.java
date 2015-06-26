@@ -37,10 +37,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Process;
 import cn.bmob.v3.Bmob;
+import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.umeng.fb.FeedbackAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 public class WifiWorldApplication extends Application {
 	private String TAG = WifiWorldApplication.class.getSimpleName();
@@ -55,9 +58,13 @@ public class WifiWorldApplication extends Application {
         mInstance = this;
         //检测系统的WiFi是否打开，强行打开
         WifiAdmin.getInstance(this).openWifi();
-        //初始化组件
+        //初始化第三方组件
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
         Bmob.initialize(this, GlobalConfig.BMOB_KEY);
+        SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
+        UmengUpdateAgent.update(this);
+		FeedbackAgent agent = new FeedbackAgent(this);
+		agent.sync();
     }
     
     public static WifiWorldApplication getInstance() {

@@ -125,11 +125,12 @@ public class WifiBRService {
 		            } else if (state == SupplicantState.COMPLETED){
 		                //只是验证密码正确，并不代表连接成功
 		                statusStr = "获取IP";
-		            } else if (state == SupplicantState.DISCONNECTED){
+		            } else if (state == SupplicantState.DISCONNECTED || state == SupplicantState.INACTIVE){
 		                statusStr = "已断开";
 		                if (mWifiStatusListener != null) {
 							mWifiStatusListener.onSupplicantDisconnected(statusStr);
 							//mSupplicantState = false;
+							return;
 		                }
 		            } else if (state == SupplicantState.DORMANT){
 		                statusStr = "暂停中";
@@ -137,8 +138,6 @@ public class WifiBRService {
 		                statusStr = "四次握手";
 		            } else if (state == SupplicantState.GROUP_HANDSHAKE){
 		                statusStr = "组握手";
-		            } else if (state == SupplicantState.INACTIVE){
-		                statusStr = "未激活";
 		            } else if (state == SupplicantState.INVALID){
 		                statusStr = "无效";
 		            } else if (state == SupplicantState.SCANNING){
@@ -154,7 +153,7 @@ public class WifiBRService {
 		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            }
 		            if (mWifiStatusListener != null) {
-		            		mWifiStatusListener.onSupplicantChanged(statusStr);
+		            	mWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
 					if (mWifiStatusListener != null) {
