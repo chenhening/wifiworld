@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/setting_item_icon"
+        style="@style/setting_list_icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/global_layout_margin"
+        android:src="@drawable/icon_person_center_attention_shopper" />
+
+    <FrameLayout
+        android:id="@+id/setting_item_next_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/global_layout_margin" >
+
+        <ImageView
+            android:id="@+id/setting_item_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:src="@drawable/selector_icon_next" />
+
+        <CheckBox
+            android:id="@+id/setting_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:background="@drawable/selector_checkbox_open_or_close"
+            android:button="@drawable/selector_checkbox_open_or_close"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/setting_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/global_layout_margin"
+        android:layout_toRightOf="@+id/setting_item_icon"
+        android:maxWidth="@dimen/dimen_180_dip"
+        android:text="11111"
+        android:textColor="@color/color_main_text"
+        android:textSize="@dimen/font_main_big" />
+
+    <FrameLayout
+        android:id="@+id/fl_setting_point_centent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_8_dip"
+        android:layout_marginRight="@dimen/dimen_8_dip"
+        android:layout_toRightOf="@+id/setting_item_text" >
+
+        <ImageView
+            android:id="@+id/setting_item_red_point"
+            android:layout_width="@dimen/dimen_8_dip"
+            android:layout_height="@dimen/dimen_8_dip"
+            android:layout_marginLeft="@dimen/dimen_8_dip"
+            android:layout_marginRight="@dimen/dimen_8_dip"
+            android:src="@drawable/circle_point"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/setting_item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_8_dip"
+            android:layout_marginRight="@dimen/dimen_8_dip"
+            android:gravity="left|center"
+            android:maxWidth="@dimen/dimen_200_dip"
+            android:singleLine="true"
+            android:text="111111111111111111"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/font_main_meduim"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/setting_item_sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/global_layout_margin"
+        android:layout_toLeftOf="@+id/setting_item_next_layout"
+        android:layout_toRightOf="@+id/fl_setting_point_centent"
+        android:gravity="right|center"
+        android:maxWidth="@dimen/dimen_100_dip"
+        android:text="@dimen/font_person_item_big"
+        android:textColor="#fffd8b06"
+        android:textSize="@dimen/font_main_min"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/setting_item_top_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_alignLeft="@+id/setting_item_text"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_line"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/setting_item_bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_alignLeft="@+id/setting_item_text"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_line"
+        android:visibility="gone" />
+
+</merge>

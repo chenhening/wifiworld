@@ -1,6 +1,3 @@
-/**
- * +yqm,XLMobile 2013-5-27
- */
 package com.anynet.wifiworld.view;
 
 import java.lang.ref.WeakReference;
