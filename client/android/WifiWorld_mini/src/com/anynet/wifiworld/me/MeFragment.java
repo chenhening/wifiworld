@@ -18,7 +18,8 @@ public class MeFragment extends MainFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		//mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
+		super.onCreateView(inflater, container, savedInstanceState);
+		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 		
 		return mPageRoot;
 	}

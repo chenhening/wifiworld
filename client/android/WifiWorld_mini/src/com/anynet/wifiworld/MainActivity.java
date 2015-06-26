@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	initFragments();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
@@ -76,6 +75,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
  		mPushAgent.enable(mRegisterCallback);
         
         initView();
+        initFragments();
         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
 		for (int i = 0; i < fragments.length; i++) {
 			if (!fragments[i].isAdded()) {

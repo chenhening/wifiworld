@@ -1,16 +1,3 @@
-/*
- * 文件名称 : CurveGraphView.java
- * <p>
- * 作者信息 : admin
- * <p>
- * 创建时间 : 2014年9月9日, 下午4:08:12
- * <p>
- * 版权声明 : Copyright (c) 2012-2013 Xunlei Network Ltd. All rights reserved
- * <p>
- * 评审记录 :
- * <p>
- */
-
 package com.anynet.wifiworld.view;
 
 import android.content.Context;

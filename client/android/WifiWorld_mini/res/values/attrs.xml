@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SettingItemView">
+        <attr name="icon" format="reference" />
+        <attr name="label" format="string" />
+        <attr name="subLabel" format="string" />
+        <attr name="content" format="string" />
+        <attr name="subLabelSize" format="dimension" />
+        <attr name="contentSize" format="dimension" />
+        <attr name="subLabelColor" format="reference|color" />
+        <attr name="contentColor" format="reference|color" />
+        <attr name="subLabelVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="Switch_Type">
+            <flag name="emotion" value="0x00000000" />
+            <flag name="plus" value="0x00000001" />
+            <flag name="voice" value="0x00000002" />
+            <flag name="keyboard" value="0x00000064" />
+        </attr>
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="isCheckable" format="boolean" />
+        <attr name="isChecked" format="boolean" />
+        <attr name="showTopDivider" format="boolean" />
+        <attr name="showBottomDivider" format="boolean" />
+        <attr name="showRedPoint" format="boolean" />
+        <attr name="showContent" format="boolean" />
+        <attr name="contentHint" format="string" />
+        <attr name="contentHintColor" format="reference|color" />
+        <attr name="contentHintSize" format="dimension" />
+        <attr name="contentEditable" format="boolean" />
+        <attr name="contentHintVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="contentEditType" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="inputbox" value="1" />
+            <enum name="selectbox" value="2" />
+        </attr>
+        <attr name="listData" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="RippleBackground">
+        <attr name="rb_color" format="color" />
+        <attr name="rb_strokeWidth" format="dimension" />
+        <attr name="rb_radius" format="dimension" />
+        <attr name="rb_duration" format="integer" />
+        <attr name="rb_rippleAmount" format="integer" />
+        <attr name="rb_scale" format="float" />
+        <attr name="rb_type" format="enum">
+            <enum name="fillRipple" value="0" />
+            <enum name="strokeRipple" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>
