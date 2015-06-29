@@ -31,38 +31,19 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Process;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.RemoteViews;
-import android.widget.Toast;
 import cn.bmob.v3.Bmob;
 import cn.smssdk.SMSSDK;
 
-import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.GlobalBroadcast;
-import com.anynet.wifiworld.util.PackageSignHelper;
-import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.NetworkStateListener;
-import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.IUmengUnregisterCallback;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UTrack;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.UmengRegistrar;
-import com.umeng.message.entity.UMessage;
 import com.umeng.update.UmengUpdateAgent;
 
 public class WifiWorldApplication extends Application {
@@ -70,8 +51,6 @@ public class WifiWorldApplication extends Application {
 	
     private static WifiWorldApplication mInstance;
     private Stack<SoftReference<Activity>> mActivityStack = new Stack<SoftReference<Activity>>();
-    
-    private PushAgent mPushAgent;
     
     @Override
     public void onCreate() {

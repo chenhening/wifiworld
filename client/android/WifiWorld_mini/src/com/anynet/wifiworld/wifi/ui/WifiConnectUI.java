@@ -31,13 +31,11 @@ import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.wifi.WifiAuthListAdapter;
 import com.anynet.wifiworld.wifi.WifiBRService;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.WifiCurrent;
 import com.anynet.wifiworld.wifi.WifiListItem;
 import com.anynet.wifiworld.wifi.WifiListScanned;
-import com.anynet.wifiworld.wifi.WifiNotAuthListAdapter;
 
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
