@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,14 +9,12 @@ import android.view.View;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 
-public class WifiDetailsActivity extends BaseActivity {
+public class WifiDetailsActivity extends Activity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
 	
 	private Context mContext;
 	
 	private void bingdingTitleUI() {
-		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.tvTitle.setText("Wi-Fi详情");
 	}
 	
 	@Override

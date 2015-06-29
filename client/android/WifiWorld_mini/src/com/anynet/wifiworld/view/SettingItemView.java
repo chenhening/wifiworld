@@ -17,17 +17,14 @@ public class SettingItemView extends RelativeLayout {
 
 	public SettingItemView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		// TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
 		// 在使用完成后，一定要调用recycle方法
 		// 属性的名称是styleable中的名称+“_”+属性名称
