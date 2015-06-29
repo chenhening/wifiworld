@@ -1,28 +1,34 @@
 package com.anynet.wifiworld.wifi.ui;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 
-public class WifiDetailsActivity extends Activity {
+public class WifiDetailsActivity extends BaseActivity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
 	
 	private Context mContext;
+	private WifiProfile mWifi;
 	
 	private void bingdingTitleUI() {
+		mTitlebar.tvTitle.setText(mWifi.Ssid);
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_wifi_details);
-		bingdingTitleUI();
-		super.onCreate(savedInstanceState);
 		mContext = this;
+		setContentView(R.layout.activity_wifi_details);
+		super.onCreate(savedInstanceState);
+		
+		//获得序列化过来的数据
+		Intent intent = getIntent();
+		mWifi = (WifiProfile) intent.getSerializableExtra(WifiProfile.TAG);
+		bingdingTitleUI();
 	}
 
 	protected Context getActivity() {

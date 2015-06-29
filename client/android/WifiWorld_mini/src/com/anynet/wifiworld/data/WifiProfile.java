@@ -42,7 +42,7 @@ import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.StringCrypto;
 
 public class WifiProfile extends BmobObject{
-	private final static String TAG = WifiProfile.class.getSimpleName();
+	public final static String TAG = WifiProfile.class.getSimpleName();
 
 	private static final long serialVersionUID = 1L;
 	public static final String unique_key = "MacAddr";

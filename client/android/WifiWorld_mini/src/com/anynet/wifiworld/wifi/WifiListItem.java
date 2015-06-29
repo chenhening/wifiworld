@@ -92,6 +92,10 @@ public class WifiListItem {
 		mWifiProfile = wifiProfile;
 	}
 	
+	public WifiProfile getWifiProfile() {
+		return mWifiProfile;
+	}
+	
 	public String getWifiName() {
 		return mScanResult.SSID;
 	}

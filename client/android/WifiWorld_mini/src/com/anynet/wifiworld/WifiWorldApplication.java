@@ -66,6 +66,7 @@ public class WifiWorldApplication extends Application {
         // 打开验证码
         SMSSDK.initSDK(this, GlobalConfig.SMSSDK_KEY, GlobalConfig.SMSSDK_SECRECT);
         // 打开友盟自动更新
+        UmengUpdateAgent.setUpdateCheckConfig(false);
         UmengUpdateAgent.update(this);
         // 打开友盟反馈
 		FeedbackAgent agent = new FeedbackAgent(this);

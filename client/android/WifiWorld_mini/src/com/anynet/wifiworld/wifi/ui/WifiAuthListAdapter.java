@@ -5,15 +5,17 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.wifi.WifiListItem;
 
 public class WifiAuthListAdapter extends BaseAdapter {
@@ -22,7 +24,6 @@ public class WifiAuthListAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
 	private LayoutInflater mLayoutInflater;
-	private ImageView mBtnDetail;
 	
 	public WifiAuthListAdapter(Context context, List<WifiListItem> wifiListItems) {
 		mContext = context;
@@ -68,24 +69,25 @@ public class WifiAuthListAdapter extends BaseAdapter {
 		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 		
 		setItemBg(position, getCount(), view.findViewById(R.id.ll_wifi_listitem));
-		WifiListItem wifiListItem = mWifiListItems.get(position);
+		final WifiListItem wifiListItem = mWifiListItems.get(position);
 		if (wifiListItem.isAuthWifi()) {
 			wifiName.setText(wifiListItem.getAlias());
 			wifiAlias.setVisibility(View.VISIBLE);
 			wifiAlias.setText("[" + wifiListItem.getWifiName() + "]");
 			wifiOptions.setText(wifiListItem.getOptions());
-			//设置logo
+			//logo
 			Bitmap bitmap = wifiListItem.getLogo();
 			if (bitmap != null)
 				logo.setImageBitmap(bitmap);
-			//设置detail按钮
-			mBtnDetail = (ImageView)view.findViewById(R.id.iv_wifi_item_more);
-			mBtnDetail.setOnClickListener(new OnClickListener() {
+			//detail
+			view.findViewById(R.id.iv_wifi_item_more).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent();
-					i.setClass(mContext, WifiDetailsActivity.class);
+					Intent i = new Intent(mContext, WifiDetailsActivity.class);
+					Bundle wifiData = new Bundle();
+					wifiData.putSerializable(WifiProfile.TAG, wifiListItem.getWifiProfile());
+					i.putExtras(wifiData);
 					mContext.startActivity(i);
 				}
 				
@@ -94,7 +96,7 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			logo.setImageResource(R.drawable.ic_wifi_connecting_3);
 			wifiAlias.setVisibility(View.INVISIBLE);
 			if (position == 0) {
-				wifiName.setText("未找到认证网络");
+				wifiName.setText("如何认证网络");
 				wifiOptions.setText("[点击了解]");
 			} else {
 				wifiName.setText("什么是认证网络");
