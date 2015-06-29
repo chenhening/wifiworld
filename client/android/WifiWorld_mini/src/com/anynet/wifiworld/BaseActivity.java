@@ -10,6 +10,7 @@ import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.view.TitlebarHolder;
+import com.umeng.analytics.MobclickAgent;
 
 /** 
  * 如果acitivity 断网后自动返回登录界面 请继承这个activity
@@ -73,10 +74,14 @@ public class BaseActivity extends FragmentActivity {
 
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
+		MobclickAgent.onPageStart("MainScreen"); // 统计页面
 	}
 
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
+		MobclickAgent.onPageEnd("MainScreen");
 	}
 
 	public void showToast(String str) {

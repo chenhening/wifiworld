@@ -53,6 +53,7 @@ import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -90,6 +91,8 @@ public class WifiWorldApplication extends Application {
         // 打开友盟反馈
 		FeedbackAgent agent = new FeedbackAgent(this);
 		agent.sync();
+		// 打开友盟分析
+		MobclickAgent.updateOnlineConfig( this );
     }
     
     public static WifiWorldApplication getInstance() {
