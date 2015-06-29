@@ -4,6 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="global_layout_margin">15.0dip</dimen>
+    <dimen name="global_layout_margin_icon">15.0dip</dimen>
+    <dimen name="global_layout_margin_text">30.0dip</dimen>
     
     <!-- 文字大小 -->
     <dimen name="font_main_big">16.0sp</dimen>

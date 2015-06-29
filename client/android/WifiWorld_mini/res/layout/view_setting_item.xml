@@ -6,7 +6,7 @@
         style="@style/setting_list_icon_size"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/global_layout_margin"
+        android:layout_marginLeft="@dimen/global_layout_margin_icon"
         android:src="@drawable/icon_person_center_attention_shopper" />
 
     <FrameLayout
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/global_layout_margin"
+        android:layout_marginLeft="@dimen/global_layout_margin_text"
         android:layout_toRightOf="@+id/setting_item_icon"
         android:maxWidth="@dimen/dimen_180_dip"
         android:text="11111"
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/global_layout_margin"
+        android:layout_marginRight="@dimen/global_layout_margin_text"
         android:layout_toLeftOf="@+id/setting_item_next_layout"
         android:layout_toRightOf="@+id/fl_setting_point_centent"
         android:gravity="right|center"

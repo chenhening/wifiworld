@@ -42,6 +42,20 @@ public class SettingItemView extends RelativeLayout {
 		for (int i = 0; i < n; i++) {
 			int attr = array.getIndex(i);
 			switch (attr) {
+			case R.styleable.SettingItemView_backgroundImage: {
+				int bgDrawable = array.getInt(attr, 0);
+				if (bgDrawable == 0) {
+					setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
+				} else if (bgDrawable == 1) {
+					setBackgroundResource(R.drawable.settings_item_top);
+				} else if (bgDrawable == 3) {
+					setBackgroundResource(R.drawable.settings_item_middle);
+				} else if (bgDrawable == 5) {
+					setBackgroundResource(R.drawable.settings_item_bottom);
+				}
+				
+				break;
+			}
 			case R.styleable.SettingItemView_icon: {
 				Drawable icon = array.getDrawable(attr);
 				img = (ImageView) findViewById(R.id.setting_item_icon);
@@ -145,7 +159,6 @@ public class SettingItemView extends RelativeLayout {
 
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
-		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
 	}
 
 	public void setContent(String content) {

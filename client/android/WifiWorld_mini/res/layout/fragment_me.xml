@@ -10,9 +10,13 @@
         layout="@layout/header_setting"
         android:visibility="gone" />
 
-    <ScrollView
+    <com.anynet.wifiworld.view.ReboundScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none"
         android:background="@color/color_main_bg" >
 
         <LinearLayout
@@ -24,6 +28,9 @@
                 android:id="@+id/login_content_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="120dip"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/bg_person_center" 
                 android:visibility="visible">
 
@@ -34,7 +41,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
                     android:text="新用户注册即送大礼包"
-                    android:textColor="@color/white"
+                    android:textColor="@color/gray"
                     android:textSize="@dimen/font_main_big" />
 
                 <ImageView
@@ -52,8 +59,9 @@
                 android:id="@+id/person_content_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="120dp"
-                android:background="@drawable/bg_person_center"
-                android:visibility="gone" >
+                android:layout_margin="15dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_person_center" >
 
                 <ImageView
                     android:id="@+id/person_icon"
@@ -79,7 +87,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="小屁孩"
-                        android:textColor="@color/white"
+                        android:textColor="@color/gray"
                         android:textSize="@dimen/font_main_title" />
                 </LinearLayout>
 
@@ -142,7 +150,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_person_cener_item"
+                android:background="@drawable/bg_person_center_item"
                 android:orientation="horizontal"
                 android:padding="10.0dip"
                 android:visibility="gone" >
@@ -189,38 +197,48 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/bg_person_cener_item"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="vertical"
                 android:visibility="visible" >
-
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_i_am_wifi_provider"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    item:icon="@drawable/icon_person_center_shopper"
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_wifi_providor"
                     item:label="我提供的WiFi"
                     item:subLabel="内测中"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
-
+				
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_iam_wifi_user"
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
-                    item:icon="@drawable/icon_person_center_attention_shopper"
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_wifi_used"
                     item:label="我用过的WiFi"
-                    item:showTopDivider="true" >
+                    item:subLabel="9"
+                    item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_15_dip"
-                android:background="@drawable/bg_person_cener_item"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
@@ -228,30 +246,42 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     android:visibility="visible"
-                    item:icon="@drawable/icon_person_center_fans"
-                    item:label="我的白名单"
-                    item:showTopDivider="true" 
-                    item:subLabel="分享你的网络给你的朋友吧"
-                    item:subLabelColor="@color/red" >
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_wifi_favor"
+                    item:label="我的关注"
+                    item:subLabel="" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/siv_my_blacklist"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/ic_person_blacklist"
-                    item:label="我的黑名单"
-                    item:showTopDivider="true"
+                    item:backgroundImage="middle"
+                    item:icon="@drawable/icon_person_wifi_white"
+                    item:label="我的白名单"
+                    item:subLabel=""
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_my_attention"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_attention"
-                    item:label="我的关注"
-                    item:showTopDivider="true" >
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_wifi_black"
+                    item:label="我的黑名单"
+                    item:subLabel="11"
+                    item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
@@ -262,47 +292,59 @@
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="我的消息"
                     item:showTopDivider="true" >
-
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_15_dip"
-                android:background="@drawable/bg_person_cener_item"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="vertical" >
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_my_setting"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/ic_person_setting"
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_setting"
                     item:label="我的设置"
-                    item:showTopDivider="true" >
+                    item:subLabel="" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/setiing_share_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
-                    item:icon="@drawable/icon_person_center_share"
+                    item:backgroundImage="middle"
+                    item:icon="@drawable/icon_person_invitation"
                     item:label="邀请好友"
                     item:subLabel="奖联币"
                     item:subLabelVisibility="visible" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_about_app"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
-                    item:icon="@drawable/ic_person_blacklist"
-                    item:label="关于网络宝"
-                    item:showTopDivider="true" >
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_about"
+                    item:label="关于网络宝" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </com.anynet.wifiworld.view.ReboundScrollView>
 
 </LinearLayout>
