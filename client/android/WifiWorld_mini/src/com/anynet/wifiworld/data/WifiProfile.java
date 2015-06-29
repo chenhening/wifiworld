@@ -91,7 +91,6 @@ public class WifiProfile extends BmobObject{
 		Logo = BitmapUtil.Bitmap2Bytes(logo);
 	}
 
-
 	public boolean isShared() {
 		return isShared;
 	}
