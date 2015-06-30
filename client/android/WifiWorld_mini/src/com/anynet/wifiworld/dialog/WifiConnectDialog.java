@@ -196,7 +196,7 @@ public class WifiConnectDialog extends ANBaseDialog {
 	}
 
 	private void initUI(DialogType dialogType) {
-		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.wifi_connect_dialog, null);
+		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_wifi_connect, null);
 		mTitle = (TextView)dlgView.findViewById(R.id.wifi_title);
 		mRightBtn = (TextView)dlgView.findViewById(R.id.btn_connect);
 		mLeftBtn = (TextView)dlgView.findViewById(R.id.btn_cancel);

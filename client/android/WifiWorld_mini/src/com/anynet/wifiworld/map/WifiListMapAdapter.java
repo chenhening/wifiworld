@@ -60,7 +60,7 @@ public class WifiListMapAdapter extends BaseAdapter {
 		ViewHolder vh = null;
 		if (view == null) {
 			vh = new ViewHolder();
-			view = LayoutInflater.from(context).inflate(R.layout.wifi_item_map, null);
+			view = LayoutInflater.from(context).inflate(R.layout.item_wifi_map, null);
 			vh.name = (TextView) view.findViewById(R.id.wifi_name);
 			vh.remark = (TextView) view.findViewById(R.id.wifi_remark);
 			vh.icon = (ImageView) view.findViewById(R.id.wifi_icon);

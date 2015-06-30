@@ -131,7 +131,7 @@ public class WifiListHelper {
 		}
 		
 		WifiProfile wifiProfile = new WifiProfile();
-		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, false, new MultiDataCallback<WifiProfile>() {
+		wifiProfile.BatchQueryByMacAddress(mContext, macAddresses, true, new MultiDataCallback<WifiProfile>() {
 			
 			@Override
 			public boolean onSuccess(List<WifiProfile> objects) {

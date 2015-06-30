@@ -60,7 +60,7 @@ public class WifiAuthListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			view = mLayoutInflater.inflate(R.layout.wifi_list_item, null);
+			view = mLayoutInflater.inflate(R.layout.item_wifi_list, null);
 		}
 		
 		TextView wifiName = (TextView)view.findViewById(R.id.tv_wifi_free_item_name);

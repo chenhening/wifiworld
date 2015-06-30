@@ -28,7 +28,7 @@ public class SettingItemView extends RelativeLayout {
 		// TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
 		// 在使用完成后，一定要调用recycle方法
 		// 属性的名称是styleable中的名称+“_”+属性名称
-		RelativeLayout.inflate(context, R.layout.view_setting_item, this);
+		RelativeLayout.inflate(context, R.layout.item_view_setting, this);
 		/*
 		 * setting_item_icon setting_item_next_layout setting_item_next
 		 * setting_item_checkbox setting_item_text setting_item_red_point

@@ -30,6 +30,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiBRService;
 import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
@@ -70,11 +71,11 @@ public class WifiConnectUI {
 			setWifiConnectedContent();
 			if (mWifiAuthList != null) {
 				mWifiAuthList.refreshWifiList(mWifiListScanned.getAuthList());
-				setListViewHeight(mWifiAuthListView);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiAuthListView);
 			}
 			if (mWifiNotAuthList != null) {
 				mWifiNotAuthList.refreshWifiList(mWifiListScanned.getNotAuthList());
-				setListViewHeight(mWifiNotAuthListView);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 			}
 			
 			//停止搜索动画
@@ -258,24 +259,6 @@ public class WifiConnectUI {
 		mWifiNotAuthList = new WifiNotAuthListAdapter(mView.getContext(), mWifiListScanned.getNotAuthList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		mWifiNotAuthListView.setOnItemClickListener(mNotAuthItemClickListener);
-	}
-	
-	private void setListViewHeight(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null || listAdapter.getCount() == 0) {
-			return;
-		}
-
-		int totalHeight = 0;
-		//for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(0, null, listView);
-			listItem.measure(0, 0);
-			totalHeight = listItem.getMeasuredHeight() * listAdapter.getCount();
-		//}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
 	}
 	
     //-----------------------------------------------------------------------------------------------------------------
