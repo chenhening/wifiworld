@@ -7,9 +7,11 @@
     
     <include layout="@layout/header_setting" />
 
-    <ScrollView
+    <com.anynet.wifiworld.view.ReboundScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:fadingEdge="none"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,6 +38,8 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_wifi_connected_1" />
 
                     <View
@@ -149,7 +153,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="58" />
                     </LinearLayout>
 
@@ -176,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="681h" />
                     </LinearLayout>
 
@@ -203,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="39" />
                     </LinearLayout>
                 </LinearLayout>
@@ -236,7 +240,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_detail_knock" >
 
                     <TextView
@@ -252,11 +256,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginRight="5dp"
                         android:layout_weight="0.26"
                         android:background="@drawable/bg_knock_button"
                         android:text="回答问题"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -352,6 +358,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </com.anynet.wifiworld.view.ReboundScrollView>
 
 </LinearLayout>

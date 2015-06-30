@@ -38,6 +38,7 @@ import android.widget.Button;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
+import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
 import com.anynet.wifiworld.wifi.ui.WifiFragment;
@@ -189,6 +190,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
 			trx.show(fragments[index]).commit();
+			// 因为使用show和hide方法切换Fragment不会Fragment触发onResume/onPause方法回调，所以直接需要手动去更新一下状态
+			for (int i = 0; i < fragments.length; i++) {
+				if (i == index) {
+					fragments[i].startUpdte();
+				} else {
+					fragments[i].stopUpdte();
+				}
+			}
 		}
 		if (mTabs != null && mTabs[currentTabIndex] != null)
 			mTabs[currentTabIndex].setSelected(false);
