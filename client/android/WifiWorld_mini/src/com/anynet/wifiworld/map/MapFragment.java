@@ -8,6 +8,7 @@
  */
 package com.anynet.wifiworld.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
 //import com.anynet.wifiworld.util.LoginHelper;
-//import com.anynet.wifiworld.wifi.WifiInfoScanned;
+import com.anynet.wifiworld.wifi.WifiListItem;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -132,7 +133,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
         return mPageRoot;
 	}
 
-
     @Override
     public void startUpdte() {
         if (!mLoaded ) {
@@ -149,7 +149,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
             bingdingTitleUI();
 
             //设置上拉显示按钮
-            SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+            final SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
             layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
             layout.setAnchorPoint(0.3f);
             layout.setPanelSlideListener(new PanelSlideListener() {
@@ -161,7 +161,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
                 @Override
                 public void onPanelExpanded(View panel) {
-
+                    layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
                 }
 
                 @Override
@@ -220,14 +220,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
             markOptions = new MarkerOptions();
             markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                    .decodeResource(getResources(), R.drawable.location_marker)));
+                    .decodeResource(getResources(), R.drawable.ic_location_marker)));
             circleOptions = new CircleOptions();
             Log.e(TAG, "2 onCreateView:"+(System.currentTimeMillis()-current));
-
             mLoaded = true;
         }
     }
-
 	
 	private BroadcastReceiver mGeoFenceReceiver = new BroadcastReceiver() {
         @Override
@@ -436,7 +434,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	}
 
 	/** 自定义infowinfow窗口，动态修改内容的 */
-	private void render(Marker marker, View infoWindow) {
+	private void render(final Marker marker, View infoWindow) {
 		// TODO Auto-generated method stub
 		Log.e(TAG, "1 render:"+(System.currentTimeMillis()-current));
 		final WifiProfile mWP = (WifiProfile) marker.getObject();
@@ -457,6 +455,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 			@Override
             public void onClick(View v) {
+				
 				LatLonPoint to_point = new LatLonPoint(pos.latitude, pos.longitude);
 				LatLonPoint from_point = new LatLonPoint(mMyPosition.latitude, mMyPosition.longitude);
 				FromAndTo fromAndTo = new RouteSearch.FromAndTo(from_point, to_point);
@@ -470,15 +469,20 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 			@Override
 			public void onClick(View v) {
+						       
+				marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker_selected));
 				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
 				Bundle wifiData = new Bundle();
+				WifiListItem item = new WifiListItem();
+				item.setScanResult(null);
+				item.setWifiPwd(null);
 //				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 //				tempInfoScanned.setWifiName(mWP.Ssid);
 //				tempInfoScanned.setWifiMAC(mWP.MacAddr);
 //				tempInfoScanned.setWifiLogo(mWP.Logo);
-//				wifiData.putSerializable("WifiSelected", tempInfoScanned);
-//				intent.putExtras(wifiData);
-//				startActivity(intent);
+				wifiData.putSerializable("WifiSelected", (Serializable) item);
+				intent.putExtras(wifiData);
+				startActivity(intent);
 			}
 		});
 		Log.e(TAG, "2 render:"+(System.currentTimeMillis()-current));
