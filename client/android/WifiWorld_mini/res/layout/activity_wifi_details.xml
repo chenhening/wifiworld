@@ -254,7 +254,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
                         android:text="需要敲门后才能使用网络"
@@ -299,7 +299,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Wi-Fi动态" />
                 </LinearLayout>
 
@@ -313,7 +313,8 @@
                         android:id="@+id/tv_detail_wifi_messages"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="left|center"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:text="哥交朋友不在乎他有钱没钱 反正都没我有钱"
                         android:textColor="@color/darkgrey" />
@@ -348,7 +349,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:text="最新评论" />
                 </LinearLayout>
 

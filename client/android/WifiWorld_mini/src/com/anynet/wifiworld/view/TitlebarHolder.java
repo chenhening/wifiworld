@@ -23,7 +23,7 @@ public class TitlebarHolder {
 		activity = a;
 		ivHeaderLeft = (ImageView) activity.findViewById(R.id.iv_setting_header_left);
 		tvTitle = (TextView) activity.findViewById(R.id.setting_main_title);
-		ivHeaderLeft = (ImageView) activity.findViewById(R.id.iv_setting_header_right);
+		ivHeaderRight = (ImageView) activity.findViewById(R.id.iv_setting_header_right);
 		
 		if (ivHeaderLeft != null) {
 			ivHeaderLeft.setOnClickListener(new OnClickListener() {
@@ -39,14 +39,16 @@ public class TitlebarHolder {
 	public TitlebarHolder(View v) {
 		ivHeaderLeft = (ImageView) v.findViewById(R.id.iv_setting_header_left);
 		tvTitle = (TextView) v.findViewById(R.id.setting_main_title);
-		ivHeaderLeft = (ImageView) v.findViewById(R.id.iv_setting_header_right);
+		ivHeaderRight = (ImageView) v.findViewById(R.id.iv_setting_header_right);
 		
-		ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				activity.finish();
-			}
-		});
+		if (ivHeaderLeft != null) {
+			ivHeaderLeft.setOnClickListener(new OnClickListener() {
+	
+				@Override
+				public void onClick(View v) {
+					activity.finish();
+				}
+			});
+		}
 	}
 }

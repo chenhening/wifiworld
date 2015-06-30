@@ -10,7 +10,6 @@ import android.net.wifi.WifiInfo;
 import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
@@ -20,7 +19,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -197,13 +195,13 @@ public class WifiConnectUI {
 				mWifiConLogo.setImageResource(mWifiCurrent.getDefaultLogoID());
 				mWifiAuthDesc.setText("[未认证]");
 			}
-		} else if (mIsWifiConnecting) {
-			WifiBRService.setWifiSupplicant(true);
 		} else {
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			if (!mIsWifiConnecting)
 				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
+			else
+				WifiBRService.setWifiSupplicant(true);
 			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
