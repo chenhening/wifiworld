@@ -25,6 +25,16 @@
             android:layout_marginLeft="0dp"
             android:clickable="true"
             android:src="@drawable/selector_header_back" />
+        
+        <TextView
+            android:id="@+id/tv_setting_header_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="子标题"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <TextView
@@ -48,6 +58,16 @@
         android:gravity="center_vertical"
         android:paddingRight="10dp"
         android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/tv_header_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_content"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_setting_header_right"

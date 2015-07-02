@@ -7,6 +7,15 @@
     <dimen name="global_layout_margin_icon">15.0dip</dimen>
     <dimen name="global_layout_margin_text">30.0dip</dimen>
     
+    <!-- 标题字体大小 -->
+    <dimen name="text_size_title">19sp</dimen>
+    <!-- 正文的字体大小 -->
+    <dimen name="text_size_content">16sp</dimen>
+    <dimen name="text_size_content_little">15sp</dimen>
+    <!-- 辅助性和介绍性的文字的大小 -->
+    <dimen name="text_size_comment">14sp</dimen>
+    <dimen name="text_size_comment_little">12sp</dimen>
+    
     <!-- 文字大小 -->
     <dimen name="font_main_big">16.0sp</dimen>
     <dimen name="font_main_title">18.0sp</dimen>

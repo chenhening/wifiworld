@@ -162,7 +162,7 @@ public class WifiConnectUI {
 	
 	public WifiConnectUI(View view) {
 		mView = view;
-		mWifiAdmin = WifiAdmin.getInstance(mView.getContext());
+		//mWifiAdmin = WifiAdmin.getInstance(mView.getContext());
 		mWifiCurrent = WifiCurrent.getInstance(mView.getContext());
 		mWifiListScanned = WifiListScanned.getInstance(mView.getContext(), wifiListHandler);
 		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
