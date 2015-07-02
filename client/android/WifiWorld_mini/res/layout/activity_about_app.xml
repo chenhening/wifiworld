@@ -69,7 +69,6 @@
             android:id="@+id/SettingItemView01"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
-            app:icon="@drawable/icon_person_center_attention"
             app:label="好评支持一下"
             app:showTopDivider="true"
             app:subLabel="和更多的朋友分享" >
@@ -79,7 +78,6 @@
             android:id="@+id/slv_click_update"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
-            app:icon="@drawable/icon_person_center_fans"
             app:label="检查更新"
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>
@@ -88,7 +86,6 @@
             android:id="@+id/slv_my_attention"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
-            app:icon="@drawable/icon_person_center_attention"
             app:label="服务协议"
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>

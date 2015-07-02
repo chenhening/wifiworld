@@ -80,7 +80,7 @@ public class WifiListMapAdapter extends BaseAdapter {
 			vh.remark.setVisibility(View.GONE);
 		}
 
-		vh.icon.setImageResource(R.drawable.icon_invalid);
+		//vh.icon.setImageResource(R.drawable.icon_invalid);
 
 		// int wifiDistance = (infoScanned).mWifiDistance;
 		// distanceView.setText(String.valueOf(wifiDistance));

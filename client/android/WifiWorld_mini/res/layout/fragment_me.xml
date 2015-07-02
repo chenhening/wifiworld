@@ -19,7 +19,7 @@
         android:scrollbars="none"
         android:background="@color/color_main_bg" >
 
-        <LinearLayout
+       	<LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -142,59 +142,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_qiandao" />
+                        android:layout_centerVertical="true" />
                 </RelativeLayout>
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_person_center_item"
-                android:orientation="horizontal"
-                android:padding="10.0dip"
-                android:visibility="gone" >
 
-                <TextView
-                    android:id="@+id/get_coin_txt"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_coin"
-                    android:gravity="center"
-                    android:text="赚联币" />
-
-                <TextView
-                    android:id="@+id/shop_txt"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_shop"
-                    android:gravity="center"
-                    android:text="联币商城" />
-
-                <TextView
-                    android:id="@+id/award_text"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_jiangping"
-                    android:gravity="center"
-                    android:text="我的兑换" />
-
-                <TextView
-                    android:id="@+id/honor_text"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_person_honor"
-                    android:gravity="center"
-                    android:text="我的勋章" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
