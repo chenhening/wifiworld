@@ -178,7 +178,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     item:backgroundImage="bottom"
-                    item:icon="@drawable/icon_person_wifi_used"
                     item:label="我用过的WiFi"
                     item:subLabel="9"
                     item:subLabelColor="@color/grey" >

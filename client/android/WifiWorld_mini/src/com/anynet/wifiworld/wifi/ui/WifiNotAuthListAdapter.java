@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
@@ -74,6 +75,8 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 	}
 
 	private void setItemBg(int pos, View view) {
+		LinearLayout bg_logo = (LinearLayout)view.findViewById(R.id.ll_wifi_auth_item);
+		bg_logo.setBackgroundResource(0);
 		if (pos == 0) {
 			view.setBackgroundResource(R.drawable.wifi_list_notauth_item0);
 		} else {

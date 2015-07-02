@@ -3,6 +3,6 @@
 
     <item android:drawable="@drawable/wifi_pressed_item1" android:state_focused="true"></item>
     <item android:drawable="@drawable/wifi_pressed_item1" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/wifi_free_item1"></item>
+    <item android:drawable="@drawable/bg_wifi_list_item_1"></item>
  
 </selector>

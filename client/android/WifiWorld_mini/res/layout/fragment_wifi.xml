@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
-            android:background="@drawable/wifi_connected_bg"
+            android:background="@drawable/bg_wifi_connected"
             android:gravity="center_vertical" >
 
             <LinearLayout
@@ -78,7 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="17dp"
                     android:gravity="center"
                     android:orientation="vertical" >
 
@@ -100,10 +101,17 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_main_bg" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical" >
 
