@@ -69,18 +69,33 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 		logo.setImageResource(wifiListItem.getDefaultLogo());
 		
-		setItemBg(position, view.findViewById(R.id.ll_wifi_listitem));
+		setItemBg(position, getCount(), view.findViewById(R.id.ll_wifi_listitem));
 		
 		return view;
 	}
 
-	private void setItemBg(int pos, View view) {
+	private void setItemBg(int pos, int itemSize, View view) {
 		LinearLayout bg_logo = (LinearLayout)view.findViewById(R.id.ll_wifi_auth_item);
 		bg_logo.setBackgroundResource(0);
-		if (pos == 0) {
-			view.setBackgroundResource(R.drawable.wifi_list_notauth_item0);
-		} else {
-			view.setBackgroundResource(R.drawable.wifi_list_notauth_item1);
+		switch (itemSize) {
+		case 1:
+			break;
+		case 2:
+			if (pos == 0) {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
+			} else {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
+			}
+			break;
+		default:
+			if (pos == 0) {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
+			} else if (pos == getCount()-1){
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
+			} else {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item1);
+			}
+			break;
 		}
 	}
 }
