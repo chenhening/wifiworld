@@ -40,6 +40,7 @@ import cn.bmob.v3.Bmob;
 import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
+import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.umeng.analytics.MobclickAgent;
@@ -73,6 +74,9 @@ public class WifiWorldApplication extends Application {
 		agent.sync();
 		// 打开友盟分析
 		MobclickAgent.updateOnlineConfig( this );
+		
+		//Helper组件
+		LocationHelper.getInstance(this);
     }
     
     public static WifiWorldApplication getInstance() {

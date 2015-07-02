@@ -162,6 +162,23 @@
         <!-- WiFi后台服务 -->
         <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />
         <service android:name="com.anynet.wifiworld.wifi.WifiBRService$WifiMonitorService" />
+        
+        <!-- 登录 -->
+        <activity
+            android:name="com.anynet.wifiworld.me.MyAccountActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.me.UserLoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 登录后台服务 -->
+        <service
+            android:name="com.anynet.wifiworld.me.LoginService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

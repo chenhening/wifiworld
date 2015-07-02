@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <ImageView
+	<ImageView
         android:id="@+id/setting_item_icon"
         style="@style/setting_list_icon_size"
         android:layout_alignParentLeft="true"
@@ -9,7 +9,7 @@
         android:layout_marginLeft="@dimen/global_layout_margin_icon"
         android:src="@drawable/icon_person_wifi_providor" />
     
-   <FrameLayout
+	<FrameLayout
         android:id="@+id/setting_item_next_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

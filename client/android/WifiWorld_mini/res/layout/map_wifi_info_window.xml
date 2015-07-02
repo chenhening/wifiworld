@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/come_new_msg_ico"
                 android:gravity="center"
                 android:textSize="12sp" />
 

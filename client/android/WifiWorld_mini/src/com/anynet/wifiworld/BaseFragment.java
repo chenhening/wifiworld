@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.util.XLLog;
+import com.anynet.wifiworld.view.TitlebarHolder;
 
 public class BaseFragment extends Fragment {
     

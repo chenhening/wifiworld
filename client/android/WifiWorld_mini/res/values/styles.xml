@@ -28,6 +28,16 @@
     
     <style name="user_check_box" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/knock_checkbox_bg</item>
+	</style>
+	
+    <style name="Button.Default.Green" parent="@android:style/Widget.Button">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/btn_login</item>
+        <item name="android:paddingTop">15.0dip</item>
+        <item name="android:paddingBottom">15.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
 </resources>

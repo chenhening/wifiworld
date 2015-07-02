@@ -46,7 +46,7 @@ public class UserLoginActivity extends BaseActivity {
 	public static void start(BaseActivity ctx) {
 		Intent intent = new Intent(ctx, UserLoginActivity.class);
 		ctx.startActivity(intent);
-		ctx.overridePendingTransition(R.anim.fade_in, R.anim.fade_out); 
+		ctx.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out); 
 	}
 
 	private void bingdingTitleUI() {
@@ -65,8 +65,6 @@ public class UserLoginActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-
 			String action = intent.getAction();
 			if (action.equals(LoginHelper.AUTO_LOGIN_FAIL)) {
 				Toast.makeText(getApplicationContext(), "登录失败!", Toast.LENGTH_LONG).show();
@@ -118,7 +116,6 @@ public class UserLoginActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		setContentView(R.layout.user_login);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
