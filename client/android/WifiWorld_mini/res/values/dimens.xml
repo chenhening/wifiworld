@@ -525,5 +525,7 @@
     <dimen name="dimen_498_dip">498.0dip</dimen>
     <dimen name="dimen_499_dip">499.0dip</dimen>
     <dimen name="dimen_500_dip">500.0dip</dimen>
+    
+    <dimen name="common_listview_divider_height">1.0px</dimen>
 
 </resources>

@@ -26,4 +26,19 @@
     <color name="setting_item_bg_hover">#DADADA</color>
     <color name="setting_item_bg">#FFFFFF</color>
     
+    <color name="btn_pressed_green_solid">#B6DA53</color>
+    <color name="body_background">#fff3f3f3</color>
+    <color name="setting_text_color">#ff000000</color>
+    <color name="common_bg">#F0F0F0</color>
+    <color name="color_question_request_selected">#ffffffff</color>
+    <color name="color_question_request_unselected">#ff868686</color>
+    <color name="color_question_category">#ffffaa00</color>
+    <color name="color_question_category_selected">#ffffaa00</color>
+    <color name="color_question_category_text">#ff999999</color>
+    <color name="main_bottom_text_press">#F01515</color>
+    <color name="main_bottom_text_normal">#636363</color>
+    
+    <!-- 茶色 -->
+    <color name="chocolate">#D2691E</color>
+    
 </resources>

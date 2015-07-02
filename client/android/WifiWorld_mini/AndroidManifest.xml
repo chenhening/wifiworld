@@ -63,7 +63,7 @@
         <!-- 高德 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="126df04cb029b83dbefcdb5e58baeaa5" />
+            android:value="26c4d1b29815fd60ed83ff6095da2714" />
 
         <!-- 友盟 -->
         <meta-data

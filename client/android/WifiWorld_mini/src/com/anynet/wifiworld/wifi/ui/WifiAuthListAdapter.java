@@ -97,10 +97,10 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			logo.setImageResource(R.drawable.ic_wifi_connecting_3);
 			wifiAlias.setVisibility(View.INVISIBLE);
 			if (position == 0) {
-				wifiName.setText("如何认证网络");
+				wifiName.setText("什么是认证网络");
 				wifiOptions.setText("[点击了解]");
 			} else {
-				wifiName.setText("什么是认证网络");
+				wifiName.setText("如何认证网络");
 				wifiOptions.setText("[点击了解]");
 			}
 		}

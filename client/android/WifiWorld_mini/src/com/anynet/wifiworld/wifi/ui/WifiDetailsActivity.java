@@ -23,7 +23,9 @@ import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.data.WifiRank;
+import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.UIHelper;
 
@@ -77,6 +79,29 @@ public class WifiDetailsActivity extends BaseActivity {
 		mConnectTimes = (TextView)findViewById(R.id.tv_detail_wifi_times);
 		mMessages = (TextView)findViewById(R.id.tv_detail_wifi_messages);
 		mListComments = (ListView) findViewById(R.id.lv_detail_wifi_comments);
+		
+		//敲门
+		findViewById(R.id.btn_knock_answer).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// 拉取敲门问题
+				final WifiQuestions wifiQuestions = new WifiQuestions();
+				wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
+					new DataCallback<WifiQuestions>() {
+
+						@Override
+						public void onSuccess(WifiQuestions object) {
+							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
+						}
+
+						@Override
+						public void onFailed(String msg) {
+							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", wifiQuestions);
+						}
+				});
+			}
+		});
 	}
 
 	protected Context getActivity() {

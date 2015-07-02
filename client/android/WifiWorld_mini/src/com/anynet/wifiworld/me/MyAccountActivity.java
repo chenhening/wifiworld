@@ -40,11 +40,10 @@ public class MyAccountActivity extends BaseActivity {
 	LoginHelper mLoginHelper;
 	SettingEditItemView sexIV;
 	SettingItemView si;
-	private static int REQUEST_LIST_SIMPLE = 10000;
-
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.llFinish.setVisibility(View.VISIBLE);
+		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my_account_title));

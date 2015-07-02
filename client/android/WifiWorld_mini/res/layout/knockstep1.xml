@@ -139,7 +139,7 @@
                     android:layout_width="100.0dip"
                     android:layout_height="75.0dip"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/lib_button_bg"
+                    android:background="@drawable/selector_button_bg"
                     android:gravity="center"
                     android:orientation="vertical" >
 
@@ -150,7 +150,7 @@
                         android:layout_marginLeft="10.0dip"
                         android:layout_marginRight="10.0dip"
                         android:layout_marginTop="10.0dip"
-                        android:src="@drawable/record" />
+                        android:src="@drawable/knock_ic_record" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                 android:layout_width="100.0dip"
                 android:layout_height="75.0dip"
                 android:layout_margin="10.0dip"
-                android:background="@drawable/lib_button_bg"
+                android:background="@drawable/selector_button_bg"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone" >
@@ -192,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5.0dip"
-                    android:src="@drawable/play_record"
+                    android:src="@drawable/knock_play_record"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/answer_checkbox"
+                    android:background="@drawable/knock_answer_checkbox"
                     android:button="@null"
                     android:checked="true" />
 
@@ -264,7 +264,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/answer_checkbox"
+                    android:background="@drawable/knock_answer_checkbox"
                     android:button="@null"
                     android:checked="false" />
 
@@ -302,7 +302,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/answer_checkbox"
+                    android:background="@drawable/knock_answer_checkbox"
                     android:button="@null"
                     android:checked="false" />
 
@@ -340,7 +340,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/answer_checkbox"
+                    android:background="@drawable/knock_answer_checkbox"
                     android:button="@null"
                     android:checked="false" />
 

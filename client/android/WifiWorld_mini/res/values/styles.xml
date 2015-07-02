@@ -25,5 +25,9 @@
         <item name="android:layout_width">@dimen/dimen_25_dip</item>
         <item name="android:layout_height">@dimen/dimen_25_dip</item>
     </style>
+    
+    <style name="user_check_box" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/knock_checkbox_bg</item>
+    </style>
 
 </resources>

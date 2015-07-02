@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/body_background"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_bar_replacement"
+        layout="@layout/header_setting"
+        android:visibility="visible" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5.0dip"
+                android:layout_marginLeft="20.0dip"
+                android:layout_marginTop="15.0dip"
+                android:focusable="false"
+                android:text="@string/knock_tip"
+                android:textColor="#ffbbbbbb" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <RelativeLayout
+                android:id="@+id/tv_setting_knock"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/settings_item_angle_bg_selector"
+                android:onClick="knockSwitch"
+                android:padding="10.0dip" >
+
+                <TextView
+                    android:id="@+id/tv_setting_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_knock"
+                    android:textColor="@color/setting_text_color"
+                    android:textSize="16.0sp" />
+
+                <CheckBox
+                    android:id="@+id/knock_switch"
+                    style="@style/user_check_box"
+                    android:layout_width="22.0dip"
+                    android:layout_height="22.0dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="false"
+                    android:clickable="false"
+                    android:focusable="false" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <LinearLayout
+                android:id="@+id/specific_setting_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffffff"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <RelativeLayout
+                    android:id="@+id/question_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:onClick="questionSetting"
+                    android:paddingBottom="10.0dip"
+                    android:paddingLeft="20.0dip"
+                    android:paddingRight="10.0dip"
+                    android:paddingTop="10.0dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_knock_question"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <ImageView
+                        android:id="@+id/arrow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right" />
+
+                    <TextView
+                        android:id="@+id/question_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/arrow1"
+                        android:text="@string/knock_question_count"
+                        android:textSize="16.0sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:layout_marginLeft="20.0dip"
+                    android:background="@drawable/default_divider" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:onClick="voiceCard"
+                    android:paddingBottom="10.0dip"
+                    android:paddingLeft="20.0dip"
+                    android:paddingRight="10.0dip"
+                    android:paddingTop="10.0dip"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_voice_question"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <ImageView
+                        android:id="@+id/image_size_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right" />
+
+                    <TextView
+                        android:id="@+id/voice_card_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/image_size_arrow"
+                        android:text="@string/voice_card_set"
+                        android:textSize="16.0sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/correct_answer_count_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5.0dip"
+                android:layout_marginLeft="20.0dip"
+                android:layout_marginTop="15.0dip"
+                android:focusable="false"
+                android:text="@string/correct_answer_count"
+                android:textColor="#ffbbbbbb"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <RadioGroup
+                android:id="@+id/correct_answer_count_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="55.0dip"
+                android:background="#ffffffff"
+                android:orientation="horizontal"
+                android:padding="10.0dip"
+                android:visibility="gone" >
+
+                <RadioButton
+                    android:id="@+id/count_1"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/selector_question_request"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/count_1"
+                    android:textColor="@color/selector_question_request_text_color"
+                    android:textSize="18.0sp" />
+
+                <RadioButton
+                    android:id="@+id/count_2"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/selector_question_request"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/count_2"
+                    android:textColor="@color/selector_question_request_text_color"
+                    android:textSize="18.0sp" />
+
+                <RadioButton
+                    android:id="@+id/count_3"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/selector_question_request"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/count_3"
+                    android:textColor="@color/selector_question_request_text_color"
+                    android:textSize="18.0sp" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:layout_marginTop="20.0dip"
+                android:background="@drawable/default_divider" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/settings_item_angle_bg_selector"
+                android:onClick="statistics"
+                android:padding="10.0dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knock_statistics_segment_text_left"
+                    android:textColor="@color/setting_text_color"
+                    android:textSize="16.0sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_listview_divider_height"
+                android:background="@drawable/default_divider" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

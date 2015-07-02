@@ -261,6 +261,7 @@
                         android:textColor="@color/darkgrey" />
 
                     <Button
+                        android:id="@+id/btn_knock_answer"
                         android:layout_width="72dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
