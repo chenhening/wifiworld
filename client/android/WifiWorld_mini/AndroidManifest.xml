@@ -58,14 +58,12 @@
         <activity
             android:name="com.anynet.wifiworld.wifi.ui.WifiDetailsActivity" />
         
+        <!-- 高德 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="126df04cb029b83dbefcdb5e58baeaa5" />
 
         <!-- 友盟 -->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="39192cd2a95f37f072fa829b8349e753" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="c621650b4e9a0bc5092f17e1ad5086a6" />

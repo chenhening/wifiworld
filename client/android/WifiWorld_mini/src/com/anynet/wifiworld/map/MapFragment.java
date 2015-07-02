@@ -219,8 +219,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
             mPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
 
             markOptions = new MarkerOptions();
+            markOptions.title("currentLocation");
             markOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                    .decodeResource(getResources(), R.drawable.ic_location_marker)));
+                    .decodeResource(getResources(), R.drawable.ic_location_current)));
             circleOptions = new CircleOptions();
             Log.e(TAG, "2 onCreateView:"+(System.currentTimeMillis()-current));
             mLoaded = true;
@@ -345,7 +346,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		// TODO Auto-generated method stub
 
 	}
+    
 
+	
 	AMapLocation mAMapLocation;
 	
 	@Override
@@ -402,9 +405,15 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	public boolean onMarkerClick(Marker marker) {
 		// TODO Auto-generated method stub
+		if(currentMarker != null && currentMarker.getTitle() != "currentLocation"){
+			currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker));
+		}
 		currentMarker = marker;
+		if(currentMarker.getTitle() != "currentLocation"){
+			marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker_selected));
+		}
 		marker.showInfoWindow();
-		return false;
+		return true;
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -470,19 +479,18 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			@Override
 			public void onClick(View v) {
 						       
-				marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker_selected));
-				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-				Bundle wifiData = new Bundle();
-				WifiListItem item = new WifiListItem();
-				item.setScanResult(null);
-				item.setWifiPwd(null);
+//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
+//				Bundle wifiData = new Bundle();
+//				WifiListItem item = new WifiListItem();
+//				item.setScanResult(null);
+//				item.setWifiPwd(null);
 //				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
 //				tempInfoScanned.setWifiName(mWP.Ssid);
 //				tempInfoScanned.setWifiMAC(mWP.MacAddr);
 //				tempInfoScanned.setWifiLogo(mWP.Logo);
-				wifiData.putSerializable("WifiSelected", (Serializable) item);
-				intent.putExtras(wifiData);
-				startActivity(intent);
+//				wifiData.putSerializable("WifiSelected", (Serializable) item);
+//				intent.putExtras(wifiData);
+//				startActivity(intent);
 			}
 		});
 		Log.e(TAG, "2 render:"+(System.currentTimeMillis()-current));
@@ -523,7 +531,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		LatLng llwifi1 = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
 		MarkerOptions mMO = new MarkerOptions();
 		Marker mM = aMap.addMarker(mMO.position(llwifi1).title(wifi.Alias)
-				.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo)).draggable(true));
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker)).draggable(true));
 		mM.setObject(wifi);
 		return mM;
 	}
@@ -567,10 +575,9 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		if (mCircle != null)
 			mCircle.remove();
 		mAMapLocationManager.addGeoFenceAlert(mMyPosition.latitude, mMyPosition.longitude, 50, 1000 * 60 * 30, mPendingIntent);
-		circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(180, 224, 171, 10)).strokeColor(Color.GRAY);
+		circleOptions.center(mMyPosition).radius(50).fillColor(Color.argb(100, 255, 240, 207)).strokeColor(Color.argb(100, 254, 226, 207));
 		mCircle = aMap.addCircle(circleOptions);
 	}
-	
 	
 	public void zoomAndDisplay(WifiProfile wp) {
 		reDisplayCenter();
