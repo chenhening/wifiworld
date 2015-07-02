@@ -1,4 +1,7 @@
 /*
+
+
+ * 
  * Copyright (C) 2015 AnyNet Corporation.  All rights reserved.
  * @Author: buffer(179770346@qq.com or binfeix.li@intel.com)
  * @Time: 2015/01/22
@@ -279,7 +282,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		super.onResume();
 		mapView.onResume();
 
-
 		//onLocationChanged(mAMapLocation);
 		
 		// centerMarker.setAnimationListener(this);
@@ -347,7 +349,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 	}
     
-
 	
 	AMapLocation mAMapLocation;
 	
@@ -460,7 +461,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		wifiNameTV.setText(mWP.Ssid);
 		wifiNameExtTV.setText(mWP.ExtAddress);
 		
-		infoWindow.findViewById(R.id.window_ext_info).setOnClickListener(new OnClickListener() {
+		infoWindow.findViewById(R.id.distance_ext).setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -525,7 +526,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			//mM.showInfoWindow();
 		}
 	}
-
 	
 	public Marker getMarkerByWifiProfile(WifiProfile wifi){
 		LatLng llwifi1 = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
