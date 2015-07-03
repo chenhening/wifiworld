@@ -59,6 +59,8 @@
             android:name="com.anynet.wifiworld.wifi.ui.WifiDetailsActivity" />
         <activity
             android:name="com.anynet.wifiworld.me.AboutAppActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.knock.KnockStepFirstActivity" />
         
         <!-- 高德 -->
         <meta-data
