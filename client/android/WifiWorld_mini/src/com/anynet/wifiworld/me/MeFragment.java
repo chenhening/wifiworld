@@ -75,9 +75,12 @@ public class MeFragment extends MainFragment {
 
 			@Override
 			public void onClick(View v) {
-				if (!mLoginHelper.isLogined()) {
-					UserLoginActivity.start((BaseActivity) getActivity());
-				}
+//				if (!mLoginHelper.isLogined()) {
+//					UserLoginActivity.start((BaseActivity) getActivity());
+//				}
+				Intent i = new Intent();
+				i.setClass(getActivity(), MyAccountActivity.class);
+				getActivity().startActivity(i);
 			}
 		});
 		

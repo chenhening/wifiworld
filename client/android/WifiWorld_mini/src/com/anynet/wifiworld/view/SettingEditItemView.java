@@ -40,7 +40,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 	private EditText contentET;
 	private TextView contentTV;
-	private Button editBtn;
+	private ImageView editBtn;
 	private TextView contentHint;
 	private Context mContext;
 
@@ -57,7 +57,6 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		super(context);
 		mContext = context;
 		edited = false;
-		// TODO Auto-generated constructor stub
 	}
 
 	public SettingEditItemView(Context context, AttributeSet attrs, int defStyle) {
@@ -69,14 +68,14 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	public SettingEditItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		RelativeLayout.inflate(context, R.layout.view_setting_edit_item, this);
+		RelativeLayout.inflate(context, R.layout.item_view_setting_edit, this);
 		ImageView img;
 		TextView tv;
 		edited = false;
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
 		contentET = (EditText) findViewById(R.id.setting_item_content_edit);
 		contentTV = (TextView) findViewById(R.id.setting_item_content);
-		editBtn = (Button) findViewById(R.id.setting_item_edit);
+		editBtn = (ImageView) findViewById(R.id.setting_item_edit);
 		contentHint = (TextView) findViewById(R.id.setting_item_content_hint);
 		int n = array.getIndexCount();
 		for (int i = 0; i < n; i++) {
@@ -213,7 +212,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
-		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
+		//setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
 
 		if (contentEditable) {
 			if (contentEditType == EDIT_TYPE_SELECTBOX) {
@@ -236,7 +235,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				contentTV.setVisibility(VISIBLE);
 			}
 
-			editBtn.setText(R.string.edit);
+			//editBtn.setText(R.string.edit);
 			editBtn.setOnClickListener(this);
 		} else {
 			editBtn.setVisibility(View.INVISIBLE);
@@ -263,7 +262,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		// TODO Auto-generated method stub
 		if (contentEditType == EDIT_TYPE_INPUTBOX) {
 			if (View.VISIBLE == contentET.getVisibility()) {
-				editBtn.setText(R.string.edit);
+				//editBtn.setText(R.string.edit);
 				show(VIEW_MODE);
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.onSave(contentET.getText().toString());
@@ -273,7 +272,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				// contentET.setFocusableInTouchMode(true);
 				// contentET.requestFocus();
 				// contentET.requestFocusFromTouch();
-				editBtn.setText(R.string.save);
+				//editBtn.setText(R.string.save);
 				show(EDIT_MODE);
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.beforeEdit();
@@ -282,14 +281,14 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		} else if (contentEditType == EDIT_TYPE_SELECTBOX) {
 			contentET.setVisibility(View.INVISIBLE);
 			if (edited) {
-				editBtn.setText(R.string.edit);
+				//editBtn.setText(R.string.edit);
 				edited = false;
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.onSave(contentTV.getText());
 				}
 				return;
 			} else {
-				editBtn.setText(R.string.edit);
+				//.setText(R.string.edit);
 				if (mClickEditButtonListener != null) {
 					mClickEditButtonListener.beforeEdit();
 				}
@@ -411,7 +410,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 					// R.String.butian代表的是“不填”
 					contentTV.setText(datas.get(arg2).toString()); // 将当前点击的item中的字符串显示出来
 					edited = true;
-					editBtn.setText(R.string.save);
+					//.setText(R.string.save);
 					if (pWindow != null) { // 关闭下拉框
 						changPopState(par);
 					}

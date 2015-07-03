@@ -9,15 +9,14 @@
         android:layout_marginLeft="@dimen/global_layout_margin"
         android:src="@drawable/icon_person_wifi_providor" />
 
-    <Button
+    <ImageView
         android:id="@+id/setting_item_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/global_layout_margin"
-        android:background="@drawable/login_button_bg"
-        android:text="修改" />
+        android:background="@drawable/selector_icon_next" />
 
     <TextView
         android:id="@+id/setting_item_text"

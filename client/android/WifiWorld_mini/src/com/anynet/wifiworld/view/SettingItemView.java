@@ -53,7 +53,6 @@ public class SettingItemView extends RelativeLayout {
 				} else if (bgDrawable == 5) {
 					setBackgroundResource(R.drawable.settings_item_bottom);
 				}
-				
 				break;
 			}
 			case R.styleable.SettingItemView_icon: {
