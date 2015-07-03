@@ -85,21 +85,21 @@ public class WifiDetailsActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// 拉取敲门问题
-				final WifiQuestions wifiQuestions = new WifiQuestions();
-				wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
-					new DataCallback<WifiQuestions>() {
+			// 拉取敲门问题
+			final WifiQuestions wifiQuestions = new WifiQuestions();
+			wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
+				new DataCallback<WifiQuestions>() {
 
-						@Override
-						public void onSuccess(WifiQuestions object) {
-							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
-						}
+					@Override
+					public void onSuccess(WifiQuestions object) {
+						KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
+					}
 
-						@Override
-						public void onFailed(String msg) {
-							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", wifiQuestions);
-						}
-				});
+					@Override
+					public void onFailed(String msg) {
+						KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", wifiQuestions);
+					}
+			});
 			}
 		});
 	}
