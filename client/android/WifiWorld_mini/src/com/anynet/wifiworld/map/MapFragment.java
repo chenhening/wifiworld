@@ -11,21 +11,10 @@
  */
 package com.anynet.wifiworld.map;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.bmob.v3.datatype.BmobGeoPoint;
-
-import com.anynet.wifiworld.MainActivity.MainFragment;
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.data.MultiDataCallback;
-import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
-//import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.WifiListItem;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -46,10 +35,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -76,16 +65,24 @@ import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.RouteSearch.FromAndTo;
 import com.amap.api.services.route.RouteSearch.OnRouteSearchListener;
 import com.amap.api.services.route.RouteSearch.WalkRouteQuery;
+import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.MultiDataCallback;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
+import com.anynet.wifiworld.util.BitmapUtil;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
 public class MapFragment extends MainFragment implements LocationSource, AMapLocationListener, OnMarkerClickListener,
 		OnInfoWindowClickListener, InfoWindowAdapter, OnMapClickListener, OnRouteSearchListener {
 
 	private static final String TAG = MapFragment.class.getSimpleName();
+	private Context mContext;
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -109,7 +106,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
 	// ---------------------------------------------------------------------------------------------
 	// for Fragment
-
 	Long current;
 	private void bingdingTitleUI() {
 //		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
@@ -122,6 +118,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext = this.getActivity();
 		current = System.currentTimeMillis();
 	}
 
@@ -281,11 +278,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public void onResume() {
 		super.onResume();
 		mapView.onResume();
-
-		//onLocationChanged(mAMapLocation);
-		
-		// centerMarker.setAnimationListener(this);
-		// locate.setOnClickListener(this);
 	}
 
 	@Override
@@ -363,33 +355,28 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 				mMyPosition = new LatLng(Latitude, Longitude);
 				reDisplayCenter();
 
-//				LoginHelper loginHelper = LoginHelper.getInstance(getApplicationContext());
-//				loginHelper.setLongitude(Longitude);
-//				loginHelper.setLatitude(Latitude);
-
-				// TODO Auto-generated method stub
-				// query wifi nearby
+				// query wifi nearby(250米范围内)
 				WifiProfile wifis = new WifiProfile();
-				WifiProfile.QueryInRadians(getApplicationContext(), new BmobGeoPoint(mAMapLocation.getLongitude(), mAMapLocation.getLatitude()), 0.25,
-						new MultiDataCallback<WifiProfile>() {
+				WifiProfile.QueryInRadians(getApplicationContext(), new BmobGeoPoint(mAMapLocation.getLongitude(), 
+					mAMapLocation.getLatitude()), 0.25, new MultiDataCallback<WifiProfile>() {
 
-							@Override
-							public boolean onSuccess(List<WifiProfile> wifiProfiles) {
-								showToast("查询周围wifi成功：共" + wifiProfiles.size() + "条数据。");
-								wifiList = wifiProfiles;
-								DisplayNearbyWifi(wifiProfiles);
-								mWifiListMapAdapter.setData(wifiProfiles);
-								mWifiListMapAdapter.notifyDataSetChanged();
-								return false;
-							}
+						@Override
+						public boolean onSuccess(List<WifiProfile> wifiProfiles) {
+							showToast("查询周围wifi成功：共" + wifiProfiles.size() + "条数据。");
+							wifiList = wifiProfiles;
+							DisplayNearbyWifi(wifiProfiles);
+							mWifiListMapAdapter.setData(wifiProfiles);
+							mWifiListMapAdapter.notifyDataSetChanged();
+							return false;
+						}
 
-							@Override
-							public boolean onFailed(String msg) {
-								Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
-								showToast("您附近还没有可用wifi信号，请更换位置：" + msg);
-								return false;
-							}
-						});
+						@Override
+						public boolean onFailed(String msg) {
+							Log.d("map", "您附近还没有可用wifi信号，请更换位置再试一次。");
+							showToast("您附近还没有可用wifi信号，请更换位置：" + msg);
+							return false;
+						}
+				});
 				
 				aMap.setOnMarkerClickListener(this);
 				aMap.setOnInfoWindowClickListener(this);
@@ -421,16 +408,12 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	// for OnInfoWindowClickListener
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-		// TODO Auto-generated method stub
-		Log.e("marker", "onInfoWindowClick: " + marker.getId());
 	}
 
 	// ---------------------------------------------------------------------------------------------
 	// for InfoWindowAdapter
 	@Override
 	public View getInfoContents(Marker marker) {
-		// TODO Auto-generated method stub
-		Log.e("marker", "getInfoContents: " + marker.getId());
 		return null;
 	}
 
@@ -445,8 +428,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 	/** 自定义infowinfow窗口，动态修改内容的 */
 	private void render(final Marker marker, View infoWindow) {
-		// TODO Auto-generated method stub
-		Log.e(TAG, "1 render:"+(System.currentTimeMillis()-current));
 		final WifiProfile mWP = (WifiProfile) marker.getObject();
 		TextView disTV = (TextView) infoWindow.findViewById(R.id.distance);
 		TextView wifiAlias = (TextView) infoWindow.findViewById(R.id.tv_wifi_alias);
@@ -457,8 +438,8 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		final LatLng pos = new LatLng(mWP.Geometry.getLatitude(), mWP.Geometry.getLongitude());
 		float distance = AMapUtils.calculateLineDistance(mMyPosition, pos);
 		disTV.setText((int)distance + "米");
-		wifiAlias.setText(mWP.Alias);
-		wifiNameTV.setText(mWP.Ssid);
+		wifiAlias.setText(mWP.Ssid);
+		wifiNameTV.setText(mWP.Alias);
 		wifiNameExtTV.setText(mWP.ExtAddress);
 		
 		infoWindow.findViewById(R.id.distance_ext).setOnClickListener(new OnClickListener() {
@@ -480,21 +461,17 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			@Override
 			public void onClick(View v) {
 						       
-//				Intent intent = new Intent("com.anynet.wifiworld.wifi.ui.DETAILS_DISPLAY");
-//				Bundle wifiData = new Bundle();
-//				WifiListItem item = new WifiListItem();
-//				item.setScanResult(null);
-//				item.setWifiPwd(null);
-//				WifiInfoScanned tempInfoScanned = new WifiInfoScanned();
-//				tempInfoScanned.setWifiName(mWP.Ssid);
-//				tempInfoScanned.setWifiMAC(mWP.MacAddr);
-//				tempInfoScanned.setWifiLogo(mWP.Logo);
-//				wifiData.putSerializable("WifiSelected", (Serializable) item);
-//				intent.putExtras(wifiData);
-//				startActivity(intent);
+				Intent i = new Intent(mContext, WifiDetailsActivity.class);
+				Bundle wifiData = new Bundle();
+				wifiData.putSerializable(WifiProfile.TAG, (WifiProfile)currentMarker.getObject());
+				i.putExtras(wifiData);
+				mContext.startActivity(i);
 			}
 		});
-		Log.e(TAG, "2 render:"+(System.currentTimeMillis()-current));
+		
+		//显示认证WiFi的logo
+		ImageView logo = (ImageView) infoWindow.findViewById(R.id.iv_map_wifi_logo);
+		logo.setImageBitmap(BitmapUtil.Bytes2Bimap(mWP.Logo));
 	}
 
 	// 点击非marker区域，将显示的InfoWindow隐藏
@@ -502,6 +479,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 	public void onMapClick(LatLng latLng) {
 		if (currentMarker != null) {
 			currentMarker.hideInfoWindow();
+			currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker));
 		}
 	}
 
@@ -523,7 +501,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 			WifiProfile wifi = wifilist.get(i);
 			Marker mM = getMarkerByWifiProfile(wifi);
 			allMarkers.put(wifi.MacAddr, mM);
-			//mM.showInfoWindow();
 		}
 	}
 	
