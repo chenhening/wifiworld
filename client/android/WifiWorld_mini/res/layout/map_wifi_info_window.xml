@@ -42,10 +42,11 @@
 
             <TextView
                 android:id="@+id/distance_ext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/ic_come_here"
                 android:gravity="center"
                 android:textSize="12sp" />
 
@@ -63,6 +64,7 @@
                 android:id="@+id/wifi_name"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
                 android:singleLine="true"
                 android:text="阿里巴巴集团跨国"
@@ -72,6 +74,7 @@
                 android:id="@+id/tv_wifi_alias"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:text="EmployeeHostPort"
