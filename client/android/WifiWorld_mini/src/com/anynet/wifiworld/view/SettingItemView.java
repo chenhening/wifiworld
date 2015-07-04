@@ -29,6 +29,7 @@ public class SettingItemView extends RelativeLayout {
 		// 在使用完成后，一定要调用recycle方法
 		// 属性的名称是styleable中的名称+“_”+属性名称
 		RelativeLayout.inflate(context, R.layout.item_view_setting, this);
+		setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
 		/*
 		 * setting_item_icon setting_item_next_layout setting_item_next
 		 * setting_item_checkbox setting_item_text setting_item_red_point
@@ -44,9 +45,7 @@ public class SettingItemView extends RelativeLayout {
 			switch (attr) {
 			case R.styleable.SettingItemView_backgroundImage: {
 				int bgDrawable = array.getInt(attr, 0);
-				if (bgDrawable == 0) {
-					setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
-				} else if (bgDrawable == 1) {
+				if (bgDrawable == 1) {
 					setBackgroundResource(R.drawable.settings_item_top);
 				} else if (bgDrawable == 3) {
 					setBackgroundResource(R.drawable.settings_item_middle);

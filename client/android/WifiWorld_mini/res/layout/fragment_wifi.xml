@@ -208,7 +208,6 @@
 	                android:id="@+id/lv_wifi_free_list"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	                android:cacheColorHint="#00000000"
 	                android:fadingEdge="none" />
 	
 	        </LinearLayout>

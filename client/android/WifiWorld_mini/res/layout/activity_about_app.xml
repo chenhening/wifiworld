@@ -62,11 +62,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:orientation="vertical" >
 
         <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/SettingItemView01"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             app:label="好评支持一下"
@@ -79,6 +77,7 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             app:label="检查更新"
+            app:subLabel="点击更新"
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>
 
@@ -87,6 +86,7 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_45_dip"
             app:label="服务协议"
+            app:subLabel=""
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>
 
@@ -97,8 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_15_dip"
         android:layout_weight="0.01"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:orientation="vertical" >
 
         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/slv_general_question"
@@ -106,6 +105,7 @@
             android:layout_height="@dimen/dimen_45_dip"
             app:icon="@drawable/icon_person_center_msg"
             app:label="常见问题"
+            app:subLabel=""
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>
 
@@ -115,6 +115,7 @@
             android:layout_height="@dimen/dimen_45_dip"
             app:icon="@drawable/icon_person_center_msg"
             app:label="意见反馈"
+            app:subLabel="一起参与产品改进吧"
             app:showTopDivider="true" >
         </com.anynet.wifiworld.view.SettingItemView>
     </LinearLayout>

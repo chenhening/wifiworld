@@ -28,6 +28,7 @@ import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
+import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
 import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
@@ -138,8 +139,8 @@ public class MeFragment extends MainFragment {
 
 					mWifiProfile = mLoginHelper.mWifiProfile;
 					if (mWifiProfile != null) {
-						//Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
-						//startActivity(i);
+						Intent i = new Intent(getApplicationContext(), WifiProviderSettingActivity.class);
+						startActivity(i);
 					} else {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
 				    	
@@ -207,9 +208,9 @@ public class MeFragment extends MainFragment {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
-//										Intent i = new Intent();
-//										i.setClass(getApplicationContext(), WifiProviderSettingActivity.class);
-//										startActivity(i);
+										Intent i = new Intent();
+										i.setClass(getApplicationContext(), WifiProviderSettingActivity.class);
+										startActivity(i);
 									}
 								}).setNegativeButton("取消", null).show();
 							}

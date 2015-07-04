@@ -73,16 +73,25 @@ public class KnockStepFirstActivity extends BaseActivity {
 		// mSetupFragment[2]).hide(mSetupFragment[1]).hide(mSetupFragment[2])
 		ft.show(mSetupFragment[currentIndex]).commit();
 		setTitleUI();
+		
+		step1V = findViewById(R.id.iv_knock_step_1);
+		step2V = findViewById(R.id.iv_knock_step_2);
+		step3V = findViewById(R.id.iv_knock_step_3);
+		moveV = findViewById(R.id.iv_move33);
+	}
+
+	public void setTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
+		
+		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
@@ -91,15 +100,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 				next();
 			}
 		});
-		step1V = findViewById(R.id.iv_knock_step_1);
-		step2V = findViewById(R.id.iv_knock_step_2);
-		step3V = findViewById(R.id.iv_knock_step_3);
-		moveV = findViewById(R.id.iv_move33);
-	}
-
-	public void setTitleUI() {
-		// TODO Auto-generated method stub
-		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 	}
 
 	View step1V, step2V, step3V, moveV;
@@ -132,15 +132,11 @@ public class KnockStepFirstActivity extends BaseActivity {
 			translateAnimation.setAnimationListener(new Animation.AnimationListener() {
 				@Override
 				public void onAnimationStart(Animation animation) {
-					// To change body of implemented methods use File | Settings
-					// |
-					// File Templates.
 					isAnimation = true;
 				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
-					// int left = left;
 					int top = moveV.getTop();
 					int width = moveV.getWidth();
 					int height = moveV.getHeight();
@@ -151,9 +147,6 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 				@Override
 				public void onAnimationRepeat(Animation animation) {
-					// To change body of implemented methods use File | Settings
-					// |
-					// File Templates.
 				}
 			});
 			moveV.startAnimation(translateAnimation);
@@ -248,16 +241,15 @@ public class KnockStepFirstActivity extends BaseActivity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					finish();
 				}
 			});
+			mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 			mTitlebar.tvHeaderRight.setText(R.string.next_step);
 			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					next();
 				}
 			});
@@ -274,6 +266,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 					pre();
 				}
 			});
+			mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 			mTitlebar.tvHeaderRight.setText(R.string.next_step);
 			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
@@ -295,12 +288,12 @@ public class KnockStepFirstActivity extends BaseActivity {
 					pre();
 				}
 			});
+			mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 			mTitlebar.tvHeaderRight.setText(android.R.string.ok);
 			mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					save();
 				}
 			});

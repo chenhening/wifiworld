@@ -166,9 +166,10 @@
                     android:layout_height="48dp"
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_wifi_providor"
-                    item:label="我提供的WiFi"
-                    item:subLabel="内测中"
+                    item:label="我提供的Wi-Fi"
+                    item:subLabel="快来认证吧"
                     item:subLabelColor="@color/red" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
 				
                 <View
@@ -181,8 +182,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     item:backgroundImage="bottom"
-                    item:label="我用过的WiFi"
-                    item:subLabel="9"
+                    item:label="我用过的Wi-Fi"
+                    item:subLabel="即将开放"
                     item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
@@ -203,7 +204,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_wifi_favor"
                     item:label="我的关注"
-                    item:subLabel="" >
+                    item:subLabel="即将开放" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -218,7 +219,7 @@
                     item:backgroundImage="middle"
                     item:icon="@drawable/icon_person_wifi_white"
                     item:label="我的白名单"
-                    item:subLabel=""
+                    item:subLabel="即将开放"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -234,7 +235,7 @@
                     item:backgroundImage="bottom"
                     item:icon="@drawable/icon_person_wifi_black"
                     item:label="我的黑名单"
-                    item:subLabel="11"
+                    item:subLabel="即将开放"
                     item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -245,6 +246,7 @@
                     android:visibility="gone"
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="我的消息"
+                    item:subLabel="即将开放"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
@@ -264,7 +266,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_setting"
                     item:label="我的设置"
-                    item:subLabel="" >
+                    item:subLabel="即将开放" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -279,7 +281,7 @@
                     item:backgroundImage="middle"
                     item:icon="@drawable/icon_person_invitation"
                     item:label="邀请好友"
-                    item:subLabel="奖联币"
+                    item:subLabel="即将开放"
                     item:subLabelVisibility="visible" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -294,7 +296,8 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:backgroundImage="bottom"
                     item:icon="@drawable/icon_person_about"
-                    item:label="关于网络宝" >
+                    item:label="关于网络宝"
+                    item:subLabel="" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
