@@ -113,6 +113,7 @@
                     android:id="@+id/rl_wifi_provider_ssid"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:background="@color/font_color_write"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/dimen_15_dip"
@@ -153,6 +154,8 @@
                     android:id="@+id/rl_wifi_provider_password"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/font_color_write"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/dimen_15_dip"
@@ -190,16 +193,20 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="bottom"
                     android:paddingBottom="@dimen/dimen_10_dip"
                     android:paddingLeft="@dimen/dimen_14_dip"
                     android:paddingRight="@dimen/dimen_15_dip"
                     android:paddingTop="@dimen/dimen_5_dip"
-                    android:text="@string/str_wifi_provider_alias_detail" />
+                    android:text="@string/str_wifi_provider_alias_detail"
+                    android:textColor="@color/app_color_style" />
 
                 <RelativeLayout
                     android:id="@+id/rl_wifi_provider_alias"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/font_color_write"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/dimen_15_dip"
@@ -245,6 +252,7 @@
                     android:id="@+id/merchant_address_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:background="@color/font_color_write"
                     android:paddingLeft="@dimen/dimen_15_dip"
                     android:paddingRight="@dimen/dimen_15_dip"
                     android:visibility="visible" >
@@ -297,6 +305,7 @@
                     android:id="@+id/merchant_detail_address_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:background="@color/font_color_write"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/dimen_15_dip"
@@ -337,7 +346,8 @@
                     android:paddingLeft="@dimen/dimen_14_dip"
                     android:paddingRight="@dimen/dimen_15_dip"
                     android:paddingTop="@dimen/dimen_5_dip"
-                    android:text="@string/str_wifi_provider_type_desc" />
+                    android:text="@string/str_wifi_provider_type_desc"
+                    android:textColor="@color/app_color_style" />
 
                 <View
                     android:id="@+id/merchant_type_line"
@@ -351,6 +361,7 @@
                     android:id="@+id/merchant_type_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_50_dip"
+                    android:background="@color/font_color_write"
                     android:paddingLeft="@dimen/dimen_15_dip"
                     android:paddingRight="@dimen/dimen_15_dip"
                     android:visibility="visible" >
@@ -384,13 +395,15 @@
                 android:paddingLeft="@dimen/dimen_14_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
                 android:paddingTop="@dimen/dimen_5_dip"
-                android:text="@string/str_wifi_provider_logo_hint" />
+                android:text="@string/str_wifi_provider_logo_hint"
+                android:textColor="@color/app_color_style" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dimen_5_dip"
                 android:layout_weight="1"
+                android:background="@color/font_color_write"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/dimen_12_dip" >
 
@@ -442,6 +455,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_15_dip"
+                android:background="@color/font_color_write"
                 android:orientation="vertical" >
 
                 <RelativeLayout

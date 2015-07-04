@@ -100,14 +100,16 @@
             android:text="认证即表明同意以下协议"
             android:textSize="14sp" />
 
-        <TextView
+        <Button
             android:id="@+id/certify_button"
-            style="@style/Button.Default.Green"
-            android:layout_width="81dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bg_knock_button"
             android:text="立即认证"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="18sp" />
 
     </LinearLayout>

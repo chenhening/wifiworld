@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.layout;
-import com.anynet.wifiworld.R.string;
-import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -21,11 +19,11 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 	private WifiProfile mWifiProfile = null;
 
 	private void bingdingTitleUI() {
-		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
+		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("Wi-Fi认证登记");
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
+		mTitlebar.tvTitle.setText("Wi-Fi认证");
+		mTitlebar.tvHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -37,10 +35,12 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
+		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra(WifiProfile.TAG);
+		
 		setContentView(R.layout.activity_provider_certify_complete);
-		mWifiProfile = (WifiProfile) mIntent.getSerializableExtra("wifiprofile");
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
+		
 		final Button btncommit = (Button) this.findViewById(R.id.btn_wifi_provider_register);
 		btncommit.setOnClickListener(new OnClickListener() {
 

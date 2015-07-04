@@ -100,7 +100,7 @@
     <string name="str_wifi_provider_person_warning">以下个人认证信息可以不填，如果不填网络宝将不会提供路由占用纠纷调解，内测邀请，重要信息通知等服务。</string>
     <string name="str_wifi_provider_router">路由器型号</string>
     <string name="str_wifi_provider_bandwidth">网络带宽</string>
-    <string name="str_wifi_provider_register">注册登记</string>
+    <string name="str_wifi_provider_register">提交认证</string>
     <string name="str_wifi_provider_cover">网络覆盖</string>
 
 </resources>

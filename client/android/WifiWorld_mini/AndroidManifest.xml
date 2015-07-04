@@ -69,6 +69,10 @@
             android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity" />
         <activity
             android:name="com.anynet.wifiworld.provider.WifiProviderRigisterFirstActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.provider.WifiProviderRigisterCompleteActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.provider.WifiProviderSettingActivity" />
         
         <!-- 高德 -->
         <meta-data

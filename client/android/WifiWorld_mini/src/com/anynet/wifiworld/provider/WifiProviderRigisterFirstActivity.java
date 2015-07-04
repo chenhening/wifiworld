@@ -1,7 +1,6 @@
 package com.anynet.wifiworld.provider;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
-import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LocationHelper;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 
 public class WifiProviderRigisterFirstActivity extends BaseActivity {
@@ -62,38 +60,41 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private static final int RESULT_REQUEST_CODE = 2;
 
 	private void bingdingTitleUI() {
-		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
-		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
+		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
+		mTitlebar.tvHeaderLeft.setVisibility(View.VISIBLE);
+		mTitlebar.tvHeaderLeft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+			
+		});
+		
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setText(R.string.next_step);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				// 如果第一页有未填写字段，则提示填写
+				if (!checkRequiredFields() || mWifiProfile == null) {
+					return;
+				}
+				
 				if (!mWifiVerfied) {
 					verifyPassword();
 					mTitlebar.tvHeaderRight.setEnabled(false);
 					return;
 				}
-				// 如果第一页有未填写字段，则提示填写
-				if (!checkRequiredFields() || mWifiProfile == null) {
-					return;
-				}
 
-				/*Intent intent = null;
-				if (msp_typelist.getSelectedItem().toString() == "商家网络") {
-					intent = new Intent(WifiProviderRigisterFirstActivity.this,
-							WifiProviderRigisterSecondBusinessActivity.class);
-				} else {
-					intent = new Intent(WifiProviderRigisterFirstActivity.this,
-							WifiProviderRigisterSecondHomeActivity.class);
-				}
-				intent.putExtra("wifiprofile", (Serializable) mWifiProfile);
-				startActivity(intent);*/
+				Intent i = new Intent(WifiProviderRigisterFirstActivity.this, WifiProviderRigisterCompleteActivity.class);
+				Bundle wifiData = new Bundle();
+				wifiData.putSerializable(WifiProfile.TAG, mWifiProfile);
+				i.putExtras(wifiData);
+				startActivity(i);
 			}
 		});
-		mTitlebar.tvTitle.setText("Wi-Fi认证登记");
+		mTitlebar.tvTitle.setText("Wi-Fi认证");
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 
 			@Override

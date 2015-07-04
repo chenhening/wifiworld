@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="第一步"
-                    android:textColor="@color/app_color_style"
+                    android:textColor="@color/font_color_gray_light"
                     android:textColorLink="@color/app_color_style"
                     android:textSize="12sp" />
 
@@ -43,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="完善信息"
-                    android:textColor="@color/app_color_style"
+                    android:textColor="@color/font_color_gray_light"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -68,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="第二步"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/app_color_style"
                     android:textColorLink="@color/app_color_style"
                     android:textSize="12sp" />
 
@@ -77,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="提交信息"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/app_color_style"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -85,7 +86,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_40_dip"
-            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:layout_marginTop="15dp"
+            android:background="@color/font_color_write"
             android:orientation="horizontal" >
 
             <TextView
@@ -117,7 +119,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_40_dip"
-            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:layout_marginTop="1dp"
+            android:background="@color/font_color_write"
             android:orientation="horizontal" >
 
             <TextView
@@ -147,7 +150,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="@dimen/dimen_40_dip"
-            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:layout_marginTop="1dp"
+            android:background="@color/font_color_write"
             android:orientation="horizontal" >
 
             <TextView
@@ -173,24 +177,21 @@
                 android:textSize="@dimen/font_main_big" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dimen_10_dip"
+            android:paddingLeft="@dimen/dimen_14_dip"
+            android:paddingRight="@dimen/dimen_15_dip"
+            android:paddingTop="@dimen/dimen_5_dip"
+            android:text="网络带宽是由程序自动测试得到的预估值，如果不符合您实际情况，请更改。请不要随便填写，系统会根据自动测速，人工核实和用户反馈综合得到数据，一旦不符合会影响您的网络评价值" />
+
+        <Button
+            android:id="@+id/btn_wifi_provider_register"
+            style="@style/Button.Default.Green"
+            android:text="@string/str_wifi_provider_register"
+            android:textSize="@dimen/font_main_title" />
+
     </LinearLayout>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_14_dip"
-        android:paddingRight="@dimen/dimen_15_dip"
-        android:paddingTop="@dimen/dimen_5_dip"
-        android:text="网络带宽是由程序自动测试得到的预估值，如果不符合您实际情况，请更改。请不要随便填写，系统会根据自动测速，人工核实和用户反馈综合得到数据，一旦不符合会影响您的网络评价值" />
-
-    <Button
-        android:id="@+id/btn_wifi_provider_register"
-        style="@style/Button.Default.Green"
-        android:layout_marginLeft="@dimen/dimen_9_dip"
-        android:layout_marginRight="@dimen/dimen_9_dip"
-        android:layout_marginTop="@dimen/dimen_18_dip"
-        android:text="@string/str_wifi_provider_register"
-        android:textSize="@dimen/font_main_title" />
 
 </LinearLayout>
