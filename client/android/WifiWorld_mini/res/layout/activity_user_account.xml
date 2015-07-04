@@ -111,7 +111,7 @@
                     android:id="@+id/siv_alias"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_45_dip"
-                    android:background="@drawable/bg_account_item1"
+                    android:background="@drawable/bg_account_item0"
                     item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHint="@string/account_edit"
@@ -206,7 +206,7 @@
                     android:id="@+id/sev_interest"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_45_dip"
-                    android:background="@drawable/bg_account_item1"
+                    android:background="@drawable/bg_account_item2"
                     item:contentEditType="inputbox"
                     item:contentEditable="true"
                     item:contentHintColor="@color/gray"
@@ -226,7 +226,7 @@
                 android:layout_below="@+id/ll_account_desc"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:text="@string/user_login_btn_title"
+                android:text="@string/setting_exit"
                 android:textSize="@dimen/font_main_title" />
 
         </RelativeLayout>

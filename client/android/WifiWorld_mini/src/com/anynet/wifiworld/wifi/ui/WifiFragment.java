@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.BaseFragment.MainFragment;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_main_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_person_center"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_15_dip"
+            android:paddingRight="@dimen/dimen_15_dip"
+            android:scaleType="center" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_provider_flow_circle"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="第一步"
+                    android:textColor="@color/app_color_style"
+                    android:textColorLink="@color/app_color_style"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="完善信息"
+                    android:textColor="@color/app_color_style"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/icon_provider_flow_next" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/bg_provider_flow_circle"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="第二步"
+                    android:textColor="@color/grey"
+                    android:textColorLink="@color/app_color_style"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="提交信息"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="@dimen/dimen_85_dip"
+                android:layout_height="fill_parent"
+                android:drawablePadding="@dimen/dimen_5_dip"
+                android:gravity="center_vertical"
+                android:text="@string/str_wifi_provider_router"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+
+            <EditText
+                android:id="@+id/EditText01"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1.0dip"
+                android:layout_weight="1.0"
+                android:background="#ffffffff"
+                android:editable="false"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="@dimen/dimen_85_dip"
+                android:layout_height="fill_parent"
+                android:drawablePadding="@dimen/dimen_5_dip"
+                android:gravity="center_vertical"
+                android:text="@string/str_wifi_provider_bandwidth"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+
+            <EditText
+                android:id="@+id/edt_pwd"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1.0dip"
+                android:layout_weight="1.0"
+                android:background="#ffffffff"
+                android:editable="false"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:text=""
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_40_dip"
+            android:layout_marginLeft="@dimen/dimen_15_dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="@dimen/dimen_85_dip"
+                android:layout_height="fill_parent"
+                android:drawablePadding="@dimen/dimen_5_dip"
+                android:gravity="center_vertical"
+                android:text="@string/str_wifi_provider_cover"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+
+            <EditText
+                android:id="@+id/EditText02"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1.0dip"
+                android:layout_weight="1.0"
+                android:background="#ffffffff"
+                android:editable="false"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/font_main_big" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dimen_10_dip"
+        android:paddingLeft="@dimen/dimen_14_dip"
+        android:paddingRight="@dimen/dimen_15_dip"
+        android:paddingTop="@dimen/dimen_5_dip"
+        android:text="网络带宽是由程序自动测试得到的预估值，如果不符合您实际情况，请更改。请不要随便填写，系统会根据自动测速，人工核实和用户反馈综合得到数据，一旦不符合会影响您的网络评价值" />
+
+    <Button
+        android:id="@+id/btn_wifi_provider_register"
+        style="@style/Button.Default.Green"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_marginRight="@dimen/dimen_9_dip"
+        android:layout_marginTop="@dimen/dimen_18_dip"
+        android:text="@string/str_wifi_provider_register"
+        android:textSize="@dimen/font_main_title" />
+
+</LinearLayout>

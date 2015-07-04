@@ -30,9 +30,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import com.anynet.wifiworld.data.DataCallback;
+
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -397,11 +405,8 @@ public class WifiAdmin {
     }
     
     public void disConnectionWifi(int netId){
-    		//mWifiManager.enableNetwork(netId, false);
-    		//mWifiManager.saveConfiguration();
-    		mWifiManager.disableNetwork(netId);
-    		mWifiManager.disconnect();
-//    		mWifiManager.removeNetwork(netId);
+		mWifiManager.disableNetwork(netId);
+		mWifiManager.disconnect();
     }
     
     public boolean forgetNetwork(int networkId) {
@@ -550,4 +555,98 @@ public class WifiAdmin {
         
         return string;
     }
+    
+  //----------------------------------------------------------------------
+  	public boolean checkWifiPwd(String ssid, String bssid, String pwd, final DataCallback<Boolean> callback) {
+  		//保存旧的，用新的连接，一旦新的连接失败就再恢复旧的
+  		final WifiConfiguration oriconf = getExistWifiConf(ssid, bssid);
+  		WifiConfiguration newconf = new WifiConfiguration();
+  		try {
+  			newconf.SSID = convertToQuotedString(ssid);
+  			newconf.BSSID = bssid;
+  			newconf.preSharedKey = "\"" + pwd + "\"";
+  			newconf.priority = getMaxPriority(mWifiManager) + 1;
+  			newconf.networkId = mWifiManager.addNetwork(newconf);
+  			//mWifiManager.saveConfiguration();
+  		} catch(NullPointerException e) {
+  			Log.e(TAG, "Weird!! Really!! What's wrong??", e);
+  			return false;
+  		}
+  		
+  		if(newconf.networkId == -1) {
+  			Log.e(TAG, "Failed to add config to network");
+  			return false;
+  		}
+  		
+  		if(!mWifiManager.enableNetwork(newconf.networkId, true)) {
+  			Log.e(TAG, "Failed to enable current network");
+  			return false;
+  		}
+  		
+  		if (!mWifiManager.reassociate()) {
+  			Log.e(TAG, "Failed to reassociate network");
+  			return false;
+  		}
+  		
+  		//监听密码是否成功
+  		final WifiConfiguration _conf = newconf;
+  		final Timer timer = new Timer();
+  		final IntentFilter filter = new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+  		final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+  			@Override
+  			public void onReceive(Context context, Intent intent) {
+  				String action = intent.getAction();
+
+  				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
+  					Log.i(TAG, "supplicant state changed action");
+  					int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+  					if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
+  						if (callback != null) {
+  							timer.cancel();
+  							mWifiManager.removeNetwork(_conf.networkId);
+  							if (oriconf != null)
+  								mWifiManager.enableNetwork(oriconf.networkId, false);
+  							mWifiManager.reassociate();
+  							mContext.unregisterReceiver(this);
+  							callback.onFailed("密码验证失败，请重新输入密码。");
+  							return;
+  						}
+  					}
+
+  					WifiInfo info = getWifiInfo();
+  					SupplicantState state = info.getSupplicantState();
+  					if (state == SupplicantState.COMPLETED && info.getNetworkId() == _conf.networkId) { // 验证当前网络登录的网络是否是测试网络
+  						if (callback != null) {
+  							timer.cancel();
+  							mWifiManager.removeNetwork(_conf.networkId);
+  							if (oriconf != null)
+  								mWifiManager.enableNetwork(oriconf.networkId, false);
+  							mWifiManager.reassociate();
+  							mContext.unregisterReceiver(this);
+  							callback.onSuccess(true);
+  						}
+  					}
+  					Log.e(TAG, state.toString());
+  		        }
+              }
+  		};
+  		
+  		timer.schedule(new TimerTask() {
+
+  			@Override
+  			public void run() {
+  				mWifiManager.removeNetwork(_conf.networkId);
+  				if (oriconf != null)
+      				mWifiManager.enableNetwork(oriconf.networkId, false);
+      			mWifiManager.reassociate();
+  				mContext.unregisterReceiver(receiver);
+      			callback.onFailed("密码验证失败，请重新输入密码。");
+  			}
+  			
+  		}, 10000);
+  		
+  		mContext.registerReceiver(receiver, filter);
+  		return true;
+  	}
 }

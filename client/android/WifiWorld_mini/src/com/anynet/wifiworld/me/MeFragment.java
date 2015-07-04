@@ -11,25 +11,34 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
+import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.me.UserLoginActivity;
-import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
+import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiBRService;
 
 public class MeFragment extends MainFragment {
 	private final static String TAG = MeFragment.class.getSimpleName();
 	
 	private LoginHelper mLoginHelper;
+	private WifiProfile mWifiProfile;
 	
 	BroadcastReceiver loginBR = new BroadcastReceiver() {
 
@@ -70,36 +79,93 @@ public class MeFragment extends MainFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
-		
-		setLoginedUI(mLoginHelper.isLogined());
-		
-		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (!mLoginHelper.isLogined()) {
-					UserLoginActivity.start((BaseActivity) getActivity());
-				} else {
-					Intent i = new Intent();
-					i.setClass(getActivity(), MyAccountActivity.class);
-					getActivity().startActivity(i);
-				}
-			}
-		});
-		
-		// 设置about
-		this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent();
-				i.setClass(getApplicationContext(), AboutAppActivity.class);
-				startActivity(i);
-			}
-
-		});
 
 		return mPageRoot;
+	}
+	
+	private boolean mLoaded = false;
+	@Override
+    public void startUpdte() {
+		if (!mLoaded) {
+			setLoginedUI(mLoginHelper.isLogined());
+			
+			mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (!mLoginHelper.isLogined()) {
+						UserLoginActivity.start((BaseActivity) getActivity());
+					} else {
+						Intent i = new Intent();
+						i.setClass(getActivity(), MyAccountActivity.class);
+						getActivity().startActivity(i);
+					}
+				}
+			});
+			
+			// 设置about
+			this.findViewById(R.id.slv_about_app).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent i = new Intent();
+					i.setClass(getApplicationContext(), AboutAppActivity.class);
+					startActivity(i);
+				}
+
+			});
+			
+			// 点击进入account
+			mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
+					startActivity(i);
+				}
+			});
+			
+			// 点击查看WiFi提供者信息
+			mPageRoot.findViewById(R.id.slv_i_am_wifi_provider).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
+
+					mWifiProfile = mLoginHelper.mWifiProfile;
+					if (mWifiProfile != null) {
+						//Intent i = new Intent(getApplicationContext(), WifiProviderDetailActivity.class);
+						//startActivity(i);
+					} else {
+						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
+				    	
+				    	wifiConnectDialog.setTitle("认证当前Wi-Fi");
+				    	wifiConnectDialog.setDefaultContent("您目前还没有认证过您的Wi-Fi，是否马上认证?");
+				    	wifiConnectDialog.setLeftBtnStr("取消");
+				    	wifiConnectDialog.setRightBtnStr("确定");
+				    	
+				    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+							}
+						});
+				    	
+				    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+								startActivity(i);
+								dialog.dismiss();
+							}
+						});
+				    	wifiConnectDialog.show();
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -159,5 +225,4 @@ public class MeFragment extends MainFragment {
 			mPageRoot.findViewById(R.id.person_content_layout).setVisibility(View.GONE);
 		}
 	}
-
 }

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_main_bg" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:orientation="vertical"
+                android:visibility="visible" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_change_provider_info"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/icon_person_about"
+                    item:label="更改WiFi信息"
+                    item:subLabel="删除后重新登记"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_cancle_provider_info"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_48_dip"
+                    item:icon="@drawable/icon_person_about"
+                    item:label="取消WiFi共享"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5.0dip"
+                    android:layout_marginLeft="20.0dip"
+                    android:layout_marginTop="15.0dip"
+                    android:focusable="false"
+                    android:text="@string/knock_tip"
+                    android:textColor="#ffbbbbbb" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+
+                <RelativeLayout
+                    android:id="@+id/tv_setting_knock"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:onClick="knockSwitch"
+                    android:padding="10.0dip" >
+
+                    <TextView
+                        android:id="@+id/tv_setting_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_knock"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/knock_switch"
+                        style="@style/user_check_box"
+                        android:layout_width="22.0dip"
+                        android:layout_height="22.0dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="false"
+                        android:clickable="false"
+                        android:focusable="false" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+
+                <LinearLayout
+                    android:id="@+id/specific_setting_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffffff"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RelativeLayout
+                        android:id="@+id/question_setting"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/settings_item_angle_bg_selector"
+                        android:onClick="questionSetting"
+                        android:paddingBottom="10.0dip"
+                        android:paddingLeft="20.0dip"
+                        android:paddingRight="10.0dip"
+                        android:paddingTop="10.0dip" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_knock_question"
+                            android:textColor="@color/setting_text_color"
+                            android:textSize="16.0sp" />
+
+                        <ImageView
+                            android:id="@+id/arrow1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_arrow_right" />
+
+                        <TextView
+                            android:id="@+id/question_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@id/arrow1"
+                            android:text="@string/knock_question_count"
+                            android:textSize="16.0sp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/common_listview_divider_height"
+                        android:layout_marginLeft="20.0dip"
+                        android:background="@drawable/default_divider" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/settings_item_angle_bg_selector"
+                        android:onClick="voiceCard"
+                        android:paddingBottom="10.0dip"
+                        android:paddingLeft="20.0dip"
+                        android:paddingRight="10.0dip"
+                        android:paddingTop="10.0dip"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_voice_question"
+                            android:textColor="@color/setting_text_color"
+                            android:textSize="16.0sp" />
+
+                        <ImageView
+                            android:id="@+id/image_size_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_arrow_right" />
+
+                        <TextView
+                            android:id="@+id/voice_card_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@id/image_size_arrow"
+                            android:text="@string/voice_card_set"
+                            android:textSize="16.0sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:layout_marginTop="20.0dip"
+                    android:background="@drawable/default_divider" />
+
+                <RelativeLayout
+                    android:id="@+id/relative_4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:padding="10.0dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/knock_statistics_segment_text_left"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5.0dip"
+                    android:layout_marginLeft="20.0dip"
+                    android:layout_marginTop="15.0dip"
+                    android:focusable="false"
+                    android:text="更新动态让更多的身边人知道您的Wi-Fi"
+                    android:textColor="#ffbbbbbb" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_setting_message"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:onClick="knockSwitch"
+                    android:padding="10.0dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="添加动态"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/message_switch"
+                        style="@style/user_check_box"
+                        android:layout_width="22.0dip"
+                        android:layout_height="22.0dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="false"
+                        android:clickable="false"
+                        android:focusable="false" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+
+                <LinearLayout
+                    android:id="@+id/ll_wifi_message"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffffff"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <EditText
+	                    android:id="@+id/ec_wifi_message_content"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="96dp"
+	                    android:ems="10"
+	                    android:hint="输入您的WiFi动态，每天仅限一次" />
+
+	                <RelativeLayout
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent" >
+	
+	                    <Button
+	                        android:id="@+id/btn_wifi_message_send"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_alignParentLeft="true"
+	                        android:layout_alignParentTop="true"
+	                        android:layout_marginLeft="48dp"
+	                        android:text="提交" />
+	
+	                    <Button
+	                        android:id="@+id/btn_wifi_message_clear"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_alignParentRight="true"
+	                        android:layout_alignParentTop="true"
+	                        android:layout_marginRight="48dp"
+	                        android:text="重置" />
+                	</RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:layout_marginTop="20.0dip"
+                    android:background="@drawable/default_divider" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_item_angle_bg_selector"
+                    android:padding="10.0dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="历史动态"
+                        android:textColor="@color/setting_text_color"
+                        android:textSize="16.0sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/common_listview_divider_height"
+                    android:background="@drawable/default_divider" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

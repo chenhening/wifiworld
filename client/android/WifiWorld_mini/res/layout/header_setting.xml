@@ -49,6 +49,7 @@
         android:singleLine="true"
         android:text="子标题"
         android:textColor="@color/white"
+        android:textSize="22sp"
         android:visibility="visible" />
 
     <RelativeLayout

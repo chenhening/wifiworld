@@ -51,7 +51,6 @@ public class CircleImageView extends ImageView {
      
     @Override
     protected void onDraw(Canvas cns) {
-        // TODO Auto-generated method stub
         float h = getMeasuredHeight()- 3.0f;
         float w = getMeasuredWidth()- 3.0f;
         if (path == null) {
@@ -64,7 +63,7 @@ public class CircleImageView extends ImageView {
             path.close();
         }
         cns.drawCircle(w/2.0f, h/2.0f,  Math.min(w/2.0f, h / 2.0f) + 1.5f, paint);
-         int saveCount = cns.getSaveCount();
+        int saveCount = cns.getSaveCount();
         cns.save();
         cns.setDrawFilter(mPaintFlagsDrawFilter);
         cns.clipPath(path,Region.Op.REPLACE);

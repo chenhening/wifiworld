@@ -298,7 +298,7 @@ public class WifiConnectUI {
     	
     	if (dialogType == DialogType.PASSWORD) {
     		wifiConnectDialog.clearPwdEditText();
-	}
+    	}
     	
     	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
