@@ -3,7 +3,6 @@ package com.anynet.wifiworld.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anynet.wifiworld.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
@@ -14,18 +13,19 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
+
+import com.anynet.wifiworld.R;
 
 public class SettingEditItemView extends RelativeLayout implements OnClickListener {
 
@@ -489,7 +489,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-				convertView = mInflater.inflate(R.layout.list_view_item, null);
+				convertView = mInflater.inflate(R.layout.item_sample_textview_list, null);
 				holder.date = (TextView) convertView.findViewById(R.id.item);
 				convertView.setTag(holder);
 			} else {

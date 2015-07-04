@@ -83,7 +83,7 @@
                     android:gravity="center"
                     android:orientation="vertical" >
 
-                    <ImageView
+                    <com.anynet.wifiworld.view.CircleImageView
                         android:id="@+id/iv_wifi_connected_logo"
                         android:layout_width="48dp"
                         android:layout_height="48dp"

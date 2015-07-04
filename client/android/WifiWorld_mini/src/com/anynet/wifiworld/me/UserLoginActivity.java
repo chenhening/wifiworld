@@ -116,7 +116,7 @@ public class UserLoginActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.user_login);
+		setContentView(R.layout.activity_user_login);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 

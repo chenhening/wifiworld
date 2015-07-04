@@ -85,7 +85,7 @@
                 android:text="EmployeeHostPort"
                 android:textSize="10sp" />
 
-            <ImageView
+            <com.anynet.wifiworld.view.CircleImageView
                 android:id="@+id/iv_map_wifi_logo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

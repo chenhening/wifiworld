@@ -27,6 +27,8 @@ package com.anynet.wifiworld;
 
 import java.lang.ref.SoftReference;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -41,6 +43,7 @@ import cn.smssdk.SMSSDK;
 
 import com.anynet.wifiworld.util.GlobalBroadcast;
 import com.anynet.wifiworld.util.LocationHelper;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.NetworkStateListener;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.umeng.analytics.MobclickAgent;
@@ -151,7 +154,19 @@ public class WifiWorldApplication extends Application {
 
 			// 网络断了的时候
 			if (!networkInfo.isConnected()) {
+				LoginHelper.getInstance(getApplicationContext()).logoff();
 			} else {
+				new Timer().schedule(new TimerTask() {
+
+					@Override
+		            public void run() {
+						//自动登录
+						LoginHelper.getInstance(getApplicationContext()).AutoLogin();
+						//自动上传上网记录
+						LoginHelper.getInstance(getApplicationContext()).updateWifiDynamic();
+		            }
+					
+				}, 50);
 			}
 		}
 	};

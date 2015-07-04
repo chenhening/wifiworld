@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <include
+        android:id="@+id/title_bar_replacement"
+        layout="@layout/header_setting"
+        android:visibility="visible" />
+
+    <com.anynet.wifiworld.view.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none"
+        android:layout_below="@id/title_bar_replacement"
+        android:background="@drawable/bg_login" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp" >
+
+            <RelativeLayout
+                android:id="@+id/person_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_120_dip"
+                android:background="@drawable/bg_user_account" >
+
+                <ImageView
+                    android:id="@+id/person_icon"
+                    android:layout_width="60.0dip"
+                    android:layout_height="60.0dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/global_layout_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_def_header" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_15_dip"
+                    android:layout_toRightOf="@+id/person_icon"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/person_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="小屁孩"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/font_main_title" />
+
+                    <TextView
+                        android:id="@+id/person_coin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_2_dip"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="联币 0"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_main_meduim"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/person_signin_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/ic_user_header_upload"
+                    android:gravity="fill_vertical|center"
+                    android:paddingBottom="5.0dip"
+                    android:paddingLeft="5.0dip"
+                    android:paddingTop="5.0dip"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_account_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_content_layout"
+                android:orientation="vertical" >
+                
+                <TextView
+                    android:id="@+id/tv_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="帐号" />
+                
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/siv_alias"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item1"
+                    item:contentEditType="inputbox"
+                    item:contentEditable="true"
+                    item:contentHint="@string/account_edit"
+                    item:contentHintColor="@color/gray"
+                    item:label="@string/my_account_nikename"
+                    item:showContent="true"
+                    item:showRedPoint="false" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+
+                <View
+			        android:layout_width="match_parent"
+			        android:layout_height="1px"
+			        android:background="@color/grey" />
+                
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/sev_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item2"
+                    item:contentEditType="inputbox"
+                    item:contentEditable="true"
+                    item:contentHint="@string/account_edit"
+                    item:contentHintColor="@color/gray"
+                    item:label="邮箱"
+                    item:showContent="true"
+                    item:showRedPoint="false" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_account_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/ll_account_account"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="资料" />
+
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/sev_sex"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item0"
+                    item:contentEditType="selectbox"
+                    item:contentEditable="true"
+                    item:contentHint="请填入性别"
+                    item:contentHintColor="@color/gray"
+                    item:label="性别"
+                    item:listData="@array/gender"
+                    item:showContent="true"
+                    item:showRedPoint="false" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/sev_age"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item1"
+                    item:contentEditType="normal"
+                    item:contentEditable="true"
+                    item:contentHintColor="@color/gray"
+                    item:label="生日"
+                    item:showContent="true"
+                    item:showRedPoint="false"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/sev_job"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item1"
+                    item:contentEditType="selectbox"
+                    item:contentEditable="true"
+                    item:listData="@array/profession"
+                    item:contentHintColor="@color/gray"
+                    item:label="职业"
+                    item:showContent="true"
+                    item:showRedPoint="false"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+
+                <com.anynet.wifiworld.view.SettingEditItemView
+                    android:id="@+id/sev_interest"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dimen_45_dip"
+                    android:background="@drawable/bg_account_item1"
+                    item:contentEditType="inputbox"
+                    item:contentEditable="true"
+                    item:contentHintColor="@color/gray"
+                    item:label="爱好"
+                    item:showContent="true"
+                    item:showRedPoint="false"
+                    item:showTopDivider="true" >
+                </com.anynet.wifiworld.view.SettingEditItemView>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_login"
+                style="@style/Button.Default.Green"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/ll_account_desc"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_login_btn_title"
+                android:textSize="@dimen/font_main_title" />
+
+        </RelativeLayout>
+    </com.anynet.wifiworld.view.ReboundScrollView>
+
+</RelativeLayout>

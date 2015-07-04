@@ -71,16 +71,19 @@ public class MeFragment extends MainFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		mPageRoot = inflater.inflate(R.layout.fragment_me, null);
 		
+		setLoginedUI(mLoginHelper.isLogined());
+		
 		mPageRoot.findViewById(R.id.login_text).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-//				if (!mLoginHelper.isLogined()) {
-//					UserLoginActivity.start((BaseActivity) getActivity());
-//				}
-				Intent i = new Intent();
-				i.setClass(getActivity(), MyAccountActivity.class);
-				getActivity().startActivity(i);
+				if (!mLoginHelper.isLogined()) {
+					UserLoginActivity.start((BaseActivity) getActivity());
+				} else {
+					Intent i = new Intent();
+					i.setClass(getActivity(), MyAccountActivity.class);
+					getActivity().startActivity(i);
+				}
 			}
 		});
 		

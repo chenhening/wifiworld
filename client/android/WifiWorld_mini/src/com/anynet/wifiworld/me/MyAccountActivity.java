@@ -23,40 +23,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.v3.listener.UpdateListener;
 
-import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.XLLog;
 import com.anynet.wifiworld.view.SettingEditItemView;
 import com.anynet.wifiworld.view.SettingEditItemView.ClickButtonListener;
 import com.anynet.wifiworld.view.SettingEditItemView.ClickEditButtonListener;
-import com.anynet.wifiworld.view.SettingItemView;
 
 public class MyAccountActivity extends BaseActivity {
 
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
 	SettingEditItemView sexIV;
-	SettingItemView si;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(getString(R.string.my_account_title));
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.user_account);
+		setContentView(R.layout.activity_user_account);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 
@@ -75,12 +65,8 @@ public class MyAccountActivity extends BaseActivity {
 			iv_avatar.setImageDrawable(drawable);
 		}
 
-		final TextView tvName = (TextView) findViewById(R.id.person_name);
-		si = (SettingItemView) findViewById(R.id.siv_account);
-		final TextView tvContent = (TextView) si.findViewById(R.id.setting_item_content);
+		TextView tvName = (TextView) findViewById(R.id.person_name);
 		tvName.setText(mUserProfile.getUsername());
-		tvContent.setText(mUserProfile.getUsername());
-		si.findViewById(R.id.setting_item_next).setVisibility(View.INVISIBLE);
 
 		final SettingEditItemView nicknameIV = (SettingEditItemView) findViewById(R.id.siv_alias);
 		if (mUserProfile.NickName == null || mUserProfile.NickName.equals("")) {
