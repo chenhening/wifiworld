@@ -3,7 +3,6 @@ package com.anynet.wifiworld.me;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,29 +10,24 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
-import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
-import com.anynet.wifiworld.BaseFragment.MainFragment;
-import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.WifiBRService;
 
 public class MeFragment extends MainFragment {
 	private final static String TAG = MeFragment.class.getSimpleName();
@@ -145,7 +139,7 @@ public class MeFragment extends MainFragment {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
 				    	
 				    	wifiConnectDialog.setTitle("认证当前Wi-Fi");
-				    	wifiConnectDialog.setDefaultContent("您目前还没有认证过您的Wi-Fi，是否马上认证?");
+				    	wifiConnectDialog.setDefaultContent("您目前未认证过您的Wi-Fi，是否马上认证?");
 				    	wifiConnectDialog.setLeftBtnStr("取消");
 				    	wifiConnectDialog.setRightBtnStr("确定");
 				    	

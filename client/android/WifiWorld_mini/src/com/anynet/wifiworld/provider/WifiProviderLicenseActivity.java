@@ -3,9 +3,8 @@ package com.anynet.wifiworld.provider;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.R.layout;
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 
 public class WifiProviderLicenseActivity extends BaseActivity {
 
@@ -15,6 +14,8 @@ public class WifiProviderLicenseActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_provider_license);
 		super.onCreate(savedInstanceState);
+		
+		mTitlebar.tvTitle.setText("网络宝服务协议");
 	}
 
 	@Override

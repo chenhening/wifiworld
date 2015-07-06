@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_wifi_auth_item_1" >
 
-        <com.anynet.wifiworld.view.CircleImageView
+        <ImageView
             android:id="@+id/iv_wifi_item_logo"
             android:layout_width="32dp"
             android:layout_height="32dp"

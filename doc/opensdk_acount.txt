@@ -19,3 +19,55 @@ vpn地址：v.ipa.social
 	
 6.云测：http://realauto.testin.cn（APK云测试）
 	帐号密码同上
+	
+7.应用市场账号
+	http://open.wandoujia.com/
+	179770346@qq.com
+	密码同上
+	
+	http://dev.anzhuoapk.com/
+	179770346@qq.com
+	1986720fei
+	
+	http://dev.gfan.com/
+	buffer8848
+	1986720fei
+	
+	http://market.nduoa.com/
+	buffer8848
+	同上
+	
+	http://open.qq.com/
+	179770346@qq.com
+	同上
+	
+	http://open.oppomobile.com/
+	buffer8848
+	1986720fei
+	
+	http://www.appchina.com/
+	18688339822
+	同上
+	
+	member.meizu.com
+	179770346@qq.com
+	同上
+	
+	http://m.163.com/android/ 不支持个人开发者
+	oppo可可商店 不支持个人开发者
+	
+	http://dev.mopo.com/
+	179770346@qq.com
+	同上
+	
+	http://dev.mumayi.com/
+	buffer8848
+	同上
+	
+	http://dev.eoemarket.com/
+	buffer8848
+	同上
+	
+	http://app.suning.com/
+	179770346@qq.com
+	同上

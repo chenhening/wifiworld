@@ -102,7 +102,7 @@
 
         <Button
             android:id="@+id/certify_button"
-            android:layout_width="72dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
@@ -162,7 +162,7 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
-                android:text="通过“号外”广告推送，商家可以吸引路过或本无意消费的用户进店或消费。网络宝用户在经过商家Wi-Fi信号覆盖区域时，会收到商家自主编辑的有营销目的的信息。当用户感兴趣时即可进店挑选商品或消费。当用户使用商家Wi-Fi连网时，则可以看到商家的主页，信息更加全面，更有利于用户了解商家信息。"
+                android:text="网络宝通过优化和完善你和你的朋友使用Wi-Fi体验，也让你的资源最大化利用，并因此获得回报；通过丰富的个性化定制你的Wi-Fi能够更快更直接的吸引到附近人的注意，让陌生的邻居了解到你的个性。"
                 android:textColor="#ff666666"
                 android:textSize="13.0sp" />
 
@@ -172,7 +172,7 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
-                android:text="用户连接商家Wi-Fi后，会进入到商家的聊天室，用户可以在聊天室和店主、店员以及其他同店人员进行聊天互动。商家可以利用店主优势，进行有目的性的私信和群发私信，针对性地发送促销信息，带动销售，及更好地服务消费者。"
+                android:text="用户连接Wi-Fi后，会进入聊天室，用户可以在聊天室进行聊天互动。Wi-Fi社交环境下会有意想不到的惊喜和商机。"
                 android:textColor="#ff666666"
                 android:textSize="13.0sp" />
 
@@ -182,7 +182,7 @@
                 android:layout_marginTop="@dimen/dimen_15_dip"
                 android:paddingLeft="@dimen/dimen_15_dip"
                 android:paddingRight="@dimen/dimen_15_dip"
-                android:text="用户离开商家店铺后，可以对商家的服务、产品进行分享和评论，对商家信息进行扩散，也可以通过商家的网页直接电话预订或网上预订服务。"
+                android:text="用户使用你的网络后，可以对您的服务、资源进行分享和评论，进行扩散，也因此给你带来更多的商业或者交流机会。"
                 android:textColor="#ff666666"
                 android:textSize="13.0sp" />
         </LinearLayout>
