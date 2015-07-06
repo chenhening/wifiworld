@@ -56,6 +56,8 @@
         </activity>
         
         <activity
+            android:name="com.anynet.wifiworld.GuideActivity" />
+        <activity
             android:name="com.anynet.wifiworld.wifi.ui.WifiDetailsActivity" />
         <activity
             android:name="com.anynet.wifiworld.me.AboutAppActivity" />

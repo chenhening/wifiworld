@@ -198,7 +198,7 @@ public class MeFragment extends MainFragment {
 				@Override
 				public void run() {
 					//提醒WiFi提供者多去更新其WiFi设置(TODO)以后要专门移动到一个服务里面
-					if(mLoginHelper.mWifiProfile != null) {
+					/*if(mLoginHelper.mWifiProfile != null) {
 						getActivity().runOnUiThread(new Runnable() {
 
 							@Override
@@ -216,7 +216,7 @@ public class MeFragment extends MainFragment {
 							}
 							
 						});
-					}
+					}*/
 				}
 				
 			}, 20000, 80000000);

@@ -26,6 +26,7 @@
 
 package com.anynet.wifiworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
@@ -35,14 +36,13 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import com.anynet.wifiworld.GuideActivity;
 import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
-import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
-import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.ui.WifiFragment;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -69,6 +69,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	//进入引导页
+    	Intent intent = new Intent(this, GuideActivity.class);
+    	startActivity(intent);
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         

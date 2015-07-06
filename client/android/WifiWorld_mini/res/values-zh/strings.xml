@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">网络宝mini</string>
+    <string name="app_name">网络宝</string>
     
     <!-- Login -->
     <string name="account_edit">修改</string>
