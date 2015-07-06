@@ -1,15 +1,21 @@
 package com.anynet.wifiworld.wifi.ui;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.os.IBinder;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
@@ -20,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,6 +34,7 @@ import android.widget.ToggleButton;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
@@ -61,6 +69,8 @@ public class WifiConnectUI {
 	private Animation mAnimNeedle;
 	private ImageView mImageSearch;
 	private ImageView mImageNeedle;
+	
+	private PopupWindow popupwindow;
 	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
@@ -257,6 +267,22 @@ public class WifiConnectUI {
 		mWifiNotAuthList = new WifiNotAuthListAdapter(mView.getContext(), mWifiListScanned.getNotAuthList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		mWifiNotAuthListView.setOnItemClickListener(mNotAuthItemClickListener);
+		
+		//设置wifi弹出式下拉菜单
+		initMorePopWindows();
+		mView.findViewById(R.id.iv_wifi_plus).setOnClickListener(new OnClickListener() {
+
+			@Override
+            public void onClick(View v) {
+				if (popupwindow != null&&popupwindow.isShowing()) {
+	                popupwindow.dismiss();
+	                return;
+	            } else {
+	                popupwindow.showAsDropDown(v, 0, 16);
+	            }
+            }
+			
+		});
 	}
 	
     //-----------------------------------------------------------------------------------------------------------------
@@ -350,4 +376,88 @@ public class WifiConnectUI {
     	
     	wifiConnectDialog.show();
     }
+    
+    private void initMorePopWindows() {
+        if (popupwindow == null) {
+    		// 获取自定义布局文件pop.xml的视图  
+			LayoutInflater layoutInflater = (LayoutInflater)mView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
+    		popupwindow = new PopupWindow(customView);
+    		popupwindow.setWidth(LayoutParams.WRAP_CONTENT);    
+    		popupwindow.setHeight(LayoutParams.WRAP_CONTENT); 
+    		popupwindow.setTouchable(true);
+    		popupwindow.setFocusable(true);
+    		popupwindow.setBackgroundDrawable(new BitmapDrawable());
+    		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
+    		popupwindow.setOutsideTouchable(true);
+                
+    		//认证
+    		customView.findViewById(R.id.ll_more_auth).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+        			Intent i = new Intent(mView.getContext(), WifiProviderRigisterActivity.class);
+        			mView.getContext().startActivity(i);
+        			popupwindow.dismiss();
+                }
+                	
+            });
+    		
+            //扫一扫
+            customView.findViewById(R.id.ll_more_scan).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+    				//Intent i = new Intent();
+    				//i.setClass(getActivity(), CaptureActivity.class);
+    				//startActivity(i);
+    				//popupwindow.dismiss();
+                }
+                	
+            });
+            
+            //生成二维码
+            customView.findViewById(R.id.ll_more_create_code).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+        			popupwindow.dismiss();
+        			
+        			/*WifiInfoScanned wifiCurInfo = mWifiListHelper.mWifiInfoCur;
+        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
+        				showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
+        				return;
+        			}
+        			
+        			WifiInfoScanned curwifi = new WifiInfoScanned();
+					curwifi.setWifiName(wifiCurInfo.getWifiName());
+					curwifi.setWifiMAC(wifiCurInfo.getWifiMAC());
+					curwifi.setWifiPwd(wifiCurInfo.getWifiPwd());
+					curwifi.setEncryptType(wifiCurInfo.getEncryptType());
+					curwifi.setAuthWifi(true);
+        			
+        			LayoutInflater layoutInflater = 
+        				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
+        			PopupWindow image_display_popwin = new PopupWindow(customView);
+        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);    
+        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
+        			image_display_popwin.setTouchable(true);
+        			image_display_popwin.setFocusable(true);
+        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
+        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
+        			image_display_popwin.setOutsideTouchable(true);
+        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
+        			try {
+        				String object = JSONObject.toJSONString(curwifi);
+	                    image.setImageBitmap(EncodingHandler.createQRCode(object, 640));
+                    } catch (WriterException e) {
+	                    e.printStackTrace();
+                    }
+        			image_display_popwin.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);*/
+                }
+                	
+            });
+		}
+	}
 }
