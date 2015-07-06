@@ -403,6 +403,18 @@ public class WifiConnectUI {
                 	
             });
     		
+    		//测一测
+    		customView.findViewById(R.id.ll_more_test).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+        			Intent i = new Intent(mView.getContext(), WifiTestActivity.class);
+        			mView.getContext().startActivity(i);
+        			popupwindow.dismiss();
+                }
+                	
+            });
+    		
             //扫一扫
             customView.findViewById(R.id.ll_more_scan).setOnClickListener(new OnClickListener() {
 

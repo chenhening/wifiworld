@@ -86,6 +86,8 @@
             android:name="com.anynet.wifiworld.provider.WifiProviderRigisterCompleteActivity" />
         <activity
             android:name="com.anynet.wifiworld.provider.WifiProviderSettingActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.wifi.ui.WifiTestActivity" />
         
         <!-- 高德 -->
         <meta-data

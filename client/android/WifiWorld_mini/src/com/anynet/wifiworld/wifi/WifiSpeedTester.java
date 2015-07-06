@@ -3,9 +3,14 @@ package com.anynet.wifiworld.wifi;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.util.NetworkTester;
+
+import android.R.string;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.renderscript.RenderScript.Priority;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,8 +20,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.anynet.wifiworld.R;
 
 public class WifiSpeedTester implements OnClickListener {
 	private final static String TAG = WifiSpeedTester.class.getSimpleName();
