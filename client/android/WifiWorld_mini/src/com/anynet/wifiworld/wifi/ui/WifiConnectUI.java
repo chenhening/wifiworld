@@ -11,6 +11,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import cn.hugo.android.scanner.decode.EncodingHandler;
 import com.alibaba.fastjson.JSONObject;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
@@ -77,11 +79,13 @@ public class WifiConnectUI {
 	private ImageView mImageNeedle;
 	
 	private PopupWindow popupwindow;
+	private ImageView mWifiMore;
 	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
 		@Override
 		public void onWifiListRefreshed() {
+			initMorePopWindows();
 			setWifiConnectedContent();
 			if (mWifiAuthList != null) {
 				mWifiAuthList.refreshWifiList(mWifiListScanned.getAuthList());
@@ -115,6 +119,7 @@ public class WifiConnectUI {
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
+			mWifiMore.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
@@ -123,6 +128,7 @@ public class WifiConnectUI {
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
+			mWifiMore.setVisibility(View.INVISIBLE);
 		}
 
 		@Override
@@ -263,6 +269,22 @@ public class WifiConnectUI {
 		mWifiStatus = (TextView)mView.findViewById(R.id.tv_wifi_options);
 		mWifiAlias = (TextView)mView.findViewById(R.id.tv_wifi_connected_alias);
 		mWifiAuthDesc = (TextView)mView.findViewById(R.id.tv_wifi_connected_desc);
+		//点击主页的wifi连接页面，如果是认证的进入认证详细页面
+		mView.findViewById(R.id.ll_wifi_connected_parent).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				WifiListItem item = mWifiCurrent.getWifiListItem();
+				if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
+					Intent i = new Intent(mView.getContext(), WifiDetailsActivity.class);
+					Bundle wifiData = new Bundle();
+					wifiData.putSerializable(WifiProfile.TAG, item.getWifiProfile());
+					i.putExtras(wifiData);
+					mView.getContext().startActivity(i);
+				}
+			}
+			
+		});
 		
 		mWifiAuthListView = (ListView)mView.findViewById(R.id.lv_wifi_free_list);
 		mWifiAuthList = new WifiAuthListAdapter(mView.getContext(), mWifiListScanned.getAuthList());
@@ -276,7 +298,8 @@ public class WifiConnectUI {
 		
 		//设置wifi弹出式下拉菜单
 		initMorePopWindows();
-		mView.findViewById(R.id.iv_wifi_plus).setOnClickListener(new OnClickListener() {
+		mWifiMore = (ImageView) mView.findViewById(R.id.iv_wifi_plus);
+		mWifiMore.setOnClickListener(new OnClickListener() {
 
 			@Override
             public void onClick(View v) {
@@ -421,6 +444,18 @@ public class WifiConnectUI {
                 	
             });
     		
+    		//评论
+    		customView.findViewById(R.id.ll_more_comment).setOnClickListener(new OnClickListener() {
+
+        		@Override
+                public void onClick(View v) {
+        			Intent i = new Intent(mView.getContext(), WifiCommentActivity.class);
+        			mView.getContext().startActivity(i);
+        			popupwindow.dismiss();
+                }
+                	
+            });
+    		
             //扫一扫
             customView.findViewById(R.id.ll_more_scan).setOnClickListener(new OnClickListener() {
 
@@ -472,6 +507,19 @@ public class WifiConnectUI {
                 }
                 	
             });
+		}
+        
+        WifiListItem item = mWifiCurrent.getWifiListItem();
+		if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
+			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.GONE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.VISIBLE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.VISIBLE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.VISIBLE);
+		} else {
+			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.VISIBLE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.GONE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.GONE);
+			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.GONE);
 		}
 	}
 }
