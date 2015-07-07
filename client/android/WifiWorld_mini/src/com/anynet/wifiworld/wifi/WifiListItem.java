@@ -58,12 +58,16 @@ public class WifiListItem {
 	};
 	private WifiType mWifiType;
 	private String mWifiPwd;
+	private String mMacAddr; //技术债啊
+	private String mSSID; //技术债啊
+	private String mEncryptType; //技术债啊
 	
 	public WifiListItem() {
 		mWifiType = WifiType.UNKOWN;
 		mWifiPwd = null;
 		mScanResult = null;
 		mWifiConfiguration = null;
+		mWifiProfile = null;
 	}
 	
 	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration) {
@@ -97,16 +101,30 @@ public class WifiListItem {
 	}
 	
 	public String getWifiName() {
-		return mScanResult.SSID;
+		if (mScanResult != null)
+			return mScanResult.SSID;
+		else
+			return mSSID;
+	}
+	
+	public void setWifiName(String ssid) {
+		mSSID = ssid;
 	}
 	
 	public String getWifiMac() {
-		return mScanResult.BSSID;
+		if (mScanResult != null)
+			return mScanResult.BSSID;
+		else
+			return mMacAddr;
+	}
+	
+	public void setWifiMac(String macid) {
+		mMacAddr = macid;
 	}
 	
 	public String getWifiPwd() {
 		if (mWifiProfile != null) {
-			mWifiPwd = mWifiProfile.Password;
+			mWifiPwd = mWifiProfile.getPassword();
 		}
 		return mWifiPwd;
 	}
@@ -116,7 +134,14 @@ public class WifiListItem {
 	}
 	
 	public String getEncryptType() {
-		return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
+		if (mScanResult != null)
+			return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
+		else 
+			return mEncryptType;
+	}
+	
+	public void setEncryptType(String type) {
+		mEncryptType = type;
 	}
 	
 	public String getAlias() {

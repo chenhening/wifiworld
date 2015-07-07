@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 	<!-- 友盟统计分享更新需要添加的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -90,6 +91,8 @@
             android:name="com.anynet.wifiworld.wifi.ui.WifiTestActivity" />
         <activity
             android:name="com.anynet.wifiworld.wifi.ui.WifiCommentActivity" />
+        <activity
+            android:name="cn.hugo.android.scanner.CaptureActivity" />
         
         <!-- 高德 -->
         <meta-data

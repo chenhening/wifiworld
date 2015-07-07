@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import org.json.JSONArray;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,7 +37,6 @@ import android.widget.ToggleButton;
 import cn.hugo.android.scanner.CaptureActivity;
 import cn.hugo.android.scanner.decode.EncodingHandler;
 
-import com.alibaba.fastjson.JSONObject;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
@@ -43,6 +44,7 @@ import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiBRService;
@@ -53,9 +55,10 @@ import com.anynet.wifiworld.wifi.WifiListScanned;
 import com.google.zxing.WriterException;
 
 public class WifiConnectUI {
-	private final static String TAG = WifiConnectUI.class.getSimpleName();
+	public final static String TAG = WifiConnectUI.class.getSimpleName();
 	
 	private View mView;
+	private Activity mActivity;
 	private WifiAdmin mWifiAdmin;
 	private WifiCurrent mWifiCurrent;
 	private WifiListScanned mWifiListScanned;
@@ -119,7 +122,7 @@ public class WifiConnectUI {
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
-			mWifiMore.setVisibility(View.VISIBLE);
+			//mWifiMore.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
@@ -128,7 +131,7 @@ public class WifiConnectUI {
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
-			mWifiMore.setVisibility(View.INVISIBLE);
+			//mWifiMore.setVisibility(View.INVISIBLE);
 		}
 
 		@Override
@@ -182,13 +185,14 @@ public class WifiConnectUI {
 		}
 	};
 	
-	public WifiConnectUI(View view) {
+	public WifiConnectUI(View view, Activity activity) {
 		mView = view;
-		mWifiAdmin = WifiAdmin.getInstance(mView.getContext());
-		mWifiCurrent = WifiCurrent.getInstance(mView.getContext());
-		mWifiListScanned = WifiListScanned.getInstance(mView.getContext(), wifiListHandler);
+		mActivity = activity;
+		mWifiAdmin = WifiAdmin.getInstance(mActivity);
+		mWifiCurrent = WifiCurrent.getInstance(mActivity);
+		mWifiListScanned = WifiListScanned.getInstance(mActivity, wifiListHandler);
 		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
-		WifiBRService.bindWifiService(mView.getContext(), conn);
+		WifiBRService.bindWifiService(mActivity, conn);
 		getViewHolder();
 		
 		//启动动画，更新WiFi扫描列表
@@ -245,7 +249,7 @@ public class WifiConnectUI {
 		
 		//点击搜索附近WiFi
 		mImageNeedle = (ImageView)mView.findViewById(R.id.iv_wifi_search_needle);
-		mAnimNeedle = AnimationUtils.loadAnimation(mView.getContext(), R.animator.animation_needle);
+		mAnimNeedle = AnimationUtils.loadAnimation(mActivity, R.animator.animation_needle);
 		mAnimNeedle.setInterpolator(new BounceInterpolator());
 		mImageSearch = (ImageView)mView.findViewById(R.id.iv_wifi_search_heart);
 		mImageSearch.setImageResource(R.animator.animation_search);
@@ -276,23 +280,23 @@ public class WifiConnectUI {
 			public void onClick(View v) {
 				WifiListItem item = mWifiCurrent.getWifiListItem();
 				if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
-					Intent i = new Intent(mView.getContext(), WifiDetailsActivity.class);
+					Intent i = new Intent(mActivity, WifiDetailsActivity.class);
 					Bundle wifiData = new Bundle();
 					wifiData.putSerializable(WifiProfile.TAG, item.getWifiProfile());
 					i.putExtras(wifiData);
-					mView.getContext().startActivity(i);
+					mActivity.startActivity(i);
 				}
 			}
 			
 		});
 		
 		mWifiAuthListView = (ListView)mView.findViewById(R.id.lv_wifi_free_list);
-		mWifiAuthList = new WifiAuthListAdapter(mView.getContext(), mWifiListScanned.getAuthList());
+		mWifiAuthList = new WifiAuthListAdapter(mActivity, mWifiListScanned.getAuthList());
 		mWifiAuthListView.setAdapter(mWifiAuthList);
 		mWifiAuthListView.setOnItemClickListener(mAuthItemClickListener);
 		
 		mWifiNotAuthListView = (ListView)mView.findViewById(R.id.lv_wifi_encrypt_list);
-		mWifiNotAuthList = new WifiNotAuthListAdapter(mView.getContext(), mWifiListScanned.getNotAuthList());
+		mWifiNotAuthList = new WifiNotAuthListAdapter(mActivity, mWifiListScanned.getNotAuthList());
 		mWifiNotAuthListView.setAdapter(mWifiNotAuthList);
 		mWifiNotAuthListView.setOnItemClickListener(mNotAuthItemClickListener);
 		
@@ -345,7 +349,7 @@ public class WifiConnectUI {
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
-    	final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mView.getContext(), dialogType);
+    	final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, dialogType);
     	
     	wifiConnectDialog.setTitle("连接到：" + wifiListItem.getWifiName());
     	wifiConnectDialog.setLeftBtnStr("取消");
@@ -373,20 +377,20 @@ public class WifiConnectUI {
 						WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiListItem);
 						connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 					} else {
-						Toast.makeText(mView.getContext(), "错误的WiFi类型", Toast.LENGTH_LONG).show();
+						Toast.makeText(mActivity, "错误的WiFi类型", Toast.LENGTH_LONG).show();
 					}
 					break;
 				case PASSWORD:
 					if (wifiListItem.isEncryptWifi()) {
 						String inputedPwd = wifiConnectDialog.getPwdContent();
 						if (inputedPwd.equals("")) {
-							Toast.makeText(mView.getContext(), "请输入密码。", Toast.LENGTH_LONG).show();
+							Toast.makeText(mActivity, "请输入密码。", Toast.LENGTH_LONG).show();
 							return;
 						}
 						wifiListItem.setWifiPwd(inputedPwd);
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
 						//shutdown soft keyboard if soft keyboard is actived
-						InputMethodManager imm = (InputMethodManager)mView.getContext().getSystemService(mView.getContext().INPUT_METHOD_SERVICE);
+						InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(mActivity.INPUT_METHOD_SERVICE);
 						if (imm.isActive()) {
 							imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 						}
@@ -398,7 +402,7 @@ public class WifiConnectUI {
 				}
 				dialog.dismiss();
 				if (!connResult) {
-					Toast.makeText(mView.getContext(), "无法连接到网络：" + wifiListItem.getWifiName(), Toast.LENGTH_LONG).show();
+					Toast.makeText(mActivity, "无法连接到网络：" + wifiListItem.getWifiName(), Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -409,7 +413,7 @@ public class WifiConnectUI {
     private void initMorePopWindows() {
         if (popupwindow == null) {
     		// 获取自定义布局文件pop.xml的视图  
-			LayoutInflater layoutInflater = (LayoutInflater)mView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			final LayoutInflater layoutInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
     		popupwindow = new PopupWindow(customView);
     		popupwindow.setWidth(LayoutParams.WRAP_CONTENT);    
@@ -425,8 +429,8 @@ public class WifiConnectUI {
 
         		@Override
                 public void onClick(View v) {
-        			Intent i = new Intent(mView.getContext(), WifiProviderRigisterActivity.class);
-        			mView.getContext().startActivity(i);
+        			Intent i = new Intent(mActivity, WifiProviderRigisterActivity.class);
+        			mActivity.startActivity(i);
         			popupwindow.dismiss();
                 }
                 	
@@ -437,8 +441,8 @@ public class WifiConnectUI {
 
         		@Override
                 public void onClick(View v) {
-        			Intent i = new Intent(mView.getContext(), WifiTestActivity.class);
-        			mView.getContext().startActivity(i);
+        			Intent i = new Intent(mActivity, WifiTestActivity.class);
+        			mActivity.startActivity(i);
         			popupwindow.dismiss();
                 }
                 	
@@ -449,8 +453,8 @@ public class WifiConnectUI {
 
         		@Override
                 public void onClick(View v) {
-        			Intent i = new Intent(mView.getContext(), WifiCommentActivity.class);
-        			mView.getContext().startActivity(i);
+        			Intent i = new Intent(mActivity, WifiCommentActivity.class);
+        			mActivity.startActivity(i);
         			popupwindow.dismiss();
                 }
                 	
@@ -462,8 +466,8 @@ public class WifiConnectUI {
         		@Override
                 public void onClick(View v) {
     				Intent i = new Intent();
-    				i.setClass(mView.getContext(), CaptureActivity.class);
-    				mView.getContext().startActivity(i);
+    				i.setClass(mActivity, CaptureActivity.class);
+    				mActivity.startActivity(i);
     				popupwindow.dismiss();
                 }
                 	
@@ -477,19 +481,14 @@ public class WifiConnectUI {
         			popupwindow.dismiss();
         			
         			WifiListItem wifiCurInfo = WifiCurrent.getWifiListItem();
-        			
         			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
-        				((BaseActivity) mView.getContext()).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
-        				
+        				((BaseActivity) mActivity).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
         				return;
         			}
         			
-        			LayoutInflater layoutInflater = 
-        				(LayoutInflater)mView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        			
         			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
         			PopupWindow image_display_popwin = new PopupWindow(customView);
-        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);    
+        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);
         			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
         			image_display_popwin.setTouchable(true);
         			image_display_popwin.setFocusable(true);
@@ -498,12 +497,20 @@ public class WifiConnectUI {
         			image_display_popwin.setOutsideTouchable(true);
         			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
         			try {
-        				String object = JSONObject.toJSONString(wifiCurInfo);
-	                    image.setImageBitmap(EncodingHandler.createQRCode(object, 640));
+        				JSONArray jsonarray = new JSONArray();
+        				jsonarray.put(wifiCurInfo.getWifiName());
+        				jsonarray.put(wifiCurInfo.getWifiMac());
+        				jsonarray.put(wifiCurInfo.getWifiPwd());
+        				jsonarray.put(wifiCurInfo.getEncryptType());
+        				String object = jsonarray.toString();
+        				String encryptObj = StringCrypto.encryptDES(object, CaptureActivity.KEY);
+	                    image.setImageBitmap(EncodingHandler.createQRCode(encryptObj, 640));
                     } catch (WriterException e) {
 	                    e.printStackTrace();
-                    }
-        			image_display_popwin.showAtLocation(((Activity) mView.getContext()).getCurrentFocus(), Gravity.CENTER, 0, 0);
+                    } catch (Exception e) {
+						e.printStackTrace();
+					}
+        			image_display_popwin.showAtLocation(mView, Gravity.CENTER, 0, 0);
                 }
                 	
             });
@@ -513,12 +520,12 @@ public class WifiConnectUI {
 		if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
 			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.GONE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.VISIBLE);
-			popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.VISIBLE);
+			//popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.VISIBLE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.VISIBLE);
 		} else {
 			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.VISIBLE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.GONE);
-			popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.GONE);
+			//popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.GONE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.GONE);
 		}
 	}

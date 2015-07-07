@@ -398,6 +398,11 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			showToast("请务必填写WiFi的简介信息。");
 			return false;
 		}
+		
+		if (mLogo == null) {
+			showToast("请务必上传一张logo图片。");
+			return false;
+		}
 
 		return true;
 	}
@@ -418,7 +423,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 							met_password.setEnabled(false);
 							mTitlebar.tvHeaderRight.setEnabled(true);
 							mWifiVerfied = true;
-							mWifiProfile.Password = met_password.getText().toString();
+							mWifiProfile.setPassword(met_password.getText().toString());
 						}
 					});
                 }

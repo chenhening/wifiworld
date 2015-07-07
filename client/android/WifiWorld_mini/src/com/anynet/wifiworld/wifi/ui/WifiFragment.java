@@ -21,7 +21,7 @@ public class WifiFragment extends MainFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
-		mWifiConnect = new WifiConnectUI(mPageRoot);
+		mWifiConnect = new WifiConnectUI(mPageRoot, this.getActivity());
 		
 		return mPageRoot;
 	}

@@ -159,7 +159,7 @@ public class WifiAdmin {
 		
 		int id = -1;
 		try {
-			config.priority = getMaxPriority(mWifiManager) + 1;
+			//config.priority = getMaxPriority(mWifiManager) + 1;
 			id = mWifiManager.addNetwork(config);
 			config.networkId = id;
 		} catch(NullPointerException e) {

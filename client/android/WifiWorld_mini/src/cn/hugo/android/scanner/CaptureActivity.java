@@ -1,10 +1,11 @@
 package cn.hugo.android.scanner;
 
 import java.io.IOException;
-
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Map;
+
+import org.json.JSONArray;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,9 +32,11 @@ import cn.hugo.android.scanner.decode.BitmapDecoder;
 import cn.hugo.android.scanner.decode.CaptureActivityHandler;
 import cn.hugo.android.scanner.view.ViewfinderView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiListItem;
+import com.anynet.wifiworld.wifi.ui.WifiConnectUI;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -53,6 +57,7 @@ import com.google.zxing.client.result.ResultParser;
 public final class CaptureActivity extends Activity implements
 		SurfaceHolder.Callback, View.OnClickListener {
 
+	public static final String KEY = "CODE2KEY";
 	private static final String TAG = CaptureActivity.class.getSimpleName();
 
 	private static final int REQUEST_CODE = 100;
@@ -140,22 +145,32 @@ public final class CaptureActivity extends Activity implements
 
 			switch (msg.what) {
 				case PARSE_BARCODE_SUC: // 解析图片成功
-					Log.d("test", "解析成功，结果为：" + msg.obj);
-					String txt = msg.obj.toString();
-					JSONObject object = JSONObject.parseObject(msg.obj.toString());
-//					WifiInfoScanned wifi = new WifiInfoScanned();
-//					wifi.setWifiName(object.get("wifiName").toString());
-//					wifi.setWifiMAC(object.get("wifiMAC").toString());
-//					wifi.setWifiPwd(object.get("wifiPwd").toString());
-//					wifi.setEncryptType(object.get("encryptType").toString());
-//					WifiAdmin.getInstance(activityReference.get()).connectToNewNetwork(activityReference.get(), 
-//							wifi, true, false);
+					String Entxt = msg.obj.toString();
+					String txt = null;
+					try {
+						txt = StringCrypto.decryptDES(Entxt, KEY);
+						JSONArray object = new JSONArray(txt);
+						WifiListItem tmp = new WifiListItem();
+						tmp.setWifiName(object.getString(0));
+						tmp.setWifiMac(object.getString(1));
+						tmp.setWifiMac(object.getString(2));
+						tmp.setEncryptType(object.getString(3));
+						WifiConfiguration cfgSelected = WifiAdmin.getInstance(activityReference.get()).getWifiConfiguration(tmp);
+						if (cfgSelected != null) //如果有配置就直接上
+							WifiAdmin.getInstance(activityReference.get()).connectToConfiguredNetwork(cfgSelected, true);
+						else
+							WifiAdmin.getInstance(activityReference.get()).connectToNewNetwork(tmp, true, false);
+					} catch (Exception e) {
+						e.printStackTrace();
+						Toast.makeText(activityReference.get(), "解析二维码失败",
+								Toast.LENGTH_SHORT).show();
+					}
 					activityReference.get().finish();
 					break;
 
 				case PARSE_BARCODE_FAIL:// 解析图片失败
 
-					Toast.makeText(activityReference.get(), "解析图片失败",
+					Toast.makeText(activityReference.get(), "解析二维码失败",
 							Toast.LENGTH_SHORT).show();
 					break;
 
@@ -397,7 +412,6 @@ public final class CaptureActivity extends Activity implements
 
 		beepManager.playBeepSoundAndVibrate();
 
-		Log.d("hehe", "识别结果:" + ResultParser.parseResult(rawResult).toString());
 		Message m = mHandler.obtainMessage();
 		m.what = PARSE_BARCODE_SUC;
 		m.obj = ResultParser.parseResult(rawResult).toString();
