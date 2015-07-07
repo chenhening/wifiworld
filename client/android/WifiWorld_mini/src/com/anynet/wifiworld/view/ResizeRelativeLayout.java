@@ -2,7 +2,6 @@ package com.anynet.wifiworld.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class ResizeRelativeLayout extends RelativeLayout

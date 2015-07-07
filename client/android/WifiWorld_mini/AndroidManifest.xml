@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="251"
-    android:versionName="1.1.1" >
+    android:versionCode="254"
+    android:versionName="1.1.4" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -88,6 +88,8 @@
             android:name="com.anynet.wifiworld.provider.WifiProviderSettingActivity" />
         <activity
             android:name="com.anynet.wifiworld.wifi.ui.WifiTestActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.wifi.ui.WifiCommentActivity" />
         
         <!-- 高德 -->
         <meta-data
