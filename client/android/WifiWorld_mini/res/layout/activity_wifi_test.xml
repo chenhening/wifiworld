@@ -83,13 +83,15 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_margin="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"
         android:background="@color/app_color_style" />
 
     <com.anynet.wifiworld.view.ReboundScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_margin="15dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
