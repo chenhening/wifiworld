@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +31,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import cn.hugo.android.scanner.CaptureActivity;
+import cn.hugo.android.scanner.decode.EncodingHandler;
 
+import com.alibaba.fastjson.JSONObject;
+import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
@@ -43,6 +48,7 @@ import com.anynet.wifiworld.wifi.WifiBRService.OnWifiStatusListener;
 import com.anynet.wifiworld.wifi.WifiCurrent;
 import com.anynet.wifiworld.wifi.WifiListItem;
 import com.anynet.wifiworld.wifi.WifiListScanned;
+import com.google.zxing.WriterException;
 
 public class WifiConnectUI {
 	private final static String TAG = WifiConnectUI.class.getSimpleName();
@@ -420,10 +426,10 @@ public class WifiConnectUI {
 
         		@Override
                 public void onClick(View v) {
-    				//Intent i = new Intent();
-    				//i.setClass(getActivity(), CaptureActivity.class);
-    				//startActivity(i);
-    				//popupwindow.dismiss();
+    				Intent i = new Intent();
+    				i.setClass(mView.getContext(), CaptureActivity.class);
+    				mView.getContext().startActivity(i);
+    				popupwindow.dismiss();
                 }
                 	
             });
@@ -435,21 +441,17 @@ public class WifiConnectUI {
                 public void onClick(View v) {
         			popupwindow.dismiss();
         			
-        			/*WifiInfoScanned wifiCurInfo = mWifiListHelper.mWifiInfoCur;
+        			WifiListItem wifiCurInfo = WifiCurrent.getWifiListItem();
+        			
         			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
-        				showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
+        				((BaseActivity) mView.getContext()).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
+        				
         				return;
         			}
         			
-        			WifiInfoScanned curwifi = new WifiInfoScanned();
-					curwifi.setWifiName(wifiCurInfo.getWifiName());
-					curwifi.setWifiMAC(wifiCurInfo.getWifiMAC());
-					curwifi.setWifiPwd(wifiCurInfo.getWifiPwd());
-					curwifi.setEncryptType(wifiCurInfo.getEncryptType());
-					curwifi.setAuthWifi(true);
-        			
         			LayoutInflater layoutInflater = 
-        				(LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        				(LayoutInflater)mView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        			
         			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
         			PopupWindow image_display_popwin = new PopupWindow(customView);
         			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);    
@@ -461,12 +463,12 @@ public class WifiConnectUI {
         			image_display_popwin.setOutsideTouchable(true);
         			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
         			try {
-        				String object = JSONObject.toJSONString(curwifi);
+        				String object = JSONObject.toJSONString(wifiCurInfo);
 	                    image.setImageBitmap(EncodingHandler.createQRCode(object, 640));
                     } catch (WriterException e) {
 	                    e.printStackTrace();
                     }
-        			image_display_popwin.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);*/
+        			image_display_popwin.showAtLocation(((Activity) mView.getContext()).getCurrentFocus(), Gravity.CENTER, 0, 0);
                 }
                 	
             });
