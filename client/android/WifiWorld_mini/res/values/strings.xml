@@ -70,7 +70,7 @@
     <string name="my_account_head">头像</string>
     <string name="my_account_id">账户ID</string>
     <string name="my_account_sex">性别</string>
-    
+    <string name="setting_save">保存</string>
     <string name="setting_exit">退出当前帐号</string>
     
     <!-- WIFI登记 -->

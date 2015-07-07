@@ -138,25 +138,25 @@ public class MeFragment extends MainFragment {
 					} else {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
 				    	
-				    	wifiConnectDialog.setTitle("认证当前Wi-Fi");
-				    	wifiConnectDialog.setDefaultContent("您目前未认证过您的Wi-Fi，是否马上认证?");
-				    	wifiConnectDialog.setLeftBtnStr("取消");
-				    	wifiConnectDialog.setRightBtnStr("确定");
-				    	
-				    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+					    	wifiConnectDialog.setTitle("认证当前Wi-Fi");
+					    	wifiConnectDialog.setDefaultContent("您目前未认证过您的Wi-Fi，是否马上认证?");
+					    	wifiConnectDialog.setLeftBtnStr("取消");
+					    	wifiConnectDialog.setRightBtnStr("确定");
+					    	
+					    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								dialog.dismiss();
 							}
 						});
 				    	
-				    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
-								startActivity(i);
-								dialog.dismiss();
-							}
-						});
-				    	wifiConnectDialog.show();
+					    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
+									startActivity(i);
+									dialog.dismiss();
+								}
+							});
+					    	wifiConnectDialog.show();
 					}
 				}
 			});

@@ -36,7 +36,6 @@ public class MyAccountActivity extends BaseActivity {
 
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
-	SettingEditItemView sexIV;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -68,129 +67,33 @@ public class MyAccountActivity extends BaseActivity {
 		TextView tvName = (TextView) findViewById(R.id.person_name);
 		tvName.setText(mUserProfile.getUsername());
 
-		final SettingEditItemView nicknameIV = (SettingEditItemView) findViewById(R.id.siv_alias);
+		final SettingEditItemView nicknameET = (SettingEditItemView) findViewById(R.id.siv_alias);
 		if (mUserProfile.NickName == null || mUserProfile.NickName.equals("")) {
-			nicknameIV.setContent(mUserProfile.getUsername());
+			nicknameET.setEditContentHint(mUserProfile.getUsername());
 		} else {
-			nicknameIV.setContent(mUserProfile.NickName);
+			nicknameET.setEditContentHint(mUserProfile.NickName);
 		}
 
-		nicknameIV.setClickEditButtonListener(new ClickEditButtonListener() {
-
-			@Override
-			public void onSave(CharSequence data) {
-				// TODO Auto-generated method stub
-				mUserProfile.NickName = data.toString();
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-								.show();
-					}
-				});
-				nicknameIV.setContent(mUserProfile.NickName);
-			}
-
-			@Override
-			public void beforeEdit() {
-				// TODO Auto-generated method stub
-			}
-		});
-
-		sexIV = (SettingEditItemView) findViewById(R.id.sev_sex);
-		sexIV.setContent(mUserProfile.getSex());
-		sexIV.setClickEditButtonListener(new ClickEditButtonListener() {
-
-			@Override
-			public void onSave(CharSequence charSequence) {
-				// TODO Auto-generated method stub
-				mUserProfile.setSex(charSequence.toString());
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-								.show();
-					}
-				});
-				sexIV.setContent(mUserProfile.getSex());
-			}
-
-			@Override
-			public void beforeEdit() {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				LoginHelper.getInstance(getApplicationContext()).logout();
-				finish();
-			}
-		});
-
-		final SettingEditItemView email = (SettingEditItemView) findViewById(R.id.sev_email);
+		final SettingEditItemView emailET = (SettingEditItemView) findViewById(R.id.sev_email);
 		if (mUserProfile.getEmail() == null || mUserProfile.getEmail().equals("")) {
-			email.setContent("");
+			emailET.setEditContentHint("");
 		} else {
-			email.setContent(mUserProfile.getEmail());
+			emailET.setEditContentHint(mUserProfile.getEmail());
 		}
-		email.setClickEditButtonListener(new ClickEditButtonListener() {
+		
+		final SettingEditItemView sexTV = (SettingEditItemView) findViewById(R.id.sev_sex);
+		sexTV.setContent(mUserProfile.getSex());
 
-			@Override
-			public void onSave(CharSequence charSequence) {
-				mUserProfile.setEmail(charSequence.toString());
-				email.setContent(mUserProfile.getEmail());
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-								.show();
-					}
-				});
-			}
-
-			@Override
-			public void beforeEdit() {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		final SettingEditItemView age = (SettingEditItemView) findViewById(R.id.sev_age);
+		final SettingEditItemView birthdayTV = (SettingEditItemView) findViewById(R.id.sev_age);
 		if (mUserProfile.Age == null || mUserProfile.Age.equals("")) {
-			age.setContent("");
+			birthdayTV.setContent("");
 		} else {
-			age.setContent(mUserProfile.Age);
+			birthdayTV.setContent(mUserProfile.Age);
 		}
-		age.setClickButtonListener(new ClickButtonListener() {
+		birthdayTV.setClickEditListner(new OnClickListener() {
+			
 			@Override
-			public void onClick(CharSequence charSequence) {
+			public void onClick(View arg0) {
 				final Calendar c = Calendar.getInstance();
 				DatePickerDialog dialog = new DatePickerDialog(MyAccountActivity.this,
 						new DatePickerDialog.OnDateSetListener() {
@@ -198,101 +101,26 @@ public class MyAccountActivity extends BaseActivity {
 							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 								c.set(year, monthOfYear, dayOfMonth);
 								String content  = DateFormat.format("yyy-MM-dd", c).toString();
-								age.setContent(content);
-								
-								mUserProfile.Age = content;
-								mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-									@Override
-									public void onSuccess() {
-										// TODO Auto-generated method stub
-										Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-									}
-
-									@Override
-									public void onFailure(int arg0, String arg1) {
-										// TODO Auto-generated method stub
-										Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-												.show();
-									}
-								});
+								birthdayTV.setContentEdited(content);
 							}
 						}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				dialog.show();
 			}
 		});
 
-		final SettingEditItemView job = (SettingEditItemView) findViewById(R.id.sev_job);
+		final SettingEditItemView jobTV = (SettingEditItemView) findViewById(R.id.sev_job);
 		if (mUserProfile.Job == null || mUserProfile.Job.equals("")) {
-			job.setContent("");
+			jobTV.setContent("");
 		} else {
-			job.setContent(mUserProfile.Job);
+			jobTV.setContent(mUserProfile.Job);
 		}
-		job.setClickEditButtonListener(new ClickEditButtonListener() {
 
-			@Override
-			public void onSave(CharSequence charSequence) {
-				// TODO Auto-generated method stub
-				mUserProfile.Job = charSequence.toString();
-				job.setContent(mUserProfile.Job);
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-								.show();
-					}
-				});
-			}
-
-			@Override
-			public void beforeEdit() {
-			}
-		});
-
-		final SettingEditItemView interest = (SettingEditItemView) findViewById(R.id.sev_interest);
+		final SettingEditItemView interestET = (SettingEditItemView) findViewById(R.id.sev_interest);
 		if (mUserProfile.Interest == null || mUserProfile.Interest.equals("")) {
-			interest.setContent("");
+			interestET.setEditContentHint("");
 		} else {
-			interest.setContent(mUserProfile.Interest);
+			interestET.setEditContentHint(mUserProfile.Interest);
 		}
-		interest.setClickEditButtonListener(new ClickEditButtonListener() {
-
-			@Override
-			public void onSave(CharSequence charSequence) {
-				// TODO Auto-generated method stub
-				mUserProfile.Interest = charSequence.toString();
-				interest.setContent(mUserProfile.Interest);
-				mUserProfile.update(getApplicationContext(), new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
-								.show();
-					}
-				});
-			}
-
-			@Override
-			public void beforeEdit() {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		
 		//设置头像
 		findViewById(R.id.person_signin_tip).setOnClickListener(new OnClickListener() {
@@ -303,35 +131,77 @@ public class MyAccountActivity extends BaseActivity {
 			}
 			
 		});
+		
+		findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				LoginHelper.getInstance(getApplicationContext()).logout();
+				finish();
+			}
+		});
+		
+		findViewById(R.id.button_save).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				String emailStr = emailET.getEditContent();
+				if (!emailStr.contains("@")) {
+					Toast.makeText(getApplicationContext(), "邮箱地址错误", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				mUserProfile.NickName = nicknameET.getEditContent();
+				mUserProfile.setEmail(emailStr);
+				mUserProfile.setSex(sexTV.getContent());
+				mUserProfile.Age = birthdayTV.getContent();
+				mUserProfile.Job = jobTV.getContent();
+				mUserProfile.Interest = interestET.getEditContent();
+				mUserProfile.update(getApplicationContext(), new UpdateListener() {
+					
+					@Override
+					public void onSuccess() {
+						nicknameET.setEditContentHint(mUserProfile.NickName);
+						emailET.setEditContentHint(mUserProfile.getEmail());
+						sexTV.setContent(mUserProfile.getSex());
+						birthdayTV.setContent(mUserProfile.Age);
+						jobTV.setContent(mUserProfile.Job);
+						interestET.setEditContentHint(mUserProfile.Interest);
+						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
+										.show();
+					}
+				});
+			}
+		});
 	}
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 	

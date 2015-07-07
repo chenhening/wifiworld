@@ -2,14 +2,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <ImageView
-        android:id="@+id/setting_item_icon"
-        style="@style/setting_list_icon_size"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/global_layout_margin"
-        android:src="@drawable/icon_person_wifi_providor" />
-
-    <ImageView
         android:id="@+id/setting_item_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,8 +23,8 @@
 
     <FrameLayout
         android:id="@+id/fl_setting_point_centent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_8_dip"
         android:layout_marginRight="@dimen/dimen_8_dip"
@@ -41,40 +33,42 @@
 
         <TextView
             android:id="@+id/setting_item_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_8_dip"
             android:layout_marginRight="@dimen/dimen_8_dip"
             android:gravity="left|center"
             android:maxWidth="@dimen/dimen_200_dip"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/font_main_meduim"
-            android:visibility="visible" />
-
-        <EditText
-            android:id="@+id/setting_item_content_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dimen_8_dip"
-            android:layout_marginRight="@dimen/dimen_8_dip"
-            android:background="@drawable/knock_input"
-            android:gravity="left|center"
-            android:maxWidth="@dimen/dimen_200_dip"
-            android:minWidth="@dimen/dimen_100_dip"
             android:singleLine="true"
             android:textColor="@color/gray"
             android:textSize="@dimen/font_main_meduim"
             android:visibility="gone" />
 
+        <EditText
+            android:id="@+id/setting_item_content_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_8_dip"
+            android:layout_marginRight="@dimen/dimen_8_dip"
+            android:background="@null"
+            android:gravity="left|center"
+            android:maxWidth="@dimen/dimen_200_dip"
+            android:minWidth="@dimen/dimen_100_dip"
+            android:singleLine="true"
+            android:textColor="@color/font_color_black"
+            android:textColorHint="@color/edt_hint_color"
+            android:textSize="@dimen/font_main_meduim"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/setting_item_content_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/global_layout_margin"
+            android:layout_marginLeft="@dimen/dimen_8_dip"
+            android:layout_marginRight="@dimen/dimen_8_dip"
             android:gravity="left|center"
             android:maxWidth="@dimen/dimen_200_dip"
             android:text="@string/input"
@@ -87,7 +81,6 @@
         android:id="@+id/setting_item_top_line"
         android:layout_width="fill_parent"
         android:layout_height="1.0px"
-        android:layout_alignLeft="@+id/setting_item_text"
         android:layout_alignParentTop="true"
         android:background="@color/color_line"
         android:visibility="gone" />
@@ -96,7 +89,6 @@
         android:id="@+id/setting_item_bottom_line"
         android:layout_width="fill_parent"
         android:layout_height="1.0px"
-        android:layout_alignLeft="@+id/setting_item_text"
         android:layout_alignParentBottom="true"
         android:background="@color/color_line"
         android:visibility="gone" />

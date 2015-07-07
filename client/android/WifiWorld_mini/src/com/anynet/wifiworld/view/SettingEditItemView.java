@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,11 +15,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewDebug.FlagToString;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -69,29 +72,26 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		super(context, attrs);
 		mContext = context;
 		RelativeLayout.inflate(context, R.layout.item_view_setting_edit, this);
-		ImageView img;
-		TextView tv;
-		edited = false;
-		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
+		
 		contentET = (EditText) findViewById(R.id.setting_item_content_edit);
 		contentTV = (TextView) findViewById(R.id.setting_item_content);
-		editBtn = (ImageView) findViewById(R.id.setting_item_edit);
 		contentHint = (TextView) findViewById(R.id.setting_item_content_hint);
+		editBtn = (ImageView) findViewById(R.id.setting_item_edit);
+		
+		FrameLayout fl = (FrameLayout) findViewById(R.id.fl_setting_point_centent);
+		fl.setOnClickListener(this);
+		
+		edited = false;
+		editBtn.setVisibility(View.GONE);
+		
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
 		int n = array.getIndexCount();
 		for (int i = 0; i < n; i++) {
 			int attr = array.getIndex(i);
 			switch (attr) {
-			case R.styleable.SettingItemView_icon: {
-				Drawable icon = array.getDrawable(attr);
-				img = (ImageView) findViewById(R.id.setting_item_icon);
-				if (icon != null)
-					img.setImageDrawable(icon);
-				break;
-			}
-
 			case R.styleable.SettingItemView_label: {
 				String libel = array.getString(attr);
-				tv = (TextView) findViewById(R.id.setting_item_text);
+				TextView tv = (TextView) findViewById(R.id.setting_item_text);
 				tv.setText(libel);
 				break;
 			}
@@ -167,11 +167,11 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				String content = array.getString(attr);
 				contentET.setVisibility(View.INVISIBLE);
 				if (content != null && !content.equals("")) {
-					contentTV.setText("");
+					contentTV.setText(content);
 					contentTV.setVisibility(View.VISIBLE);
 					contentHint.setVisibility(View.INVISIBLE);
 				} else {
-					contentTV.setText(content);
+					contentTV.setText("");
 					contentTV.setVisibility(View.INVISIBLE);
 					contentHint.setVisibility(View.VISIBLE);
 				}
@@ -181,15 +181,15 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			case R.styleable.SettingItemView_contentEditable: {
 				contentEditable = array.getBoolean(attr, false);
 				if (contentEditable) {
-					contentTV.setVisibility(VISIBLE);
-					contentET.setVisibility(INVISIBLE);
-					contentET.setEnabled(true);
-					editBtn.setVisibility(VISIBLE);
-				} else {
 					contentTV.setVisibility(INVISIBLE);
+					contentET.setVisibility(VISIBLE);
+					contentET.setEnabled(true);
+					//editBtn.setVisibility(VISIBLE);
+				} else {
+					contentTV.setVisibility(VISIBLE);
 					contentET.setVisibility(GONE);
 					contentET.setEnabled(false);
-					editBtn.setVisibility(INVISIBLE);
+					//editBtn.setVisibility(INVISIBLE);
 				}
 				break;
 			}
@@ -212,7 +212,6 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 		}
 		array.recycle(); // 一定要调用，否则这次的设定会对下次的使用造成影响}
-		//setBackgroundResource(R.drawable.settings_item_radius_bg_selector);
 
 		if (contentEditable) {
 			if (contentEditType == EDIT_TYPE_SELECTBOX) {
@@ -220,15 +219,9 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 				contentHint.setVisibility(View.GONE);
 				contentTV.setVisibility(VISIBLE);
 			} else if (EDIT_TYPE_INPUTBOX == contentEditType) {
-				if (contentTV.getText() == null && contentTV.getText().equals("")) {
-					contentHint.setText(R.string.input);
-					contentHint.setVisibility(VISIBLE);
-				} else if (contentTV.getText() != null && !contentTV.getText().equals("")) {
-					// contentHint.setText(contentTV.getText());
-					contentHint.setVisibility(View.INVISIBLE);
-					// contentET.setText(contentTV.getText());
-					contentTV.setVisibility(VISIBLE);
-				}
+				contentET.setVisibility(View.VISIBLE);
+				contentHint.setVisibility(View.GONE);
+				contentTV.setVisibility(View.GONE);
 			} else if (EDIT_TYPE_NORMAL == contentEditType) {
 				contentET.setVisibility(View.INVISIBLE);
 				contentHint.setVisibility(View.GONE);
@@ -236,7 +229,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			}
 
 			//editBtn.setText(R.string.edit);
-			editBtn.setOnClickListener(this);
+			//editBtn.setOnClickListener(this);
 		} else {
 			editBtn.setVisibility(View.INVISIBLE);
 			contentET.setVisibility(View.GONE);
@@ -247,7 +240,6 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 	@Override
 	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-		// TODO Auto-generated method stub
 		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
 		
 		if(!gainFocus){
@@ -259,7 +251,6 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		if (contentEditType == EDIT_TYPE_INPUTBOX) {
 			if (View.VISIBLE == contentET.getVisibility()) {
 				//editBtn.setText(R.string.edit);
@@ -348,10 +339,29 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			}
 		}
 	}
-
+	
+	public String getEditContent() {
+		return contentET.getText().toString();
+	}
+	
+	public void setEditContentHint(String content) {
+		contentET.setText("");
+		contentET.setHint(content);
+		contentET.setHintTextColor(Color.GRAY);
+	}
+	
 	public void setContent(String content) {
-		TextView tv = (TextView) findViewById(R.id.setting_item_content);
-		tv.setText(content);
+		contentTV.setText(content);
+		contentTV.setTextColor(Color.GRAY);
+	}
+	
+	public String getContent() {
+		return contentTV.getText().toString();
+	}
+	
+	public void setContentEdited(String content) {
+		contentTV.setText(content);
+		contentTV.setTextColor(Color.BLACK);
 	}
 
 	public void setLabel(String content) {
@@ -393,6 +403,11 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		public void onClick(CharSequence charSequence);
 	}
 
+	public void setClickEditListner(OnClickListener onClickListener) {
+		FrameLayout fl = (FrameLayout) findViewById(R.id.fl_setting_point_centent);
+		fl.setOnClickListener(onClickListener);
+	}
+	
 	boolean edited = false;
 
 	/** 初始化下拉框
@@ -408,7 +423,7 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			list.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					// R.String.butian代表的是“不填”
-					contentTV.setText(datas.get(arg2).toString()); // 将当前点击的item中的字符串显示出来
+					setContentEdited(datas.get(arg2).toString()); // 将当前点击的item中的字符串显示出来
 					edited = true;
 					//.setText(R.string.save);
 					if (pWindow != null) { // 关闭下拉框
@@ -431,13 +446,13 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			pWindow.setOutsideTouchable(true);
 			pWindow.update();
 		}
-		pWindow.showAsDropDown(contentET);
+		pWindow.showAsDropDown(par);
 	}
 
 	/** 显示或者隐藏下拉框
 	 * 
 	 * @param v */
-	private void changPopState(View v) {
+	public void changPopState(View v) {
 		if (pWindow == null) {
 			popWindow(v);
 			return;
