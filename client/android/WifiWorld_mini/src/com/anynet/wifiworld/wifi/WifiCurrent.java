@@ -10,7 +10,7 @@ public class WifiCurrent {
 	
 	private static WifiCurrent mWifiCurrent = null;
 	private Context mContext;
-	private WifiListItem mWifiListItem;
+	private static WifiListItem mWifiListItem;
 	
 	public static WifiCurrent getInstance(Context context) {
 		if (mWifiCurrent == null) {
@@ -28,7 +28,7 @@ public class WifiCurrent {
 		mWifiListItem = wifiListItem;
 	}
 	
-	public WifiListItem getWifiListItem() {
+	public static WifiListItem getWifiListItem() {
 		return mWifiListItem;
 	}
 	
