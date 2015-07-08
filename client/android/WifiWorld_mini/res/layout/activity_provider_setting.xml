@@ -3,14 +3,17 @@
     xmlns:item="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/color_main_bg"
     android:orientation="vertical" >
 
     <include layout="@layout/header_setting" />
 
-    <ScrollView
+    <com.anynet.wifiworld.view.ReboundScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/color_main_bg" >
+        android:layout_margin="15dp"
+        android:background="@color/color_main_bg"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -19,8 +22,8 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_15_dip"
+                android:layout_height="125dp"
+                android:background="@drawable/bg_person_center"
                 android:orientation="vertical"
                 android:visibility="visible" >
 
@@ -28,25 +31,35 @@
                     android:id="@+id/slv_change_provider_info"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="15dp"
                     item:icon="@drawable/icon_person_about"
                     item:label="更改WiFi信息"
                     item:subLabel="删除后重新登记"
                     item:subLabelColor="@color/red" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <com.anynet.wifiworld.view.SettingItemView
                     android:id="@+id/slv_cancle_provider_info"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
                     item:icon="@drawable/icon_person_about"
                     item:label="取消WiFi共享"
-                    item:showTopDivider="true" >
+                    item:showTopDivider="true"
+                    item:subLabel="删除后可重新登记" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_detail_summary"
                 android:clickable="true"
                 android:orientation="vertical" >
 
@@ -69,6 +82,8 @@
                     android:id="@+id/tv_setting_knock"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
                     android:background="@drawable/settings_item_angle_bg_selector"
                     android:onClick="knockSwitch"
                     android:padding="10.0dip" >
@@ -195,6 +210,8 @@
                     android:id="@+id/relative_4"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
                     android:background="@drawable/settings_item_angle_bg_selector"
                     android:padding="10.0dip" >
 
@@ -223,6 +240,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_detail_summary"
                 android:clickable="true"
                 android:orientation="vertical" >
 
@@ -245,6 +264,8 @@
                     android:id="@+id/rl_setting_message"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
                     android:background="@drawable/settings_item_angle_bg_selector"
                     android:onClick="knockSwitch"
                     android:padding="10.0dip" >
@@ -321,6 +342,8 @@
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
                     android:background="@drawable/settings_item_angle_bg_selector"
                     android:padding="10.0dip" >
 
@@ -346,6 +369,6 @@
                     android:background="@drawable/default_divider" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.anynet.wifiworld.view.ReboundScrollView>
 
 </LinearLayout>
