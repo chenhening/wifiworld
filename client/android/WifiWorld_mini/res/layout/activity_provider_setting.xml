@@ -35,7 +35,7 @@
                     android:layout_marginRight="1dp"
                     android:layout_marginTop="15dp"
                     item:icon="@drawable/icon_person_about"
-                    item:label="更改Wi-Fi认证信息"
+                    item:label="更改Wi-Fi认证"
                     item:subLabel=""
                     item:subLabelColor="@color/red" >
 

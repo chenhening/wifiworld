@@ -69,9 +69,7 @@
         <activity
             android:name="com.anynet.wifiworld.provider.WifiProviderRigisterActivity" />
         <activity
-            android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" >
+            android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
