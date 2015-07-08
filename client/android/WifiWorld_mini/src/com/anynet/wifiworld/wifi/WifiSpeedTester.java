@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.NetworkTester;
+import com.anynet.wifiworld.wifi.ui.WifiTestActivity;
 
 import android.R.string;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
@@ -20,6 +22,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WifiSpeedTester implements OnClickListener {
 	private final static String TAG = WifiSpeedTester.class.getSimpleName();
@@ -27,13 +30,13 @@ public class WifiSpeedTester implements OnClickListener {
 	
 	private DownloadedFileParams mDownloadedFileParams;
 	private boolean mTestFlag;
-	private boolean mManualStopFlag;
+	private final int CONNECT_ERROR = 3;
 	private final int UPDATE_STOP = 2;
 	private final int UPDATE_SPEED = 1;// 进行中
 	private final int UPDATE_DONE = 0;// 完成下载
 	private int mStartAngle;
 	
-	private View mContext;
+	private WifiTestActivity mContext;
 	private ImageView mNeedleView;
 	private TextView mSpeedAvgView;
 	private TextView mSpeedCurView;
@@ -43,10 +46,9 @@ public class WifiSpeedTester implements OnClickListener {
 	
 	private List<Long> mSpeedList = new ArrayList<Long>();
 	
-	public WifiSpeedTester(View context) {
-		mContext = context;
+	public WifiSpeedTester(Context context) {
+		mContext = (WifiTestActivity)context;
 		mTestFlag = false;
-		mManualStopFlag = false;
 		
 		mNeedleView = (ImageView) mContext.findViewById(R.id.wifi_speed_needle);
 		mSpeedAvgView = (TextView) mContext.findViewById(R.id.wifi_speed_avg_num);
@@ -84,25 +86,6 @@ public class WifiSpeedTester implements OnClickListener {
 		
 	}
 	
-	public void stopSpeedTest() {
-		mTestFlag = false;
-		mSpeedStart.setText("测速");
-		if (mSpeedTester != null) {
-			mSpeedTester.stopDownload();
-			mSpeedTester.interrupt();
-			mSpeedTester = null;
-		}
-		if (mUpdateMeter != null) {
-			mUpdateMeter.stopUpdateMeter();
-			mUpdateMeter.interrupt();
-			mUpdateMeter = null;
-		}
-		mManualStopFlag = true;
-		mSpeedCurView.setText("0 kb/s");
-		mSpeedAvgView.setText("0 kb/s");
-		startAnimation(0.0);
-	}
-	
 	protected void startAnimation(double d) {
 		AnimationSet animationSet = new AnimationSet(true);
 		/**
@@ -110,7 +93,7 @@ public class WifiSpeedTester implements OnClickListener {
 		 */
 		int endAngle = getAngle(d);
 
-		RotateAnimation rotateAnimation = new RotateAnimation(mStartAngle, endAngle, Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF, 1f);
+		RotateAnimation rotateAnimation = new RotateAnimation(mStartAngle, endAngle, Animation.RELATIVE_TO_SELF,0.66f, Animation.RELATIVE_TO_SELF, 0.5f);
 		rotateAnimation.setDuration(500);
 		animationSet.addAnimation(rotateAnimation);
 		mNeedleView.startAnimation(animationSet);
@@ -154,6 +137,7 @@ public class WifiSpeedTester implements OnClickListener {
 				startAnimation(Double.parseDouble(curSpeed+""));
 				break;
 			case UPDATE_DONE:
+				mTestFlag = false;
 				mSpeedStart.setText("测速");
 				if (mSpeedTester != null) {
 					mSpeedTester.stopDownload();
@@ -170,7 +154,11 @@ public class WifiSpeedTester implements OnClickListener {
 				numberTotal = 0;
 				mSpeedList.clear();
 				break;
+			case CONNECT_ERROR:
+				Toast.makeText(mContext, "网络无法连接", Toast.LENGTH_LONG).show();
 			case UPDATE_STOP:
+				mTestFlag = false;
+				mSpeedStart.setText("测速");
 				mSpeedCurView.setText("0 kb/s");
 				mSpeedAvgView.setText("0 kb/s");
 				startAnimation(0.0);
@@ -178,6 +166,7 @@ public class WifiSpeedTester implements OnClickListener {
 				avgSpeed = 0;
 				numberTotal = 0;
 				mSpeedList.clear();
+				break;
 			default:
 				break;
 			}
@@ -197,7 +186,7 @@ public class WifiSpeedTester implements OnClickListener {
 		public void run() {
 			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 			Log.i(TAG, "Start to update UI");
-			while (mParams.downloadedBytes < mParams.totalBytes && !stopFlag) {
+			while (mParams.downloadedBytes != -1 && mParams.downloadedBytes < mParams.totalBytes && !stopFlag) {
 				Log.i(TAG, "Downloaded bytes feedback: " + mParams.downloadedBytes);
 				try {
 					sleep(500);
@@ -208,11 +197,11 @@ public class WifiSpeedTester implements OnClickListener {
 				handler.sendEmptyMessage(UPDATE_SPEED);
 				yield();
 			}
-			if (mManualStopFlag) {
+			if (mParams.downloadedBytes == -1) {
+				handler.sendEmptyMessage(CONNECT_ERROR);
+			} else if (mParams.downloadedBytes < mParams.totalBytes) {
 				handler.sendEmptyMessage(UPDATE_STOP);
-				mManualStopFlag = false;
-			}
-			if (mParams.downloadedBytes == mParams.totalBytes) {
+			} else if (mParams.downloadedBytes == mParams.totalBytes) {
 				handler.sendEmptyMessage(UPDATE_DONE);
 			}
 			super.run();

@@ -133,6 +133,14 @@ public class WifiListItem {
 		mWifiPwd = pwd;
 	}
 	
+	public String getEncryptStr() {
+		if (mScanResult != null) {
+			return WifiAdmin.ConfigSec.getDisplaySecirityString(mScanResult);
+		} else {
+			return "UnKown";
+		}
+	}
+	
 	public String getEncryptType() {
 		if (mScanResult != null)
 			return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);

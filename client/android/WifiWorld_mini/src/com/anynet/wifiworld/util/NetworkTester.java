@@ -7,6 +7,7 @@ import java.net.URLConnection;
 import com.anynet.wifiworld.wifi.WifiSpeedTester;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import android.os.Process;
 
@@ -42,6 +43,10 @@ public class NetworkTester extends Thread {
 			con.setConnectTimeout(20000);
 			con.setReadTimeout(20000);
 			fileSize = con.getContentLength();
+			if (fileSize < 1024) {
+				params.downloadedBytes = -1;
+				stopDownload();
+			}
 			stream = con.getInputStream();
 			params.totalBytes = fileSize;
 			b = new byte[fileSize];
