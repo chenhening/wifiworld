@@ -37,6 +37,13 @@ public class MyAccountActivity extends BaseActivity {
 	UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
 	
+	SettingEditItemView mNicknameET;
+	SettingEditItemView mEmailET;
+	SettingEditItemView mSexTV;
+	SettingEditItemView mBirthdayTV;
+	SettingEditItemView mJobTV;
+	SettingEditItemView mInterestET;
+	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
@@ -67,30 +74,30 @@ public class MyAccountActivity extends BaseActivity {
 		TextView tvName = (TextView) findViewById(R.id.person_name);
 		tvName.setText(mUserProfile.getUsername());
 
-		final SettingEditItemView nicknameET = (SettingEditItemView) findViewById(R.id.siv_alias);
+		mNicknameET = (SettingEditItemView) findViewById(R.id.siv_alias);
 		if (mUserProfile.NickName == null || mUserProfile.NickName.equals("")) {
-			nicknameET.setEditContentHint(mUserProfile.getUsername());
+			mNicknameET.setEditContent(mUserProfile.getUsername());
 		} else {
-			nicknameET.setEditContentHint(mUserProfile.NickName);
+			mNicknameET.setEditContent(mUserProfile.NickName);
 		}
 
-		final SettingEditItemView emailET = (SettingEditItemView) findViewById(R.id.sev_email);
+		mEmailET = (SettingEditItemView) findViewById(R.id.sev_email);
 		if (mUserProfile.getEmail() == null || mUserProfile.getEmail().equals("")) {
-			emailET.setEditContentHint("");
+			mEmailET.setEditContent("");
 		} else {
-			emailET.setEditContentHint(mUserProfile.getEmail());
+			mEmailET.setEditContent(mUserProfile.getEmail());
 		}
 		
-		final SettingEditItemView sexTV = (SettingEditItemView) findViewById(R.id.sev_sex);
-		sexTV.setContent(mUserProfile.getSex());
+		mSexTV = (SettingEditItemView) findViewById(R.id.sev_sex);
+		mSexTV.setContent(mUserProfile.getSex());
 
-		final SettingEditItemView birthdayTV = (SettingEditItemView) findViewById(R.id.sev_age);
+		mBirthdayTV = (SettingEditItemView) findViewById(R.id.sev_age);
 		if (mUserProfile.Age == null || mUserProfile.Age.equals("")) {
-			birthdayTV.setContent("");
+			mBirthdayTV.setContent("");
 		} else {
-			birthdayTV.setContent(mUserProfile.Age);
+			mBirthdayTV.setContent(mUserProfile.Age);
 		}
-		birthdayTV.setClickEditListner(new OnClickListener() {
+		mBirthdayTV.setClickEditListner(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -101,25 +108,25 @@ public class MyAccountActivity extends BaseActivity {
 							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 								c.set(year, monthOfYear, dayOfMonth);
 								String content  = DateFormat.format("yyy-MM-dd", c).toString();
-								birthdayTV.setContentEdited(content);
+								mBirthdayTV.setContentEdited(content);
 							}
 						}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				dialog.show();
 			}
 		});
 
-		final SettingEditItemView jobTV = (SettingEditItemView) findViewById(R.id.sev_job);
+		mJobTV = (SettingEditItemView) findViewById(R.id.sev_job);
 		if (mUserProfile.Job == null || mUserProfile.Job.equals("")) {
-			jobTV.setContent("");
+			mJobTV.setContent("");
 		} else {
-			jobTV.setContent(mUserProfile.Job);
+			mJobTV.setContent(mUserProfile.Job);
 		}
 
-		final SettingEditItemView interestET = (SettingEditItemView) findViewById(R.id.sev_interest);
+		mInterestET = (SettingEditItemView) findViewById(R.id.sev_interest);
 		if (mUserProfile.Interest == null || mUserProfile.Interest.equals("")) {
-			interestET.setEditContentHint("");
+			mInterestET.setEditContent("");
 		} else {
-			interestET.setEditContentHint(mUserProfile.Interest);
+			mInterestET.setEditContent(mUserProfile.Interest);
 		}
 		
 		//设置头像
@@ -145,33 +152,40 @@ public class MyAccountActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View arg0) {
-				String emailStr = emailET.getEditContent();
+				String emailStr = mEmailET.getEditContent();
 				if (!emailStr.contains("@")) {
 					Toast.makeText(getApplicationContext(), "邮箱地址错误", Toast.LENGTH_LONG).show();
 					return;
 				}
 				
-				mUserProfile.NickName = nicknameET.getEditContent();
+				final UserProfile tempProfile = mUserProfile;
+				mUserProfile.NickName = mNicknameET.getEditContent();
 				mUserProfile.setEmail(emailStr);
-				mUserProfile.setSex(sexTV.getContent());
-				mUserProfile.Age = birthdayTV.getContent();
-				mUserProfile.Job = jobTV.getContent();
-				mUserProfile.Interest = interestET.getEditContent();
+				mUserProfile.setSex(mSexTV.getContent());
+				mUserProfile.Age = mBirthdayTV.getContent();
+				mUserProfile.Job = mJobTV.getContent();
+				mUserProfile.Interest = mInterestET.getEditContent();
 				mUserProfile.update(getApplicationContext(), new UpdateListener() {
 					
 					@Override
 					public void onSuccess() {
-						nicknameET.setEditContentHint(mUserProfile.NickName);
-						emailET.setEditContentHint(mUserProfile.getEmail());
-						sexTV.setContent(mUserProfile.getSex());
-						birthdayTV.setContent(mUserProfile.Age);
-						jobTV.setContent(mUserProfile.Job);
-						interestET.setEditContentHint(mUserProfile.Interest);
+						mNicknameET.setEditContent(mUserProfile.NickName);
+						mEmailET.setEditContent(mUserProfile.getEmail());
+						mSexTV.setContent(mUserProfile.getSex());
+						mBirthdayTV.setContent(mUserProfile.Age);
+						mJobTV.setContent(mUserProfile.Job);
+						mInterestET.setEditContent(mUserProfile.Interest);
 						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
 					}
 					
 					@Override
 					public void onFailure(int arg0, String arg1) {
+						mUserProfile.NickName = tempProfile.NickName;
+						mUserProfile.setEmail(tempProfile.getEmail());
+						mUserProfile.setSex(tempProfile.getSex());
+						mUserProfile.Age = tempProfile.Age;
+						mUserProfile.Job = tempProfile.Job;
+						mUserProfile.Interest = tempProfile.Interest;
 						Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
 										.show();
 					}
@@ -179,7 +193,7 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 	}
-
+	
 	@Override
 	protected void onStart() {
 		super.onStart();

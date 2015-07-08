@@ -27,6 +27,7 @@ import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.UIHelper;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 
 public class WifiDetailsActivity extends BaseActivity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
@@ -45,7 +46,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private ListView mListComments;
 	
 	private void bingdingTitleUI() {
-		mTitlebar.tvTitle.setText(mWifi.Ssid);
+		mTitlebar.tvTitle.setText(WifiAdmin.convertToNonQuotedString(mWifi.Ssid));
 	}
 	
 	@Override
