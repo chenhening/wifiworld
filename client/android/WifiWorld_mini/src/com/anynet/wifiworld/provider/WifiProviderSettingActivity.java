@@ -35,13 +35,6 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText(mWifiProfile.Ssid);
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 
 	@Override

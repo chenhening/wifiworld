@@ -62,14 +62,6 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-			
-		});
 		
 		mTitlebar.tvHeaderRight.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setOnClickListener(new OnClickListener() {
@@ -95,13 +87,6 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			}
 		});
 		mTitlebar.tvTitle.setText("Wi-Fi认证");
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 
 	// ---------------------------------------------------------------------------------------------

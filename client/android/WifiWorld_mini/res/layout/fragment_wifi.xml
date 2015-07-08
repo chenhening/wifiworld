@@ -42,7 +42,7 @@
 
         <ImageView
             android:id="@+id/iv_wifi_plus"
-            android:layout_width="35dp"
+            android:layout_width="48dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

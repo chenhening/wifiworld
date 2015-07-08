@@ -1,16 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@drawable/wifi_title_bg"
-    android:orientation="horizontal" >
+    android:background="@drawable/wifi_title_bg" >
 
     <RelativeLayout
-        android:id="@+id/ll_setting_header_left"
+        android:id="@+id/rl_setting_header_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:layout_marginRight="5dp"
+        android:layout_alignParentLeft="true"
         android:layout_weight="1"
         android:clickable="true"
         android:gravity="left"
@@ -18,9 +18,11 @@
 
         <ImageView
             android:id="@+id/iv_setting_header_left"
-            android:layout_width="wrap_content"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:scaleType="centerInside"
+            android:paddingRight="30dp"
             android:clickable="true"
             android:src="@drawable/selector_header_back" />
 
@@ -40,9 +42,10 @@
 
     <TextView
         android:id="@+id/setting_main_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:layout_weight="1"
         android:gravity="center"
         android:singleLine="true"
@@ -52,10 +55,11 @@
         android:visibility="visible" />
 
     <RelativeLayout
-        android:id="@+id/setting_header_right"
+        android:id="@+id/rl_setting_header_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
+        android:layout_alignParentRight="true"
         android:layout_weight="1"
         android:gravity="right" >
 
@@ -82,4 +86,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
