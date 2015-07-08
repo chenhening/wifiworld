@@ -74,6 +74,7 @@ public class WifiConnectUI {
 	private TextView mWifiAuthDesc;
 	private ListView mWifiAuthListView;
 	private ListView mWifiNotAuthListView;
+	private boolean mIsWifiPassword;
 	
 	private ToggleButton mWifiSwitch;
 	private AnimationDrawable mAnimSearch;
@@ -123,6 +124,11 @@ public class WifiConnectUI {
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
 			//mWifiMore.setVisibility(View.VISIBLE);
+			
+			if (mIsWifiPassword) {
+				mWifiAdmin.saveConfig();
+				mIsWifiPassword = false;
+			}
 		}
 		
 		@Override
@@ -130,6 +136,7 @@ public class WifiConnectUI {
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
+			mIsWifiPassword = false;
 			doConnectingAnimation(mIsWifiConnecting);
 			//mWifiMore.setVisibility(View.INVISIBLE);
 		}
@@ -144,8 +151,12 @@ public class WifiConnectUI {
 
 		@Override
 		public void onSupplicantDisconnected(String statusStr) {
-			// TODO Auto-generated method stub
-			
+			mIsWifiPassword = false;
+		}
+		
+		@Override
+		public void onWrongPassword() {
+			mIsWifiPassword = false;
 		}
 
 		@Override
@@ -198,6 +209,9 @@ public class WifiConnectUI {
 		//启动动画，更新WiFi扫描列表
 		doSearchAnimation(true);
 		mWifiListScanned.refresh();
+		
+		//设置为非手动输入密码登陆
+		mIsWifiPassword = false;
 	}
 	
 	private void setWifiConnectedContent() {
@@ -388,6 +402,7 @@ public class WifiConnectUI {
 							return;
 						}
 						wifiListItem.setWifiPwd(inputedPwd);
+						mIsWifiPassword = true;
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
 						//shutdown soft keyboard if soft keyboard is actived
 						InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(mActivity.INPUT_METHOD_SERVICE);

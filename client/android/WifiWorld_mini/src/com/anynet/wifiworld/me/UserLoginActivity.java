@@ -72,9 +72,9 @@ public class UserLoginActivity extends BaseActivity {
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_SUCCESS)) {
 				Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_LONG).show();
 				//登陆成功后直接进入修改个人资料页面
-				Intent i = new Intent();
-				i.setClass(getApplicationContext(), MyAccountActivity.class);
-				UserLoginActivity.this.startActivity(i);
+				//Intent i = new Intent();
+				//i.setClass(getApplicationContext(), MyAccountActivity.class);
+				//UserLoginActivity.this.startActivity(i);
 				UserLoginActivity.this.finish();
 			} else if (action.equals(LoginHelper.AUTO_LOGIN_NEVERLOGIN)) {
 				Toast.makeText(getApplicationContext(), "自动登录失败!", Toast.LENGTH_LONG).show();

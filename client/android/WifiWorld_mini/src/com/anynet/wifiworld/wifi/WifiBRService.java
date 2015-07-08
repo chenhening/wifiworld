@@ -151,6 +151,9 @@ public class WifiBRService {
 		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
+		            		if (mWifiStatusListener != null) {
+								mWifiStatusListener.onWrongPassword();
+							}
 		            }
 		            if (mWifiStatusListener != null) {
 		            	mWifiStatusListener.onSupplicantChanged(statusStr);
@@ -221,5 +224,6 @@ public class WifiBRService {
 		void onScannableAvaliable();
 		void onSupplicantChanged(String statusStr);
 		void onSupplicantDisconnected(String statusStr);
+		void onWrongPassword();
 	}
 }
