@@ -18,6 +18,8 @@ import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
+import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 
@@ -57,39 +59,38 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
-				.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-						mWifiProfile.deleteRemote(getApplicationContext());
-						mLoginHelper.mWifiProfile = mWifiProfile = null;
-						mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-						mIntent.setClass(getApplicationContext(), MainActivity.class);
-						startActivity(mIntent);
-					}
-
-				}).setNegativeButton("取消", null).show();
+				mIntent.setClass(WifiProviderSettingActivity.this, WifiProviderRigisterFirstActivity.class);
+				startActivity(mIntent);
 			}
 		});
+		
 		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
-					.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							mWifiProfile.deleteRemote(getApplicationContext());
-							mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-							mLoginHelper.mWifiProfile = mWifiProfile = null;
-							mIntent.setClass(getApplicationContext(), MainActivity.class);
-							startActivity(mIntent);
-						}
-
-					}).setNegativeButton("取消", null).show();
+				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
+		    	
+		    	wifiConnectDialog.setTitle("取消Wi-Fi认证");
+		    	wifiConnectDialog.setDefaultContent("是否解绑并取消当前Wi-Fi认证?");
+		    	wifiConnectDialog.setLeftBtnStr("取消");
+		    	wifiConnectDialog.setRightBtnStr("确定");
+		    	
+		    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+		    	});
+	    	
+		    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mWifiProfile.deleteRemote(getApplicationContext());
+						mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						mLoginHelper.mWifiProfile = mWifiProfile = null;
+						mIntent.setClass(getApplicationContext(), MainActivity.class);
+						startActivity(mIntent);
+					}
+				});
+	    	wifiConnectDialog.show();
 			}
 		});
 

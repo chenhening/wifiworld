@@ -9,8 +9,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
@@ -48,6 +46,8 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	private Spinner msp_typelist = null;
 	private Bitmap mLogo = null;
 	private ImageView mWifiLogo = null;
+	private EditText mWifiAlias = null;
+	private EditText mWifiBanner = null;
 
 	private boolean mWifiVerfied = false;
 
@@ -119,10 +119,13 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			return;
 		}
 		
-		mWifiProfile = new WifiProfile();
-		mWifiProfile.Ssid = curwifi.getSSID();
-		mWifiProfile.MacAddr = curwifi.getBSSID();
-		mWifiProfile.VerfyIsShared(this, mWifiProfile.MacAddr, new DataCallback<Boolean>() {
+		// 如果是更改WiFi mWifiProfile != null
+		mWifiProfile = LoginHelper.getInstance(getApplicationContext()).getWifiProfile();
+		if (mWifiProfile == null) {
+			mWifiProfile = new WifiProfile();
+			mWifiProfile.Ssid = curwifi.getSSID();
+			mWifiProfile.MacAddr = curwifi.getBSSID();
+			mWifiProfile.VerfyIsShared(this, mWifiProfile.MacAddr, new DataCallback<Boolean>() {
 
 				@Override
 				public void onSuccess(final Boolean object) {
@@ -131,24 +134,13 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 						@Override
 						public void run() {
 							if (object) {
-								showToast("此WiFi账号已经被别人认证，如果您是WiFi本人请申请二级仲裁。");
+								showToast("此Wi-Fi已经被人认证，如果您是WiFi本人请申请二级仲裁。");
 								finish();
 								// TODO(buffer):需要调到wifi申请找回仲裁
 							} else {
 								// 获得sponser
 								mLoginHelper = LoginHelper.getInstance(getApplicationContext());
 								mWifiProfile.Sponser = mLoginHelper.getUserid();
-
-								// 自动获取网络ssid
-								setSSIDUI();
-								// 处理登陆密码
-								setPasswordUI();
-								// 点击地理位置按钮，自动获取地理位置
-								setLocationUI();
-								// 点击选择类型
-								setNetTypeUI();
-								// 点击获取设置LOGO
-								setLogoUI();
 							}
 							return;
 						}
@@ -169,6 +161,20 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 				}
 
 			});
+		}
+		
+		// 自动获取网络ssid
+		setSSIDUI();
+		// 处理登陆密码
+		setPasswordUI();
+		// 点击地理位置按钮，自动获取地理位置
+		setLocationUI();
+		// 点击选择类型
+		setNetTypeUI();
+		// 点击获取设置LOGO
+		setLogoUI();
+		// 设置其他
+		setOtherEditUi();
 	}
 
 	protected Activity getActivity() {
@@ -206,6 +212,13 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	}
 
 	// ---------------------------------------------------------------------------------------------
+	private void setOtherEditUi() {
+		mWifiAlias = (EditText) this.findViewById(R.id.et_wifi_provider_alias);
+		mWifiAlias.setText(mWifiProfile.Alias);
+		mWifiBanner = (EditText) this.findViewById(R.id.et_wifi_provider_desc_content);
+		mWifiBanner.setText(mWifiProfile.Banner);
+	}
+	
 	private void setSSIDUI() {
 		TextView tv_ssid = (TextView) this.findViewById(R.id.et_wifi_provider_ssid);
 		tv_ssid.setText(mWifiProfile.Ssid);
@@ -227,6 +240,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 
 	private void setLocationUI() {
 		mtv_location = (TextView) this.findViewById(R.id.tv_wifi_provider_location_desc);
+		mtv_location.setText(mWifiProfile.ExtAddress);
 		this.findViewById(R.id.img_wifi_provider_location_click).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -263,7 +277,10 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 	}
 
 	private void setLogoUI() {
-		this.findViewById(R.id.img_wifi_provider_logo).setOnClickListener(new OnClickListener() {
+		mWifiLogo = (ImageView) findViewById(R.id.img_wifi_provider_logo_preview);
+		mWifiLogo.setImageBitmap(mWifiProfile.getLogo());
+		ImageView logo = (ImageView) findViewById(R.id.img_wifi_provider_logo);
+		logo.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -362,9 +379,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			mLogo = BitmapUtil.toRoundBitmap((Bitmap) extras.getParcelable("data"));
-			Drawable drawable = new BitmapDrawable(this.getResources(), mLogo);
-			mWifiLogo = (ImageView) this.findViewById(R.id.img_wifi_provider_logo_preview);
-			mWifiLogo.setImageDrawable(drawable);
+			mWifiLogo.setImageBitmap(mLogo);
 			mWifiProfile.setLogo(mLogo);
 		}
 	}
@@ -375,8 +390,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			return false;
 		}
 
-		EditText et_alias = (EditText) this.findViewById(R.id.et_wifi_provider_alias);
-		mWifiProfile.Alias = et_alias.getText().toString();
+		mWifiProfile.Alias = mWifiAlias.getText().toString();
 		if (mWifiProfile.Alias.equals("")) {
 			showToast("请务必填写WiFi别名。");
 			return false;

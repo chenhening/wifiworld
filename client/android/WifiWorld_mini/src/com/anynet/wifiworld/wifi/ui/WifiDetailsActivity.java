@@ -26,7 +26,6 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
-import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.UIHelper;
 
 public class WifiDetailsActivity extends BaseActivity {
@@ -68,7 +67,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		
 		//init UI
 		mLogo = (ImageView)findViewById(R.id.iv_detail_wifi_logo);
-		mLogo.setImageBitmap(BitmapUtil.Bytes2Bimap(mWifi.Logo));
+		mLogo.setImageBitmap(mWifi.getLogo());
 		mAlias = (TextView)findViewById(R.id.tv_detail_wifi_name);
 		mAlias.setText(mWifi.Alias);
 		mSponser = (TextView)findViewById(R.id.tv_detail_wifi_master);

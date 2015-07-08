@@ -153,7 +153,7 @@ public class WifiListItem {
 	
 	public Bitmap getLogo() {
 		if (mWifiProfile != null) {
-			return BitmapUtil.Bytes2Bimap(mWifiProfile.Logo);
+			return mWifiProfile.getLogo();
 		}
 		return null;
 	}

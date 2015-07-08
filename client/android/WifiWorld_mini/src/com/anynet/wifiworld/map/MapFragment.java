@@ -75,7 +75,6 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
-import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
 public class MapFragment extends MainFragment implements LocationSource, AMapLocationListener, OnMarkerClickListener,
@@ -471,7 +470,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		
 		//显示认证WiFi的logo
 		ImageView logo = (ImageView) infoWindow.findViewById(R.id.iv_map_wifi_logo);
-		logo.setImageBitmap(BitmapUtil.Bytes2Bimap(mWP.Logo));
+		logo.setImageBitmap(mWP.getLogo());
 	}
 
 	// 点击非marker区域，将显示的InfoWindow隐藏

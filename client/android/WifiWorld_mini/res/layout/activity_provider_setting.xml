@@ -35,8 +35,8 @@
                     android:layout_marginRight="1dp"
                     android:layout_marginTop="15dp"
                     item:icon="@drawable/icon_person_about"
-                    item:label="更改WiFi信息"
-                    item:subLabel="删除后重新登记"
+                    item:label="更改Wi-Fi认证信息"
+                    item:subLabel=""
                     item:subLabelColor="@color/red" >
 
                 </com.anynet.wifiworld.view.SettingItemView>
@@ -48,9 +48,10 @@
                     android:layout_marginLeft="1dp"
                     android:layout_marginRight="1dp"
                     item:icon="@drawable/icon_person_about"
-                    item:label="取消WiFi共享"
+                    item:label="取消Wi-Fi认证"
                     item:showTopDivider="true"
-                    item:subLabel="删除后可重新登记" >
+                    item:subLabel="删除后可重新登记"
+                    item:subLabelColor="@color/red" >
 
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
