@@ -49,7 +49,7 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 		TextView wifidesc = (TextView)findViewById(R.id.tv_wifi_connected_desc);
 		wifidesc.setText("当前连接Wi-Fi");
 		
-		final String sText = "认证即表明您同意我们的<br><a href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
+		final String sText = "认证即表明您同意我们的<br><a style=\"color:#ffa400\" href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
 		mTVLinkLicense.setText(Html.fromHtml(sText));
 		mTVLinkLicense.setClickable(true);
 		mTVLinkLicense.setMovementMethod(LinkMovementMethod.getInstance());
