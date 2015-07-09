@@ -14,15 +14,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/bg_login_main"
         android:layout_below="@+id/title_bar_replacement"
         android:layout_marginLeft="@dimen/dimen_10_dip"
         android:layout_marginRight="@dimen/dimen_10_dip"
         android:layout_marginTop="@dimen/dimen_30_dip"
-        android:paddingTop="@dimen/dimen_40_dip"
+        android:background="@drawable/bg_login_main"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:gravity="center"
         android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="[只支持手机号登录,支持多设备同时登录]"
+            android:textColor="@color/font_color_gray_2_dark"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="fill_parent"

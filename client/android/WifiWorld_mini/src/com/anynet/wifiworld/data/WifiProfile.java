@@ -143,7 +143,7 @@ public class WifiProfile extends BmobObject{
 		String encryptedStr = null;
 		if (pwd != null) {
 			try {
-				pwd = StringCrypto.encryptDES(pwd, CryptoKey);
+				encryptedStr = StringCrypto.encryptDES(pwd, CryptoKey);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
