@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 
 public class WifiProviderRigisterActivity extends BaseActivity {
@@ -20,7 +22,7 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		//mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("Wi-Fi认证");
+		mTitlebar.tvTitle.setText("网络认证");
 	}
 
 	
@@ -40,7 +42,7 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 		TextView wifiname = (TextView)findViewById(R.id.tv_wifi_connected_name);
 		wifiname.setText(wifi.getSSID());
 		TextView wifidesc = (TextView)findViewById(R.id.tv_wifi_connected_desc);
-		wifidesc.setText("当前连接Wi-Fi");
+		wifidesc.setText("当前连接网络");
 		
 		final String sText = "认证即表明您同意我们的<br><a style=\"color:#ffa400\" href=\"activity.special.scheme://127.0.0.1\">《网络宝服务协议》</a>";
 		mTVLinkLicense.setText(Html.fromHtml(sText));
@@ -60,6 +62,12 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				//查询当前账号是否有认证，如果有认证，不再进入认证流程
+				WifiProfile mWifiProfile = LoginHelper.getInstance(getApplicationContext()).getWifiProfile();
+				if (mWifiProfile != null) {
+					WifiProviderRigisterActivity.this.showToast("您当前的账号已经认证过网络，目前只支持一个账号绑定一个网络。");
+					return;
+				}
 				Intent i = new Intent(WifiProviderRigisterActivity.this, WifiProviderRigisterFirstActivity.class);
 				startActivity(i);
 			}

@@ -242,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Wi-Fi敲门"
+                    android:text="网络敲门"
                     android:textColor="@color/app_color_style"
                     android:textSize="18sp" />
 
@@ -301,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="Wi-Fi动态" />
+                        android:text="网络动态" />
                 </LinearLayout>
 
                 <LinearLayout

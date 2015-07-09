@@ -22,7 +22,7 @@ public class WifiProviderRigisterCompleteActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.INVISIBLE);
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		// mTitlebar.llHeaderMy.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("Wi-Fi认证");
+		mTitlebar.tvTitle.setText("网络认证");
 	}
 
 	@Override

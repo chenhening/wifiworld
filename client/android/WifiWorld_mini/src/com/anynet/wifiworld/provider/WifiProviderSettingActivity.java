@@ -62,8 +62,8 @@ public class WifiProviderSettingActivity extends BaseActivity {
 			public void onClick(View arg0) {
 				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
 		    	
-		    	wifiConnectDialog.setTitle("取消Wi-Fi认证");
-		    	wifiConnectDialog.setDefaultContent("是否解绑并取消当前Wi-Fi认证?");
+		    	wifiConnectDialog.setTitle("取消网络认证");
+		    	wifiConnectDialog.setDefaultContent("是否解绑并取消当前网络认证?");
 		    	wifiConnectDialog.setLeftBtnStr("取消");
 		    	wifiConnectDialog.setRightBtnStr("确定");
 		    	

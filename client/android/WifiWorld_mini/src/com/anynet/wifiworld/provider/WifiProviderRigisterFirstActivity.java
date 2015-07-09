@@ -86,7 +86,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-		mTitlebar.tvTitle.setText("Wi-Fi认证");
+		mTitlebar.tvTitle.setText("网络认证");
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 						@Override
 						public void run() {
 							if (object) {
-								showToast("此Wi-Fi已经被人认证，如果您是WiFi本人请申请二级仲裁。");
+								showToast("此网络已经被认证，如果您是网络本人请申请二级仲裁。");
 								finish();
 								// TODO(buffer):需要调到wifi申请找回仲裁
 							} else {

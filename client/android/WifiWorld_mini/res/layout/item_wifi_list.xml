@@ -38,8 +38,9 @@
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:maxLines="1"
                 android:text="我家的网络我做主"
                 android:textColor="@color/black"
@@ -47,10 +48,11 @@
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_alias"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="2dp"
+                android:layout_weight="1"
                 android:maxLines="1"
                 android:text="[Guest]"
                 android:textColor="@color/grey"
@@ -60,7 +62,7 @@
 
         <TextView
             android:id="@+id/tv_wifi_free_item_options"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:maxLines="1"
