@@ -185,12 +185,12 @@ public class WifiConnectUI {
 		    	
 				if (position == 0) {
 					wifiConnectDialog.setTitle("什么是认证网络");
-					wifiConnectDialog.setDefaultContent("            认证网络是指将您本人持有的Wi-Fi(包括密码)注册到云平台," +
+					wifiConnectDialog.setDefaultContent("        认证网络是指将您本人持有的Wi-Fi(包括密码)注册到云平台," +
 						"并完善个性化的别名LOGO等信息,有助于您身边的人更直接的了解您,并通过合理方式使用您的Wi-Fi. 云平台会记录所有使用过您网络的用户," +
 						"并提供每周用网报告和相关收益.您可以随时认证和取消认证,我们诚挚的希望您共享自己本人持有网络,请不要恶意注册他人网络.");
 				} else {
 					wifiConnectDialog.setTitle("如何认证网络");
-					wifiConnectDialog.setDefaultContent("            1. 先连接上您自己的Wi-Fi,将手机靠近您的路由器位置. " +
+					wifiConnectDialog.setDefaultContent("        1. 先连接上您自己的Wi-Fi,将手机靠近您的路由器位置. " +
 							"2. 点击右上角加号按钮,选择下拉菜单中的认证网络. 3. 按照说明步骤操作. 4. 目前我们只支持家庭个人网络,企业级别的无线网络由于其" +
 							"复杂性暂时无法完美支持敬请谅解.");
 				}
