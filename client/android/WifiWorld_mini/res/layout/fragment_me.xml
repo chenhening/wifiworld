@@ -42,7 +42,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/font_main_big" />
 
-                <ImageView
+                <TextView
                     android:id="@+id/login_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -50,7 +50,9 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="15dp"
                     android:gravity="center"
-                    android:src="@drawable/selector_btn_me_login" />
+                    android:text="登录"
+                    android:textColor="@color/white"
+                    android:background="@drawable/selector_btn_me_login" />
             </RelativeLayout>
 
             <RelativeLayout

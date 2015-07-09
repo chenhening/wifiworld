@@ -49,7 +49,7 @@ public class WifiBRService {
 	private static OnWifiStatusListener mWifiStatusListener;
 	
 	private static boolean mScannable = false;
-	private static boolean mSupplicantState = false;
+	private static boolean mSupplicantState = true;
 	
 	public static void schedule(final Context ctx) {
 		mIntent = new Intent(ctx, WifiMonitorService.class);
@@ -100,17 +100,18 @@ public class WifiBRService {
 			        			statusStr = "已连接";
 			        			if (mWifiStatusListener != null) {
 			        				mWifiStatusListener.onNetWorkConnected(statusStr);
-			        				mSupplicantState = false;
+			        				//mSupplicantState = false;
 			        			}
 			        		} else if(isDisconnected) {
 			        			statusStr = "已断开";
 			        			if (mWifiStatusListener != null) {
 			        				mWifiStatusListener.onNetWorkDisconnected(statusStr);
-			        				mSupplicantState = true;
+			        				//mSupplicantState = true;
 			        			}
 			        		}
 			        	}
 		        } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicantState) {
+		        		Log.d(TAG, "Supplicant state changed");
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
@@ -119,8 +120,7 @@ public class WifiBRService {
 		            //为了兼容4.0以下的设备，不要写成state == SupplicantState.AUTHENTICATING
 		            else if(state.toString().equals("AUTHENTICATING")){
 		                statusStr = "验证中";
-		            }
-		            else if (state == SupplicantState.ASSOCIATING){
+		            } else if (state == SupplicantState.ASSOCIATING){
 		                statusStr = "连接中";
 		            } else if (state == SupplicantState.COMPLETED){
 		                //只是验证密码正确，并不代表连接成功
@@ -140,11 +140,11 @@ public class WifiBRService {
 		                statusStr = "组握手";
 		            } else if (state == SupplicantState.INVALID){
 		                statusStr = "无效";
-		            } else if (state == SupplicantState.SCANNING){
+		            } /*else if (state == SupplicantState.SCANNING){
 		                statusStr = "正在扫描";
-		            } else if (state == SupplicantState.UNINITIALIZED){
+		            } */else if (state == SupplicantState.UNINITIALIZED){
 		                statusStr = "未初始化";
-		            }else{
+		            } else {
 		                statusStr = "莫名其妙";
 		            }
 
@@ -152,11 +152,12 @@ public class WifiBRService {
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
 		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            		if (mWifiStatusListener != null) {
-								mWifiStatusListener.onWrongPassword();
-							}
+							mWifiStatusListener.onWrongPassword();
+							//mSupplicantState = false;
+		            		}
 		            }
 		            if (mWifiStatusListener != null) {
-		            	mWifiStatusListener.onSupplicantChanged(statusStr);
+		            		mWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
 					if (mWifiStatusListener != null) {

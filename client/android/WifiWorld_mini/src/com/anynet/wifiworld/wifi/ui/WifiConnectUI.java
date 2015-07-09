@@ -255,8 +255,8 @@ public class WifiConnectUI {
 			mWifiName.setText("未连接WiFi");
 			if (!mIsWifiConnecting)
 				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-			else
-				WifiBRService.setWifiSupplicant(true);
+//			else
+//				WifiBRService.setWifiSupplicant(true);
 			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
@@ -396,7 +396,7 @@ public class WifiConnectUI {
 	    	
 	    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				WifiBRService.setWifiSupplicant(true);
+				//WifiBRService.setWifiSupplicant(true);
 				boolean connResult = false;
 				switch (dialogType) {
 				case DEFAULT:
