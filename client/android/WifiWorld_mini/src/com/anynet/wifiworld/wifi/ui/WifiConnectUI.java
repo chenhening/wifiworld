@@ -551,8 +551,8 @@ public class WifiConnectUI {
                 }
                 	
             });
-            
-            //生成二维码
+
+        //生成二维码
             customView.findViewById(R.id.ll_more_create_code).setOnClickListener(new OnClickListener() {
 
         			@Override
