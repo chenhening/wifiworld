@@ -176,7 +176,7 @@
                         android:id="@+id/start_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/btn_login"
+                        android:background="@drawable/selector_btn_login"
                         android:text="测 一 测 "
                         android:textColor="@color/font_color_write"
                         android:textSize="22dp" />

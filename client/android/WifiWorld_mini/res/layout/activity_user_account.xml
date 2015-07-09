@@ -77,11 +77,12 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/ic_user_header_upload"
+                    android:background="@drawable/selector_btn_login"
                     android:gravity="fill_vertical|center"
                     android:paddingBottom="5.0dip"
                     android:paddingLeft="5.0dip"
                     android:paddingTop="5.0dip"
+                    android:text="上传头像"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
@@ -135,7 +136,8 @@
                 android:layout_marginRight="15dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/ll_account_account"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/tv_detail"

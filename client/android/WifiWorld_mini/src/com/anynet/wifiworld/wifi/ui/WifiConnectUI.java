@@ -191,9 +191,9 @@ public class WifiConnectUI {
 							"2. 点击右上角加号按钮,选择下拉菜单中的认证网络. 3. 按照说明步骤操作. 4. 目前我们只支持家庭个人网络,企业级别的无线网络由于其" +
 							"复杂性暂时无法完美支持敬请谅解.");
 				}
-		    	wifiConnectDialog.setLeftBtnStr("不明白");
-		    	wifiConnectDialog.setRightBtnStr("对我有帮助");
-		    	wifiConnectDialog.show();
+			    	wifiConnectDialog.setLeftBtnStr("不明白");
+			    	wifiConnectDialog.setRightBtnStr("对我有帮助");
+			    	wifiConnectDialog.show();
 			}
 		}
 	};
@@ -255,8 +255,8 @@ public class WifiConnectUI {
 			mWifiName.setText("未连接WiFi");
 			if (!mIsWifiConnecting)
 				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-//			else
-//				WifiBRService.setWifiSupplicant(true);
+			else
+				WifiBRService.setWifiSupplicant(true);
 			mWifiAuthDesc.setText("[未认证]");
 		}
 	}
@@ -396,7 +396,7 @@ public class WifiConnectUI {
 	    	
 	    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				//WifiBRService.setWifiSupplicant(true);
+				WifiBRService.setWifiSupplicant(true);
 				boolean connResult = false;
 				switch (dialogType) {
 				case DEFAULT:

@@ -114,7 +114,7 @@
 			    android:layout_height="@dimen/dimen_40_dip"
 			    android:layout_gravity="center_vertical"
 			    android:layout_weight="2.0"
-			    android:background="@drawable/btn_login_sms"
+			    android:background="@drawable/selector_btn_login"
 			    android:gravity="center_vertical" >
 
 			    <TextView
@@ -143,13 +143,16 @@
 
     <Button
         android:id="@+id/button_login"
-        style="@style/Button.Default.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/layout_login_info"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/dimen_9_dip"
         android:layout_marginRight="@dimen/dimen_9_dip"
         android:layout_marginTop="@dimen/dimen_10_dip"
+        android:background="@drawable/selector_btn_login_strip"
         android:text="@string/user_login_btn_title"
-        android:textSize="@dimen/font_main_title" />
+        android:textSize="@dimen/font_main_title"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

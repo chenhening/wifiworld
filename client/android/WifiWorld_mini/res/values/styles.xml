@@ -33,7 +33,7 @@
     <style name="Button.Default.Green" parent="@android:style/Widget.Button">
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/btn_login</item>
+        <item name="android:background">@drawable/selector_btn_login</item>
         <item name="android:paddingTop">15.0dip</item>
         <item name="android:paddingBottom">15.0dip</item>
         <item name="android:layout_width">fill_parent</item>

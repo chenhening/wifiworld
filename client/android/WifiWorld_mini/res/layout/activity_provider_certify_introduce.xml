@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
-            android:background="@drawable/bg_knock_button"
+            android:background="@drawable/selector_btn_login"
             android:text="立即认证"
             android:textColor="@color/white"
             android:textColorHint="@color/white"

@@ -100,13 +100,13 @@ public class WifiBRService {
 			        			statusStr = "已连接";
 			        			if (mWifiStatusListener != null) {
 			        				mWifiStatusListener.onNetWorkConnected(statusStr);
-			        				//mSupplicantState = false;
+			        				mSupplicantState = false;
 			        			}
 			        		} else if(isDisconnected) {
 			        			statusStr = "已断开";
 			        			if (mWifiStatusListener != null) {
 			        				mWifiStatusListener.onNetWorkDisconnected(statusStr);
-			        				//mSupplicantState = true;
+			        				mSupplicantState = true;
 			        			}
 			        		}
 			        	}
@@ -115,7 +115,7 @@ public class WifiBRService {
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
-		                statusStr = "连接中";
+		                statusStr = "连接完成";
 		            }
 		            //为了兼容4.0以下的设备，不要写成state == SupplicantState.AUTHENTICATING
 		            else if(state.toString().equals("AUTHENTICATING")){
@@ -129,7 +129,7 @@ public class WifiBRService {
 		                statusStr = "已断开";
 		                if (mWifiStatusListener != null) {
 							mWifiStatusListener.onSupplicantDisconnected(statusStr);
-							//mSupplicantState = false;
+							mSupplicantState = false;
 							return;
 		                }
 		            } else if (state == SupplicantState.DORMANT){
@@ -140,9 +140,9 @@ public class WifiBRService {
 		                statusStr = "组握手";
 		            } else if (state == SupplicantState.INVALID){
 		                statusStr = "无效";
-		            } /*else if (state == SupplicantState.SCANNING){
+		            } else if (state == SupplicantState.SCANNING){
 		                statusStr = "正在扫描";
-		            } */else if (state == SupplicantState.UNINITIALIZED){
+		            } else if (state == SupplicantState.UNINITIALIZED){
 		                statusStr = "未初始化";
 		            } else {
 		                statusStr = "莫名其妙";
@@ -153,7 +153,7 @@ public class WifiBRService {
 		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
 		            		if (mWifiStatusListener != null) {
 							mWifiStatusListener.onWrongPassword();
-							//mSupplicantState = false;
+							mSupplicantState = false;
 		            		}
 		            }
 		            if (mWifiStatusListener != null) {

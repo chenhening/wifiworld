@@ -20,40 +20,42 @@
         android:background="@color/color_main_bg" >
 
        	<LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="15dp" >
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_marginBottom="15dp"
+       	    android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/login_content_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="120dip"
-                android:background="@drawable/bg_me_title"
-                android:visibility="visible" >
+       	    <RelativeLayout
+       	        android:id="@+id/login_content_layout"
+       	        android:layout_width="match_parent"
+       	        android:layout_height="120dp"
+       	        android:background="@drawable/bg_me_title" >
 
-                <TextView
-                    android:id="@+id/login_welcome_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
-                    android:text="新用户注册即送大礼包"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/font_main_big" />
+       	        <LinearLayout
+       	            android:layout_width="fill_parent"
+       	            android:layout_height="wrap_content"
+       	            android:layout_centerVertical="true"
+       	            android:layout_marginLeft="15dp"
+       	            android:gravity="center"
+       	            android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/login_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="center"
-                    android:text="登录"
-                    android:textColor="@color/white"
-                    android:background="@drawable/selector_btn_me_login" />
-            </RelativeLayout>
+       	            <ImageView
+       	                android:id="@+id/person_icon"
+       	                android:layout_width="60.0dip"
+       	                android:layout_height="60.0dip"
+       	                android:scaleType="centerCrop"
+       	                android:src="@drawable/ic_def_header" />
+
+       	            <TextView
+	                    android:id="@+id/login_text"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:gravity="center"
+	                    android:text="登录/注册"
+	                    android:textColor="@color/white"
+	                    android:background="@drawable/selector_btn_login" />
+       	        </LinearLayout>
+       	    </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/person_content_layout"
