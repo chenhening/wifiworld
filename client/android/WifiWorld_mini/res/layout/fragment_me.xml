@@ -57,7 +57,8 @@
                 android:id="@+id/person_content_layout"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:background="@drawable/bg_me_title" >
+                android:background="@drawable/bg_me_title"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
