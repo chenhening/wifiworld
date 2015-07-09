@@ -1,125 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical" >
 
     <include layout="@layout/header_setting" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.01"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/iv_wifi_app_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/tv_clues_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_wifi_app_logo"
-            android:layout_centerHorizontal="true"
-            android:text="网络宝：您身边能赚钱的网络"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_qq_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_our_group"
-            android:layout_below="@+id/tv_our_group"
-            android:text="我们的QQ群：452705991"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_our_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_clues_location"
-            android:layout_below="@+id/tv_clues_location"
-            android:text="当前版本号："
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_app_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tv_our_group"
-            android:layout_toRightOf="@+id/tv_our_group"
-            android:hint="v0.0.0"
-            android:textSize="20sp" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <com.anynet.wifiworld.view.SettingItemView
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            app:label="好评支持一下"
-            app:showTopDivider="true"
-            app:subLabel="和更多的朋友分享" >
-        </com.anynet.wifiworld.view.SettingItemView>
-
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_click_update"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            app:label="检查更新"
-            app:subLabel="点击更新"
-            app:showTopDivider="true" >
-        </com.anynet.wifiworld.view.SettingItemView>
-
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_my_attention"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            app:label="服务协议"
-            app:subLabel=""
-            app:showTopDivider="true" >
-        </com.anynet.wifiworld.view.SettingItemView>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <com.anynet.wifiworld.view.ReboundScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_15_dip"
-        android:layout_weight="0.01"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent"
+        android:background="@color/color_main_bg"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none" >
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_general_question"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            app:icon="@drawable/icon_person_center_msg"
-            app:label="常见问题"
-            app:subLabel=""
-            app:showTopDivider="true" >
-        </com.anynet.wifiworld.view.SettingItemView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-        <com.anynet.wifiworld.view.SettingItemView
-            android:id="@+id/slv_feedback"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/dimen_45_dip"
-            app:icon="@drawable/icon_person_center_msg"
-            app:label="意见反馈"
-            app:subLabel="一起参与产品改进吧"
-            app:showTopDivider="true" >
-        </com.anynet.wifiworld.view.SettingItemView>
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_wifi_app_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="45dp"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/tv_clues_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_wifi_app_logo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:text="网络宝：您身边能赚钱的网络"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_qq_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_our_group"
+                    android:layout_below="@+id/tv_our_group"
+                    android:text="我们的QQ群：452705991"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_our_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_clues_location"
+                    android:layout_below="@+id/tv_clues_location"
+                    android:text="当前版本号："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_app_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tv_our_group"
+                    android:layout_toRightOf="@+id/tv_our_group"
+                    android:hint="v0.0.0"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="好评支持一下"
+                    item:subLabel="和更多的朋友分享"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_click_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="middle"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="检查更新"
+                    item:subLabel="点击更新"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_my_attention"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="服务协议"
+                    item:subLabel=""
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_15_dip"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_general_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="常见问题"
+                    item:subLabel=""
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_center_msg"
+                    item:label="意见反馈"
+                    item:subLabel="一起参与产品改进吧"
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+        </LinearLayout>
+    </com.anynet.wifiworld.view.ReboundScrollView>
 
 </LinearLayout>

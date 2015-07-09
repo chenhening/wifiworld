@@ -136,8 +136,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/ll_account_account"
-                android:orientation="vertical"
-                android:visibility="gone" >
+                android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/tv_detail"
