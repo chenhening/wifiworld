@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 import android.app.Activity;
@@ -147,6 +149,7 @@ public class WifiConnectUI {
 			//启动连接动画
 			mIsWifiConnecting = true;
 			doConnectingAnimation(mIsWifiConnecting);
+			setWifiConnectingContent();
 		}
 
 		@Override
@@ -227,6 +230,46 @@ public class WifiConnectUI {
 		
 		//设置为非手动输入密码登陆
 		mIsWifiPassword = false;
+	}
+	
+	private void setWifiConnectingContent() {
+		WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
+		if (wifiInfoCur == null) {
+			return;
+		}
+		String wifiCurMac = wifiInfoCur.getBSSID();
+		List<WifiListItem> wifiAuth = mWifiListScanned.getAuthList();
+		List<WifiListItem> wifiNotAuth = mWifiListScanned.getNotAuthList();
+		boolean wifiCurFound = false;
+		for (WifiListItem wifiListItem : wifiAuth) {
+			if (wifiCurMac.equals(wifiListItem.getWifiMac())) {
+				wifiCurFound = true;
+				wifiAuth.remove(wifiListItem);
+				break;
+			}
+		}
+		if (!wifiCurFound) {
+			for (WifiListItem wifiListItem : wifiNotAuth) {
+				if (wifiCurMac.equals(wifiListItem.getWifiMac())) {
+					wifiCurFound = true;
+					wifiNotAuth.remove(wifiListItem);
+					break;
+				}
+			}
+		}
+		if (wifiCurFound) {
+			if (mWifiAuthList != null) {
+				mWifiAuthList.refreshWifiList(wifiAuth);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiAuthListView);
+			}
+			if (mWifiNotAuthList != null) {
+				mWifiNotAuthList.refreshWifiList(wifiNotAuth);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiNotAuthListView);
+			}
+		}
+		mWifiName.setText(WifiAdmin.convertToNonQuotedString(wifiInfoCur.getSSID()));
+		mWifiAuthDesc.setVisibility(View.VISIBLE);
+		mWifiAuthDesc.setText("WiFi牵线中...");
 	}
 	
 	private void setWifiConnectedContent() {

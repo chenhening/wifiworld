@@ -165,6 +165,7 @@ public class WifiBRService {
 						mScannable = false;
 					}
 				} else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
+					Log.d(TAG, "wifi state changed");
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
 					case WifiManager.WIFI_STATE_ENABLED:
