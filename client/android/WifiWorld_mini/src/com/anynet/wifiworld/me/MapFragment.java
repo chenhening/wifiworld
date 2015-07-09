@@ -468,7 +468,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		
 		//显示认证WiFi的logo
 		ImageView logo = (ImageView) infoWindow.findViewById(R.id.iv_map_wifi_logo);
-		logo.setImageBitmap(BitmapUtil.Bytes2Bimap(mWP.Logo));
+		logo.setImageBitmap(mWP.getLogo());
 	}
 
 	// 点击非marker区域，将显示的InfoWindow隐藏
