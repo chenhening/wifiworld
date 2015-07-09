@@ -9,7 +9,7 @@
  * 	v0.1(2015/01/22,1:20): add map2d feature
  * 	v0.2(2015/01/23,1:40): replace map2d to 3dmap and add location feature
  */
-package com.anynet.wifiworld.map;
+package com.anynet.wifiworld.me;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +74,7 @@ import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.map.SlidingUpPanelLayout.PanelSlideListener;
+import com.anynet.wifiworld.me.SlidingUpPanelLayout.PanelSlideListener;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
@@ -340,7 +340,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		// TODO Auto-generated method stub
 
 	}
-    
 	
 	AMapLocation mAMapLocation;
 	
@@ -441,9 +440,7 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 		wifiAlias.setText(mWP.Ssid);
 		wifiNameTV.setText(mWP.Alias);
 		wifiNameExtTV.setText(mWP.ExtAddress);
-		
 		infoWindow.findViewById(R.id.distance_ext).setOnClickListener(new OnClickListener() {
-
 			@Override
             public void onClick(View v) {
 				
