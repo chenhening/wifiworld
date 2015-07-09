@@ -55,6 +55,8 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	private RelativeLayout layout = null; // 父控件
 	private ImageView image = null; // 下拉箭头
 	private int p_width = -1; // 下拉框宽度
+	
+	private boolean mIsFocus = false;
 
 	public SettingEditItemView(Context context) {
 		super(context);
@@ -271,6 +273,13 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 			}
 		} else if (contentEditType == EDIT_TYPE_SELECTBOX) {
 			contentET.setVisibility(View.INVISIBLE);
+			contentTV.requestFocus();
+			mIsFocus = !mIsFocus;
+			if (mIsFocus) {
+				contentET.setTextColor(Color.BLACK);
+			} else {
+				contentET.setTextColor(Color.GRAY);
+			}
 			if (edited) {
 				//editBtn.setText(R.string.edit);
 				edited = false;
@@ -344,10 +353,10 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 		return contentET.getText().toString();
 	}
 	
-	public void setEditContentHint(String content) {
-		contentET.setText("");
-		contentET.setHint(content);
-		contentET.setHintTextColor(Color.GRAY);
+	public void setEditContent(String content) {
+		contentET.setText(content);
+		contentET.setSelection(contentET.getText().toString().length());
+		contentET.setTextColor(Color.GRAY);
 	}
 	
 	public void setContent(String content) {

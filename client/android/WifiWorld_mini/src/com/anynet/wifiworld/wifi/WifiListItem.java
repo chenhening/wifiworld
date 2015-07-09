@@ -133,6 +133,14 @@ public class WifiListItem {
 		mWifiPwd = pwd;
 	}
 	
+	public String getEncryptStr() {
+		if (mScanResult != null) {
+			return WifiAdmin.ConfigSec.getDisplaySecirityString(mScanResult);
+		} else {
+			return "UnKown";
+		}
+	}
+	
 	public String getEncryptType() {
 		if (mScanResult != null)
 			return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
@@ -153,7 +161,7 @@ public class WifiListItem {
 	
 	public Bitmap getLogo() {
 		if (mWifiProfile != null) {
-			return BitmapUtil.Bytes2Bimap(mWifiProfile.Logo);
+			return mWifiProfile.getLogo();
 		}
 		return null;
 	}

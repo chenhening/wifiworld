@@ -1,5 +1,7 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 import android.app.Activity;
@@ -74,6 +76,7 @@ public class WifiConnectUI {
 	private TextView mWifiAuthDesc;
 	private ListView mWifiAuthListView;
 	private ListView mWifiNotAuthListView;
+	private boolean mIsWifiPassword;
 	
 	private ToggleButton mWifiSwitch;
 	private AnimationDrawable mAnimSearch;
@@ -123,6 +126,11 @@ public class WifiConnectUI {
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
 			//mWifiMore.setVisibility(View.VISIBLE);
+			
+			if (mIsWifiPassword) {
+				mWifiAdmin.saveConfig();
+				mIsWifiPassword = false;
+			}
 		}
 		
 		@Override
@@ -130,6 +138,7 @@ public class WifiConnectUI {
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
+			mIsWifiPassword = false;
 			doConnectingAnimation(mIsWifiConnecting);
 			//mWifiMore.setVisibility(View.INVISIBLE);
 		}
@@ -140,12 +149,17 @@ public class WifiConnectUI {
 			//启动连接动画
 			mIsWifiConnecting = true;
 			doConnectingAnimation(mIsWifiConnecting);
+			setWifiConnectingContent();
 		}
 
 		@Override
 		public void onSupplicantDisconnected(String statusStr) {
-			// TODO Auto-generated method stub
-			
+			mIsWifiPassword = false;
+		}
+		
+		@Override
+		public void onWrongPassword() {
+			mIsWifiPassword = false;
 		}
 
 		@Override
@@ -167,7 +181,22 @@ public class WifiConnectUI {
 			if (wifiListItem.isAuthWifi()) {
 				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
 			} else {
-				//TODO(binfei)显示认证说明简介
+				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
+		    	
+				if (position == 0) {
+					wifiConnectDialog.setTitle("什么是认证网络");
+					wifiConnectDialog.setDefaultContent("        认证网络是指将您本人持有的Wi-Fi(包括密码)注册到云平台," +
+						"并完善个性化的别名LOGO等信息,有助于您身边的人更直接的了解您,并通过合理方式使用您的Wi-Fi. 云平台会记录所有使用过您网络的用户," +
+						"并提供每周用网报告和相关收益.您可以随时认证和取消认证,我们诚挚的希望您共享自己本人持有网络,请不要恶意注册他人网络.");
+				} else {
+					wifiConnectDialog.setTitle("如何认证网络");
+					wifiConnectDialog.setDefaultContent("        1. 先连接上您自己的Wi-Fi,将手机靠近您的路由器位置. " +
+							"2. 点击右上角加号按钮,选择下拉菜单中的认证网络. 3. 按照说明步骤操作. 4. 目前我们只支持家庭个人网络,企业级别的无线网络由于其" +
+							"复杂性暂时无法完美支持敬请谅解.");
+				}
+			    	wifiConnectDialog.setLeftBtnStr("不明白");
+			    	wifiConnectDialog.setRightBtnStr("对我有帮助");
+			    	wifiConnectDialog.show();
 			}
 		}
 	};
@@ -198,6 +227,49 @@ public class WifiConnectUI {
 		//启动动画，更新WiFi扫描列表
 		doSearchAnimation(true);
 		mWifiListScanned.refresh();
+		
+		//设置为非手动输入密码登陆
+		mIsWifiPassword = false;
+	}
+	
+	private void setWifiConnectingContent() {
+		WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
+		if (wifiInfoCur == null) {
+			return;
+		}
+		String wifiCurMac = wifiInfoCur.getBSSID();
+		List<WifiListItem> wifiAuth = mWifiListScanned.getAuthList();
+		List<WifiListItem> wifiNotAuth = mWifiListScanned.getNotAuthList();
+		boolean wifiCurFound = false;
+		for (WifiListItem wifiListItem : wifiAuth) {
+			if (wifiCurMac.equals(wifiListItem.getWifiMac())) {
+				wifiCurFound = true;
+				wifiAuth.remove(wifiListItem);
+				break;
+			}
+		}
+		if (!wifiCurFound) {
+			for (WifiListItem wifiListItem : wifiNotAuth) {
+				if (wifiCurMac.equals(wifiListItem.getWifiMac())) {
+					wifiCurFound = true;
+					wifiNotAuth.remove(wifiListItem);
+					break;
+				}
+			}
+		}
+		if (wifiCurFound) {
+			if (mWifiAuthList != null) {
+				mWifiAuthList.refreshWifiList(wifiAuth);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiAuthListView);
+			}
+			if (mWifiNotAuthList != null) {
+				mWifiNotAuthList.refreshWifiList(wifiNotAuth);
+				UIHelper.setListViewHeightBasedOnChildren(mWifiNotAuthListView);
+			}
+		}
+		mWifiName.setText(WifiAdmin.convertToNonQuotedString(wifiInfoCur.getSSID()));
+		mWifiAuthDesc.setVisibility(View.VISIBLE);
+		mWifiAuthDesc.setText("WiFi牵线中...");
 	}
 	
 	private void setWifiConnectedContent() {
@@ -321,51 +393,51 @@ public class WifiConnectUI {
     //-----------------------------------------------------------------------------------------------------------------
     //custom functions
     private void doSearchAnimation(boolean start) {
-    	if (start) {
-    		mAnimSearch.start();
-    		mImageNeedle.startAnimation(mAnimNeedle);
-    	} else {
-    		mAnimSearch.stop();
-    		mAnimSearch.selectDrawable(0);
-    		mImageNeedle.clearAnimation();
-    	}
+	    	if (start) {
+	    		mAnimSearch.start();
+	    		mImageNeedle.startAnimation(mAnimNeedle);
+	    	} else {
+	    		mAnimSearch.stop();
+	    		mAnimSearch.selectDrawable(0);
+	    		mImageNeedle.clearAnimation();
+	    	}
     }
     
     private void doConnectingAnimation(boolean start) {
-    	if (start) {
-    		if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
-    			return;
-    		
-    		mWifiConLogo.setImageResource(R.animator.animation_connecting);
-    		mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
-    		mAnimWifiCon.start();
-    	} else if(mAnimWifiCon != null) {
-    		if (!mAnimWifiCon.isRunning())
-    			return;
-    		
-    		mAnimWifiCon.stop();
-    		mAnimWifiCon.selectDrawable(0);
-    	}
+	    	if (start) {
+	    		if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+	    			return;
+	    		
+	    		mWifiConLogo.setImageResource(R.animator.animation_connecting);
+	    		mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+	    		mAnimWifiCon.start();
+	    	} else if(mAnimWifiCon != null) {
+	    		if (!mAnimWifiCon.isRunning())
+	    			return;
+	    		
+	    		mAnimWifiCon.stop();
+	    		mAnimWifiCon.selectDrawable(0);
+	    	}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
-    	final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, dialogType);
-    	
-    	wifiConnectDialog.setTitle("连接到：" + wifiListItem.getWifiName());
-    	wifiConnectDialog.setLeftBtnStr("取消");
-    	wifiConnectDialog.setRightBtnStr("确定");
-    	
-    	if (dialogType == DialogType.PASSWORD) {
-    		wifiConnectDialog.clearPwdEditText();
-    	}
-    	
-    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+	    final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, dialogType);
+	    	
+	    	wifiConnectDialog.setTitle("连接到：" + wifiListItem.getWifiName());
+	    	wifiConnectDialog.setLeftBtnStr("取消");
+	    	wifiConnectDialog.setRightBtnStr("确定");
+	    	
+	    	if (dialogType == DialogType.PASSWORD) {
+	    		wifiConnectDialog.clearPwdEditText();
+	    	}
+	    	
+	    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-    	
-    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+	    	
+	    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				WifiBRService.setWifiSupplicant(true);
 				boolean connResult = false;
@@ -388,6 +460,7 @@ public class WifiConnectUI {
 							return;
 						}
 						wifiListItem.setWifiPwd(inputedPwd);
+						mIsWifiPassword = true;
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
 						//shutdown soft keyboard if soft keyboard is actived
 						InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(mActivity.INPUT_METHOD_SERVICE);
@@ -396,7 +469,7 @@ public class WifiConnectUI {
 						}
 					}
 					break;
-
+	
 				default:
 					break;
 				}
@@ -406,69 +479,75 @@ public class WifiConnectUI {
 				}
 			}
 		});
-    	
-    	wifiConnectDialog.show();
+	    	
+	    	wifiConnectDialog.show();
     }
     
     private void initMorePopWindows() {
         if (popupwindow == null) {
-    		// 获取自定义布局文件pop.xml的视图  
+    			// 获取自定义布局文件pop.xml的视图  
 			final LayoutInflater layoutInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View customView = layoutInflater.inflate(R.layout.popupwindow_more, null, false);  
-    		popupwindow = new PopupWindow(customView);
-    		popupwindow.setWidth(LayoutParams.WRAP_CONTENT);    
-    		popupwindow.setHeight(LayoutParams.WRAP_CONTENT); 
-    		popupwindow.setTouchable(true);
-    		popupwindow.setFocusable(true);
-    		popupwindow.setBackgroundDrawable(new BitmapDrawable());
-    		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
-    		popupwindow.setOutsideTouchable(true);
-                
-    		//认证
-    		customView.findViewById(R.id.ll_more_auth).setOnClickListener(new OnClickListener() {
-
-        		@Override
-                public void onClick(View v) {
-        			Intent i = new Intent(mActivity, WifiProviderRigisterActivity.class);
-        			mActivity.startActivity(i);
-        			popupwindow.dismiss();
-                }
-                	
-            });
-    		
-    		//测一测
-    		customView.findViewById(R.id.ll_more_test).setOnClickListener(new OnClickListener() {
-
-        		@Override
-                public void onClick(View v) {
-        			Intent i = new Intent(mActivity, WifiTestActivity.class);
-        			mActivity.startActivity(i);
-        			popupwindow.dismiss();
-                }
-                	
-            });
-    		
-    		//评论
-    		customView.findViewById(R.id.ll_more_comment).setOnClickListener(new OnClickListener() {
-
-        		@Override
-                public void onClick(View v) {
-        			Intent i = new Intent(mActivity, WifiCommentActivity.class);
-        			mActivity.startActivity(i);
-        			popupwindow.dismiss();
-                }
-                	
-            });
+    			popupwindow = new PopupWindow(customView);
+	    		popupwindow.setWidth(LayoutParams.WRAP_CONTENT);    
+	    		popupwindow.setHeight(LayoutParams.WRAP_CONTENT); 
+	    		popupwindow.setTouchable(true);
+	    		popupwindow.setFocusable(true);
+	    		popupwindow.setBackgroundDrawable(new BitmapDrawable());
+	    		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
+	    		popupwindow.setOutsideTouchable(true);
+	                
+	    		//认证
+	    		customView.findViewById(R.id.ll_more_auth).setOnClickListener(new OnClickListener() {
+	
+	        		@Override
+	            public void onClick(View v) {
+	        			Intent i = new Intent(mActivity, WifiProviderRigisterActivity.class);
+		        		mActivity.startActivity(i);
+		        		popupwindow.dismiss();
+	            }
+	                	
+	        });
+	    		
+	    		//测一测
+	    		customView.findViewById(R.id.ll_more_test).setOnClickListener(new OnClickListener() {
+	
+	        		@Override
+	            public void onClick(View v) {
+	        			if (mWifiCurrent.isConnected()) {
+	        				Intent i = new Intent(mActivity, WifiTestActivity.class);
+	        				i.putExtra("WifiSpeedName", mWifiCurrent.getWifiName());
+	        				i.putExtra("WifiSpeedEncrypt", mWifiCurrent.getWifiListItem().getEncryptStr());
+			        		mActivity.startActivity(i);
+			        		popupwindow.dismiss();
+					} else {
+						Toast.makeText(mActivity, "请保证WiFi已连接", Toast.LENGTH_SHORT).show();
+					}
+	            }
+	                	
+	        });
+	    		
+	    		//评论
+	    		customView.findViewById(R.id.ll_more_comment).setOnClickListener(new OnClickListener() {
+	
+	        		@Override
+	            public void onClick(View v) {
+		        		Intent i = new Intent(mActivity, WifiCommentActivity.class);
+		        		mActivity.startActivity(i);
+		        		popupwindow.dismiss();
+	            }
+	                	
+	        });
     		
             //扫一扫
             customView.findViewById(R.id.ll_more_scan).setOnClickListener(new OnClickListener() {
 
-        		@Override
+        			@Override
                 public void onClick(View v) {
-    				Intent i = new Intent();
-    				i.setClass(mActivity, CaptureActivity.class);
-    				mActivity.startActivity(i);
-    				popupwindow.dismiss();
+	    				Intent i = new Intent();
+	    				i.setClass(mActivity, CaptureActivity.class);
+	    				mActivity.startActivity(i);
+	    				popupwindow.dismiss();
                 }
                 	
             });
@@ -476,41 +555,41 @@ public class WifiConnectUI {
         //生成二维码
             customView.findViewById(R.id.ll_more_create_code).setOnClickListener(new OnClickListener() {
 
-        		@Override
+        			@Override
                 public void onClick(View v) {
-        			popupwindow.dismiss();
-        			
-        			WifiListItem wifiCurInfo = WifiCurrent.getWifiListItem();
-        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
-        				((BaseActivity) mActivity).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
-        				return;
-        			}
-        			
-        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
-        			PopupWindow image_display_popwin = new PopupWindow(customView);
-        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);
-        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
-        			image_display_popwin.setTouchable(true);
-        			image_display_popwin.setFocusable(true);
-        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
-        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
-        			image_display_popwin.setOutsideTouchable(true);
-        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
-        			try {
-        				JSONArray jsonarray = new JSONArray();
-        				jsonarray.put(wifiCurInfo.getWifiName());
-        				jsonarray.put(wifiCurInfo.getWifiMac());
-        				jsonarray.put(wifiCurInfo.getWifiPwd());
-        				jsonarray.put(wifiCurInfo.getEncryptType());
-        				String object = jsonarray.toString();
-        				String encryptObj = StringCrypto.encryptDES(object, CaptureActivity.KEY);
-	                    image.setImageBitmap(EncodingHandler.createQRCode(encryptObj, 640));
-                    } catch (WriterException e) {
-	                    e.printStackTrace();
-                    } catch (Exception e) {
-						e.printStackTrace();
-					}
-        			image_display_popwin.showAtLocation(mView, Gravity.CENTER, 0, 0);
+	        			popupwindow.dismiss();
+	        			
+	        			WifiListItem wifiCurInfo = mWifiCurrent.getWifiListItem();
+	        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
+	        				((BaseActivity) mActivity).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
+	        				return;
+	        			}
+	        				
+	        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
+	        			PopupWindow image_display_popwin = new PopupWindow(customView);
+	        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);
+	        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
+	        			image_display_popwin.setTouchable(true);
+	        			image_display_popwin.setFocusable(true);
+	        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
+	        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
+	        			image_display_popwin.setOutsideTouchable(true);
+	        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
+	        			try {
+	        				JSONArray jsonarray = new JSONArray();
+	        				jsonarray.put(wifiCurInfo.getWifiName());
+	        				jsonarray.put(wifiCurInfo.getWifiMac());
+	        				jsonarray.put(wifiCurInfo.getWifiPwd());
+	        				jsonarray.put(wifiCurInfo.getEncryptType());
+	        				String object = jsonarray.toString();
+	        				String encryptObj = StringCrypto.encryptDES(object, CaptureActivity.KEY);
+		                    image.setImageBitmap(EncodingHandler.createQRCode(encryptObj, 640));
+	                    } catch (WriterException e) {
+		                    e.printStackTrace();
+	                    } catch (Exception e) {
+							e.printStackTrace();
+						}
+	        			image_display_popwin.showAtLocation(mView, Gravity.CENTER, 0, 0);	
                 }
                 	
             });

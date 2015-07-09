@@ -1,16 +1,23 @@
 package com.anynet.wifiworld.wifi.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.wifi.WifiSpeedTester;
 
 public class WifiTestActivity extends BaseActivity {
 	private final static String TAG = WifiTestActivity.class.getSimpleName();
 	
 	private Context mContext;
+	private TextView mWifiName;
+	private TextView mWifiDesc;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.tvTitle.setText("测试网络");
@@ -23,7 +30,22 @@ public class WifiTestActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
+		setWifiConnected();
 		
+		WifiSpeedTester wifiSpeedTester = new WifiSpeedTester(this);
+		Button testBtn = (Button) findViewById(R.id.start_button);
+		testBtn.setOnClickListener(wifiSpeedTester);
+	}
+	
+	private void setWifiConnected() {
+		Intent intent = getIntent();
+		String wifiName = intent.getStringExtra("WifiSpeedName");
+		String wifiEncrypt = intent.getStringExtra("WifiSpeedEncrypt");
+		
+		mWifiName = (TextView) findViewById(R.id.tv_wifi_connected_name);
+		mWifiDesc = (TextView) findViewById(R.id.tv_wifi_connected_desc);
+		mWifiName.setText(wifiName);
+		mWifiDesc.setText(wifiEncrypt);
 	}
 
 	protected Context getActivity() {

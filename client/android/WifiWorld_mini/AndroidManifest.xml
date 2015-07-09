@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="254"
-    android:versionName="1.1.4" >
+    android:versionCode="270"
+    android:versionName="1.1.20" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -69,9 +69,7 @@
         <activity
             android:name="com.anynet.wifiworld.provider.WifiProviderRigisterActivity" />
         <activity
-            android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" >
+            android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

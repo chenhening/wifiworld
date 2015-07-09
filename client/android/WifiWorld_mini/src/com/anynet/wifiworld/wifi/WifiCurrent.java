@@ -28,7 +28,7 @@ public class WifiCurrent {
 		mWifiListItem = wifiListItem;
 	}
 	
-	public static WifiListItem getWifiListItem() {
+	public WifiListItem getWifiListItem() {
 		return mWifiListItem;
 	}
 	

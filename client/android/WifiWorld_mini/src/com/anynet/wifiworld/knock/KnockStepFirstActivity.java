@@ -101,7 +101,7 @@ public class KnockStepFirstActivity extends BaseActivity {
 			}
 		});
 		
-		mTitlebar.tvTitle.setText("Wi-Fi敲门");
+		mTitlebar.tvTitle.setText("网络敲门");
 	}
 
 	View step1V, step2V, step3V, moveV;

@@ -70,7 +70,7 @@ public class WifiAdmin {
     
     private WifiAdmin(Context context) {
         //get WIFI manager object
-    		mContext = context;
+    	mContext = context;
         mWifiManager = (WifiManager)mContext.getSystemService(Context.WIFI_SERVICE);
         mNumOpenNetworksKept =  Settings.Secure.getInt(mContext.getContentResolver(),
 	            Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
@@ -159,7 +159,7 @@ public class WifiAdmin {
 		
 		int id = -1;
 		try {
-			//config.priority = getMaxPriority(mWifiManager) + 1;
+			config.priority = getMaxPriority(mWifiManager) + 1;
 			id = mWifiManager.addNetwork(config);
 			config.networkId = id;
 		} catch(NullPointerException e) {
@@ -644,7 +644,7 @@ public class WifiAdmin {
       			callback.onFailed("密码验证失败，请重新输入密码。");
   			}
   			
-  		}, 10000);
+  		}, 20000);
   		
   		mContext.registerReceiver(receiver, filter);
   		return true;

@@ -1,7 +1,6 @@
 package com.anynet.wifiworld.provider;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,18 +9,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
+import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.MainActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
+import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 
 public class WifiProviderSettingActivity extends BaseActivity {
 
@@ -35,62 +34,55 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText("我提供的Wi-Fi");
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+		mTitlebar.tvTitle.setText(mWifiProfile.Ssid);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
+		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
+		mWifiProfile = mLoginHelper.mWifiProfile;
 		setContentView(R.layout.activity_provider_setting);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		mLoginHelper = LoginHelper.getInstance(getApplicationContext());
-		mWifiProfile = mLoginHelper.mWifiProfile;
+		
 		// 取消wifi
 		this.findViewById(R.id.slv_change_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
-						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								mWifiProfile.deleteRemote(getApplicationContext());
-								mLoginHelper.mWifiProfile = mWifiProfile = null;
-								mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-								mIntent.setClass(getApplicationContext(), MainActivity.class);
-								startActivity(mIntent);
-							}
-
-						}).setNegativeButton("取消", null).show();
+				mIntent.setClass(WifiProviderSettingActivity.this, WifiProviderRigisterFirstActivity.class);
+				startActivity(mIntent);
 			}
 		});
+		
 		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(activity).setTitle("取消WiFi共享").setMessage("确定解绑并取消共享此WiFi?")
-						.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mWifiProfile.deleteRemote(getApplicationContext());
-								mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-								mLoginHelper.mWifiProfile = mWifiProfile = null;
-								mIntent.setClass(getApplicationContext(), MainActivity.class);
-								startActivity(mIntent);
-							}
-
-						}).setNegativeButton("取消", null).show();
+				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
+		    	
+		    	wifiConnectDialog.setTitle("取消网络认证");
+		    	wifiConnectDialog.setDefaultContent("是否解绑并取消当前网络认证?");
+		    	wifiConnectDialog.setLeftBtnStr("取消");
+		    	wifiConnectDialog.setRightBtnStr("确定");
+		    	
+		    	wifiConnectDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+		    	});
+	    	
+		    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mWifiProfile.deleteRemote(getApplicationContext());
+						mIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						mLoginHelper.mWifiProfile = mWifiProfile = null;
+						mIntent.setClass(getApplicationContext(), MainActivity.class);
+						startActivity(mIntent);
+					}
+				});
+	    	wifiConnectDialog.show();
 			}
 		});
 

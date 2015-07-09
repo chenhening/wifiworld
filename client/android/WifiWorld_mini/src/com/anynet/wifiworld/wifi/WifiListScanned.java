@@ -156,8 +156,8 @@ public class WifiListScanned{
 	private void wifiDistribution(ScanResult scanResult, WifiConfiguration wifiCfg, WifiProfile wifiProfile) {
 		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg);
 		wifiItem.setWifiProfile(wifiProfile);
-		if (NetHelper.isWifiNet(mContext)&& mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
-			Log.d(TAG, scanResult.SSID + " is the current connected wifi");
+		if (/*NetHelper.isWifiNet(mContext)&& */mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
+			Log.d(TAG, "current connected wifi: " + scanResult.SSID);
 			mWifiCurrent.setWifiListItem(wifiItem);
 			return;
 		}

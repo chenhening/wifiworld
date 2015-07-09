@@ -42,12 +42,12 @@
 
         <ImageView
             android:id="@+id/iv_wifi_plus"
-            android:layout_width="35dp"
+            android:layout_width="48dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/wifi_plus_btn"
+            android:src="@drawable/selector_wifi_plus"
             android:visibility="visible" />
     </RelativeLayout>
 
@@ -194,7 +194,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="认证Wi-Fi"
+	                android:text="认证网络"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 			
@@ -231,7 +231,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="非认证Wi-Fi"
+	                android:text="非认证网络"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 	

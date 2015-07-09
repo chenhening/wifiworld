@@ -60,7 +60,7 @@ public class WifiProfile extends BmobObject{
 	private String Password = ""; 			//Wifi的密码，经过base64后保存
 	public String Sponser = ""; 				//绑定的用户账号，Wifi提供者电话号码
 	public int Type = 0; 					//Wifi的类型
-	public byte[] Logo = null; 				//用户自定义的Logo图片字节流
+	private byte[] Logo = null; 				//用户自定义的Logo图片字节流
 
 	public String Alias = ""; 				//用户自定义的Wifi别名、备注名
 	public BmobGeoPoint Geometry=null; 		//WiFi的地理位置
@@ -143,7 +143,7 @@ public class WifiProfile extends BmobObject{
 		String encryptedStr = null;
 		if (pwd != null) {
 			try {
-				pwd = StringCrypto.encryptDES(pwd, CryptoKey);
+				encryptedStr = StringCrypto.encryptDES(pwd, CryptoKey);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

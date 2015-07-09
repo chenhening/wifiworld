@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -56,6 +56,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:orientation="vertical" >
 
                 <TextView
@@ -71,11 +72,13 @@
                     android:id="@+id/tv_wifi_connected_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="left"
                     android:layout_marginTop="5dp"
                     android:hint="正在获取..."
                     android:maxLines="1"
                     android:textColor="@color/grey"
                     android:textSize="14sp" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -106,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
-            android:background="@drawable/bg_knock_button"
+            android:background="@drawable/selector_btn_login"
             android:text="立即认证"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
