@@ -40,7 +40,7 @@
        	            android:orientation="vertical" >
 
        	            <ImageView
-       	                android:id="@+id/person_icon"
+       	                android:id="@+id/person_icon_off"
        	                android:layout_width="60.0dip"
        	                android:layout_height="60.0dip"
        	                android:scaleType="centerCrop"
@@ -73,7 +73,7 @@
                     android:orientation="vertical" >
 
                     <ImageView
-	                    android:id="@+id/person_icon"
+	                    android:id="@+id/person_icon_on"
 	                    android:layout_width="60.0dip"
 	                    android:layout_height="60.0dip"
 	                    android:layout_centerVertical="true"

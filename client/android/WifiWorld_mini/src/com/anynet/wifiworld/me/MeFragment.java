@@ -111,7 +111,7 @@ public class MeFragment extends MainFragment {
 			});
 			
 			// 点击进入account
-			mPageRoot.findViewById(R.id.person_icon).setOnClickListener(new OnClickListener() {
+			mPageRoot.findViewById(R.id.person_icon_on).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -182,9 +182,8 @@ public class MeFragment extends MainFragment {
 			TextView tvName = (TextView) mPageRoot.findViewById(R.id.person_name);
 			tvName.setText(mLoginHelper.getCurLoginUserInfo().getUsername());
 			if (mLoginHelper.getCurLoginUserInfo().Avatar != null) {
-				Drawable drawable = new BitmapDrawable(this.getResources(), BitmapUtil.Bytes2Bimap(mLoginHelper.getCurLoginUserInfo().Avatar));
-				ImageView iv_avatar = (ImageView) this.findViewById(R.id.person_icon);
-				iv_avatar.setImageDrawable(drawable);
+				ImageView iv_avatar = (ImageView) mPageRoot.findViewById(R.id.person_icon_on);
+				iv_avatar.setImageBitmap(BitmapUtil.Bytes2Bimap(mLoginHelper.getCurLoginUserInfo().Avatar));
 			}
 			
 			new Timer().schedule(new TimerTask() {

@@ -124,7 +124,6 @@ public class MapFragment extends MainFragment implements LocationSource, AMapLoc
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.e(TAG, "1 onCreateView:"+(System.currentTimeMillis()-current));
 		mPageRoot = inflater.inflate(R.layout.fregment_map, null);
         mapView = (MapView) mPageRoot.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
