@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -192,6 +193,10 @@ public class WifiConnectDialog extends ANBaseDialog {
 	}
 	
 	public void setDefaultContent(String str) {
+		mConnectTip.setText(str);
+	}
+	
+	public void setDefaultContent(Spanned str) {
 		mConnectTip.setText(str);
 	}
 

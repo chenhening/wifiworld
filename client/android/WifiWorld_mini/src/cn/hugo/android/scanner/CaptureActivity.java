@@ -541,7 +541,7 @@ public final class CaptureActivity extends Activity implements
 				break;
 			case R.id.capture_button_cancel:
 				finish();
-				overridePendingTransition(R.anim.hold, R.anim.slide_left_out);
+				overridePendingTransition(R.anim.slide_right_part_out, R.anim.slide_right_out);
 				break;
 			default:
 				break;

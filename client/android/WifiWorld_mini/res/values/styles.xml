@@ -44,5 +44,12 @@
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
+    
+    <style name="ShadowFont">
+        <item name="android:shadowColor">#d6d6d6ff</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+    </style>
 
 </resources>
