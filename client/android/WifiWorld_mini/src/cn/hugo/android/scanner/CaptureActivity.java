@@ -287,6 +287,13 @@ public final class CaptureActivity extends Activity implements
 	}
 
 	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.hold, R.anim.slide_left_out);
+		super.onBackPressed();
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
@@ -534,6 +541,7 @@ public final class CaptureActivity extends Activity implements
 				break;
 			case R.id.capture_button_cancel:
 				finish();
+				overridePendingTransition(R.anim.hold, R.anim.slide_left_out);
 				break;
 			default:
 				break;

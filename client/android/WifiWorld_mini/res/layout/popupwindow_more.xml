@@ -114,42 +114,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_more_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical" >
-    
-	    <LinearLayout
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@color/color_question_request_selected" >
-	
-	        <ImageView
-	            android:layout_width="24dp"
-	            android:layout_height="24dp"
-	            android:layout_gravity="center_vertical"
-	            android:layout_marginLeft="8dp"
-	            android:background="@drawable/ic_more_scan" />
-	
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_vertical"
-	            android:padding="8dp"
-	            android:text="扫描上网"
-	            android:textColor="@color/black"
-	            android:textSize="16sp" />
-	    </LinearLayout>
-	    
-	    <View
-			android:layout_width="match_parent"
-			android:layout_height="1px"
-			android:background="@color/grey" />
-    
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/ll_more_create_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,6 +138,42 @@
 	            android:layout_gravity="center_vertical"
 	            android:padding="8dp"
 	            android:text="分享网络"
+	            android:textColor="@color/black"
+	            android:textSize="16sp" />
+	    </LinearLayout>
+	    
+	    <View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="@color/grey" />
+    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_more_disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@color/color_question_request_selected" >
+	
+	        <ImageView
+	            android:layout_width="24dp"
+	            android:layout_height="24dp"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginLeft="8dp"
+	            android:background="@drawable/ic_wifi_disconnected" />
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:padding="8dp"
+	            android:text="断开网络"
 	            android:textColor="@color/black"
 	            android:textSize="16sp" />
 	    </LinearLayout>

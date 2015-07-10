@@ -12,20 +12,17 @@
         android:layout_height="48dp"
         android:background="@drawable/wifi_title_bg"
         android:visibility="visible" >
-
-        <ToggleButton
-            android:id="@+id/tb_wifi_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+	
+	    <ImageView
+	        android:id="@+id/iv_wifi_scan"
+	        android:layout_width="48dp"
+	        android:layout_height="35dp"
+	        android:contentDescription="扫描上网"
+	        android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
-            android:background="@drawable/selector_wifi_switch"
-            android:checked="true"
-            android:focusableInTouchMode="true"
-            android:longClickable="true"
-            android:textOff=""
-            android:textOn=""
-            android:visibility="visible" />
+            android:padding="2dp"
+	        android:scaleType="centerInside"
+	        android:src="@drawable/ic_more_scan" />
 
         <TextView
             android:layout_width="wrap_content"

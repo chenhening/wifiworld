@@ -78,7 +78,7 @@ public class WifiConnectUI {
 	private ListView mWifiNotAuthListView;
 	private boolean mIsWifiPassword;
 	
-	private ToggleButton mWifiSwitch;
+	private ImageView mWifiScan;
 	private AnimationDrawable mAnimSearch;
 	private Animation mAnimNeedle;
 	private ImageView mImageSearch;
@@ -125,7 +125,7 @@ public class WifiConnectUI {
 			mWifiListScanned.refresh();
 			mIsWifiConnecting = false;
 			doConnectingAnimation(mIsWifiConnecting);
-			//mWifiMore.setVisibility(View.VISIBLE);
+			mWifiMore.setVisibility(View.VISIBLE);
 			
 			if (mIsWifiPassword) {
 				mWifiAdmin.saveConfig();
@@ -140,7 +140,7 @@ public class WifiConnectUI {
 			mIsWifiConnecting = false;
 			mIsWifiPassword = false;
 			doConnectingAnimation(mIsWifiConnecting);
-			//mWifiMore.setVisibility(View.INVISIBLE);
+			mWifiMore.setVisibility(View.INVISIBLE);
 		}
 
 		@Override
@@ -305,18 +305,17 @@ public class WifiConnectUI {
 	}
 	
 	private void getViewHolder() {
-		//断开连接
-		mWifiSwitch = (ToggleButton)mView.findViewById(R.id.tb_wifi_switch);
-		mWifiSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-		
+		//扫一扫连网		
+		mWifiScan = (ImageView)mView.findViewById(R.id.iv_wifi_scan);
+		mWifiScan.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				WifiInfo wifiInfo = mWifiAdmin.getWifiInfo();
-				if (wifiInfo != null) {
-					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
-				}
+			public void onClick(View v) {
+				Intent i = new Intent();
+				i.setClass(mActivity, CaptureActivity.class);
+				mActivity.startActivity(i);
+				mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 			}
-		    	
 		});
 		
 		//点击搜索附近WiFi
@@ -540,13 +539,14 @@ public class WifiConnectUI {
 	        });
     		
             //扫一扫
-            customView.findViewById(R.id.ll_more_scan).setOnClickListener(new OnClickListener() {
+            customView.findViewById(R.id.ll_more_disconnect).setOnClickListener(new OnClickListener() {
 
         			@Override
                 public void onClick(View v) {
-	    				Intent i = new Intent();
-	    				i.setClass(mActivity, CaptureActivity.class);
-	    				mActivity.startActivity(i);
+        				WifiInfo wifiInfo = mWifiAdmin.getWifiInfo();
+	    				if (wifiInfo != null) {
+	    					mWifiAdmin.disConnectionWifi(wifiInfo.getNetworkId());
+	    				}
 	    				popupwindow.dismiss();
                 }
                 	
