@@ -237,7 +237,7 @@ public class WifiConnectUI {
 	
 	private void setWifiConnectingContent() {
 		WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
-		if (wifiInfoCur == null) {
+		if (wifiInfoCur == null || wifiInfoCur.getBSSID() == null) {
 			return;
 		}
 		String wifiCurMac = wifiInfoCur.getBSSID();

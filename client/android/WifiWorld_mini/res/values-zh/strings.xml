@@ -6,30 +6,13 @@
     <!-- Login -->
     <string name="account_edit">修改</string>
     <string name="input">输入</string>
-    <string name="edit">修改</string>
-    <string name="save">保存</string>
     
-    <string name="login_account">输入手机号码</string>
-    <string name="login_passwd">输入密码</string>
     <string name="sms_check_num">输入验证码</string>
     <string name="smschecknum">获取验证码</string>
     <string name="login_login">登录</string>
-    <string name="login_logining">登录中</string>
-    <string name="error_tip_test">密码错误</string>
-    <string name="login_fail_noprivilege">你还没获得水晶矿场资格,快用电脑\n登录   %1$s 抢水晶\n资格吧</string>
-    <string name="sessoin_fail_for_kickout">您的帐号已在别处登录</string>
-    <string name="sessoin_fail_for_timeout">登录已失效，请重新登录</string>
-    <string name="small_to_dot001">&lt;0.001</string>
-    <string name="zero">0</string>
-    <!-- my account -->
-    <string name="my_account_phone">手机号</string>
-    <string name="my_account_password">密码</string>
-    <string name="my_account">帐号</string>
-    <string name="my_account_nikename">昵称</string>
-    <string name="my_account_head">头像</string>
-    <string name="my_account_id">账户ID</string>
-    <string name="my_account_sex">性别</string>
     
+    <!-- my account -->
+    <string name="my_account_nikename">昵称</string>
     <string name="next_step">下一步</string>
     
     <!-- WIFI登记 -->
@@ -41,34 +24,32 @@
     <string name="str_wifi_provider_location_hint">点击获取地理位置</string>
     <string name="str_wifi_provider_detail_hint">请输入详细街道，门牌号等</string>
     <string name="str_wifi_provider_type_txt">网络类型</string>
-    <string name="str_wifi_provider_type_hint">请选择网络提供类型</string>
     <string name="str_wifi_provider_detail_location">详细地址</string>
     <string name="str_wifi_provider_type_desc">家庭WiFi提供者选择家用，商家类型应与营业执照上的经营范围对应</string>
     <string name="str_wifi_provider_logo">网络LOGO</string>
-    <string name="str_wifi_provider_detail_desc">详细介绍</string>
     <string name="str_wifi_provider_detail_desc_hint">家庭WiFi可以介绍，商家介绍商铺，广告等。</string>
-    <string name="str_wifi_provider_password_hint">请输入WiFi登陆密码</string>
     <string name="str_wifi_provider_password">登陆密码</string>
     <string name="str_wifi_provider_password_hint1">请输入WiFi登陆密码</string>
     <string name="str_wifi_provider_password_desc">您的密码我们会采用加密方式存储，其他用户在使用您的网络时候不会直接获取密码。每个WiFi都会提供网络理赔保险，保障您的网络财产安全。</string>
     <string name="str_wifi_provider_logo_hint">可以为您的WiFi设置logo图标，给用户留下深刻印象，商家可以设置成自己的品牌商标</string>
-    <string name="str_iam_wifi_provider">我提供的Wi-Fi</string>
-    <string name="str_iam_wifi_user">我是WiFi使用者</string>
-    <string name="str_wifi_provider_business_warning">商家用户信息可以不填，如果不填网络宝将不会给予提供后台广告推送，营销数据分析等服务。</string>
-    <string name="str_wifi_provider_home_warning">家庭网络以下认证信息可以不填，如果不填网络宝将不会给予提供后台广告推送，收益提现等服务。</string>
-    <string name="str_wifi_provider_person_warning">以下个人认证信息可以不填，如果不填网络宝将不会提供路由占用纠纷调解，内测邀请，重要信息通知等服务。</string>
     <string name="str_wifi_provider_router">路由器型号</string>
     <string name="str_wifi_provider_bandwidth">网络带宽</string>
     <string name="str_wifi_provider_register">注册登记</string>
     <string name="str_wifi_provider_cover">网络覆盖</string>
 
-    <string name="placeHolder">placeHolder</string>
-    <string name="seekbar_add">+</string>
-    <string name="seekbar_minus">-</string>
     <string name="create">生成</string>
-    <string name="scan_failed">扫描失败</string>
     <string name="bottom_hint">建议与镜头保持10CM距离，尽量避免逆光和阴影</string>
     <string name="top_hint">将条形码或二维码置于取景框内系统会自动扫描</string>
     <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
     <string name="button_ok">确定</string>
+    <string name="cancel">取消</string>
+    
+    <!-- Login -->
+    <string name="login_username_edit_hint">请输入手机号码</string>
+    <string name="user_login_btn_title">登录</string>
+    
+    <!-- my account -->
+    <string name="my_account_title">我的帐户</string>
+    <string name="setting_save">保存当前账号</string>
+    <string name="setting_exit">退出当前帐号</string>
 </resources>

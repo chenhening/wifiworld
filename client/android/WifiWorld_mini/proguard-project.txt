@@ -15,18 +15,31 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
 
-#-ignorewarnings
-#-libraryjars libs/BmobSDK_V3.3.7_0513.jar
-#-keepattributes Signature
-#-keep class cn.bmob.v3.** {*;}
-#-keep public class * extends cn.bmob.v3.**
+-ignorewarnings
+-libraryjars libs/BmobSDK_V3.3.7_0513.jar
+-keepattributes Signature
+-keep class cn.bmob.v3.** {*;}
+-keep public class * extends cn.bmob.v3.**
 
 
-#-libraryjars libs/umeng-update-v2.6.0.1.jar
-#-keepattributes Signature
-#-keep class com.umeng.** {*;}
-#-keep public class * extends com.umeng.**
+-libraryjars libs/umeng-update-v2.6.0.1.jar
+-libraryjars libs/com.umeng.fb.5.3.0.jar
+-libraryjars libs/umeng-analytics-v5.5.3.jar
+-libraryjars libs/com.umeng.message.lib_v2.3.0.jar
+-keepattributes Signature
+-keep class com.umeng.** {*;}
+-keep public class * extends com.umeng.**
+
+-libraryjars libs/AMap_3DMap_V2.4.1.jar
+-libraryjars libs/AMap_Services_V2.4.0.jar
+-libraryjars libs/Android_Location_V1.3.2.jar
+-keepattributes Signature
+-keep class com.amap.** {*;}
+-keep class com.autonavi.** {*;}
+
+-libraryjars libs/SMSSDK-1.1.9.jar
+-keep class cn.smssdk.** {*;}

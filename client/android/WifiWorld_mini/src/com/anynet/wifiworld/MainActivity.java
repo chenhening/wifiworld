@@ -43,6 +43,7 @@ import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.ui.WifiFragment;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -122,7 +123,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		//检测系统的WiFi是否打开，强行打开
+        WifiAdmin.getInstance(this).openWifi();
 		super.onResume();
 	}
 	

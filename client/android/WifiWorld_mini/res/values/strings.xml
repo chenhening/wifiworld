@@ -6,64 +6,17 @@
     <!-- Login -->
     <string name="account_edit">修改</string>
     <string name="input">输入</string>
-    <string name="edit">修改</string>
-    <string name="save">保存</string>
-    <string name="user_login_title_name">登录</string>
-    <string name="user_register_title_name">注册</string>
-    <string name="user_find_password_title_name">找回密码</string>
     <string name="login_username_edit_hint">请输入手机号码</string>
-    <string name="finding_password_verifiction_code_hint">请输入6位验证码</string>
-    <string name="login_password_edit_hint">请输入密码</string>
-    <string name="setting_password_title">密码设置</string>
-    <string name="person_black_list_title">我的黑名单</string>
-    <string name="setting_new_password_edit_hint">请输入新密码</string>
-    <string name="setting_old_password_edit_hint">请输入旧密码</string>
-    <string name="setting_repeate_new_password_edit_hint">请再次输入密码</string>
-    <string name="setting_password_tip_text">登录密码是由6-16位数字、字母组成</string>
-    <string name="setting_password_btn">提交</string>
     <string name="user_login_btn_title">登录</string>
-    <string name="user_login_forget_password_title">忘记密码?</string>
-    <string name="user_forget_password_next">下一步</string>
-    <string name="find_password_invalid_phone_prompt">无效手机号码</string>
-    <string name="find_password_submit_phone_fail">提交号码失败</string>
-    <string name="find_password_verifying_code_sent_prompt">已下发验证码</string>
-    <string name="find_password_not_input_number_prompt">未填写号码</string>
-    <string name="verifying_code_sent_prompt_prefix">您的手机</string>
-    <string name="verifying_code_sent_prompt">已向 %1$s 发送6位数字短信验证码</string>
-    <string name="verifying_code_resend_prompt">重发验证码</string>
-    <string name="verifying_code_resend_verification_code_prompt"><Data>%1$s秒后&lt;BR />重新发验证码</Data></string>
-    <string name="user_login_invalid_password">密码输入不正确</string>
-    <string name="user_login_timeout_prompt">您的账户信息已过期，请重新登录。</string>
-    <string name="input_verification_code_error">验证码不正确</string>
-    <string name="input_verification_code_overdue">验证码失效</string>
-    <string name="input_verification_code_outdate">验证码失效,请重新获取验证码</string>
-    <string name="input_verification_code_check_failed">验证码检测失败</string>
-    <string name="user_reset_password_prompt">设置密码</string>
-    <string name="user_input_password_hint">请输入新密码</string>
-    <string name="user_display_input_password_prompt">显示密码</string>
-    <string name="correct_password_format_prompt">6–16位字母或数字</string>
-    <string name="password_input_done_text">开启联连</string>
-    <string name="password_input_empty_prompt">请输入密码</string>
-    <string name="password_input_format_error_prompt">密码不符合要求</string>
-    <string name="password_return_login_prompt">返回登录页面</string>
-    <string name="password_reset_success_prompt">新密码设置成功</string>
-    <string name="back">返回</string>
     
-    <string name="login_account">输入手机号码</string>
-    <string name="login_passwd">输入密码</string>
     <string name="sms_check_num">输入验证码</string>
     <string name="smschecknum">获取验证码</string>
     <string name="login_login">登录</string>
+    
     <!-- my account -->
     <string name="my_account_title">我的帐户</string>
-    <string name="my_account_phone">手机号</string>
-    <string name="my_account_password">密码</string>
-    <string name="my_account">帐号</string>
     <string name="my_account_nikename">昵称</string>
-    <string name="my_account_head">头像</string>
-    <string name="my_account_id">账户ID</string>
-    <string name="my_account_sex">性别</string>
-    <string name="setting_save">保存</string>
+    <string name="setting_save">保存当前账号</string>
     <string name="setting_exit">退出当前帐号</string>
     
     <!-- WIFI登记 -->
@@ -75,35 +28,25 @@
     <string name="str_wifi_provider_location_hint">点击获取地理位置</string>
     <string name="str_wifi_provider_detail_hint">请输入详细街道，门牌号等</string>
     <string name="str_wifi_provider_type_txt">网络类型</string>
-    <string name="str_wifi_provider_type_hint">请选择网络提供类型</string>
     <string name="str_wifi_provider_detail_location">详细地址</string>
     <string name="str_wifi_provider_type_desc">家庭WiFi提供者选择家用，商家类型应与营业执照上的经营范围对应</string>
     <string name="str_wifi_provider_logo">网络LOGO</string>
-    <string name="str_wifi_provider_detail_desc">详细介绍</string>
     <string name="str_wifi_provider_detail_desc_hint">家庭WiFi可以介绍，商家介绍商铺，广告等。</string>
-    <string name="str_wifi_provider_password_hint">请输入WiFi登陆密码</string>
     <string name="str_wifi_provider_password">登陆密码</string>
     <string name="str_wifi_provider_password_hint1">请输入WiFi登陆密码</string>
     <string name="str_wifi_provider_password_desc">您的密码我们会采用加密方式存储，其他用户在使用您的网络时候不会直接获取密码。每个WiFi都会提供网络理赔保险，保障您的网络财产安全。</string>
     <string name="str_wifi_provider_logo_hint">可以为您的WiFi设置logo图标，给用户留下深刻印象，商家可以设置成自己的品牌商标</string>
-    <string name="str_iam_wifi_provider">我提供的Wi-Fi</string>
-    <string name="str_iam_wifi_user">我是WiFi使用者</string>
-    <string name="str_wifi_provider_business_warning">商家用户信息可以不填，如果不填网络宝将不会给予提供后台广告推送，营销数据分析等服务。</string>
-    <string name="str_wifi_provider_home_warning">家庭网络以下认证信息可以不填，如果不填网络宝将不会给予提供后台广告推送，收益提现等服务。</string>
-    <string name="str_wifi_provider_person_warning">以下个人认证信息可以不填，如果不填网络宝将不会提供路由占用纠纷调解，内测邀请，重要信息通知等服务。</string>
     <string name="str_wifi_provider_router">路由器型号</string>
     <string name="str_wifi_provider_bandwidth">网络带宽</string>
     <string name="str_wifi_provider_register">提交认证</string>
     <string name="str_wifi_provider_cover">网络覆盖</string>
    
-    <string name="placeHolder">placeHolder</string>
-    <string name="seekbar_add">+</string>
-    <string name="seekbar_minus">-</string>
     <string name="create">生成</string>
-    <string name="scan_failed">扫描失败</string>
     <string name="bottom_hint">建议与镜头保持10CM距离，尽量避免逆光和阴影</string>
     <string name="top_hint">将条形码或二维码置于取景框内系统会自动扫描</string>
     <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
     <string name="button_ok">确定</string>
     <string name="cancel">取消</string>
+    
+    <string name="next_step">下一步</string>
 </resources>

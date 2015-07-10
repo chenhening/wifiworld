@@ -56,4 +56,7 @@
         <item>用户反馈</item>
         <item>常见问题</item>
     </string-array>
+    
+    <string name="umeng_fb_questions_question">Q:</string>
+    <string name="umeng_fb_questions_anwser">A:</string>
 </resources>

@@ -61,8 +61,6 @@ public class WifiWorldApplication extends Application {
         super.onCreate();
         
         mInstance = this;
-        //检测系统的WiFi是否打开，强行打开
-        WifiAdmin.getInstance(this).openWifi();
         GlobalBroadcast.registerBroadcastListener(mNetworkListener);
         // 初始化第三方组件
         // 打开数据库
