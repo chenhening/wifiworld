@@ -165,7 +165,10 @@ public class MeFragment extends MainFragment {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
 					Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
 					startActivity(i);
 				}

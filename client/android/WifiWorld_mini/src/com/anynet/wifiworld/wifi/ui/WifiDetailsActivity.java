@@ -84,22 +84,25 @@ public class WifiDetailsActivity extends BaseActivity {
 		findViewById(R.id.btn_knock_answer).setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
-			// 拉取敲门问题
-			final WifiQuestions wifiQuestions = new WifiQuestions();
-			wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
-				new DataCallback<WifiQuestions>() {
-
-					@Override
-					public void onSuccess(WifiQuestions object) {
-						KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
-					}
-
-					@Override
-					public void onFailed(String msg) {
-						KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", wifiQuestions);
-					}
-			});
+			public void onClick(final View v) {
+				v.setEnabled(false);
+				// 拉取敲门问题
+				final WifiQuestions wifiQuestions = new WifiQuestions();
+				wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
+					new DataCallback<WifiQuestions>() {
+	
+						@Override
+						public void onSuccess(WifiQuestions object) {
+							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
+							v.setEnabled(true);
+						}
+	
+						@Override
+						public void onFailed(String msg) {
+							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", wifiQuestions);
+							v.setEnabled(true);
+						}
+				});
 			}
 		});
 	}
