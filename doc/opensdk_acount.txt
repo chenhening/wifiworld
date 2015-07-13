@@ -21,13 +21,41 @@ vpn地址：v.ipa.social
 	帐号密码同上
 	
 7.应用市场账号
-	http://open.wandoujia.com/
+	http://open.apps.uc.cn/   阿里集团UC应用市场
+	179770346@qq.com
+	同上
+	
+	http://app.baidu.com/  百度集团应用市场(绑定binfeix.li@intel.com和18510870181)
+	18688339822
+	同上 
+	
+	http://open.qq.com/ 腾讯集团应用市场
+	179770346@qq.com
+	同上
+
+	http://open.wandoujia.com/ 豌豆荚
 	179770346@qq.com
 	密码同上
 	
-	http://dev.anzhuoapk.com/
-	179770346@qq.com
-	1986720fei
+	http://developer.huawei.com/  华为集团
+	18688339822
+	同上
+	
+	http://dev.xiaomi.com/ 小米集团
+	18688339822
+	同上
+	
+	http://open.flyme.cn/  魅族手机
+	18688339822
+	同上
+	
+	http://dev.anzhi.com/  安智
+	18688339822
+	同上
+	
+	http://www.appchina.com/ 应用汇
+	18688339822
+	同上
 	
 	http://dev.gfan.com/
 	buffer8848
@@ -37,25 +65,35 @@ vpn地址：v.ipa.social
 	buffer8848
 	同上
 	
-	http://open.qq.com/
-	179770346@qq.com
+	http://open.189.cn/ 天翼开放平台
+	buffer8848
 	同上
 	
-	http://open.oppomobile.com/
+	http://open.oppomobile.com/ OPPO不支持个人开发者
 	buffer8848
 	1986720fei
 	
-	http://www.appchina.com/
-	18688339822
-	同上
-	易用汇 暂时不收录个人开发软件，需要有软件著作权
 	
-	member.meizu.com
-	179770346@qq.com
-	同上
-	
-	http://m.163.com/android/ 不支持个人开发者
+	http://m.163.com/android/ 网易不支持个人开发者
 	oppo可可商店 不支持个人开发者
+	
+	
+	http://dev.anzhuoapk.com/
+	179770346@qq.com
+	1986720fei
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	http://dev.mopo.com/
 	179770346@qq.com
@@ -77,3 +115,5 @@ vpn地址：v.ipa.social
 	http://dev.app.360.cn/
 	18688339822
 	同上
+	
+	

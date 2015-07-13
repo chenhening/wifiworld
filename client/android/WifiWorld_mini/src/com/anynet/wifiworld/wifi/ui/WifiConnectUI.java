@@ -504,9 +504,9 @@ public class WifiConnectUI {
 	
 	        		@Override
 	            public void onClick(View v) {
-	        			Intent i = new Intent(mActivity, WifiProviderRigisterActivity.class);
-		        		mActivity.startActivity(i);
-		        		popupwindow.dismiss();
+        			Intent i = new Intent(mActivity, WifiProviderRigisterActivity.class);
+	        		mActivity.startActivity(i);
+	        		popupwindow.dismiss();
 	            }
 	                	
 	        });

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 
@@ -62,6 +63,11 @@ public class WifiProviderRigisterActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (!LoginHelper.getInstance(WifiProviderRigisterActivity.this).isLogined()) {
+	  				UserLoginActivity.start(WifiProviderRigisterActivity.this);
+	  				return;
+	  			}
+				
 				//查询当前账号是否有认证，如果有认证，不再进入认证流程
 				WifiProfile mWifiProfile = LoginHelper.getInstance(getApplicationContext()).getWifiProfile();
 				if (mWifiProfile != null) {
