@@ -28,9 +28,11 @@ import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
-
+import com.anynet.wifiworld.me.WifiUsedListActivity;;
 public class MeFragment extends MainFragment {
 	private final static String TAG = MeFragment.class.getSimpleName();
+
+	protected static final Context WifiUsedListActivity = null;
 	
 	private LoginHelper mLoginHelper;
 	private WifiProfile mWifiProfile;
@@ -60,7 +62,7 @@ public class MeFragment extends MainFragment {
 		filter.addAction(LoginHelper.LOGIN_FAIL);
 		filter.addAction(LoginHelper.LOGIN_OUT);
 		getActivity().registerReceiver(loginBR, filter);
-
+        
 		mLoginHelper = LoginHelper.getInstance(getActivity());
 	}
 	
@@ -160,6 +162,18 @@ public class MeFragment extends MainFragment {
 					}
 				}
 			});
+			
+			//用过的wifi，在地图上显示
+			mPageRoot.findViewById(R.id.slv_iam_wifi_user).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent(getApplicationContext(), WifiUsedListActivity.class);
+					startActivity(i);
+				}
+			});
+			
 		}
 	}
 

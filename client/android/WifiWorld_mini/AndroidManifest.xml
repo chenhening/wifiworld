@@ -89,6 +89,9 @@
             android:name="com.anynet.wifiworld.wifi.ui.WifiCommentActivity" />
         <activity
             android:name="cn.hugo.android.scanner.CaptureActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.me.WifiUsedListActivity" />
+        
         
         <!-- 高德 -->
         <meta-data
