@@ -148,14 +148,14 @@ public class MeFragment extends MainFragment {
 							}
 						});
 				    	
-				    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+					    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								Intent i = new Intent(getApplicationContext(), WifiProviderRigisterActivity.class);
 								startActivity(i);
 								dialog.dismiss();
 							}
 						});
-				    	wifiConnectDialog.show();
+					    	wifiConnectDialog.show();
 					}
 				}
 			});

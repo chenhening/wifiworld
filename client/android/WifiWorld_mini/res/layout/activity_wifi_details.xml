@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="17"
+                            android:text="-·-"
                             android:textColor="@color/app_color_style"
                             android:textSize="22sp"
                             android:textStyle="italic" />
@@ -161,7 +161,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
-                            android:text="58" />
+                            android:text="- -" />
 
                     </LinearLayout>
 
@@ -189,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
-                            android:text="681h" />
+                            android:text="- -h" />
                     </LinearLayout>
 
                     <View
@@ -216,7 +216,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
-                            android:text="39" />
+                            android:text="- -" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -266,7 +266,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_knock_button"
+                        android:background="@drawable/selector_btn_login"
                         android:text="回答问题"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />

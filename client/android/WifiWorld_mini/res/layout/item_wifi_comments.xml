@@ -10,8 +10,7 @@
         android:layout_height="8dp"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/ic_detail_comments_logo"
-        android:src="@drawable/above_shadow" />
+        android:background="@drawable/ic_detail_comments_logo" />
 
     <TextView
         android:id="@+id/tv_detail_wifi_comments"

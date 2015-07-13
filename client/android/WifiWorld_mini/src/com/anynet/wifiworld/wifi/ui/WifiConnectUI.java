@@ -297,13 +297,15 @@ public class WifiConnectUI {
 				mWifiAuthDesc.setText("[未认证]");
 			}
 		} else {
-			mWifiAlias.setVisibility(View.INVISIBLE);
-			mWifiName.setText("未连接WiFi");
-			if (!mIsWifiConnecting)
+			if (!mIsWifiConnecting) {
+				mWifiAlias.setVisibility(View.INVISIBLE);
+				mWifiName.setText("未连接WiFi");
+				mWifiAuthDesc.setText("[未认证]");
 				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-			else
+			}
+			else {
 				WifiBRService.setWifiSupplicant(true);
-			mWifiAuthDesc.setText("[未认证]");
+			}
 		}
 	}
 	
@@ -534,7 +536,7 @@ public class WifiConnectUI {
 	
 	        		@Override
 	            public void onClick(View v) {
-		        		Intent i = new Intent(mActivity, WifiCommentActivity.class);
+		        		Intent i = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
 		        		mActivity.startActivity(i);
 		        		popupwindow.dismiss();
 	            }

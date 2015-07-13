@@ -6,6 +6,7 @@ import com.anynet.wifiworld.data.UserProfile;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
+import com.anynet.wifiworld.wifi.WifiCurrent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +24,21 @@ public class WifiCommentActivity extends Activity {
 	private final static String TAG = WifiCommentActivity.class.getSimpleName();
 	
 	public final static String WIFI_COMMENT_ADD = "wifi_comment_add";
+	private float mRateValue = 0.0f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_wifi_comment);
 		super.onCreate(savedInstanceState);
+		
+		RatingBar ratingBar = (RatingBar) findViewById(R.id.rb_wifi_score);
+		ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+			
+			@Override
+			public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+				mRateValue = rating;
+			}
+		});
 		
 		final EditText commentEdit = (EditText)findViewById(R.id.comment_edit);
 		TextView commentBtn = (TextView)findViewById(R.id.comment_send);
@@ -40,7 +53,8 @@ public class WifiCommentActivity extends Activity {
 				}
 				final WifiComments wifiComments = new WifiComments();
 				wifiComments.Comment = commentString;
-				wifiComments.MacAddr = WifiAdmin.getInstance(getApplicationContext()).getWifiInfo().getMacAddress();
+				wifiComments.MacAddr = WifiCurrent.getInstance(getApplicationContext()).getWifiListItem().getWifiMac();
+				wifiComments.Rating = mRateValue;
 				UserProfile userProfile = LoginHelper.getInstance(getBaseContext()).getCurLoginUserInfo();
 				if (userProfile != null && userProfile.NickName != null) {
 					wifiComments.UserId = userProfile.NickName;

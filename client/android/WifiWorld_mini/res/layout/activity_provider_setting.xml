@@ -321,7 +321,9 @@
 	                        android:layout_alignParentLeft="true"
 	                        android:layout_alignParentTop="true"
 	                        android:layout_marginLeft="48dp"
-	                        android:text="提交" />
+	                        android:background="@drawable/selector_btn_login"
+	                        android:text="提交"
+	                        android:textColor="@color/font_color_write" />
 	
 	                    <Button
 	                        android:id="@+id/btn_wifi_message_clear"
@@ -330,7 +332,9 @@
 	                        android:layout_alignParentRight="true"
 	                        android:layout_alignParentTop="true"
 	                        android:layout_marginRight="48dp"
-	                        android:text="重置" />
+	                        android:background="@drawable/selector_btn_login"
+	                        android:text="重置"
+	                        android:textColor="@color/font_color_write" />
                 	</RelativeLayout>
                 </LinearLayout>
 

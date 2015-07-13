@@ -21,6 +21,7 @@ import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 
 public class WifiProviderSettingActivity extends BaseActivity {
 
@@ -34,7 +35,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		//mTitlebar.llFinish.setVisibility(View.VISIBLE);
 		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(mWifiProfile.Ssid);
+		mTitlebar.tvTitle.setText(WifiAdmin.convertToNonQuotedString(mWifiProfile.Ssid));
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public class WifiComments extends BmobObject implements Serializable {
 	public String UserId;  //评论的用户账号昵称
 	public String UserAccount;  //评论的用户账号
 	public long SendTime; //用户登陆网络的时间
+	public float Rating; //用户评分
 	public int Type;
 	
 	public static class CommentType {
