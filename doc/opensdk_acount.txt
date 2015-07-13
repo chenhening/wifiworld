@@ -48,6 +48,7 @@ vpn地址：v.ipa.social
 	http://www.appchina.com/
 	18688339822
 	同上
+	易用汇 暂时不收录个人开发软件，需要有软件著作权
 	
 	member.meizu.com
 	179770346@qq.com
@@ -67,6 +68,7 @@ vpn地址：v.ipa.social
 	http://dev.eoemarket.com/
 	buffer8848
 	同上
+	优亿不收录免费wifi相关的软件
 	
 	http://app.suning.com/
 	179770346@qq.com
