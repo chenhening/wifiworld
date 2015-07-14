@@ -59,6 +59,8 @@ public class WifiAdmin {
     private WifiLock mWifiLock;
     private int mNumOpenNetworksKept;
     
+    private int mCurNetworkId;
+    
     private Context mContext;
     
     public static WifiAdmin getInstance(Context context) {
@@ -146,7 +148,9 @@ public class WifiAdmin {
 	 * @return
 	 */
 	public boolean connectToNewNetwork(final WifiListItem wifiListItem,
-			boolean reassociate, boolean localSave) {
+			boolean reassociate) {
+		
+		WifiBRService.setWifiSupplicant();
 		
 		if(ConfigSec.isOpenNetwork(wifiListItem.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
@@ -171,23 +175,12 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		if (localSave) {
-			if(!mWifiManager.saveConfiguration()) {
-				Log.e(TAG, "Failed to save config");
-				return false;
-			}
-			
-			config = getWifiConfiguration(config, wifiListItem.getEncryptType());
-			if(config == null) {
-				Log.e(TAG, "Failed to get config from local configed wifi list");
-				return false;
-			}
-		}
-		//wifiListItem.setNetworkId(config.networkId);
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
 		}
+		
+		mCurNetworkId = config.networkId;
 		
 		final boolean connect = reassociate ? mWifiManager.reassociate() : mWifiManager.reconnect();
 		if(!connect) {
@@ -208,6 +201,7 @@ public class WifiAdmin {
 	
     //connect WiFi which is configurated
     public void connectToConfiguredNetwork(int index) {
+    	WifiBRService.setWifiSupplicant();
     	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
         if (index > wifiCfg.size()) {
             return;
@@ -222,6 +216,7 @@ public class WifiAdmin {
 	 * @return
 	 */
 	public boolean connectToConfiguredNetwork(WifiConfiguration config, boolean reassociate) {
+		WifiBRService.setWifiSupplicant();
 		//final String security = ConfigSec.getWifiConfigurationSecurity(config);
 		
 		//int oldPri = config.priority;
@@ -400,6 +395,7 @@ public class WifiAdmin {
     }
     
     public void connectWifi(WifiConfiguration configuration) {
+    	WifiBRService.setWifiSupplicant();
         int wcgId = this.mWifiManager.addNetwork(configuration);
         this.mWifiManager.enableNetwork(wcgId, true);
     }
@@ -407,6 +403,10 @@ public class WifiAdmin {
     public void disConnectionWifi(int netId){
 		mWifiManager.disableNetwork(netId);
 		mWifiManager.disconnect();
+    }
+    
+    public boolean forgetNetworkCur() {
+    	return forgetNetwork(mCurNetworkId);
     }
     
     public boolean forgetNetwork(int networkId) {

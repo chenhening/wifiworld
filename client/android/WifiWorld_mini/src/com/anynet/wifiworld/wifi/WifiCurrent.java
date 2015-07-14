@@ -42,6 +42,9 @@ public class WifiCurrent {
 	
 	//业务逻辑都放在非UI类里面实现，这里相当于MVP的P层
 	public int getDefaultLogoID() {
+		if (mWifiListItem == null) {
+			return R.drawable.ic_wifi_connected_3;
+		}
 		//根据wifi信号强度显示不同的信号图
 		int signalStrength = mWifiListItem.getWifiStrength();
 		if (signalStrength >= 80) {

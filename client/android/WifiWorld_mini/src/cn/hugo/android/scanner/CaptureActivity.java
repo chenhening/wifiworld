@@ -159,7 +159,7 @@ public final class CaptureActivity extends Activity implements
 						if (cfgSelected != null) //如果有配置就直接上
 							WifiAdmin.getInstance(activityReference.get()).connectToConfiguredNetwork(cfgSelected, true);
 						else
-							WifiAdmin.getInstance(activityReference.get()).connectToNewNetwork(tmp, true, false);
+							WifiAdmin.getInstance(activityReference.get()).connectToNewNetwork(tmp, true);
 					} catch (Exception e) {
 						e.printStackTrace();
 						Toast.makeText(activityReference.get(), "解析二维码失败",

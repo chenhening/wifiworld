@@ -72,12 +72,12 @@ public class WifiBRService {
 		WifiBRService.mWifiStatusListener = onWifiStatusListener;
 	}
 	
-	public static void setWifiScannable(boolean flag) {
-		mScannable = flag;
+	public static void setWifiSupplicant() {
+		mSupplicantState = true;
 	}
 	
-	public static void setWifiSupplicant(boolean flag) {
-		mSupplicantState = flag;
+	public static void setWifiScannable(boolean flag) {
+		mScannable = flag;
 	}
 	
 	public static class WifiMonitorService extends Service {
@@ -96,22 +96,35 @@ public class WifiBRService {
 			        		State state = networkInfo.getState();
 			        		boolean isConnected = state==State.CONNECTED;
 			        		boolean isDisconnected = state==State.DISCONNECTED;
+			        		boolean isConnecting = state==State.CONNECTING;
+			        		boolean isDisconnecting = state==State.DISCONNECTING;
 			        		if(isConnected){
 			        			statusStr = "已连接";
 			        			if (mWifiStatusListener != null) {
-			        				mWifiStatusListener.onNetWorkConnected(statusStr);
+			        				mWifiStatusListener.onWifiConnected(statusStr);
 			        				mSupplicantState = false;
 			        			}
 			        		} else if(isDisconnected) {
 			        			statusStr = "已断开";
 			        			if (mWifiStatusListener != null) {
-			        				mWifiStatusListener.onNetWorkDisconnected(statusStr);
+			        				mWifiStatusListener.onWifiDisconnected(statusStr);
+			        				mSupplicantState = false;
+			        			}
+			        		} else if (isConnecting) {
+			        			statusStr = "连接中";
+			        			if (mWifiStatusListener != null) {
+			        				mWifiStatusListener.onWifiConnecting(statusStr);
 			        				mSupplicantState = true;
 			        			}
-			        		}
+							} else if (isDisconnecting) {
+								if (mWifiStatusListener != null) {
+			        				mWifiStatusListener.onWifiDisconnecting(statusStr);
+			        				mSupplicantState = false;
+			        			}
+							}
+			        		Log.d(TAG, "BR network state changed: " + state);
 			        	}
 		        } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicantState) {
-		        		Log.d(TAG, "Supplicant state changed");
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED){
@@ -129,8 +142,7 @@ public class WifiBRService {
 		                statusStr = "已断开";
 		                if (mWifiStatusListener != null) {
 							mWifiStatusListener.onSupplicantDisconnected(statusStr);
-							mSupplicantState = false;
-							return;
+							//mSupplicantState = false;
 		                }
 		            } else if (state == SupplicantState.DORMANT){
 		                statusStr = "暂停中";
@@ -147,25 +159,26 @@ public class WifiBRService {
 		            } else {
 		                statusStr = "莫名其妙";
 		            }
+		            Log.d(TAG, "BR Supplicant state changed: " + state);
 
 		            final int errorCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
 		            if (errorCode == WifiManager.ERROR_AUTHENTICATING) {
-		            		Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
-		            		if (mWifiStatusListener != null) {
+		            	Toast.makeText(context, "密码输入错误", Toast.LENGTH_SHORT).show();
+		            	if (mWifiStatusListener != null) {
 							mWifiStatusListener.onWrongPassword();
 							mSupplicantState = false;
-		            		}
-		            }
-		            if (mWifiStatusListener != null) {
+		            	}
+		            } else if (mWifiStatusListener != null) {
 		            		mWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
+		        	Log.d(TAG, "BR scannable state changed");
 					if (mWifiStatusListener != null) {
 						mWifiStatusListener.onScannableAvaliable();
 						mScannable = false;
 					}
 				} else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
-					Log.d(TAG, "wifi state changed");
+					Log.d(TAG, "BR wifi state changed");
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
 					case WifiManager.WIFI_STATE_ENABLED:
@@ -220,8 +233,10 @@ public class WifiBRService {
 	}
 	
 	public interface OnWifiStatusListener {
-		void onNetWorkConnected(String str);
-		void onNetWorkDisconnected(String str);
+		void onWifiConnected(String str);
+		void onWifiDisconnected(String str);
+		void onWifiConnecting(String str);
+		void onWifiDisconnecting(String str);
 		void onWifiStatChanged(boolean isEnabled);
 		void onScannableAvaliable();
 		void onSupplicantChanged(String statusStr);
