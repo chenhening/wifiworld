@@ -3,6 +3,7 @@ package com.anynet.wifiworld.me;
 import java.io.File;
 import java.util.Calendar;
 
+import B.i;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -14,9 +15,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,9 +37,13 @@ import com.anynet.wifiworld.view.SettingEditItemView.ClickButtonListener;
 import com.anynet.wifiworld.view.SettingEditItemView.ClickEditButtonListener;
 
 public class MyAccountActivity extends BaseActivity {
+	public final static String TAG = MyAccountActivity.class.getSimpleName();
 
-	UserProfile mUserProfile;
+	public UserProfile mUserProfile;
 	LoginHelper mLoginHelper;
+	
+	private Button mLogoutBtn;
+	private Button mSaveBtn;
 	
 	SettingEditItemView mNicknameET;
 	SettingEditItemView mEmailET;
@@ -43,6 +51,27 @@ public class MyAccountActivity extends BaseActivity {
 	SettingEditItemView mBirthdayTV;
 	SettingEditItemView mJobTV;
 	SettingEditItemView mInterestET;
+	
+	private TextWatcher mTextWatcher = new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			mSaveBtn.setEnabled(true);
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+				int arg3) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 	
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
@@ -64,6 +93,9 @@ public class MyAccountActivity extends BaseActivity {
 			return;
 		}
 		
+		mLogoutBtn = (Button) findViewById(R.id.button_logout);
+		mSaveBtn = (Button) findViewById(R.id.button_save);
+		
 		//显示头像
 		if (mUserProfile.Avatar != null) {
 			Drawable drawable = new BitmapDrawable(this.getResources(), BitmapUtil.Bytes2Bimap(mUserProfile.Avatar));
@@ -80,6 +112,7 @@ public class MyAccountActivity extends BaseActivity {
 		} else {
 			mNicknameET.setEditContent(mUserProfile.NickName);
 		}
+		mNicknameET.addTextChangedListner(mTextWatcher);
 
 		mEmailET = (SettingEditItemView) findViewById(R.id.sev_email);
 		if (mUserProfile.getEmail() == null || mUserProfile.getEmail().equals("")) {
@@ -87,9 +120,11 @@ public class MyAccountActivity extends BaseActivity {
 		} else {
 			mEmailET.setEditContent(mUserProfile.getEmail());
 		}
+		mEmailET.addTextChangedListner(mTextWatcher);
 		
 		mSexTV = (SettingEditItemView) findViewById(R.id.sev_sex);
 		mSexTV.setContent(mUserProfile.getSex());
+		mSexTV.addTextChangedListner(mTextWatcher);
 
 		mBirthdayTV = (SettingEditItemView) findViewById(R.id.sev_age);
 		if (mUserProfile.Age == null || mUserProfile.Age.equals("")) {
@@ -114,6 +149,7 @@ public class MyAccountActivity extends BaseActivity {
 				dialog.show();
 			}
 		});
+		mBirthdayTV.addTextChangedListner(mTextWatcher);
 
 		mJobTV = (SettingEditItemView) findViewById(R.id.sev_job);
 		if (mUserProfile.Job == null || mUserProfile.Job.equals("")) {
@@ -121,6 +157,7 @@ public class MyAccountActivity extends BaseActivity {
 		} else {
 			mJobTV.setContent(mUserProfile.Job);
 		}
+		mJobTV.addTextChangedListner(mTextWatcher);
 
 		mInterestET = (SettingEditItemView) findViewById(R.id.sev_interest);
 		if (mUserProfile.Interest == null || mUserProfile.Interest.equals("")) {
@@ -128,6 +165,7 @@ public class MyAccountActivity extends BaseActivity {
 		} else {
 			mInterestET.setEditContent(mUserProfile.Interest);
 		}
+		mInterestET.addTextChangedListner(mTextWatcher);
 		
 		//设置头像
 		findViewById(R.id.person_signin_tip).setOnClickListener(new OnClickListener() {
@@ -139,7 +177,7 @@ public class MyAccountActivity extends BaseActivity {
 			
 		});
 		
-		findViewById(R.id.button_login).setOnClickListener(new OnClickListener() {
+		mLogoutBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -148,7 +186,7 @@ public class MyAccountActivity extends BaseActivity {
 			}
 		});
 		
-		findViewById(R.id.button_save).setOnClickListener(new OnClickListener() {
+		mSaveBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -175,6 +213,7 @@ public class MyAccountActivity extends BaseActivity {
 						mBirthdayTV.setContent(mUserProfile.Age);
 						mJobTV.setContent(mUserProfile.Job);
 						mInterestET.setEditContent(mUserProfile.Interest);
+						mSaveBtn.setEnabled(false);
 						Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
 					}
 					
@@ -324,13 +363,15 @@ public class MyAccountActivity extends BaseActivity {
 
 				@Override
 				public void onSuccess() {
-					// TODO Auto-generated method stub
+					Intent intent = new Intent();
+					intent.putExtra(TAG, mUserProfile.Avatar);
+					setResult(RESULT_OK, intent);
 					Toast.makeText(MyAccountActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
 				}
 
 				@Override
 				public void onFailure(int arg0, String arg1) {
-					// TODO Auto-generated method stub
+					setResult(RESULT_CANCELED);
 					Toast.makeText(MyAccountActivity.this, "失败！int：" + arg0 + " String:" + arg1, Toast.LENGTH_LONG)
 							.show();
 				}

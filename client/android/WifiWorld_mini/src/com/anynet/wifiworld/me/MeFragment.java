@@ -28,6 +28,7 @@ import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 public class MeFragment extends MainFragment {
 	private final static String TAG = MeFragment.class.getSimpleName();
+	public final static int CHANGE_ICON = 100;
 
 	protected static final Context WifiUsedListActivity = null;
 	
@@ -115,7 +116,7 @@ public class MeFragment extends MainFragment {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
-					startActivity(i);
+					startActivityForResult(i, CHANGE_ICON);
 				}
 			});
 			
@@ -189,6 +190,16 @@ public class MeFragment extends MainFragment {
 		
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CHANGE_ICON && resultCode == android.app.Activity.RESULT_OK) {
+			byte[] icon_data = data.getByteArrayExtra(MyAccountActivity.TAG);
+			ImageView iv_avatar = (ImageView) mPageRoot.findViewById(R.id.person_icon_on);
+			iv_avatar.setImageBitmap(BitmapUtil.Bytes2Bimap(icon_data));
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	private void setLoginedUI(boolean isLogined) {
 		if (isLogined && mLoginHelper.isLogined() && mLoginHelper.getCurLoginUserInfo() != null) {
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(View.GONE);

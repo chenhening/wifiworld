@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -415,6 +416,11 @@ public class SettingEditItemView extends RelativeLayout implements OnClickListen
 	public void setClickEditListner(OnClickListener onClickListener) {
 		FrameLayout fl = (FrameLayout) findViewById(R.id.fl_setting_point_centent);
 		fl.setOnClickListener(onClickListener);
+	}
+	
+	public void addTextChangedListner(TextWatcher textWatcher) {
+		contentET.addTextChangedListener(textWatcher);
+		contentTV.addTextChangedListener(textWatcher);
 	}
 	
 	boolean edited = false;
