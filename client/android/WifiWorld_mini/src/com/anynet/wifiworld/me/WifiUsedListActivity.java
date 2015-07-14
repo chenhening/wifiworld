@@ -282,7 +282,7 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 
 	@Override
 	public View getInfoWindow(Marker marker) {
-		View infoWindow = this.getLayoutInflater().inflate(R.layout.map_wifi_info_window, null);
+		View infoWindow = this.getLayoutInflater().inflate(R.layout.used_wifi_info_window, null);
 		currentMarker = marker;
 		render(marker, infoWindow);
 		return infoWindow;
@@ -378,6 +378,7 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 		for (String item : order.keySet()) {
 			items.add(item);
 		}
+		
 		WifiProfile wifi = new WifiProfile();
 		wifi.BatchQueryByMacAddress(getApplicationContext(), items, true, new MultiDataCallback<WifiProfile>() {
 

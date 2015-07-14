@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="120dp"
+    android:background="@drawable/btn_map_info_window"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_map_infowindows_desc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/wifi_name_ext"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_marginTop="2dp"
+                android:maxLines="3"
+                android:text="深圳市南山高新技术园区"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingLeft="2dp" >
+
+            <TextView
+                android:id="@+id/wifi_name"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="阿里巴巴集团跨国"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_wifi_alias"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="EmployeeHostPort"
+                android:textSize="10sp" />
+
+            <com.anynet.wifiworld.view.CircleImageView
+                android:id="@+id/iv_map_wifi_logo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/ic_wifi_connected_1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
