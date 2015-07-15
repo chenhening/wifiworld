@@ -23,7 +23,7 @@ import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.util.UIHelper;
@@ -87,12 +87,12 @@ public class WifiDetailsActivity extends BaseActivity {
 			public void onClick(final View v) {
 				v.setEnabled(false);
 				// 拉取敲门问题
-				final WifiQuestions wifiQuestions = new WifiQuestions();
+				final WifiKnock wifiQuestions = new WifiKnock();
 				wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifi.MacAddr,
-					new DataCallback<WifiQuestions>() {
+					new DataCallback<WifiKnock>() {
 	
 						@Override
-						public void onSuccess(WifiQuestions object) {
+						public void onSuccess(WifiKnock object) {
 							KnockStepFirstActivity.start(mContext, "WifiDetailsActivity", object);
 							v.setEnabled(true);
 						}

@@ -16,7 +16,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
@@ -104,11 +104,11 @@ public class WifiProviderSettingActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							//拉取敲门问题
-							final WifiQuestions wifiQuestions = new WifiQuestions();
-							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiQuestions>() {
+							final WifiKnock wifiQuestions = new WifiKnock();
+							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiKnock>() {
 								
 								@Override
-								public void onSuccess(WifiQuestions object) {
+								public void onSuccess(WifiKnock object) {
 									KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
 										WifiProviderSettingActivity.class.getName(), object);
 								}

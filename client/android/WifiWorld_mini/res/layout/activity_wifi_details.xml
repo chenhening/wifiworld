@@ -189,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
-                            android:text="- -h" />
+                            android:text="- -时" />
                     </LinearLayout>
 
                     <View
@@ -317,7 +317,7 @@
                         android:layout_gravity="left|center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
-                        android:text="哥交朋友不在乎他有钱没钱 反正都没我有钱"
+                        android:text=""
                         android:textColor="@color/darkgrey" />
 
                 </LinearLayout>
