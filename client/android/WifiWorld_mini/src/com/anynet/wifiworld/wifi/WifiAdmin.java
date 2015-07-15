@@ -405,8 +405,15 @@ public class WifiAdmin {
 		mWifiManager.disconnect();
     }
     
+    public boolean disConnectionWifiCur() {
+    		boolean flag;
+    		flag = mWifiManager.disableNetwork(mCurNetworkId);
+    		flag = flag && mWifiManager.disconnect();
+    		return flag;
+    }
+    
     public boolean forgetNetworkCur() {
-    	return forgetNetwork(mCurNetworkId);
+    		return forgetNetwork(mCurNetworkId);
     }
     
     public boolean forgetNetwork(int networkId) {
