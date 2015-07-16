@@ -123,30 +123,27 @@ public class WifiConnectUI {
 	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
 		@Override
 		public void onWifiConnected(String str) {
-			mWifiStatus.setText(str);
-			mWifiListScanned.refresh();
-			
-			setWifiConnectedContent();
-			
+			savePwdInputed();
 			doConnectingAnimation(false);
 			mWifiMore.setVisibility(View.VISIBLE);
 			
-			savePwdInputed();
+			mWifiStatus.setText(str);
+			mWifiListScanned.refresh();
+			setWifiConnectedContent();
 		}
 		
 		@Override
 		public void onWifiDisconnected(String str) {
+			forgetPwdInputed();
+			doConnectingAnimation(false);
+			mWifiMore.setVisibility(View.INVISIBLE);
+			
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
-			
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			mWifiAuthDesc.setText("[未认证]");
 			mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-			
-			forgetPwdInputed();
-			doConnectingAnimation(false);
-			mWifiMore.setVisibility(View.INVISIBLE);
 		}
 		
 		@Override
@@ -172,18 +169,23 @@ public class WifiConnectUI {
 		@Override
 		public void onSupplicantDisconnected(String statusStr) {
 			mWifiStatus.setText(statusStr);
+//			mWifiAlias.setVisibility(View.INVISIBLE);
+//			mWifiName.setText("未连接WiFi");
+//			mWifiAuthDesc.setText("[未认证]");
+//			mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
 		}
 		
 		@Override
 		public void onWrongPassword() {
+			forgetPwdInputed();
+			doConnectingAnimation(false);
+			showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
+			
 			mWifiListScanned.refresh();
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接WiFi");
 			mWifiAuthDesc.setText("[未认证]");
 			mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-			forgetPwdInputed();
-			doConnectingAnimation(false);
-			showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
 		}
 
 		@Override

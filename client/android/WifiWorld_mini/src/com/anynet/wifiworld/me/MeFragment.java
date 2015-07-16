@@ -22,6 +22,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.provider.WifiProviderDetailsActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
@@ -133,7 +134,7 @@ public class MeFragment extends MainFragment {
 
 					mWifiProfile = mLoginHelper.mWifiProfile;
 					if (mWifiProfile != null) {
-						Intent i = new Intent(getApplicationContext(), WifiProviderSettingActivity.class);
+						Intent i = new Intent(getApplicationContext(), WifiProviderDetailsActivity.class);
 						startActivity(i);
 					} else {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);

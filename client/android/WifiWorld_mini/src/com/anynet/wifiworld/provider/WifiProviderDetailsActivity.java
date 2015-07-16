@@ -18,7 +18,7 @@ import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.util.LoginHelper;
 
-public class WifiProviderDetailActivity extends BaseActivity {
+public class WifiProviderDetailsActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
@@ -27,9 +27,9 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	private List<Fragment> fragments = new ArrayList<Fragment>();
 	
 	private void bingdingTitleUI() {
+		mTitlebar.tvTitle.setText("我提供的Wi-Fi");
+		
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
-		mTitlebar.tvTitle.setText(LoginHelper.getInstance(this).mWifiProfile.Alias);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -39,6 +39,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 		});
 		
 		mTitlebar.ivHeaderRight.setVisibility(View.VISIBLE);
+		mTitlebar.ivHeaderRight.setBackgroundResource(R.drawable.selector_wifi_plus);
 		mTitlebar.ivHeaderRight.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -52,7 +53,7 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mIntent = getIntent();
-		setContentView(R.layout.activity_provider_detail);
+		setContentView(R.layout.activity_provider_details);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
 		
@@ -71,17 +72,17 @@ public class WifiProviderDetailActivity extends BaseActivity {
 	}
 
 	private void InitViewPager() {
-		viewPager = (ViewPager) findViewById(R.id.viewpager);
+		viewPager = (ViewPager) findViewById(R.id.vp_wifiinfo);
 		viewPager.setAdapter(new MyViewPagerAdapter(getSupportFragmentManager()));
 		viewPager.setCurrentItem(0);
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
 
 	private void InitTextView() {
-		textView1 = (TextView) findViewById(R.id.text1);
-		textView2 = (TextView) findViewById(R.id.text2);
-		textView3 = (TextView) findViewById(R.id.text3);
-		textView4 = (TextView) findViewById(R.id.text4);
+		textView1 = (TextView) findViewById(R.id.tv_realtime);
+		textView2 = (TextView) findViewById(R.id.tv_statistical);
+		textView3 = (TextView) findViewById(R.id.tv_analyze);
+		textView4 = (TextView) findViewById(R.id.tv_analyze);
 
 		textView1.setOnClickListener(new MyOnClickListener(0));
 		textView2.setOnClickListener(new MyOnClickListener(1));

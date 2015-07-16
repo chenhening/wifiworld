@@ -57,7 +57,7 @@ public class WifiProviderSettingActivity extends BaseActivity {
 			}
 		});
 		
-		this.findViewById(R.id.slv_cancle_provider_info).setOnClickListener(new OnClickListener() {
+		this.findViewById(R.id.slv_cancel_provider_info).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {

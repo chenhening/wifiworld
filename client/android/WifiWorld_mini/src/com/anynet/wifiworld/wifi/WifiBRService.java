@@ -172,13 +172,12 @@ public class WifiBRService {
 		            		mWifiStatusListener.onSupplicantChanged(statusStr);
 		            }
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
-		        	Log.d(TAG, "BR scannable state changed");
+		        	Log.d(TAG, "BR scannable state avaliable");
 					if (mWifiStatusListener != null) {
 						mWifiStatusListener.onScannableAvaliable();
 						mScannable = false;
 					}
 				} else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
-					Log.d(TAG, "BR wifi state changed");
 					int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
 					switch (wifiState) {
 					case WifiManager.WIFI_STATE_ENABLED:
@@ -197,6 +196,7 @@ public class WifiBRService {
 					default:
 						break;
 					}
+					Log.d(TAG, "BR wifi state changed: " + wifiState);
 				}
 			}
 			
