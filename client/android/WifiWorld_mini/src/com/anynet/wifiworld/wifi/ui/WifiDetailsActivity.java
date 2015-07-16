@@ -192,7 +192,7 @@ public class WifiDetailsActivity extends BaseActivity {
 			@Override
 			public void onSuccess(Long object) {
 				Message message = Message.obtain();  
-                message.obj = object + "次";  
+                message.obj = "" + object;  
                 message.what = MSG_TIMES_READY;  
                 mHandler.sendMessage(message);
 			}

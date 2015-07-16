@@ -25,11 +25,11 @@ vpn地址：v.ipa.social
 	179770346@qq.com
 	同上
 	
-	http://app.baidu.com/  百度集团应用市场(绑定binfeix.li@intel.com和18510870181) (还在审核开发者认证)
+	http://app.baidu.com/  百度集团应用市场(绑定binfeix.li@intel.com和18510870181) (0716上传正在审核)
 	18688339822
 	同上 
 	
-	http://open.qq.com/ 腾讯集团应用市场 (0715更新了应用简介正在审核)
+	http://open.qq.com/ 腾讯集团应用市场 (0716审核通过)
 	179770346@qq.com
 	同上
 
@@ -41,11 +41,11 @@ vpn地址：v.ipa.social
 	18688339822
 	同上
 	
-	http://dev.xiaomi.com/ 小米集团 (0715上传正在审核)
+	http://dev.xiaomi.com/ 小米集团 (0716上传正在审核)
 	18688339822
 	同上
 	
-	http://open.flyme.cn/  魅族手机 (0715上传正在审核)
+	http://open.flyme.cn/  魅族手机 (0716已经审核通过)
 	18688339822
 	同上
 	
@@ -53,19 +53,31 @@ vpn地址：v.ipa.social
 	18688339822
 	同上
 	
+	http://dev.gfan.com/ 机锋网 (0716上传正在审核)
+	buffer8848
+	1986720fei
+	
+	http://dev.mumayi.com/ 木蚂蚁 (0715通过审核)
+	buffer8848
+	同上
+	
+	http://open.189.cn/ 天翼开放平台 (0716上传正在审核)
+	buffer8848
+	同上
+	
+	http://dev.mopo.com/ 冒泡堂 (还在审核开发者认证)
+	179770346@qq.com
+	同上
+	
+	http://app.suning.com/ 苏宁应用商店 (还在审核开发者认证)
+	179770346@qq.com
+	同上
+	
 	http://www.appchina.com/ 应用汇 (暂不收录免费WiFi类应用)
 	18688339822
 	同上
 	
-	http://dev.gfan.com/ 机锋网 (还在审核开发者认证)
-	buffer8848
-	1986720fei
-	
-	http://market.nduoa.com/ 上海N多网 (0715更新版权正在审核)
-	buffer8848
-	同上
-	
-	http://open.189.cn/ 天翼开放平台 (还在审核开发者认证)
+	http://market.nduoa.com/ 上海N多网 (0715更新版权正在审核)(审核一直不通过放弃)
 	buffer8848
 	同上
 	
@@ -80,20 +92,9 @@ vpn地址：v.ipa.social
 	179770346@qq.com
 	1986720fei
 	
-	http://dev.mopo.com/
-	179770346@qq.com
-	同上
-	
-	http://dev.mumayi.com/ 木蚂蚁 (0715通过审核)
-	buffer8848
-	同上
 	
 	http://dev.eoemarket.com/ 优亿 (优亿不收录免费wifi相关的软件)
 	buffer8848
-	同上
-	
-	http://app.suning.com/ 苏宁应用商店 (还在审核开发者认证)
-	179770346@qq.com
 	同上
 	
 	http://dev.app.360.cn/ 360集团(WiFi类应用必须要求企业提供)
