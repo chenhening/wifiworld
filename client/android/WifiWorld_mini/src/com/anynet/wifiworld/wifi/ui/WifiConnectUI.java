@@ -94,6 +94,7 @@ public class WifiConnectUI {
 		@Override
 		public void onWifiListRefreshed() {
 			updateMorePopWindowsLayout();
+			setWifiConnectedContent();
 			if (mWifiAuthList != null) {
 				mWifiAuthList.refreshWifiList(mWifiListScanned.getAuthList());
 				UIHelper.setListViewHeightBasedOnChildren(mWifiAuthListView);
@@ -578,7 +579,7 @@ public class WifiConnectUI {
 	                	
 	        });
     		
-            //扫一扫
+            //断开网络
             customView.findViewById(R.id.ll_more_disconnect).setOnClickListener(new OnClickListener() {
 
         			@Override

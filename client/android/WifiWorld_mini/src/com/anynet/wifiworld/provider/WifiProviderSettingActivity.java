@@ -91,34 +91,26 @@ public class WifiProviderSettingActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				CheckBox ksCB = (CheckBox) findViewById(R.id.knock_switch);
 				if (ksCB.isChecked()) {
 					ksCB.setChecked(false);
-					findViewById(R.id.specific_setting_layout).setVisibility(View.GONE);
+					//findViewById(R.id.specific_setting_layout).setVisibility(View.GONE);
 				} else {
 					ksCB.setChecked(true);
-					findViewById(R.id.specific_setting_layout).setVisibility(View.VISIBLE);
-					findViewById(R.id.question_setting).setOnClickListener(new OnClickListener() {
-
+					//拉取敲门问题
+					final WifiKnock wifiQuestions = new WifiKnock();
+					wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiKnock>() {
+						
 						@Override
-						public void onClick(View v) {
-							//拉取敲门问题
-							final WifiKnock wifiQuestions = new WifiKnock();
-							wifiQuestions.QueryByMacAddress(getApplicationContext(), mWifiProfile.MacAddr, new DataCallback<WifiKnock>() {
-								
-								@Override
-								public void onSuccess(WifiKnock object) {
-									KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
-										WifiProviderSettingActivity.class.getName(), object);
-								}
-								
-								@Override
-								public void onFailed(String msg) {
-									KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
-											WifiProviderSettingActivity.class.getName(), wifiQuestions);
-								}
-							});
+						public void onSuccess(WifiKnock object) {
+							KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
+								WifiProviderSettingActivity.class.getName(), object);
+						}
+						
+						@Override
+						public void onFailed(String msg) {
+							KnockStepFirstActivity.start(WifiProviderSettingActivity.this.getActivity(), 
+									WifiProviderSettingActivity.class.getName(), wifiQuestions);
 						}
 					});
 				}
