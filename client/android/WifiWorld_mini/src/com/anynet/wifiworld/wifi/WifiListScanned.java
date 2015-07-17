@@ -179,7 +179,10 @@ public class WifiListScanned{
 		}
 		
 		if (wifiItem.isAuthWifi()) {
-			wifiItem.setWifiType(WifiType.AUTH_WIFI);
+			if (wifiItem.getWifiProfile().isShared())
+				wifiItem.setWifiType(WifiType.AUTH_WIFI);
+			else
+				wifiItem.setWifiType(WifiType.AUTH_CLOSE_WIFI);
 			mWifiAuth.add(wifiItem);
 		} else {
 			if (wifiItem.isLocalWifi()) {
