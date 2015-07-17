@@ -153,7 +153,7 @@ public final class CaptureActivity extends Activity implements
 						WifiListItem tmp = new WifiListItem();
 						tmp.setWifiName(object.getString(0));
 						tmp.setWifiMac(object.getString(1));
-						tmp.setWifiMac(object.getString(2));
+						tmp.setWifiPwd(object.getString(2));
 						tmp.setEncryptType(object.getString(3));
 						WifiConfiguration cfgSelected = WifiAdmin.getInstance(activityReference.get()).getWifiConfiguration(tmp);
 						if (cfgSelected != null) //如果有配置就直接上
