@@ -36,6 +36,10 @@ public class WifiCurrent {
 		return NetHelper.isConnected(mContext);
 	}
 	
+	public boolean isConnecting() {
+		return NetHelper.isConnecting(mContext);
+	}
+	
 	public String getWifiName() {
 		return WifiAdmin.convertToNonQuotedString(NetHelper.getCurrentSsid(mContext));
 	}
@@ -43,7 +47,11 @@ public class WifiCurrent {
 	//业务逻辑都放在非UI类里面实现，这里相当于MVP的P层
 	public int getDefaultLogoID() {
 		if (mWifiListItem == null) {
-			return R.drawable.ic_wifi_connected_3;
+			if (isConnected()) {
+				return R.drawable.ic_wifi_connected_1;
+			} else {
+				return R.drawable.ic_wifi_disconnected;
+			}
 		}
 		//根据wifi信号强度显示不同的信号图
 		int signalStrength = mWifiListItem.getWifiStrength();
