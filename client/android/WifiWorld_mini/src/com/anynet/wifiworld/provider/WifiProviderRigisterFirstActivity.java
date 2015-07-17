@@ -69,7 +69,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// 如果第一页有未填写字段，则提示填写
-				if (!checkRequiredFields() || mWifiProfile == null) {
+				/*if (!checkRequiredFields() || mWifiProfile == null) {
 					return;
 				}
 				
@@ -77,7 +77,7 @@ public class WifiProviderRigisterFirstActivity extends BaseActivity {
 					verifyPassword();
 					mTitlebar.tvHeaderRight.setEnabled(false);
 					return;
-				}
+				}*/
 
 				Intent i = new Intent(WifiProviderRigisterFirstActivity.this, WifiProviderRigisterCompleteActivity.class);
 				Bundle wifiData = new Bundle();

@@ -2,6 +2,7 @@ package com.anynet.wifiworld.wifi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;
@@ -28,6 +29,8 @@ public class WifiListScanned{
 	private WifiCurrent mWifiCurrent;
 	private boolean isRefreshThreadFinish;
 	private List<WifiProfile> mWifiProfiles;
+	
+	private List<String> mTestWifis = new ArrayList<String>();
 	
 	public static WifiListScanned getInstance(Context context, Handler handler) {
 		if (mWifiListScanned == null) {
@@ -79,6 +82,13 @@ public class WifiListScanned{
 			for (ScanResult scanResult : scanResults) {
 				macAddresses.add(scanResult.BSSID);
 			}
+			//TODO(binfei): 生成test数据
+			mTestWifis.clear();
+			Random rand = new Random();
+			mTestWifis.add("test" + rand.nextInt(3));
+			for (String data : mTestWifis) {
+				macAddresses.add(data);
+			}
 			
 			//final List<WifiProfile> wifiProfiles;
 			WifiProfile wifiProfile = new WifiProfile();
@@ -122,6 +132,12 @@ public class WifiListScanned{
 			wifiDistribution(scanResult, wifiCfg, wifiProfile);
 		}
 		
+		//process test data
+		for (String data : mTestWifis) {
+			WifiProfile wifiProfile = getWifiProfile(data, wifiProfiles);
+			wifiDistribution(null, null, wifiProfile);
+		}
+		
 		sortWifiList();
 	}
 	
@@ -156,7 +172,7 @@ public class WifiListScanned{
 	private void wifiDistribution(ScanResult scanResult, WifiConfiguration wifiCfg, WifiProfile wifiProfile) {
 		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg);
 		wifiItem.setWifiProfile(wifiProfile);
-		if (/*NetHelper.isWifiNet(mContext)&& */mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
+		if (scanResult != null && mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
 			Log.d(TAG, "current connected wifi: " + scanResult.SSID);
 			mWifiCurrent.setWifiListItem(wifiItem);
 			return;

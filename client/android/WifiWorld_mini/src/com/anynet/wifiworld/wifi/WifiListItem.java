@@ -103,6 +103,8 @@ public class WifiListItem {
 	public String getWifiName() {
 		if (mScanResult != null)
 			return mScanResult.SSID;
+		else if (mWifiProfile != null)
+			return mWifiProfile.Ssid;
 		else
 			return mSSID;
 	}
@@ -187,7 +189,9 @@ public class WifiListItem {
 	}
 	
 	public boolean isOpenWifi() {
-		return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		if (mScanResult != null)
+			return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		return false;
 	}
 	
 	public boolean isEncryptWifi() {
@@ -202,7 +206,9 @@ public class WifiListItem {
 	}
 	
 	public int getWifiStrength() {
-		return WifiAdmin.getWifiStrength(mScanResult.level);
+		if (mScanResult != null)
+			return WifiAdmin.getWifiStrength(mScanResult.level);
+		return 0;
 	}
 	
 	public int getDefaultLogo() {
