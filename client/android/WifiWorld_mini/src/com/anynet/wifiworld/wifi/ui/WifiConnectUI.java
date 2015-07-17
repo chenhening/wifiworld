@@ -189,7 +189,17 @@ public class WifiConnectUI {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			WifiListItem wifiListItem = mWifiListScanned.getAuthList().get(position);
 			if (wifiListItem.isAuthWifi()) {
-				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+				if (wifiListItem.getWifiType() == WifiListItem.WifiType.AUTH_WIFI)
+					showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+				else {
+					WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
+					wifiConnectDialog.setTitle("网上访问关闭");
+					String sourceStr = "当前认证Wi-Fi已被主人临时关闭，无法连接到网络，请稍后再试。";
+					wifiConnectDialog.setDefaultContent(Html.fromHtml(sourceStr));
+					wifiConnectDialog.setLeftBtnStr("太小气了");
+					wifiConnectDialog.setRightBtnStr("我知道了");
+					wifiConnectDialog.show();
+				}
 			} else {
 				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
 		    	

@@ -134,7 +134,7 @@ public class MeFragment extends MainFragment {
 
 					mWifiProfile = mLoginHelper.mWifiProfile;
 					if (mWifiProfile != null) {
-						Intent i = new Intent(getApplicationContext(), WifiProviderDetailsActivity.class);
+						Intent i = new Intent(getApplicationContext(), WifiProviderSettingActivity.class);
 						startActivity(i);
 					} else {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);

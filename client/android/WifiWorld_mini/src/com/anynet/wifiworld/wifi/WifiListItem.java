@@ -44,7 +44,8 @@ public class WifiListItem {
 	
 	private String[] WifiStr = {
 			"未识别类型",
-			"已认证, 安全, 可免费上网",
+			"已认证, 可安全上网",
+			"已认证, 主人暂时关闭访问",
 			"未认证, 本地已保存",
 			"未认证, 无密码",
 			"未认证, 需要密码"
@@ -52,6 +53,7 @@ public class WifiListItem {
 	public enum WifiType {
 		UNKOWN,
 		AUTH_WIFI,
+		AUTH_CLOSE_WIFI,
 		LOCAL_WIFI,
 		OPEN_WIFI,
 		ENCRYPT_WIFI
@@ -103,6 +105,8 @@ public class WifiListItem {
 	public String getWifiName() {
 		if (mScanResult != null)
 			return mScanResult.SSID;
+		else if (mWifiProfile != null)
+			return mWifiProfile.Ssid;
 		else
 			return mSSID;
 	}
@@ -187,7 +191,9 @@ public class WifiListItem {
 	}
 	
 	public boolean isOpenWifi() {
-		return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		if (mScanResult != null)
+			return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		return false;
 	}
 	
 	public boolean isEncryptWifi() {
@@ -202,7 +208,9 @@ public class WifiListItem {
 	}
 	
 	public int getWifiStrength() {
-		return WifiAdmin.getWifiStrength(mScanResult.level);
+		if (mScanResult != null)
+			return WifiAdmin.getWifiStrength(mScanResult.level);
+		return 0;
 	}
 	
 	public int getDefaultLogo() {
