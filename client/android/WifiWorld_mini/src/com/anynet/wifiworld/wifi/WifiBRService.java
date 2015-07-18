@@ -76,6 +76,10 @@ public class WifiBRService {
 		mSupplicantState = true;
 	}
 	
+	public static void closeWifiSupplicant() {
+		mSupplicantState = false;
+	}
+	
 	public static void setWifiScannable(boolean flag) {
 		mScannable = flag;
 	}
@@ -124,6 +128,7 @@ public class WifiBRService {
 			        		Log.d(TAG, "BR network state changed: " + state);
 			        	}
 		        } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicantState) {
+		        	boolean isDisconnected = false;
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED) {
@@ -139,10 +144,8 @@ public class WifiBRService {
 		                statusStr = "获取IP";
 		            } else if (state == SupplicantState.DISCONNECTED || state == SupplicantState.INACTIVE) {
 		                statusStr = "已断开";
-		                if (mWifiStatusListener != null) {
-							mWifiStatusListener.onSupplicantDisconnected(statusStr);
-							//mSupplicantState = false;
-		                }
+		                mSupplicantState = false;
+		                isDisconnected = true;
 		            } else if (state == SupplicantState.DORMANT) {
 		                statusStr = "暂停中";
 		            } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE) {
@@ -168,7 +171,7 @@ public class WifiBRService {
 								mSupplicantState = false;
 			            	}
 		            } else if (mWifiStatusListener != null) {
-		            		mWifiStatusListener.onSupplicantChanged(statusStr);
+		            		mWifiStatusListener.onSupplicantChanged(statusStr, isDisconnected);
 		            }
 		        } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action) && mScannable) {
 		        		Log.d(TAG, "BR scannable state avaliable");
@@ -238,8 +241,8 @@ public class WifiBRService {
 		void onWifiDisconnecting(String str);
 		void onWifiStatChanged(boolean isEnabled);
 		void onScannableAvaliable();
-		void onSupplicantChanged(String statusStr);
-		void onSupplicantDisconnected(String statusStr);
+		void onSupplicantChanged(String statusStr, boolean isDisconnected);
+		//void onSupplicantDisconnected(String statusStr);
 		void onWrongPassword();
 	}
 }

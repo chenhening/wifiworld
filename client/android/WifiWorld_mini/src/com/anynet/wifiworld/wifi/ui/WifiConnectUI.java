@@ -18,6 +18,7 @@ import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,6 +125,7 @@ public class WifiConnectUI {
 	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
 		@Override
 		public void onWifiConnected(String str) {
+			//Log.d(TAG, "connectui onWifiConnected:" + str);
 			savePwdInputed();
 			doConnectingAnimation(false);
 			
@@ -133,6 +135,7 @@ public class WifiConnectUI {
 		
 		@Override
 		public void onWifiDisconnected(String str) {
+			//Log.d(TAG, "connectui onWifiDisconnected:" + str);
 			forgetPwdInputed();
 			doConnectingAnimation(false);
 			
@@ -142,6 +145,7 @@ public class WifiConnectUI {
 		
 		@Override
 		public void onWifiConnecting(String str) {
+			//Log.d(TAG, "connectui onWifiConnecting:" + str);
 			mWifiStatus.setText(str);
 			doConnectingAnimation(true);
 			updateWifiConnectingContent();
@@ -149,37 +153,47 @@ public class WifiConnectUI {
 
 		@Override
 		public void onWifiDisconnecting(String str) {
+			//Log.d(TAG, "connectui onWifiDisconnecting:" + str);
 			mWifiStatus.setText(str);
 		}
 
 		@Override
-		public void onSupplicantChanged(String statusStr) {
+		public void onSupplicantChanged(String statusStr, boolean isDisconnected) {
+			//Log.d(TAG, "connectui onSupplicantChanged:" + statusStr);
 			mWifiStatus.setText(statusStr);
-			doConnectingAnimation(true);
-			updateWifiConnectingContent();
-		}
-
-		@Override
-		public void onSupplicantDisconnected(String statusStr) {
-			mWifiStatus.setText(statusStr);
-			forgetPwdInputed();
-			doConnectingAnimation(false);
-			mWifiListScanned.refresh();
+			if (isDisconnected) {
+				forgetPwdInputed();
+				doConnectingAnimation(false);
+				Toast.makeText(mActivity, "连接失败", Toast.LENGTH_SHORT).show();
+				mWifiListScanned.refresh();
+			} else {
+				//Log.d(TAG, "connectui doConnectingAnimation:" + statusStr);
+				doConnectingAnimation(true);
+				updateWifiConnectingContent();
+			}
 		}
 		
 		@Override
 		public void onWrongPassword() {
-			showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
+			//Log.d(TAG, "connectui onWrongPassword: " + mWifiCurrent.getWifiNetworkID());
+			if (mIsWifiPassword && mWifiNotAuthItem != null) {
+				showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
+			}
+			mWifiAdmin.forgetNetwork(mWifiCurrent.getWifiNetworkID());
+			mWifiAdmin.disConnectionWifi(mWifiCurrent.getWifiNetworkID());
+			mWifiListScanned.refresh();
 		}
 
 		@Override
 		public void onScannableAvaliable() {
+			//Log.d(TAG, "connectui onScannableAvaliable:");
 			//仍需要做修改
 			mWifiListScanned.refresh();
 		}
 		
 		@Override
 		public void onWifiStatChanged(boolean isEnabled) {
+			//Log.d(TAG, "connectui onWifiStatChanged:" + isEnabled);
 		}
 	};
 	
@@ -347,19 +361,22 @@ public class WifiConnectUI {
 			mWifiAlias.setVisibility(View.INVISIBLE);
 			mWifiName.setText("未连接任何Wi-Fi");
 			mWifiAuthDesc.setVisibility(View.INVISIBLE);
+			mWifiAuthDesc.setText("[未认证]");
+			mWifiStatus.setText("断开连接");
 			mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
 		}
 	}
     
     private void savePwdInputed() {
-    		if (mIsWifiPassword) {
+    	if (mIsWifiPassword) {
 			mWifiAdmin.saveConfig();
 			mIsWifiPassword = false;
 		}
     }
     
     private void forgetPwdInputed() {
-    		if (mIsWifiPassword) {
+    	//Log.d(TAG, "connectui forgetPwdInputed" + mIsWifiPassword + mWifiCurrent.getWifiNetworkID());
+    	if (mIsWifiPassword) {
 			mWifiAdmin.forgetNetworkCur();
 			mIsWifiPassword = false;
 		}
@@ -464,20 +481,21 @@ public class WifiConnectUI {
     
     private void doConnectingAnimation(boolean start) {
     		mIsWifiConnecting = start;
-	    	if (start) {
-	    		if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
-	    			return;
-	    		
-	    		mWifiConLogo.setImageResource(R.animator.animation_connecting);
-	    		mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
-	    		mAnimWifiCon.start();
-	    	} else if(mAnimWifiCon != null) {
-	    		if (!mAnimWifiCon.isRunning())
-	    			return;
-	    		
-	    		mAnimWifiCon.stop();
-	    		mAnimWifiCon.selectDrawable(0);
-	    	}
+    		
+    		if (start) {
+    			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+    			      return;
+    		
+    			mWifiConLogo.setImageResource(R.animator.animation_connecting);
+    			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+    			mAnimWifiCon.start();
+    		} else if(mAnimWifiCon != null) {
+    		    if (!mAnimWifiCon.isRunning())
+    			         return;
+    			
+    			mAnimWifiCon.stop();
+    			mAnimWifiCon.selectDrawable(0);
+    		}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
@@ -505,6 +523,7 @@ public class WifiConnectUI {
 					if (wifiListItem.isAuthWifi() || wifiListItem.isOpenWifi()) {
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true);
 					} else if (wifiListItem.isLocalWifi()) {
+						mIsWifiPassword = true;
 						WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiListItem);
 						connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 					} else {

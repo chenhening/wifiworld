@@ -11,6 +11,7 @@ public class WifiCurrent {
 	private static WifiCurrent mWifiCurrent = null;
 	private Context mContext;
 	private static WifiListItem mWifiListItem;
+	private WifiAdmin mWifiAdmin;
 	
 	public static WifiCurrent getInstance(Context context) {
 		if (mWifiCurrent == null) {
@@ -22,6 +23,7 @@ public class WifiCurrent {
 	private WifiCurrent(Context context) {
 		mContext = context;
 		mWifiListItem = null;
+		mWifiAdmin = WifiAdmin.getInstance(mContext);
 	}
 	
 	public void setWifiListItem(WifiListItem wifiListItem) {
@@ -38,6 +40,10 @@ public class WifiCurrent {
 	
 	public boolean isConnecting() {
 		return NetHelper.isConnecting(mContext);
+	}
+	
+	public int getWifiNetworkID() {
+		return mWifiAdmin.getWifiInfo().getNetworkId();
 	}
 	
 	public String getWifiName() {
