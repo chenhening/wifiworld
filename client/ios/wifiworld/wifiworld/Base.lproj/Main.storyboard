@@ -100,6 +100,87 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DDi-jO-fZX">
+                                <rect key="frame" x="16" y="215" width="382" height="440"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" id="Gev-fP-3Cm" customClass="CustomConnectCell" customModule="wifiworld" customModuleProvider="target">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-Rf-VcJ">
+                                                    <rect key="frame" x="0.0" y="8" width="380" height="50"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A2l-H9-zze">
+                                                    <rect key="frame" x="90" y="13" width="100" height="21"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="A2l-H9-zze" secondAttribute="height" multiplier="100:21" id="2OS-R3-q1T"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tol-QA-TOE">
+                                                    <rect key="frame" x="90" y="31" width="135" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="135" id="XYq-in-LsT"/>
+                                                        <constraint firstAttribute="width" secondItem="tol-QA-TOE" secondAttribute="height" multiplier="27:4" id="o8x-6D-le9"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi_free_signal1" translatesAutoresizingMaskIntoConstraints="NO" id="rQk-Ha-t3Z">
+                                                    <rect key="frame" x="24" y="17" width="35" height="25"/>
+                                                </imageView>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1_1_86" translatesAutoresizingMaskIntoConstraints="NO" id="Nbf-4B-vem">
+                                                    <rect key="frame" x="355" y="17" width="24" height="24"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lER-t6-sCx">
+                                                    <rect key="frame" x="190" y="18" width="100" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="NcX-Kc-dPf"/>
+                                                        <constraint firstAttribute="width" constant="100" id="p6N-D2-8mb"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerX" secondItem="A2l-H9-zze" secondAttribute="centerX" constant="51" id="5Dt-b6-YnC">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                                                </constraint>
+                                                <constraint firstAttribute="centerX" secondItem="tol-QA-TOE" secondAttribute="centerX" constant="33.5" id="7qL-JQ-hKb">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="1.5"/>
+                                                </constraint>
+                                                <constraint firstItem="lER-t6-sCx" firstAttribute="leading" secondItem="A2l-H9-zze" secondAttribute="trailing" id="8Mg-Q2-0rg">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="12"/>
+                                                </constraint>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Nbf-4B-vem" secondAttribute="trailing" constant="-5" id="B7c-ru-XNs"/>
+                                                <constraint firstItem="lER-t6-sCx" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="10" id="FxA-dW-KuP"/>
+                                                <constraint firstItem="A2l-H9-zze" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="5" id="aVy-w7-FpX"/>
+                                                <constraint firstItem="tol-QA-TOE" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="23" id="ifk-O0-ukw"/>
+                                                <constraint firstItem="Nbf-4B-vem" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="9" id="qTL-j0-1IS"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="ImgV_Accessory" destination="Nbf-4B-vem" id="U6i-61-Klg"/>
+                                            <outlet property="imgV_wifiheadImage" destination="rQk-Ha-t3Z" id="ujV-9B-ZrH"/>
+                                            <outlet property="lb_passport" destination="tol-QA-TOE" id="vGb-jB-kCf"/>
+                                            <outlet property="lb_wifiAddress" destination="lER-t6-sCx" id="12l-sG-nJb"/>
+                                            <outlet property="lb_wifiName" destination="A2l-H9-zze" id="m3n-Ys-ftM"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="5c7-gI-ojT" id="haP-kB-TmK"/>
+                                    <outlet property="delegate" destination="5c7-gI-ojT" id="KRZ-Ab-6ss"/>
+                                </connections>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zQ4-a5-EH9">
                                 <rect key="frame" x="16" y="84" width="382" height="151"/>
                                 <subviews>
@@ -163,86 +244,6 @@
                                     <constraint firstAttribute="centerX" secondItem="TsK-I3-T90" secondAttribute="centerX" constant="1" id="zk6-f0-tGx"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DDi-jO-fZX">
-                                <rect key="frame" x="16" y="215" width="382" height="440"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" id="Gev-fP-3Cm" customClass="CustomConnectCell" customModule="wifiworld" customModuleProvider="target">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gev-fP-3Cm" id="OU9-Cw-yO2">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-Rf-VcJ">
-                                                    <rect key="frame" x="0.0" y="8" width="380" height="50"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2l-H9-zze">
-                                                    <rect key="frame" x="90" y="13" width="100" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="A2l-H9-zze" secondAttribute="height" multiplier="100:21" id="2OS-R3-q1T"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tol-QA-TOE">
-                                                    <rect key="frame" x="90" y="31" width="135" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="135" id="XYq-in-LsT"/>
-                                                        <constraint firstAttribute="width" secondItem="tol-QA-TOE" secondAttribute="height" multiplier="27:4" id="o8x-6D-le9"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi_free_signal1" translatesAutoresizingMaskIntoConstraints="NO" id="rQk-Ha-t3Z">
-                                                    <rect key="frame" x="24" y="17" width="35" height="25"/>
-                                                </imageView>
-                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1_1_86" translatesAutoresizingMaskIntoConstraints="NO" id="Nbf-4B-vem">
-                                                    <rect key="frame" x="355" y="17" width="24" height="24"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lER-t6-sCx">
-                                                    <rect key="frame" x="200" y="18" width="100" height="15"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="15" id="NcX-Kc-dPf"/>
-                                                        <constraint firstAttribute="width" constant="100" id="p6N-D2-8mb"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerX" secondItem="A2l-H9-zze" secondAttribute="centerX" constant="51" id="5Dt-b6-YnC">
-                                                    <variation key="heightClass=regular-widthClass=compact" constant="20"/>
-                                                </constraint>
-                                                <constraint firstAttribute="centerX" secondItem="tol-QA-TOE" secondAttribute="centerX" constant="33.5" id="7qL-JQ-hKb">
-                                                    <variation key="heightClass=regular-widthClass=compact" constant="1.5"/>
-                                                </constraint>
-                                                <constraint firstItem="lER-t6-sCx" firstAttribute="leading" secondItem="A2l-H9-zze" secondAttribute="trailing" constant="10" id="8Mg-Q2-0rg">
-                                                    <variation key="heightClass=regular-widthClass=compact" constant="12"/>
-                                                </constraint>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Nbf-4B-vem" secondAttribute="trailing" constant="-5" id="B7c-ru-XNs"/>
-                                                <constraint firstItem="lER-t6-sCx" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="10" id="FxA-dW-KuP"/>
-                                                <constraint firstItem="A2l-H9-zze" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="5" id="aVy-w7-FpX"/>
-                                                <constraint firstItem="tol-QA-TOE" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="23" id="ifk-O0-ukw"/>
-                                                <constraint firstItem="Nbf-4B-vem" firstAttribute="top" secondItem="OU9-Cw-yO2" secondAttribute="topMargin" constant="9" id="qTL-j0-1IS"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="ImgV_Accessory" destination="Nbf-4B-vem" id="U6i-61-Klg"/>
-                                            <outlet property="imgV_wifiheadImage" destination="rQk-Ha-t3Z" id="ujV-9B-ZrH"/>
-                                            <outlet property="lb_passport" destination="tol-QA-TOE" id="vGb-jB-kCf"/>
-                                            <outlet property="lb_wifiAddress" destination="lER-t6-sCx" id="12l-sG-nJb"/>
-                                            <outlet property="lb_wifiName" destination="A2l-H9-zze" id="m3n-Ys-ftM"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="5c7-gI-ojT" id="haP-kB-TmK"/>
-                                    <outlet property="delegate" destination="5c7-gI-ojT" id="KRZ-Ab-6ss"/>
-                                </connections>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
