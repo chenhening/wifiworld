@@ -4,20 +4,24 @@ import java.util.List;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiListItem;
 
 public class WifiNotAuthListAdapter extends BaseAdapter {
-	private final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
+	public final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
 	
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
@@ -61,7 +65,7 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		TextView wifiAlias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
 		TextView wifiOptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
 		
-		WifiListItem wifiListItem = mWifiListItems.get(position);
+		final WifiListItem wifiListItem = mWifiListItems.get(position);
 		wifiAlias.setVisibility(View.GONE);
 		wifiName.setText(wifiListItem.getWifiName());
 		wifiOptions.setText(wifiListItem.getOptions());
@@ -71,6 +75,18 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		logo.setImageResource(wifiListItem.getDefaultLogo());
 		
 		setItemBg(position, getCount(), view.findViewById(R.id.ll_wifi_listitem));
+		
+		//设置非认证的详细页面
+		view.findViewById(R.id.iv_wifi_item_more).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(mContext, WifiDetailsActivity.class);
+				i.putExtra(WifiNotAuthListAdapter.TAG, wifiListItem.getWifiName());
+				mContext.startActivity(i);
+			}
+			
+		});
 		
 		return view;
 	}
