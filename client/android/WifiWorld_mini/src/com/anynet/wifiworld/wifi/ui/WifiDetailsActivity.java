@@ -47,6 +47,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private ListView mListComments;
 	
 	private String mSSID;
+	private String mMacid;
 	
 	private void bingdingTitleUI() {
 		mTitlebar.tvTitle.setText(WifiAdmin.convertToNonQuotedString(mSSID));
@@ -72,7 +73,9 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifi = (WifiProfile) intent.getSerializableExtra(WifiProfile.TAG);
 		if (mWifi == null) { //重用了detail的页面显示未认证wifi的详细信息
-			mSSID = intent.getStringExtra(WifiNotAuthListAdapter.TAG);
+			List<String> data = intent.getStringArrayListExtra(WifiNotAuthListAdapter.TAG);
+			mSSID = data.get(0);
+			mMacid = data.get(1);
 			TextView txt_title = (TextView) findViewById(R.id.tv_detail_knock_title);
 			txt_title.setText("寻找网络主人");
 			TextView txt_desc = (TextView) findViewById(R.id.tv_detail_knock_desc);
@@ -90,12 +93,11 @@ public class WifiDetailsActivity extends BaseActivity {
 			
 		} else {
 			mSSID = mWifi.Ssid;
+			mMacid = mWifi.MacAddr;
 			mLogo.setImageBitmap(mWifi.getLogo());
 			mAlias.setText(mWifi.Alias);
 			mSponser.setText(mWifi.Sponser);
 			mBanner.setText(mWifi.Banner);
-			
-			pullDataFromDB();
 			
 			//敲门
 			findViewById(R.id.btn_knock_answer).setOnClickListener(new OnClickListener() {
@@ -123,7 +125,9 @@ public class WifiDetailsActivity extends BaseActivity {
 				}
 			});
 		}
+		
 		bingdingTitleUI();
+		pullDataFromDB();
 	}
 
 	protected Context getActivity() {
@@ -189,7 +193,7 @@ public class WifiDetailsActivity extends BaseActivity {
     
 	private void pullDataFromDB() {
 		WifiRank wifiRank = new WifiRank();
-		wifiRank.QueryByMacAddress(this, mWifi.MacAddr, new DataCallback<WifiRank>() {
+		wifiRank.QueryByMacAddress(this, mMacid, new DataCallback<WifiRank>() {
 			
 			@Override
 			public void onSuccess(WifiRank object) {
@@ -206,7 +210,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiDynamic wifiDynamic = new WifiDynamic();
-		wifiDynamic.QueryConnectedTimes(this, mWifi.MacAddr, new DataCallback<Long>() {
+		wifiDynamic.QueryConnectedTimes(this, mMacid, new DataCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long object) {
@@ -223,7 +227,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiMessages wifiMessages = new WifiMessages();
-		wifiMessages.QueryByMacAddress(this, mWifi.MacAddr, new DataCallback<WifiMessages>() {
+		wifiMessages.QueryByMacAddress(this, mMacid, new DataCallback<WifiMessages>() {
 			
 			@Override
 			public void onSuccess(WifiMessages object) {
@@ -240,7 +244,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		});
 		
 		WifiComments wifiComments = new WifiComments();
-		wifiComments.QueryByMacAddress(this, mWifi.MacAddr, new MultiDataCallback<WifiComments>() {
+		wifiComments.QueryByMacAddress(this, mMacid, new MultiDataCallback<WifiComments>() {
 			
 			@Override
 			public boolean onSuccess(List<WifiComments> object) {

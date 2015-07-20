@@ -79,7 +79,7 @@
                                 android:id="@+id/tv_detail_wifi_master"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="____________"
+                                android:text=""
                                 android:textColor="@color/darkgrey"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -100,7 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:maxLines="2"
-                            android:text="________________________"
+                            android:text=""
                             android:textColor="@color/darkgrey"
                             android:textSize="12sp" />
                     </LinearLayout>
