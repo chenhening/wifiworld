@@ -50,10 +50,6 @@ vpn地址：v.ipa.social
 	18688339822
 	同上
 	
-	http://dev.gfan.com/ 机锋网 (0716上传正在审核)
-	buffer8848
-	1986720fei
-	
 	http://dev.mumayi.com/ 木蚂蚁 (0715通过审核)
 	buffer8848
 	同上
@@ -62,13 +58,13 @@ vpn地址：v.ipa.social
 	buffer8848
 	同上
 	
-	http://dev.mopo.com/ 冒泡堂 (还在审核开发者认证)
+	http://dev.mopo.com/ 冒泡堂 (0717上传正在审核)
 	179770346@qq.com
 	同上
 	
 	http://app.suning.com/ 苏宁应用商店 (还在审核开发者认证)
 	179770346@qq.com
-	同上
+	1986720fei
 	
 	http://dev.app.360.cn/ 360集团(WiFi类应用必须要求企业提供)
 	18688339822
@@ -77,6 +73,10 @@ vpn地址：v.ipa.social
 	http://developer.huawei.com/  华为集团 (暂不支持个人开发提交应用)
 	18688339822
 	同上
+	
+	http://dev.gfan.com/ 机锋网 (暂不收录免费WiFi类应用)
+	buffer8848
+	1986720fei
 	
 	http://www.appchina.com/ 应用汇 (暂不收录免费WiFi类应用)
 	18688339822
