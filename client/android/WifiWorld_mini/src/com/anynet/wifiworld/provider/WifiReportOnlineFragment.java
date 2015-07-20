@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,8 @@ import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiReportOnlineFragment extends Fragment {
+	private final static String TAG = WifiReportOnlineFragment.class.getSimpleName();
+	
 	private View mRootView = null;
 	private boolean bOnAnimating = false;
 	private ImageView center_image = null;
@@ -31,6 +34,7 @@ public class WifiReportOnlineFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+		Log.d(TAG, "onClick: online fragment");
 		mRootView = inflater.inflate(R.layout.fragment_report_online, container, false);     
         bOnAnimating = true;
         

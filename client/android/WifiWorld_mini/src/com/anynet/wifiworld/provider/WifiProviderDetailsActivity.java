@@ -10,8 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.BaseActivity;
@@ -39,7 +42,7 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		});
 		
 		mTitlebar.ivHeaderRight.setVisibility(View.VISIBLE);
-		mTitlebar.ivHeaderRight.setBackgroundResource(R.drawable.selector_wifi_plus);
+		mTitlebar.ivHeaderRight.setImageResource(R.drawable.selector_wifi_plus);
 		mTitlebar.ivHeaderRight.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -58,7 +61,7 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		bingdingTitleUI();
 		
 		//Add fragment
-		Fragment f1 = (Fragment)new WifiReportOnlineFragment();
+		Fragment f1 = (Fragment)new WifiProviderOnline();
 		Fragment f2 = (Fragment)new WifiReportCountFragment();
 		Fragment f3 = (Fragment)new WifiReportGeoFragment();
 		Fragment f4 = (Fragment)new WifiReportTimerFragment();
@@ -92,13 +95,17 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 
 	private class MyOnClickListener implements OnClickListener{
         private int index=0;
+        
         public MyOnClickListener(int i){
         	index=i;
         }
+        
+		@Override
 		public void onClick(View v) {
-			viewPager.setCurrentItem(index);			
+			viewPager.setCurrentItem(index);
+			Log.d(TAG, "onClick: " + index);
 		}
-		
+        
 	}
 	
 	public class MyViewPagerAdapter extends FragmentPagerAdapter {
@@ -108,14 +115,21 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		}
 
 		@Override
-        public Fragment getItem(int arg0) {
-	        return fragments.get(arg0);
+        public Fragment getItem(int position) {
+	        return fragments.get(position);
         }
 
 		@Override
         public int getCount() {
 	        return fragments.size();
         }
+		
+		@Override  
+	    public void destroyItem(ViewGroup container, int position, Object object) {  
+	        // 这里Destroy的是Fragment的视图层次，并不是Destroy Fragment对象  
+	        super.destroyItem(container, position, object);  
+	        Log.i("INFO", "Destroy Item...");  
+	    }
 	}
 
     public class MyOnPageChangeListener implements OnPageChangeListener{
