@@ -11,10 +11,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.View.OnClickListener;
 
-import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 
 public class AllContactActivity extends BaseActivity {
     private ContactUpdateReceiver receiver;
@@ -27,15 +26,7 @@ public class AllContactActivity extends BaseActivity {
 
 	private void bingdingTitleUI() {
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
-		mTitlebar.tvHeaderRight.setVisibility(View.INVISIBLE);
 		mTitlebar.tvTitle.setText("添加白名单");
-		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
     
     @Override

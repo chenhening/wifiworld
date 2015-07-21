@@ -26,6 +26,17 @@
             item:label="添加通信录好友到白名单"
             item:subLabel="" >
         </com.anynet.wifiworld.view.SettingItemView>
+        
+        <com.anynet.wifiworld.view.SettingItemView
+            android:id="@+id/siv_add_from_friends"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            item:backgroundImage="middle"
+            item:icon="@drawable/icon_person_wifi_providor"
+            item:label="添加网络宝好友到白名单"
+            item:subLabel=""
+            item:showTopDivider="true" >
+        </com.anynet.wifiworld.view.SettingItemView>
 
         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/siv_add_by_input"
