@@ -16,10 +16,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.BaseActivity;
+import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
@@ -148,13 +147,13 @@ public class MyWhiteListActivity extends BaseActivity {
 				// create "open" item
 				SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
 				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+				openItem.setBackground(new ColorDrawable(Color.LTGRAY));
 				// set item width
-				openItem.setWidth(dp2px(90));
+				openItem.setWidth(dp2px(60));
 				// set item title
-				openItem.setTitle("Open");
+				openItem.setTitle("名片");
 				// set item title fontsize
-				openItem.setTitleSize(18);
+				openItem.setTitleSize(14);
 				// set item title font color
 				openItem.setTitleColor(Color.WHITE);
 				// add to menu
@@ -162,9 +161,9 @@ public class MyWhiteListActivity extends BaseActivity {
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.LTGRAY));
 				// set item width
-				deleteItem.setWidth(dp2px(90));
+				deleteItem.setWidth(dp2px(60));
 				// set a icon
 				deleteItem.setIcon(R.drawable.ic_delete);
 				// add to menu
@@ -209,7 +208,7 @@ public class MyWhiteListActivity extends BaseActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getApplicationContext(), position + " long click", 0).show();
+				//Toast.makeText(getApplicationContext(), position + " long click", 0).show();
 				return false;
 			}
 		});

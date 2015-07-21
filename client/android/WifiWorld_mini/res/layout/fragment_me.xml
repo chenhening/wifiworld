@@ -203,7 +203,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_wifi_white"
                     item:label="我的白名单"
-                    item:subLabel="即将开放" >
+                    item:subLabel="一键批准好友上网" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
