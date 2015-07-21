@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 	<!-- 友盟统计分享更新需要添加的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -96,6 +98,8 @@
         <activity android:name="cn.hugo.android.scanner.CaptureActivity" />
         <activity android:name="com.anynet.wifiworld.me.WifiUsedListActivity" />
         <activity android:name="com.anynet.wifiworld.provider.WifiProviderDetailsActivity" />
+        <activity android:name="com.anynet.wifiworld.me.whitelist.MyWhiteListActivity" />
+        <activity android:name="com.anynet.wifiworld.me.whitelist.AllContactActivity" />
         
         <!-- 高德 -->
         <meta-data

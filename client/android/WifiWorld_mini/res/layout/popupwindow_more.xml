@@ -166,7 +166,7 @@
 	            android:layout_height="24dp"
 	            android:layout_gravity="center_vertical"
 	            android:layout_marginLeft="8dp"
-	            android:background="@drawable/ic_wifi_disconnected" />
+	            android:background="@drawable/ic_more_disconnect" />
 	
 	        <TextView
 	            android:layout_width="wrap_content"

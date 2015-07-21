@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.RouteSearch.FromAndTo;
@@ -95,11 +97,8 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 		//地图
 		mapView = (MapView)this.findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 必须要写
-
-		if (aMap == null) {
-            aMap = mapView.getMap();
-            setUpMap();
-        }
+		aMap = mapView.getMap();
+        setUpMap();
 		aMap.setOnMapClickListener(this);
         aMap.setOnMarkerClickListener(this);
         aMap.setOnInfoWindowClickListener(this);
@@ -390,16 +389,31 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 
 			@Override
             public boolean onSuccess(List<WifiProfile> objects) {
-				LatLngBounds bounds = new LatLngBounds(mMyPosition, mMyPosition);
+				PolylineOptions opt = new PolylineOptions();
+				opt.width(20).color(Color.RED).setDottedLine(true).geodesic(true);
+				opt.add(mMyPosition);
+				LatLng southwest = mMyPosition;
+				LatLng northeast = mMyPosition;
 				mListData = objects;
 				allMarkers.clear();
 				for (int i = 0; i < mListData.size(); ++i) {
 					WifiProfile wifi = mListData.get(i);
 					Marker mM = getMarkerByWifiProfile(wifi);
 					allMarkers.put(wifi.MacAddr, mM);
-					bounds.including(new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude()));
+					LatLng tmp = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
+					opt.add(tmp);
+					if (southwest.latitude > wifi.Geometry.getLatitude() && 
+						southwest.longitude > wifi.Geometry.getLongitude()) {
+						southwest = tmp;
+					} else if (northeast.latitude < wifi.Geometry.getLatitude() && 
+						northeast.longitude < wifi.Geometry.getLongitude()) {
+						northeast = tmp;
+					}
 				}
 				//重新规划可视区域
+				opt.add(mMyPosition);
+				aMap.addPolyline(opt);
+				LatLngBounds bounds = new LatLngBounds(southwest, northeast);
 				CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, 1);
 				aMap.moveCamera(update);
 				return false;

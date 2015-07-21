@@ -22,6 +22,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.me.whitelist.MyWhiteListActivity;
 import com.anynet.wifiworld.provider.WifiProviderDetailsActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
@@ -176,7 +177,24 @@ public class MeFragment extends MainFragment {
 				}
 			});
 			
+			//设置白名单
+			this.findViewById(R.id.siv_my_whitelist).setOnClickListener(new OnClickListener() {
+
+				@Override
+	            public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
+					Intent i = new Intent();
+					i.setClass(getApplicationContext(), MyWhiteListActivity.class);
+					startActivity(i);
+	            }
+				
+			});
 		}
+		
+		mLoaded = true;
 	}
 
 	@Override
