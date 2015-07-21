@@ -3,6 +3,7 @@ package com.anynet.wifiworld.provider;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,20 +14,22 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.util.LoginHelper;
+
+import f.in;
 
 public class WifiProviderDetailsActivity extends BaseActivity {
 
 	//IPC
 	private Intent mIntent = null;
 	private ViewPager viewPager;//页卡内容
-	private TextView textView1,textView2,textView3,textView4;
+	private TextView tvOnline, tvStatistic, tvAnalyzePosition, tvAnalyzeTime;
 	private List<Fragment> fragments = new ArrayList<Fragment>();
 	
 	private void bingdingTitleUI() {
@@ -62,9 +65,9 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		
 		//Add fragment
 		Fragment f1 = (Fragment)new WifiProviderOnline();
-		Fragment f2 = (Fragment)new WifiReportCountFragment();
-		Fragment f3 = (Fragment)new WifiReportGeoFragment();
-		Fragment f4 = (Fragment)new WifiReportTimerFragment();
+		Fragment f2 = (Fragment)new WifiProviderOnline();
+		Fragment f3 = (Fragment)new WifiProviderOnline();
+		Fragment f4 = (Fragment)new WifiProviderOnline();
 		fragments.add(f1);
 		fragments.add(f2);
 		fragments.add(f3);
@@ -72,27 +75,53 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		
 		InitTextView();
 		InitViewPager();
+		
+		initWifiInfoProvided();
 	}
 
 	private void InitViewPager() {
 		viewPager = (ViewPager) findViewById(R.id.vp_wifiinfo);
 		viewPager.setAdapter(new MyViewPagerAdapter(getSupportFragmentManager()));
 		viewPager.setCurrentItem(0);
+		setTitleTextColor(0);
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
 
 	private void InitTextView() {
-		textView1 = (TextView) findViewById(R.id.tv_realtime);
-		textView2 = (TextView) findViewById(R.id.tv_statistical);
-		textView3 = (TextView) findViewById(R.id.tv_analyze);
-		textView4 = (TextView) findViewById(R.id.tv_analyze);
+		tvOnline = (TextView) findViewById(R.id.tv_online);
+		tvStatistic = (TextView) findViewById(R.id.tv_statistic);
+		tvAnalyzePosition = (TextView) findViewById(R.id.tv_analyze_position);
+		tvAnalyzeTime = (TextView) findViewById(R.id.tv_analyze_time);
 
-		textView1.setOnClickListener(new MyOnClickListener(0));
-		textView2.setOnClickListener(new MyOnClickListener(1));
-		textView3.setOnClickListener(new MyOnClickListener(2));
-		textView4.setOnClickListener(new MyOnClickListener(3));
+		tvOnline.setOnClickListener(new MyOnClickListener(0));
+		tvStatistic.setOnClickListener(new MyOnClickListener(1));
+		tvAnalyzePosition.setOnClickListener(new MyOnClickListener(2));
+		tvAnalyzeTime.setOnClickListener(new MyOnClickListener(3));
 	}
-
+	
+	private void initWifiInfoProvided() {
+		WifiProfile wifiProfile = LoginHelper.getInstance(getApplicationContext()).getWifiProfile();
+		if (wifiProfile != null) {
+			TextView wifi_name = (TextView)findViewById(R.id.tv_detail_wifi_name);
+			ImageView wifi_logo = (ImageView)findViewById(R.id.iv_detail_wifi_logo);
+			TextView wifi_master = (TextView)findViewById(R.id.tv_detail_wifi_master);
+			TextView wifi_banner = (TextView)findViewById(R.id.tv_detail_wifi_banner);
+			
+			if (wifiProfile.Alias != null) {
+				wifi_name.setText(wifiProfile.Alias);
+			}
+			if (wifiProfile.getLogo() != null) {
+				wifi_logo.setImageBitmap(wifiProfile.getLogo());
+			}
+			if (wifiProfile.Sponser != null) {
+				wifi_master.setText(wifiProfile.Sponser);
+			}
+			if (wifiProfile.Banner != null) {
+				wifi_banner.setText(wifiProfile.Banner);
+			}
+		}
+	}
+	
 	private class MyOnClickListener implements OnClickListener{
         private int index=0;
         
@@ -103,9 +132,41 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			viewPager.setCurrentItem(index);
-			Log.d(TAG, "onClick: " + index);
+			setTitleTextColor(index);
 		}
-        
+	}
+	
+	@SuppressLint("ResourceAsColor")
+	private void setTitleTextColor(int idx) {
+		switch (idx) {
+		case 0:
+			tvOnline.setTextColor(R.color.app_color_style);
+			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			break;
+		case 1:
+			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
+			tvStatistic.setTextColor(R.color.app_color_style);
+			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			break;
+		case 2:
+			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
+			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzePosition.setTextColor(R.color.app_color_style);
+			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			break;
+		case 3:
+			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
+			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
+			tvAnalyzeTime.setTextColor(R.color.app_color_style);
+			break;
+
+		default:
+			break;
+		}
 	}
 	
 	public class MyViewPagerAdapter extends FragmentPagerAdapter {
@@ -123,13 +184,6 @@ public class WifiProviderDetailsActivity extends BaseActivity {
         public int getCount() {
 	        return fragments.size();
         }
-		
-		@Override  
-	    public void destroyItem(ViewGroup container, int position, Object object) {  
-	        // 这里Destroy的是Fragment的视图层次，并不是Destroy Fragment对象  
-	        super.destroyItem(container, position, object);  
-	        Log.i("INFO", "Destroy Item...");  
-	    }
 	}
 
     public class MyOnPageChangeListener implements OnPageChangeListener{
