@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="200"
-    android:versionName="1.0.1" >
+    android:versionCode="294"
+    android:versionName="1.1.44" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -13,15 +13,16 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 	<!-- 友盟统计分享更新需要添加的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 友盟推送需要添加的权限 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -56,16 +57,56 @@
         </activity>
         
         <activity
+            android:name="com.anynet.wifiworld.GuideActivity" />
+        <activity
             android:name="com.anynet.wifiworld.wifi.ui.WifiDetailsActivity" />
-        
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="126df04cb029b83dbefcdb5e58baeaa5" />
+        <activity
+            android:name="com.anynet.wifiworld.me.AboutAppActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.knock.KnockStepFirstActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.knock.MyAccountActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.provider.WifiProviderRigisterActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.provider.WifiProviderLicenseActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-        <!-- 友盟 -->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="activity.special.scheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.anynet.wifiworld.provider.WifiProviderRigisterFirstActivity" />
+        <activity android:name="com.anynet.wifiworld.provider.WifiProviderRigisterCompleteActivity" />
+        <activity android:name="com.anynet.wifiworld.provider.WifiProviderSettingActivity" />
+        <activity android:name="com.anynet.wifiworld.wifi.ui.WifiTestActivity" />
+        <activity
+            android:name="com.anynet.wifiworld.wifi.ui.WifiCommentActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode = "adjustResize" >
+            <intent-filter>
+                <action android:name="com.anynet.wifiworld.wifi.ui.WIFI_COMMENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="cn.hugo.android.scanner.CaptureActivity" />
+        <activity android:name="com.anynet.wifiworld.me.WifiUsedListActivity" />
+        <activity android:name="com.anynet.wifiworld.provider.WifiProviderDetailsActivity" />
+        <activity android:name="com.anynet.wifiworld.me.whitelist.MyWhiteListActivity" />
+        <activity android:name="com.anynet.wifiworld.me.whitelist.AllContactActivity" />
+        
+        <!-- 高德 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="39192cd2a95f37f072fa829b8349e753" />
+
+        <!-- 友盟 -->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="c621650b4e9a0bc5092f17e1ad5086a6" />
@@ -162,6 +203,23 @@
         <!-- WiFi后台服务 -->
         <service android:name="com.anynet.wifiworld.wifi.WifiReenable$BackgroundService" />
         <service android:name="com.anynet.wifiworld.wifi.WifiBRService$WifiMonitorService" />
+        
+        <!-- 登录 -->
+        <activity
+            android:name="com.anynet.wifiworld.me.MyAccountActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.anynet.wifiworld.me.UserLoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 登录后台服务 -->
+        <service
+            android:name="com.anynet.wifiworld.me.LoginService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

@@ -12,20 +12,17 @@
         android:layout_height="48dp"
         android:background="@drawable/wifi_title_bg"
         android:visibility="visible" >
-
-        <ToggleButton
-            android:id="@+id/tb_wifi_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+	
+	    <ImageView
+	        android:id="@+id/iv_wifi_scan"
+	        android:layout_width="48dp"
+	        android:layout_height="35dp"
+	        android:contentDescription="扫描上网"
+	        android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
-            android:background="@drawable/selector_wifi_switch"
-            android:checked="true"
-            android:focusableInTouchMode="true"
-            android:longClickable="true"
-            android:textOff=""
-            android:textOn=""
-            android:visibility="visible" />
+            android:padding="2dp"
+	        android:scaleType="centerInside"
+	        android:src="@drawable/selector_btn_scan" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,12 +39,12 @@
 
         <ImageView
             android:id="@+id/iv_wifi_plus"
-            android:layout_width="35dp"
+            android:layout_width="48dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/wifi_plus_btn"
+            android:src="@drawable/selector_wifi_plus"
             android:visibility="visible" />
     </RelativeLayout>
 
@@ -60,15 +57,13 @@
         android:orientation="horizontal" >
 
         <RelativeLayout
-            android:id="@+id/rl_wifi_connected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
-            android:background="@drawable/wifi_connected_bg"
+            android:background="@drawable/bg_wifi_connected"
             android:gravity="center_vertical" >
 
             <LinearLayout
-                android:id="@+id/ll_wifi_connected_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -78,7 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="17dp"
                     android:gravity="center"
                     android:orientation="vertical" >
 
@@ -100,10 +96,17 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_main_bg" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical" >
 
@@ -188,7 +191,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="认证Wi-Fi"
+	                android:text="认证网络"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 			
@@ -203,6 +206,7 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
 	                android:cacheColorHint="#00000000"
+	                android:listSelector="#00000000"
 	                android:fadingEdge="none" />
 	
 	        </LinearLayout>
@@ -226,7 +230,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
-	                android:text="非认证Wi-Fi"
+	                android:text="非认证网络"
 	                android:textColor="@color/grey" />
 	        </LinearLayout>
 	
@@ -241,6 +245,7 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
 	                android:cacheColorHint="#00000000"
+	                android:listSelector="#00000000"
 	                android:fadingEdge="none" />
 	
 	    		</LinearLayout>

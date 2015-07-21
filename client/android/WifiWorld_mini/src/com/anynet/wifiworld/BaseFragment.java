@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.me.UserLoginActivity;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.ViewBinder;
 import com.anynet.wifiworld.util.XLLog;
 
@@ -340,4 +341,48 @@ public class BaseFragment extends Fragment {
         
         ViewBinder.bindingView(mPageRoot, this);
     }
+    
+  //-------------------------------------------------------------------------------------------------------------
+  	//custom base UI
+  	public static abstract class MainFragment extends BaseFragment {
+
+  		protected boolean isVisible;
+  		
+  		public boolean checkIsLogined() {
+  			if (!LoginHelper.getInstance(getActivity()).isLogined()) {
+  				UserLoginActivity.start((BaseActivity) getActivity());
+  				return false;
+  			}
+  			return true;
+  		}
+  		
+  		public void startUpdte() {
+  			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
+  		}
+
+  		public void stopUpdte() {
+  			com.anynet.wifiworld.util.XLLog.log(TAG, "stopUpdte");
+  		}
+
+  		/**
+  		 * 在这里实现Fragment数据的缓加载.
+  		 * 
+  		 * @param isVisibleToUser
+  		 */
+  		@Override
+  		public void setUserVisibleHint(boolean isVisibleToUser) {
+  			super.setUserVisibleHint(isVisibleToUser);
+  			if (getUserVisibleHint()) {
+  				isVisible = true;
+  				onVisible();
+  			} else {
+  				isVisible = false;
+  				onInvisible();
+  			}
+  		}
+
+  		protected abstract void onVisible();
+
+  		protected abstract void onInvisible();
+  	}
 }

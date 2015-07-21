@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:overScrollMode="never" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="148dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/knock_input"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="108dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/question"
+                    android:layout_width="246dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:gravity="top"
+                    android:hint="@string/knock_question_hint"
+                    android:maxLength="60"
+                    android:maxLines="4"
+                    android:minLines="4"
+                    android:singleLine="false"
+                    android:textColor="#ff333333"
+                    android:textSize="15.0sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_question_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:src="@drawable/et_delete" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/bg_person_center" />
+
+                <TextView
+                    android:id="@+id/question_category_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5.0dip"
+                    android:text="题型分类："
+                    android:textColor="@color/color_question_category_text"
+                    android:textSize="@dimen/font_main_meduim" />
+
+                <TextView
+                    android:id="@+id/question_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/question_category_textview"
+                    android:drawableRight="@drawable/knock_category_select"
+                    android:gravity="center_vertical"
+                    android:text="@string/knock_suiji"
+                    android:textColor="@color/color_question_category"
+                    android:textSize="@dimen/font_main_meduim" />
+
+                <TextView
+                    android:id="@+id/knock_change_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5.0dip"
+                    android:drawableLeft="@drawable/knock_question_refresh"
+                    android:gravity="center_vertical"
+                    android:text="@string/knock_change_question"
+                    android:textColor="@color/knock_question_click_color"
+                    android:textSize="@dimen/font_main_meduim" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100.0dip"
+            android:gravity="center" >
+
+            <LinearLayout
+                android:id="@+id/btn_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/btn_camera"
+                    android:layout_width="100.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/selector_button_bg"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0dip"
+                        android:layout_marginRight="10.0dip"
+                        android:layout_marginTop="10.0dip"
+                        android:src="@drawable/knock_camera" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/knock_take_picture" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="或" />
+
+                <LinearLayout
+                    android:id="@+id/btn_record"
+                    android:layout_width="100.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/selector_button_bg"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5.0dip"
+                        android:layout_marginLeft="10.0dip"
+                        android:layout_marginRight="10.0dip"
+                        android:layout_marginTop="10.0dip"
+                        android:src="@drawable/knock_ic_record" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/knock_take_record" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/preview_layout"
+                android:layout_width="100.0dip"
+                android:layout_height="75.0dip"
+                android:layout_margin="10.0dip"
+                android:background="@drawable/selector_button_bg"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/preview"
+                    android:layout_width="100.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_marginLeft="5.0dip"
+                    android:layout_marginRight="5.0dip"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/record_lasting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5.0dip"
+                    android:textColor="#ff999999"
+                    android:textSize="12.0sp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/voice_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5.0dip"
+                    android:src="@drawable/knock_play_record"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/attach_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/preview_layout"
+                android:layout_alignTop="@+id/preview_layout"
+                android:layout_marginRight="-10.0dip"
+                android:layout_marginTop="-10.0dip"
+                android:background="#00000000"
+                android:src="@drawable/et_delete"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/knock_input"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_answer_checkbox"
+                    android:button="@null"
+                    android:checked="true" />
+
+                <EditText
+                    android:id="@+id/answer1"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:hint="@string/knock_hint_right"
+                    android:maxLength="28"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#ff333333"
+                    android:textSize="15.0sp" />
+
+                <ImageButton
+                    android:id="@+id/a1_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:src="@drawable/et_delete" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_answer_checkbox"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <EditText
+                    android:id="@+id/answer2"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:hint="@string/knock_hint_wrong"
+                    android:maxLength="28"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#ff333333"
+                    android:textSize="15.0sp" />
+
+                <ImageButton
+                    android:id="@+id/a2_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:src="@drawable/et_delete" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_answer_checkbox"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <EditText
+                    android:id="@+id/answer3"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:hint="@string/knock_hint_wrong"
+                    android:maxLength="28"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#ff333333"
+                    android:textSize="15.0sp" />
+
+                <ImageButton
+                    android:id="@+id/a3_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:src="@drawable/et_delete" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/check4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="@drawable/knock_answer_checkbox"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <EditText
+                    android:id="@+id/answer4"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="#00000000"
+                    android:hint="@string/knock_hint_wrong"
+                    android:maxLength="28"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#ff333333"
+                    android:textSize="15.0sp" />
+
+                <ImageButton
+                    android:id="@+id/a4_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10.0dip"
+                    android:background="#00000000"
+                    android:src="@drawable/et_delete" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

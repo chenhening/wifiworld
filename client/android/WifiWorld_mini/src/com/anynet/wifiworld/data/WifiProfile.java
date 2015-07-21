@@ -57,7 +57,7 @@ public class WifiProfile extends BmobObject{
 	private boolean isShared = false;
 	public String MacAddr = ""; 				//Mac地址, 唯一键
 	public String Ssid = ""; 				//Wifi的Ssid
-	public String Password = ""; 			//Wifi的密码，经过base64后保存
+	private String Password = ""; 			//Wifi的密码，经过base64后保存
 	public String Sponser = ""; 				//绑定的用户账号，Wifi提供者电话号码
 	public int Type = 0; 					//Wifi的类型
 	public byte[] Logo = null; 				//用户自定义的Logo图片字节流
@@ -121,15 +121,34 @@ public class WifiProfile extends BmobObject{
 				+ "," + Geometry.getLatitude() + ") ExtAddress:" + ExtAddress;
 	}
 
-	public String decryptPwd(String pwd) {
+	public String getPassword() {
+		return decryptPwd(Password);
+	}
+	
+	private String decryptPwd(String pwd) {
 		String decryptedStr = null;
 		try {
 			decryptedStr = StringCrypto.decryptDES(pwd, CryptoKey);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return decryptedStr;
+	}
+	
+	public void setPassword(String pwd) {
+		Password = encryptPwd(pwd);
+	}
+	
+	private String encryptPwd(String pwd) {
+		String encryptedStr = null;
+		if (pwd != null) {
+			try {
+				encryptedStr = StringCrypto.encryptDES(pwd, CryptoKey);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return encryptedStr;
 	}
 
 	public void QueryByMacAddress(final Context context, final String Mac, DataCallback<WifiProfile> callback) {
@@ -148,7 +167,6 @@ public class WifiProfile extends BmobObject{
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() == 1) {
 							WifiProfile returnProfile = object.get(0);
-							returnProfile.Password = decryptPwd(returnProfile.Password);
 							_callback.onSuccess(returnProfile);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
@@ -181,8 +199,6 @@ public class WifiProfile extends BmobObject{
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() == 1) {
-							WifiProfile returnProfile = object.get(0);
-							returnProfile.Password = decryptPwd(returnProfile.Password);
 							_callback.onSuccess(true);
 						} else {
 							_callback.onSuccess(false);
@@ -217,9 +233,6 @@ public class WifiProfile extends BmobObject{
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() == 1) {
 							WifiProfile returnProfile = object.get(0);
-							if (returnProfile.Password != null) {
-								returnProfile.Password = decryptPwd(returnProfile.Password);
-							}
 							_callback.onSuccess(returnProfile);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
@@ -254,9 +267,6 @@ public class WifiProfile extends BmobObject{
 					@Override
 					public void onSuccess(List<WifiProfile> object) {
 						if (object.size() >= 1) {
-							for (WifiProfile wifiProfile : object) {
-								wifiProfile.Password = decryptPwd(wifiProfile.Password);
-							}
 							_callback.onSuccess(object);
 						} else {
 							_callback.onFailed("数据库中没有数据。");
@@ -377,15 +387,6 @@ public class WifiProfile extends BmobObject{
 
 					@Override
 					public void onFailed(String msg) {
-						// 只需要第一次保存的时候对密码进行加密
-						if (wifiProfile.Password != null) {
-							try {
-								wifiProfile.Password = StringCrypto.encryptDES(wifiProfile.Password, CryptoKey);
-							} catch (Exception e) {
-								_callback.onFailed("无法保存数据: " + e.getMessage());
-								return;
-							}
-						}
 						wifiProfile.save(context, new SaveListener() {
 
 							@Override

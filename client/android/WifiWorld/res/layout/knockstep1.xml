@@ -111,7 +111,7 @@
                     android:layout_width="100.0dip"
                     android:layout_height="75.0dip"
                     android:layout_margin="10.0dip"
-                    android:background="@drawable/lib_button_bg"
+                    android:background="@drawable/selector_button_bg"
                     android:gravity="center"
                     android:orientation="vertical" >
 

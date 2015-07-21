@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
@@ -96,10 +97,10 @@ public class WifiAuthListAdapter extends BaseAdapter {
 			logo.setImageResource(R.drawable.ic_wifi_connecting_3);
 			wifiAlias.setVisibility(View.INVISIBLE);
 			if (position == 0) {
-				wifiName.setText("如何认证网络");
+				wifiName.setText("什么是认证网络");
 				wifiOptions.setText("[点击了解]");
 			} else {
-				wifiName.setText("什么是认证网络");
+				wifiName.setText("如何认证网络");
 				wifiOptions.setText("[点击了解]");
 			}
 		}
@@ -108,23 +109,28 @@ public class WifiAuthListAdapter extends BaseAdapter {
 	}
 	
 	private void setItemBg(int pos, int itemSize, View view) {
+		LinearLayout bg_logo = (LinearLayout)view.findViewById(R.id.ll_wifi_auth_item);
 		switch (itemSize) {
 		case 1:
-			
 			break;
 		case 2:
 			if (pos == 0) {
+				bg_logo.setBackgroundResource(R.drawable.bg_wifi_auth_item_0);
 				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
 			} else {
+				bg_logo.setBackgroundResource(R.drawable.bg_wifi_auth_item_2);
 				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
 			}
 			break;
 		default:
 			if (pos == 0) {
+				bg_logo.setBackgroundResource(R.drawable.bg_wifi_auth_item_0);
 				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
 			} else if (pos == getCount()-1){
+				bg_logo.setBackgroundResource(R.drawable.bg_wifi_auth_item_2);
 				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
 			} else {
+				bg_logo.setBackgroundResource(R.drawable.bg_wifi_auth_item_1);
 				view.setBackgroundResource(R.drawable.wifi_list_auth_item1);
 			}
 			break;

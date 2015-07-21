@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.MainActivity.MainFragment;
+import com.anynet.wifiworld.BaseFragment.MainFragment;
 
 public class WifiFragment extends MainFragment {
 	private final static String TAG = WifiFragment.class.getSimpleName();
@@ -21,7 +21,7 @@ public class WifiFragment extends MainFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mPageRoot = inflater.inflate(R.layout.fragment_wifi, null);
-		mWifiConnect = new WifiConnectUI(mPageRoot);
+		mWifiConnect = new WifiConnectUI(mPageRoot, this.getActivity());
 		
 		return mPageRoot;
 	}

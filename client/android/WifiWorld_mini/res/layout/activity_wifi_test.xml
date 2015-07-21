@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/wifi_background"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_bar_replacement"
+        layout="@layout/header_setting"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/bg_wifi_connected"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="17dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_wifi_connected_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/wifi_connected_icon" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_main_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_wifi_connected_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="正在获取..."
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_wifi_connected_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="正在获取..."
+                    android:maxLines="1"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/grey" />
+
+    <com.anynet.wifiworld.view.ReboundScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/wifi_speed_dash_board"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/wifi_speed_meter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/bg_wifi_speed_test" />
+
+                <ImageView
+                    android:id="@+id/wifi_speed_heart"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_alignBottom="@id/wifi_speed_meter"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="-25dp"
+                    android:contentDescription="@null"
+                    android:background="@drawable/bg_wifi_speed_needle" />
+                
+                <ImageView
+                    android:id="@+id/wifi_speed_needle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="110dp"
+                    android:layout_alignBottom="@+id/wifi_speed_heart"
+                    android:layout_alignRight="@+id/wifi_speed_heart"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="6dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/needle_wifi_speed_test" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/wifi_connect_parameters"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/wifi_speed_cur_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/wifi_speed_cur_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="0 Kb/s"
+                        android:textColor="@color/app_color_style"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/wifi_speed_cur_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="当前速度"
+                        android:textColor="@color/font_color_gray_2_dark" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wifi_speed_btn_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/start_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_btn_login"
+                        android:text="测 一 测 "
+                        android:textColor="@color/font_color_write"
+                        android:textSize="22dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wifi_speed_avg_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/wifi_speed_avg_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="0 Kb/s"
+                        android:textColor="@color/app_color_style"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/wifi_speed_avg_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="平均速度"
+                        android:textColor="@color/font_color_gray_2_dark" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.anynet.wifiworld.view.ReboundScrollView>
+
+</LinearLayout>

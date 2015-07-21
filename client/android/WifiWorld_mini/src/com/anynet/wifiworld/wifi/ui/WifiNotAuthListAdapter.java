@@ -1,13 +1,17 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anynet.wifiworld.R;
@@ -15,7 +19,7 @@ import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.WifiListItem;
 
 public class WifiNotAuthListAdapter extends BaseAdapter {
-	private final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
+	public final static String TAG = WifiNotAuthListAdapter.class.getSimpleName();
 	
 	private Context mContext;
 	private List<WifiListItem> mWifiListItems;
@@ -59,7 +63,7 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		TextView wifiAlias = (TextView)view.findViewById(R.id.tv_wifi_free_item_alias);
 		TextView wifiOptions = (TextView)view.findViewById(R.id.tv_wifi_free_item_options);
 		
-		WifiListItem wifiListItem = mWifiListItems.get(position);
+		final WifiListItem wifiListItem = mWifiListItems.get(position);
 		wifiAlias.setVisibility(View.GONE);
 		wifiName.setText(wifiListItem.getWifiName());
 		wifiOptions.setText(wifiListItem.getOptions());
@@ -68,16 +72,48 @@ public class WifiNotAuthListAdapter extends BaseAdapter {
 		ImageView logo = (ImageView)view.findViewById(R.id.iv_wifi_item_logo);
 		logo.setImageResource(wifiListItem.getDefaultLogo());
 		
-		setItemBg(position, view.findViewById(R.id.ll_wifi_listitem));
+		setItemBg(position, getCount(), view.findViewById(R.id.ll_wifi_listitem));
+		
+		//设置非认证的详细页面
+		view.findViewById(R.id.iv_wifi_item_more).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(mContext, WifiDetailsActivity.class);
+				List<String> data = new ArrayList<String>();
+				data.add(wifiListItem.getWifiName());
+				data.add(wifiListItem.getWifiMac());
+				i.putStringArrayListExtra(WifiNotAuthListAdapter.TAG, (ArrayList<String>) data);
+				mContext.startActivity(i);
+			}
+			
+		});
 		
 		return view;
 	}
 
-	private void setItemBg(int pos, View view) {
-		if (pos == 0) {
-			view.setBackgroundResource(R.drawable.wifi_list_notauth_item0);
-		} else {
-			view.setBackgroundResource(R.drawable.wifi_list_notauth_item1);
+	private void setItemBg(int pos, int itemSize, View view) {
+		LinearLayout bg_logo = (LinearLayout)view.findViewById(R.id.ll_wifi_auth_item);
+		bg_logo.setBackgroundResource(0);
+		switch (itemSize) {
+		case 1:
+			break;
+		case 2:
+			if (pos == 0) {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
+			} else {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
+			}
+			break;
+		default:
+			if (pos == 0) {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item0);
+			} else if (pos == getCount()-1){
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item2);
+			} else {
+				view.setBackgroundResource(R.drawable.wifi_list_auth_item1);
+			}
+			break;
 		}
 	}
 }

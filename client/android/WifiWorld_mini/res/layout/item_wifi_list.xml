@@ -5,20 +5,28 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/iv_wifi_item_logo"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/ic_wifi_connecting_3" />
+    <LinearLayout
+        android:id="@+id/ll_wifi_auth_item"
+        android:layout_width="82dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_wifi_auth_item_1" >
+
+        <ImageView
+            android:id="@+id/iv_wifi_item_logo"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/ic_wifi_connecting_3" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_wifi_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="24dp"
+        android:layout_weight="3"
         android:gravity="left|center"
         android:orientation="vertical"
         android:paddingLeft="10dp" >
@@ -31,16 +39,16 @@
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="我家的网络我做主"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_wifi_free_item_alias"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="2dp"
@@ -53,7 +61,7 @@
 
         <TextView
             android:id="@+id/tv_wifi_free_item_options"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:maxLines="1"
@@ -64,9 +72,10 @@
 
     <LinearLayout
         android:id="@+id/ll_wifi_item_more"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|right"
+        android:layout_weight="1"
         android:gravity="right"
         android:orientation="horizontal" >
         

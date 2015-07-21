@@ -19,67 +19,67 @@
         android:scrollbars="none"
         android:background="@color/color_main_bg" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+       	<LinearLayout
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_marginBottom="15dp"
+       	    android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/login_content_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="120dip"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/bg_person_center" 
-                android:visibility="visible">
+       	    <RelativeLayout
+       	        android:id="@+id/login_content_layout"
+       	        android:layout_width="match_parent"
+       	        android:layout_height="120dp"
+       	        android:background="@drawable/bg_me_title" >
 
-                <TextView
-                    android:id="@+id/login_welcome_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
-                    android:text="新用户注册即送大礼包"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/font_main_big" />
+       	        <LinearLayout
+       	            android:layout_width="fill_parent"
+       	            android:layout_height="wrap_content"
+       	            android:layout_centerVertical="true"
+       	            android:layout_marginLeft="15dp"
+       	            android:gravity="center"
+       	            android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/login_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="center"
-                    android:src="@drawable/selector_btn_me_login" />
-            </RelativeLayout>
+       	            <ImageView
+       	                android:id="@+id/person_icon_off"
+       	                android:layout_width="60.0dip"
+       	                android:layout_height="60.0dip"
+       	                android:scaleType="centerCrop"
+       	                android:src="@drawable/ic_def_header" />
+
+       	            <TextView
+	                    android:id="@+id/login_text"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:gravity="center"
+	                    android:text="登录/注册"
+	                    android:textColor="@color/white"
+	                    android:background="@drawable/selector_btn_login" />
+       	        </LinearLayout>
+       	    </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/person_content_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_margin="15dp"
-                android:visibility="gone"
-                android:background="@drawable/bg_person_center" >
-
-                <ImageView
-                    android:id="@+id/person_icon"
-                    android:layout_width="60.0dip"
-                    android:layout_height="60.0dip"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/global_layout_margin"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_def_header" />
+                android:background="@drawable/bg_me_title"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@+id/person_icon"
+                    android:gravity="center"
                     android:orientation="vertical" >
 
+                    <ImageView
+	                    android:id="@+id/person_icon_on"
+	                    android:layout_width="60.0dip"
+	                    android:layout_height="60.0dip"
+	                    android:layout_centerVertical="true"
+	                    android:scaleType="centerCrop"
+	                    android:src="@drawable/ic_def_header" />
+                    
                     <TextView
                         android:id="@+id/person_name"
                         android:layout_width="wrap_content"
@@ -101,7 +101,8 @@
                     android:gravity="fill_vertical|center"
                     android:paddingBottom="5.0dip"
                     android:paddingLeft="5.0dip"
-                    android:paddingTop="5.0dip" >
+                    android:paddingTop="5.0dip"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/person_signin_tip"
@@ -143,58 +144,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_qiandao" />
+                        android:src="@drawable/bg_qiandao" />
                 </RelativeLayout>
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_person_center_item"
-                android:orientation="horizontal"
-                android:padding="10.0dip"
-                android:visibility="gone" >
 
-                <TextView
-                    android:id="@+id/get_coin_txt"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_coin"
-                    android:gravity="center"
-                    android:text="赚联币" />
-
-                <TextView
-                    android:id="@+id/shop_txt"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_shop"
-                    android:gravity="center"
-                    android:text="联币商城" />
-
-                <TextView
-                    android:id="@+id/award_text"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_jiangping"
-                    android:gravity="center"
-                    android:text="我的兑换" />
-
-                <TextView
-                    android:id="@+id/honor_text"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:drawablePadding="10.0dip"
-                    android:drawableTop="@drawable/ic_person_honor"
-                    android:gravity="center"
-                    android:text="我的勋章" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -211,9 +165,10 @@
                     android:layout_height="48dp"
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_wifi_providor"
-                    item:label="我提供的WiFi"
-                    item:subLabel="内测中"
+                    item:label="我提供的网络"
+                    item:subLabel="来认证吧"
                     item:subLabelColor="@color/red" >
+
                 </com.anynet.wifiworld.view.SettingItemView>
 				
                 <View
@@ -226,9 +181,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     item:backgroundImage="bottom"
-                    item:icon="@drawable/icon_person_wifi_used"
-                    item:label="我用过的WiFi"
-                    item:subLabel="9"
+                    item:label="我用过的网络"
+                    item:subLabel=""
                     item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
@@ -247,9 +201,9 @@
                     android:layout_height="@dimen/dimen_48_dip"
                     android:visibility="visible"
                     item:backgroundImage="top"
-                    item:icon="@drawable/icon_person_wifi_favor"
-                    item:label="我的关注"
-                    item:subLabel="" >
+                    item:icon="@drawable/icon_person_wifi_white"
+                    item:label="我的白名单"
+                    item:subLabel="即将开放" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -262,9 +216,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:backgroundImage="middle"
-                    item:icon="@drawable/icon_person_wifi_white"
-                    item:label="我的白名单"
-                    item:subLabel=""
+                    item:icon="@drawable/icon_person_wifi_black"
+                    item:label="我的黑名单"
+                    item:subLabel="即将开放"
                     item:subLabelColor="@color/red" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -278,9 +232,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:backgroundImage="bottom"
-                    item:icon="@drawable/icon_person_wifi_black"
-                    item:label="我的黑名单"
-                    item:subLabel="11"
+                    item:icon="@drawable/icon_person_wifi_favor"
+                    item:label="我的收藏"
+                    item:subLabel="即将开放"
                     item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -291,6 +245,7 @@
                     android:visibility="gone"
                     item:icon="@drawable/icon_person_center_msg"
                     item:label="我的消息"
+                    item:subLabel="即将开放"
                     item:showTopDivider="true" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
@@ -310,7 +265,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_setting"
                     item:label="我的设置"
-                    item:subLabel="" >
+                    item:subLabel="即将开放" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -325,7 +280,7 @@
                     item:backgroundImage="middle"
                     item:icon="@drawable/icon_person_invitation"
                     item:label="邀请好友"
-                    item:subLabel="奖联币"
+                    item:subLabel="即将开放"
                     item:subLabelVisibility="visible" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
@@ -340,7 +295,8 @@
                     android:layout_height="@dimen/dimen_45_dip"
                     item:backgroundImage="bottom"
                     item:icon="@drawable/icon_person_about"
-                    item:label="关于网络宝" >
+                    item:label="关于网络宝"
+                    item:subLabel="" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
 

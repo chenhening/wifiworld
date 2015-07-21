@@ -44,7 +44,8 @@ public class WifiListItem {
 	
 	private String[] WifiStr = {
 			"未识别类型",
-			"已认证, 安全, 可免费上网",
+			"已认证, 可安全上网",
+			"已认证, 主人暂时关闭访问",
 			"未认证, 本地已保存",
 			"未认证, 无密码",
 			"未认证, 需要密码"
@@ -52,18 +53,23 @@ public class WifiListItem {
 	public enum WifiType {
 		UNKOWN,
 		AUTH_WIFI,
+		AUTH_CLOSE_WIFI,
 		LOCAL_WIFI,
 		OPEN_WIFI,
 		ENCRYPT_WIFI
 	};
 	private WifiType mWifiType;
 	private String mWifiPwd;
+	private String mMacAddr; //技术债啊
+	private String mSSID; //技术债啊
+	private String mEncryptType; //技术债啊
 	
 	public WifiListItem() {
 		mWifiType = WifiType.UNKOWN;
 		mWifiPwd = null;
 		mScanResult = null;
 		mWifiConfiguration = null;
+		mWifiProfile = null;
 	}
 	
 	public WifiListItem(ScanResult scanResult, WifiConfiguration wifiConfiguration) {
@@ -97,16 +103,32 @@ public class WifiListItem {
 	}
 	
 	public String getWifiName() {
-		return mScanResult.SSID;
+		if (mScanResult != null)
+			return mScanResult.SSID;
+		else if (mWifiProfile != null)
+			return mWifiProfile.Ssid;
+		else
+			return mSSID;
+	}
+	
+	public void setWifiName(String ssid) {
+		mSSID = ssid;
 	}
 	
 	public String getWifiMac() {
-		return mScanResult.BSSID;
+		if (mScanResult != null)
+			return mScanResult.BSSID;
+		else
+			return mMacAddr;
+	}
+	
+	public void setWifiMac(String macid) {
+		mMacAddr = macid;
 	}
 	
 	public String getWifiPwd() {
 		if (mWifiProfile != null) {
-			mWifiPwd = mWifiProfile.Password;
+			mWifiPwd = mWifiProfile.getPassword();
 		}
 		return mWifiPwd;
 	}
@@ -115,8 +137,23 @@ public class WifiListItem {
 		mWifiPwd = pwd;
 	}
 	
+	public String getEncryptStr() {
+		if (mScanResult != null) {
+			return WifiAdmin.ConfigSec.getDisplaySecirityString(mScanResult);
+		} else {
+			return "UnKown";
+		}
+	}
+	
 	public String getEncryptType() {
-		return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
+		if (mScanResult != null)
+			return WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult);
+		else 
+			return mEncryptType;
+	}
+	
+	public void setEncryptType(String type) {
+		mEncryptType = type;
 	}
 	
 	public String getAlias() {
@@ -128,7 +165,7 @@ public class WifiListItem {
 	
 	public Bitmap getLogo() {
 		if (mWifiProfile != null) {
-			return BitmapUtil.Bytes2Bimap(mWifiProfile.Logo);
+			return mWifiProfile.getLogo();
 		}
 		return null;
 	}
@@ -154,7 +191,9 @@ public class WifiListItem {
 	}
 	
 	public boolean isOpenWifi() {
-		return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		if (mScanResult != null)
+			return WifiAdmin.ConfigSec.isOpenNetwork(WifiAdmin.ConfigSec.getScanResultSecurity(mScanResult));
+		return false;
 	}
 	
 	public boolean isEncryptWifi() {
@@ -169,7 +208,9 @@ public class WifiListItem {
 	}
 	
 	public int getWifiStrength() {
-		return WifiAdmin.getWifiStrength(mScanResult.level);
+		if (mScanResult != null)
+			return WifiAdmin.getWifiStrength(mScanResult.level);
+		return 0;
 	}
 	
 	public int getDefaultLogo() {

@@ -26,6 +26,7 @@
 
 package com.anynet.wifiworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
@@ -35,12 +36,14 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import com.anynet.wifiworld.GuideActivity;
+import com.anynet.wifiworld.BaseFragment.MainFragment;
 import com.anynet.wifiworld.map.MapFragment;
 import com.anynet.wifiworld.me.MeFragment;
 import com.anynet.wifiworld.util.AppInfoUtil;
-import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.util.HandlerUtil.MessageListener;
 import com.anynet.wifiworld.util.HandlerUtil.StaticHandler;
+import com.anynet.wifiworld.wifi.WifiAdmin;
 import com.anynet.wifiworld.wifi.ui.WifiFragment;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.IUmengUnregisterCallback;
@@ -67,6 +70,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	//进入引导页
+    	Intent intent = new Intent(this, GuideActivity.class);
+    	startActivity(intent);
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
@@ -116,7 +123,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		//检测系统的WiFi是否打开，强行打开
+        WifiAdmin.getInstance(this).openWifi();
 		super.onResume();
 	}
 	
@@ -226,42 +234,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 			break;
 		}
 		reflesh();
-	}
-    
-	//-------------------------------------------------------------------------------------------------------------
-	//custom base UI
-	public static abstract class MainFragment extends BaseFragment {
-
-		protected boolean isVisible;
-		
-		public void startUpdte() {
-			com.anynet.wifiworld.util.XLLog.log(TAG, "startUpdte");
-		}
-
-		public void stopUpdte() {
-			com.anynet.wifiworld.util.XLLog.log(TAG, "stopUpdte");
-		}
-
-		/**
-		 * 在这里实现Fragment数据的缓加载.
-		 * 
-		 * @param isVisibleToUser
-		 */
-		@Override
-		public void setUserVisibleHint(boolean isVisibleToUser) {
-			super.setUserVisibleHint(isVisibleToUser);
-			if (getUserVisibleHint()) {
-				isVisible = true;
-				onVisible();
-			} else {
-				isVisible = false;
-				onInvisible();
-			}
-		}
-
-		protected abstract void onVisible();
-
-		protected abstract void onInvisible();
 	}
 
 	@Override

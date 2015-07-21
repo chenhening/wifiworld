@@ -25,5 +25,31 @@
         <item name="android:layout_width">@dimen/dimen_25_dip</item>
         <item name="android:layout_height">@dimen/dimen_25_dip</item>
     </style>
+    
+    <style name="user_check_box" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/knock_checkbox_bg</item>
+	</style>
+	
+    <style name="Button.Default.Green" parent="@android:style/Widget.Button">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/selector_btn_login</item>
+        <item name="android:paddingTop">15.0dip</item>
+        <item name="android:paddingBottom">15.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="PopupFadeAnimation" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+    
+    <style name="ShadowFont">
+        <item name="android:shadowColor">#d6d6d6ff</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+    </style>
 
 </resources>

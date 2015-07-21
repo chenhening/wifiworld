@@ -22,24 +22,22 @@ public class BaseActivity extends FragmentActivity {
 	protected TitlebarHolder mTitlebar;
 
 	//protected XLWaitingDialog waitingDialog;
-
 	//private XLTwoButtonDialog networkConfirm;
+	//private boolean isKick = false;
 
-	private boolean isKick = false;
-
-	private NetworkStateListener mNetworkListener = new NetworkStateListener() {
+	/*private NetworkStateListener mNetworkListener = new NetworkStateListener() {
 		@Override
 		public void onNetworkStateChange(Intent intent) {
 		}
 	};
 
-	/** 网络重连时的操作 */
+	// 网络重连时的操作 
 	protected void doNetworkConnected() {
 	}
 
-	/** 网络断开时的操作 */
+	// 网络断开时的操作
 	protected void doDisNetworkConnected() {
-	}
+	}*/
 
 
 	@Override
@@ -54,13 +52,13 @@ public class BaseActivity extends FragmentActivity {
 	protected void onStart() {
 
 		super.onStart();
-		GlobalBroadcast.registerBroadcastListener(mNetworkListener);
+		//GlobalBroadcast.registerBroadcastListener(mNetworkListener);
 	}
 
 	protected void onStop() {
 
 		super.onStop();
-		GlobalBroadcast.unregisterBroadcastListener(mNetworkListener);
+		//GlobalBroadcast.unregisterBroadcastListener(mNetworkListener);
 	}
 
 	protected void onDestroy() {
