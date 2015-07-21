@@ -49,7 +49,7 @@ public class WifiBRService {
 	private static OnWifiStatusListener mWifiStatusListener;
 	
 	private static boolean mScannable = false;
-	private static boolean mSupplicantState = true;
+	private static boolean mSupplicantState = false;
 	
 	public static void schedule(final Context ctx) {
 		mIntent = new Intent(ctx, WifiMonitorService.class);
@@ -76,8 +76,8 @@ public class WifiBRService {
 		mSupplicantState = true;
 	}
 	
-	public static void closeWifiSupplicant() {
-		mSupplicantState = false;
+	public static boolean getWifiSupplicantState() {
+		return mSupplicantState;
 	}
 	
 	public static void setWifiScannable(boolean flag) {
@@ -128,11 +128,11 @@ public class WifiBRService {
 			        		Log.d(TAG, "BR network state changed: " + state);
 			        	}
 		        } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action) && mSupplicantState) {
-		        	boolean isDisconnected = false;
+		        		boolean isDisconnected = false;
 		            WifiInfo info = WifiAdmin.getInstance(context).getWifiInfo();
 		            SupplicantState state = info.getSupplicantState();
 		            if (state == SupplicantState.ASSOCIATED) {
-		                //statusStr = "连接完成";
+		                statusStr = "连接中...";
 		            }
 		            //为了兼容4.0以下的设备，不要写成state == SupplicantState.AUTHENTICATING
 		            else if(state.toString().equals("AUTHENTICATING")) {

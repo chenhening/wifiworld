@@ -135,6 +135,9 @@ public class WifiListScanned{
 		//process test data
 		for (String data : mTestWifis) {
 			WifiProfile wifiProfile = getWifiProfile(data, wifiProfiles);
+			if (wifiProfile == null) {
+				continue;
+			}
 			wifiDistribution(null, null, wifiProfile);
 		}
 		

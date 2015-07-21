@@ -134,7 +134,7 @@ public class WifiConnectUI {
 		@Override
 		public void onWifiDisconnected(String str) {
 			//Log.d(TAG, "connectui onWifiDisconnected:" + str);
-			forgetPwdInputed();
+			//forgetPwdInputed(mWifiNotAuthItem);
 			doConnectingAnimation(false);
 			
 			mWifiStatus.setText(str);
@@ -143,7 +143,7 @@ public class WifiConnectUI {
 		
 		@Override
 		public void onWifiConnecting(String str) {
-			//Log.d(TAG, "connectui onWifiConnecting:" + str);
+			Log.d(TAG, "connectui onWifiConnecting:" + str);
 			mWifiStatus.setText(str);
 			doConnectingAnimation(true);
 			updateWifiConnectingContent();
@@ -157,10 +157,10 @@ public class WifiConnectUI {
 
 		@Override
 		public void onSupplicantChanged(String statusStr, boolean isDisconnected) {
-			//Log.d(TAG, "connectui onSupplicantChanged:" + statusStr);
+			Log.d(TAG, "connectui onSupplicantChanged:" + statusStr);
 			mWifiStatus.setText(statusStr);
 			if (isDisconnected) {
-				forgetPwdInputed();
+				forgetPwdInputed(mWifiNotAuthItem);
 				doConnectingAnimation(false);
 				Toast.makeText(mActivity, "连接失败", Toast.LENGTH_SHORT).show();
 				mWifiListScanned.refresh();
@@ -175,10 +175,9 @@ public class WifiConnectUI {
 		public void onWrongPassword() {
 			//Log.d(TAG, "connectui onWrongPassword: " + mWifiCurrent.getWifiNetworkID());
 			if (mIsWifiPassword && mWifiNotAuthItem != null) {
+				forgetPwdInputed(mWifiNotAuthItem);
 				showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
 			}
-			mWifiAdmin.forgetNetwork(mWifiCurrent.getWifiNetworkID());
-			mWifiAdmin.disConnectionWifi(mWifiCurrent.getWifiNetworkID());
 			mWifiListScanned.refresh();
 		}
 
@@ -271,17 +270,17 @@ public class WifiConnectUI {
 	private void updateWifiConnectingContent() {
 		String wifiCurMac;
 		String wifiCurName;
-		if (mWifiNotAuthItem != null) {
-			wifiCurMac = mWifiNotAuthItem.getWifiMac();
-			wifiCurName = mWifiNotAuthItem.getWifiName();
-		} else {
+//		if (mWifiNotAuthItem != null) {
+//			wifiCurMac = mWifiNotAuthItem.getWifiMac();
+//			wifiCurName = mWifiNotAuthItem.getWifiName();
+//		} else {
 			WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
 			if (wifiInfoCur == null || wifiInfoCur.getBSSID() == null) {
 				return;
 			}
 			wifiCurMac = wifiInfoCur.getBSSID();
 			wifiCurName = wifiInfoCur.getSSID();
-		}
+//		}
 		
 		List<WifiListItem> wifiAuth = mWifiListScanned.getAuthList();
 		List<WifiListItem> wifiNotAuth = mWifiListScanned.getNotAuthList();
@@ -353,30 +352,35 @@ public class WifiConnectUI {
 			}
 		} else if (mWifiCurrent.isConnecting()) {
 			updateWifiConnectingContent();
-		} else {
-			mWifiMore.setVisibility(View.INVISIBLE);
-			mWifiAlias.setVisibility(View.INVISIBLE);
-			mWifiName.setText("未连接任何Wi-Fi");
-			mWifiAuthDesc.setVisibility(View.INVISIBLE);
-			mWifiAuthDesc.setText("[未认证]");
-			mWifiStatus.setText("断开连接");
-			mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
+		} else if (!WifiBRService.getWifiSupplicantState()) {
+				mWifiMore.setVisibility(View.INVISIBLE);
+				mWifiAlias.setVisibility(View.INVISIBLE);
+				mWifiName.setText("未连接任何Wi-Fi");
+				mWifiAuthDesc.setVisibility(View.INVISIBLE);
+				mWifiAuthDesc.setText("[未认证]");
+				mWifiStatus.setText("断开连接");
+				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
 		}
 	}
     
     private void savePwdInputed() {
+    	Log.d(TAG, "connectui: savePwdInputed " + mIsWifiPassword + mWifiCurrent.getWifiName());
     	if (mIsWifiPassword) {
 			mWifiAdmin.saveConfig();
 			mIsWifiPassword = false;
 		}
     }
     
-    private void forgetPwdInputed() {
-    	//Log.d(TAG, "connectui forgetPwdInputed" + mIsWifiPassword + mWifiCurrent.getWifiNetworkID());
-    	if (mIsWifiPassword) {
-			mWifiAdmin.forgetNetworkCur();
-			mIsWifiPassword = false;
+    private void forgetPwdInputed(WifiListItem wifiItem) {
+    		if (!mIsWifiPassword || wifiItem == null) {
+			return;
 		}
+    		WifiConfiguration config = mWifiAdmin.getWifiConfiguration(wifiItem.getScanResult(), null);
+    		if (config != null) {
+    			Log.d(TAG, "connectui forgetPwdInputed " + config.networkId + config.SSID);
+    			mWifiAdmin.forgetNetwork(config);
+		}
+    		mIsWifiPassword = false;	
     }
 	
 	private void initViewHolder() {
@@ -518,7 +522,7 @@ public class WifiConnectUI {
 					if (wifiListItem.isAuthWifi() || wifiListItem.isOpenWifi()) {
 						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true);
 					} else if (wifiListItem.isLocalWifi()) {
-						mIsWifiPassword = true;
+						//mIsWifiPassword = true;
 						WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiListItem);
 						connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 					} else {
