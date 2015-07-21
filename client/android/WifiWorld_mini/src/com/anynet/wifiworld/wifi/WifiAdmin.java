@@ -59,7 +59,7 @@ public class WifiAdmin {
     private WifiLock mWifiLock;
     private int mNumOpenNetworksKept;
     
-    private int mCurNetworkId = -1;
+    //private int mCurNetworkId = -1;
     
     private Context mContext;
     
@@ -186,7 +186,8 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		mCurNetworkId = config.networkId;
+//		mCurNetworkId = config.networkId;
+//		Log.d(TAG, "connectui: " + mCurNetworkId + config.SSID);
 		
 		return connect;
 	}
@@ -209,7 +210,7 @@ public class WifiAdmin {
 	    }
 	    this.mWifiManager.enableNetwork(wifiCfg.get(index).networkId, true);
 	    
-	    mCurNetworkId = wifiCfg.get(index).networkId;
+	    //mCurNetworkId = wifiCfg.get(index).networkId;
     }
     
     /**
@@ -277,7 +278,7 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		mCurNetworkId = config.networkId;
+		//mCurNetworkId = config.networkId;
 		
 		return true;
 	}
@@ -404,7 +405,7 @@ public class WifiAdmin {
         int wcgId = this.mWifiManager.addNetwork(configuration);
         this.mWifiManager.enableNetwork(wcgId, true);
         
-        mCurNetworkId = wcgId;
+        //mCurNetworkId = wcgId;
     }
     
     public void disConnectionWifi(int netId){
@@ -412,16 +413,16 @@ public class WifiAdmin {
 		mWifiManager.disconnect();
     }
     
-    public boolean disConnectionWifiCur() {
-    		boolean flag = mWifiManager.disableNetwork(mCurNetworkId);
-        	flag = flag && mWifiManager.disconnect();
-    		
-    		return flag;
-    }
-    
-    public boolean forgetNetworkCur() {
-    		return forgetNetwork(mCurNetworkId);
-    }
+//    public boolean disConnectionWifiCur() {
+//    		boolean flag = mWifiManager.disableNetwork(mCurNetworkId);
+//        	flag = flag && mWifiManager.disconnect();
+//    		
+//    		return flag;
+//    }
+//    
+//    public boolean forgetNetworkCur() {
+//    		return forgetNetwork(mCurNetworkId);
+//    }
     
     public boolean forgetNetwork(int networkId) {
     	return mWifiManager.removeNetwork(networkId)
@@ -490,7 +491,7 @@ public class WifiAdmin {
 			if(config.SSID == null || !ssid.equals(config.SSID)) {
 				continue;
 			}
-			if(config.BSSID == null || bssid.equals(config.BSSID)) {
+			if(config.BSSID == null || config.BSSID.equals("any") || bssid.equals(config.BSSID)) {
 				final String configSecurity = ConfigSec.getWifiConfigurationSecurity(config);
 				if(hotspotSecurity.equals(configSecurity)) {
 					return config;
