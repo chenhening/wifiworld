@@ -42,18 +42,19 @@
                     android:background="@color/grey" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:gravity="center|left"
                     android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/tv_detail_wifi_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="王思聪家的网络"
+                        android:layout_gravity="center"
+                        android:text="未命名网络"
                         android:textSize="18sp" />
 
                     <LinearLayout
@@ -64,7 +65,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="主人:"
-                            android:textColor="@color/darkgrey" />
+                            android:textColor="@color/font_color_gray_2_dark" />
 
                         <TextView
                             android:id="@+id/tv_detail_wifi_master"
@@ -83,20 +84,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="简介:"
-                            android:textColor="@color/darkgrey" />
+                            android:textColor="@color/font_color_gray_2_dark" />
+                        
+                        <TextView
+	                        android:id="@+id/tv_detail_wifi_banner"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="match_parent"
+	                        android:maxLines="2"
+	                        android:text="我是国民老公王思聪"
+	                        android:textColor="@color/darkgrey"
+	                        android:textSize="12sp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_detail_wifi_banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:maxLines="2"
-                        android:text="我是国民老公王思聪"
-                        android:textColor="@color/darkgrey"
-                        android:textSize="12sp" />
+                    
                 </LinearLayout>
 
-                <LinearLayout
+                <!-- <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="30dp"
@@ -122,7 +125,7 @@
                         android:textColor="@color/app_color_style"
                         android:textSize="22sp"
                         android:textStyle="italic" />
-                </LinearLayout>
+                </LinearLayout> -->
             </LinearLayout>
 
             <LinearLayout
@@ -166,7 +169,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.0"
                     android:gravity="center"
-                    android:text="分析"
+                    android:text="位置"
                     android:textColor="@color/font_color_gray_2_dark"
                     android:textSize="16sp" />
 
@@ -181,7 +184,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.0"
                     android:gravity="center"
-                    android:text="分析"
+                    android:text="时段"
                     android:textColor="@color/font_color_gray_2_dark"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -1,10 +1,17 @@
 package com.anynet.wifiworld.provider;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -87,7 +94,7 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
 
-	private void InitTextView() {
+	@SuppressLint("ResourceAsColor") private void InitTextView() {
 		tvOnline = (TextView) findViewById(R.id.tv_online);
 		tvStatistic = (TextView) findViewById(R.id.tv_statistic);
 		tvAnalyzePosition = (TextView) findViewById(R.id.tv_analyze_position);
@@ -136,32 +143,34 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		}
 	}
 	
-	@SuppressLint("ResourceAsColor")
 	private void setTitleTextColor(int idx) {
+		Resources resource = (Resources) getBaseContext().getResources();
+		ColorStateList cslSelected = (ColorStateList) resource.getColorStateList(R.color.app_color_style);
+		ColorStateList cslUnselected = (ColorStateList) resource.getColorStateList(R.color.font_color_gray_2_dark);
 		switch (idx) {
 		case 0:
-			tvOnline.setTextColor(R.color.app_color_style);
-			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			tvOnline.setTextColor(cslSelected);
+			tvStatistic.setTextColor(cslUnselected);
+			tvAnalyzePosition.setTextColor(cslUnselected);
+			tvAnalyzeTime.setTextColor(cslUnselected);
 			break;
 		case 1:
-			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
-			tvStatistic.setTextColor(R.color.app_color_style);
-			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			tvOnline.setTextColor(cslUnselected);
+			tvStatistic.setTextColor(cslSelected);
+			tvAnalyzePosition.setTextColor(cslUnselected);
+			tvAnalyzeTime.setTextColor(cslUnselected);
 			break;
 		case 2:
-			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
-			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzePosition.setTextColor(R.color.app_color_style);
-			tvAnalyzeTime.setTextColor(R.color.font_color_gray_2_dark);
+			tvOnline.setTextColor(cslUnselected);
+			tvStatistic.setTextColor(cslUnselected);
+			tvAnalyzePosition.setTextColor(cslSelected);
+			tvAnalyzeTime.setTextColor(cslUnselected);
 			break;
 		case 3:
-			tvOnline.setTextColor(R.color.font_color_gray_2_dark);
-			tvStatistic.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzePosition.setTextColor(R.color.font_color_gray_2_dark);
-			tvAnalyzeTime.setTextColor(R.color.app_color_style);
+			tvOnline.setTextColor(cslUnselected);
+			tvStatistic.setTextColor(cslUnselected);
+			tvAnalyzePosition.setTextColor(cslUnselected);
+			tvAnalyzeTime.setTextColor(cslSelected);
 			break;
 
 		default:
