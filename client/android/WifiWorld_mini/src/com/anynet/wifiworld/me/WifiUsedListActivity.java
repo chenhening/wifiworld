@@ -238,11 +238,11 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 				aMap.clear();
 				Marker mGPSMarker = aMap.addMarker(markOptions);
 				mGPSMarker.setPosition(mMyPosition);
-				//CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
-				//aMap.moveCamera(update);
-			    //aMap.setOnMarkerClickListener(this);
-				//aMap.setOnInfoWindowClickListener(this);
-				//aMap.setInfoWindowAdapter(this);
+				CameraUpdate update = CameraUpdateFactory.newLatLngZoom(mMyPosition, (float) 20.0);
+				aMap.moveCamera(update);
+			    aMap.setOnMarkerClickListener(this);
+				aMap.setOnInfoWindowClickListener(this);
+				aMap.setInfoWindowAdapter(this);
 				
 			} else {
 				Log.e("AmapErr", "Location ERR:" + amapLocation.getAMapException().getErrorCode());
@@ -339,7 +339,7 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 	public void onMapClick(LatLng latLng) {
 		if (currentMarker != null) {
 			currentMarker.hideInfoWindow();
-			currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker));
+			//currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_marker));
 		}
 	}
 

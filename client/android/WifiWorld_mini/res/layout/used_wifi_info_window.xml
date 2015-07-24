@@ -33,6 +33,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/used_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.49"
+                    android:gravity="center"
+                    android:text="21次" />
+
+                <TextView
+                    android:id="@+id/used_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="32小时" />
             </LinearLayout>
 
         </LinearLayout>
