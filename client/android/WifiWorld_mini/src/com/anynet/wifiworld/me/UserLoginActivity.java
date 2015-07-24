@@ -184,7 +184,7 @@ public class UserLoginActivity extends BaseActivity {
 		});
 
 		// login
-		mLL_Login = (Button) findViewById(R.id.button_login);
+		mLL_Login = (Button) findViewById(R.id.button_logout);
 		mLL_Login.setOnClickListener(new OnClickListener() {
 
 			@Override

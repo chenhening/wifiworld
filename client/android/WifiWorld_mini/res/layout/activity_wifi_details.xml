@@ -62,7 +62,7 @@
                             android:id="@+id/tv_detail_wifi_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="王思聪家的网络"
+                            android:text="当前网络未认证"
                             android:textSize="18sp" />
 
                         <LinearLayout
@@ -79,7 +79,7 @@
                                 android:id="@+id/tv_detail_wifi_master"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="王思聪"
+                                android:text=""
                                 android:textColor="@color/darkgrey"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -100,7 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:maxLines="2"
-                            android:text="我是国民老公王思聪"
+                            android:text=""
                             android:textColor="@color/darkgrey"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -181,7 +181,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="连接时间"
+                            android:text="连接时长"
                             android:textColor="@color/app_color_style" />
 
                         <TextView
@@ -189,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
-                            android:text="- -h" />
+                            android:text="- -时" />
                     </LinearLayout>
 
                     <View
@@ -238,6 +238,7 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/tv_detail_knock_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -252,6 +253,7 @@
                     android:background="@drawable/bg_detail_knock" >
 
                     <TextView
+                        android:id="@+id/tv_detail_knock_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="8dp"
@@ -307,7 +309,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:orientation="vertical" >
 
                     <TextView
@@ -315,9 +316,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
-                        android:text="哥交朋友不在乎他有钱没钱 反正都没我有钱"
+                        android:layout_margin="10dp"
+                        android:text=""
                         android:textColor="@color/darkgrey" />
 
                 </LinearLayout>

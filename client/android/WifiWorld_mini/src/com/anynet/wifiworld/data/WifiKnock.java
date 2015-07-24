@@ -10,38 +10,38 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class WifiQuestions extends BmobObject {
+public class WifiKnock extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
 	
 	public String MacAddr;
 	public List<ArrayList<String>> Question = new ArrayList<ArrayList<String>>();
 	
-	public WifiQuestions() {
+	public WifiKnock() {
 		//设置默认值
 		Question.add(new ArrayList<String>());
-		Question.get(0).add("今年过节不收礼啊，收礼只收脑白金。这句广告词出自那款品牌产品？");
-		Question.get(0).add("脑白金");
-		Question.get(0).add("九位地黄丸");
-		Question.get(0).add("王老吉");
-		Question.get(0).add("完达山加大数控刀具");
+		Question.get(0).add("有两个人掉进了井里，死的人叫死人，活的人叫什么？");
+		Question.get(0).add("救命");
+		Question.get(0).add("活人");
+		Question.get(0).add("生还者");
+		Question.get(0).add("小强");
 		Question.add(new ArrayList<String>());
-		Question.get(1).add("神州行，我看行！这句广告词出自哪款品牌产品");
-		Question.get(1).add("神州行电话卡");
-		Question.get(1).add("神州旅行社");
-		Question.get(1).add("神州笔记本");
-		Question.get(1).add("小米手机");
+		Question.get(1).add("后宫佳丽三千人，__________");
+		Question.get(1).add("三千宠爱在一身");
+		Question.get(1).add("铁棒也会磨成针");
+		Question.get(1).add("富则妻妾成群");
+		Question.get(1).add("为伊消得人憔悴");
 		Question.add(new ArrayList<String>());
-		Question.get(2).add("阿迪达斯的广告词是什么？");
-		Question.get(2).add("Impossible is nothing");
-		Question.get(2).add("Everything is possible.");
-		Question.get(2).add("Just do it.");
-		Question.get(2).add("Hi,Man");
+		Question.get(2).add("1元钱一瓶汽水，喝完后两个空瓶换一瓶汽水，问：你有20元钱，最多可以喝到几瓶汽水？");
+		Question.get(2).add("39");
+		Question.get(2).add("38");
+		Question.get(2).add("40");
+		Question.get(2).add("无限喝");
 	}
 	
-	public void StoreRemote(final Context context, DataCallback<WifiQuestions> callback) {
-		final DataCallback<WifiQuestions> _callback = callback;
-		final WifiQuestions wifi = this;
+	public void StoreRemote(final Context context, DataCallback<WifiKnock> callback) {
+		final DataCallback<WifiKnock> _callback = callback;
+		final WifiKnock wifi = this;
 
 		new Thread(new Runnable() {
 
@@ -49,10 +49,10 @@ public class WifiQuestions extends BmobObject {
 			public void run() {
 
 				// 先查询，如果有数据就更新，否则增加一条新记录
-				QueryByMacAddress(context, MacAddr, new DataCallback<WifiQuestions>() {
+				QueryByMacAddress(context, MacAddr, new DataCallback<WifiKnock>() {
 
 					@Override
-					public void onSuccess(final WifiQuestions object) {
+					public void onSuccess(final WifiKnock object) {
 						wifi.setObjectId(object.getObjectId());
 						wifi.update(context, new UpdateListener() {
 
@@ -91,19 +91,19 @@ public class WifiQuestions extends BmobObject {
 		}).start();
 	}
 	
-	public void QueryByMacAddress(final Context context, final String Mac, DataCallback<WifiQuestions> callback) {
-		final DataCallback<WifiQuestions> _callback = callback;
-		final WifiQuestions itself = this;
-		final BmobQuery<WifiQuestions> query = new BmobQuery<WifiQuestions>();
+	public void QueryByMacAddress(final Context context, final String Mac, DataCallback<WifiKnock> callback) {
+		final DataCallback<WifiKnock> _callback = callback;
+		final WifiKnock itself = this;
+		final BmobQuery<WifiKnock> query = new BmobQuery<WifiKnock>();
 		query.addWhereEqualTo("MacAddr", Mac);
 		itself.MacAddr = Mac;
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				query.findObjects(context, new FindListener<WifiQuestions>() {
+				query.findObjects(context, new FindListener<WifiKnock>() {
 					@Override
-					public void onSuccess(List<WifiQuestions> object) {
+					public void onSuccess(List<WifiKnock> object) {
 						if (object.size() >= 1) {
 							_callback.onSuccess(object.get(0));
 						} else {

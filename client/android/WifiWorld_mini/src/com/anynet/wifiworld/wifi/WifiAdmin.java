@@ -59,6 +59,8 @@ public class WifiAdmin {
     private WifiLock mWifiLock;
     private int mNumOpenNetworksKept;
     
+    //private int mCurNetworkId = -1;
+    
     private Context mContext;
     
     public static WifiAdmin getInstance(Context context) {
@@ -146,7 +148,9 @@ public class WifiAdmin {
 	 * @return
 	 */
 	public boolean connectToNewNetwork(final WifiListItem wifiListItem,
-			boolean reassociate, boolean localSave) {
+			boolean reassociate) {
+		//打开Wi-Fi状态监测
+		WifiBRService.openWifiSupplicant();
 		
 		if(ConfigSec.isOpenNetwork(wifiListItem.getEncryptType())) {
 			checkForExcessOpenNetworkAndSave(mWifiManager, mNumOpenNetworksKept);
@@ -171,19 +175,6 @@ public class WifiAdmin {
 			return false;
 		}
 		
-		if (localSave) {
-			if(!mWifiManager.saveConfiguration()) {
-				Log.e(TAG, "Failed to save config");
-				return false;
-			}
-			
-			config = getWifiConfiguration(config, wifiListItem.getEncryptType());
-			if(config == null) {
-				Log.e(TAG, "Failed to get config from local configed wifi list");
-				return false;
-			}
-		}
-		//wifiListItem.setNetworkId(config.networkId);
 		if(!mWifiManager.enableNetwork(config.networkId, true)) {
 			Log.e(TAG, "Failed to enable current network and disable others");
 			return false;
@@ -194,6 +185,9 @@ public class WifiAdmin {
 			Log.e(TAG, "Failed to reassociate or reconnect");
 			return false;
 		}
+		
+//		mCurNetworkId = config.networkId;
+//		Log.d(TAG, "connectui: " + mCurNetworkId + config.SSID);
 		
 		return connect;
 	}
@@ -208,11 +202,15 @@ public class WifiAdmin {
 	
     //connect WiFi which is configurated
     public void connectToConfiguredNetwork(int index) {
-    	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
-        if (index > wifiCfg.size()) {
-            return;
-        }
-        this.mWifiManager.enableNetwork(wifiCfg.get(index).networkId, true); 
+	    	WifiBRService.openWifiSupplicant();
+	    	
+	    	List<WifiConfiguration> wifiCfg = mWifiManager.getConfiguredNetworks();
+	    if (index > wifiCfg.size()) {
+	        return;
+	    }
+	    this.mWifiManager.enableNetwork(wifiCfg.get(index).networkId, true);
+	    
+	    //mCurNetworkId = wifiCfg.get(index).networkId;
     }
     
     /**
@@ -222,6 +220,7 @@ public class WifiAdmin {
 	 * @return
 	 */
 	public boolean connectToConfiguredNetwork(WifiConfiguration config, boolean reassociate) {
+		WifiBRService.openWifiSupplicant();
 		//final String security = ConfigSec.getWifiConfigurationSecurity(config);
 		
 		//int oldPri = config.priority;
@@ -278,6 +277,8 @@ public class WifiAdmin {
 			Log.e(TAG, "Failed to reassociate or reconnect");
 			return false;
 		}
+		
+		//mCurNetworkId = config.networkId;
 		
 		return true;
 	}
@@ -400,14 +401,28 @@ public class WifiAdmin {
     }
     
     public void connectWifi(WifiConfiguration configuration) {
+    		WifiBRService.openWifiSupplicant();
         int wcgId = this.mWifiManager.addNetwork(configuration);
         this.mWifiManager.enableNetwork(wcgId, true);
+        
+        //mCurNetworkId = wcgId;
     }
     
     public void disConnectionWifi(int netId){
 		mWifiManager.disableNetwork(netId);
 		mWifiManager.disconnect();
     }
+    
+//    public boolean disConnectionWifiCur() {
+//    		boolean flag = mWifiManager.disableNetwork(mCurNetworkId);
+//        	flag = flag && mWifiManager.disconnect();
+//    		
+//    		return flag;
+//    }
+//    
+//    public boolean forgetNetworkCur() {
+//    		return forgetNetwork(mCurNetworkId);
+//    }
     
     public boolean forgetNetwork(int networkId) {
     	return mWifiManager.removeNetwork(networkId)
@@ -476,7 +491,7 @@ public class WifiAdmin {
 			if(config.SSID == null || !ssid.equals(config.SSID)) {
 				continue;
 			}
-			if(config.BSSID == null || bssid.equals(config.BSSID)) {
+			if(config.BSSID == null || config.BSSID.equals("any") || bssid.equals(config.BSSID)) {
 				final String configSecurity = ConfigSec.getWifiConfigurationSecurity(config);
 				if(hotspotSecurity.equals(configSecurity)) {
 					return config;

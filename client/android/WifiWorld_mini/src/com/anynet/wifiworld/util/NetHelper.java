@@ -101,7 +101,17 @@ public abstract class NetHelper
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (State.CONNECTED == wifiInfo.getState()) {
-        	return true;
+        		return true;
+        }
+        
+        return false;
+    }
+    
+    public static boolean isConnecting(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (State.CONNECTING == wifiInfo.getState()) {
+        		return true;
         }
         
         return false;

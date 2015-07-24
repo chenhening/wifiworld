@@ -22,12 +22,15 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.me.whitelist.MyWhiteListActivity;
+import com.anynet.wifiworld.provider.WifiProviderDetailsActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 public class MeFragment extends MainFragment {
 	private final static String TAG = MeFragment.class.getSimpleName();
+	public final static int CHANGE_ICON = 100;
 
 	protected static final Context WifiUsedListActivity = null;
 	
@@ -115,7 +118,7 @@ public class MeFragment extends MainFragment {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(getApplicationContext(), MyAccountActivity.class);
-					startActivity(i);
+					startActivityForResult(i, CHANGE_ICON);
 				}
 			});
 			
@@ -132,7 +135,7 @@ public class MeFragment extends MainFragment {
 
 					mWifiProfile = mLoginHelper.mWifiProfile;
 					if (mWifiProfile != null) {
-						Intent i = new Intent(getApplicationContext(), WifiProviderSettingActivity.class);
+						Intent i = new Intent(getApplicationContext(), WifiProviderDetailsActivity.class);
 						startActivity(i);
 					} else {
 						WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(getActivity(), DialogType.DEFAULT);
@@ -174,7 +177,24 @@ public class MeFragment extends MainFragment {
 				}
 			});
 			
+			//设置白名单
+			this.findViewById(R.id.siv_my_whitelist).setOnClickListener(new OnClickListener() {
+
+				@Override
+	            public void onClick(View v) {
+					// 查询是否登录
+					if (!checkIsLogined()) {
+						return;
+					}
+					Intent i = new Intent();
+					i.setClass(getApplicationContext(), MyWhiteListActivity.class);
+					startActivity(i);
+	            }
+				
+			});
 		}
+		
+		mLoaded = true;
 	}
 
 	@Override
@@ -189,6 +209,16 @@ public class MeFragment extends MainFragment {
 		
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CHANGE_ICON && resultCode == android.app.Activity.RESULT_OK) {
+			byte[] icon_data = data.getByteArrayExtra(MyAccountActivity.TAG);
+			ImageView iv_avatar = (ImageView) mPageRoot.findViewById(R.id.person_icon_on);
+			iv_avatar.setImageBitmap(BitmapUtil.Bytes2Bimap(icon_data));
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	private void setLoginedUI(boolean isLogined) {
 		if (isLogined && mLoginHelper.isLogined() && mLoginHelper.getCurLoginUserInfo() != null) {
 			mPageRoot.findViewById(R.id.login_content_layout).setVisibility(View.GONE);

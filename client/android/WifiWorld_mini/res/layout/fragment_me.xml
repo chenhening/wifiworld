@@ -166,7 +166,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_wifi_providor"
                     item:label="我提供的网络"
-                    item:subLabel="快来认证吧"
+                    item:subLabel="来认证吧"
                     item:subLabelColor="@color/red" >
 
                 </com.anynet.wifiworld.view.SettingItemView>
@@ -182,7 +182,7 @@
                     android:layout_height="48dp"
                     item:backgroundImage="bottom"
                     item:label="我用过的网络"
-                    item:subLabel="即将开放"
+                    item:subLabel=""
                     item:subLabelColor="@color/grey" >
                 </com.anynet.wifiworld.view.SettingItemView>
             </LinearLayout>
@@ -201,9 +201,9 @@
                     android:layout_height="@dimen/dimen_48_dip"
                     android:visibility="visible"
                     item:backgroundImage="top"
-                    item:icon="@drawable/icon_person_wifi_favor"
+                    item:icon="@drawable/icon_person_wifi_white"
                     item:label="我的白名单"
-                    item:subLabel="即将开放" >
+                    item:subLabel="一键批准好友上网" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -216,7 +216,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:backgroundImage="middle"
-                    item:icon="@drawable/icon_person_wifi_white"
+                    item:icon="@drawable/icon_person_wifi_black"
                     item:label="我的黑名单"
                     item:subLabel="即将开放"
                     item:subLabelColor="@color/red" >
@@ -232,7 +232,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dimen_48_dip"
                     item:backgroundImage="bottom"
-                    item:icon="@drawable/icon_person_wifi_black"
+                    item:icon="@drawable/icon_person_wifi_favor"
                     item:label="我的收藏"
                     item:subLabel="即将开放"
                     item:subLabelColor="@color/grey" >

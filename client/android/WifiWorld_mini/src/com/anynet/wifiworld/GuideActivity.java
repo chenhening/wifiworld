@@ -31,7 +31,7 @@ public class GuideActivity extends Activity {
 				finish();
 			}
 			
-		}, 6000);
+		}, 5000);
 	}
 
 	private void initViewPager() {

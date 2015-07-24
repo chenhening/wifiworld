@@ -18,6 +18,7 @@ import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,15 +71,14 @@ public class WifiConnectUI {
 	
 	private ImageView mWifiConLogo;
 	private AnimationDrawable mAnimWifiCon;
-	private boolean mIsWifiConnecting;
 	private TextView mWifiName;
 	private TextView mWifiStatus;
 	private TextView mWifiAlias;
 	private TextView mWifiAuthDesc;
 	private ListView mWifiAuthListView;
 	private ListView mWifiNotAuthListView;
-	private boolean mIsWifiPassword;
 	
+	private boolean mIsWifiPassword;
 	private ImageView mWifiScan;
 	private AnimationDrawable mAnimSearch;
 	private Animation mAnimNeedle;
@@ -88,12 +88,13 @@ public class WifiConnectUI {
 	private PopupWindow popupwindow;
 	private ImageView mWifiMore;
 	
+	private WifiListItem mWifiNotAuthItem;
+	
 	private GlobalHandler wifiListHandler = new GlobalHandler() {
 		
 		@Override
 		public void onWifiListRefreshed() {
-			initMorePopWindows();
-			setWifiConnectedContent();
+			updateWifiConnectionContent();
 			if (mWifiAuthList != null) {
 				mWifiAuthList.refreshWifiList(mWifiListScanned.getAuthList());
 				UIHelper.setListViewHeightBasedOnChildren(mWifiAuthListView);
@@ -121,56 +122,75 @@ public class WifiConnectUI {
 	
 	private OnWifiStatusListener mWifiStatusListener = new OnWifiStatusListener() {
 		@Override
-		public void onNetWorkConnected(String str) {
+		public void onWifiConnected(String str) {
+			//Log.d(TAG, "connectui onWifiConnected:" + str);
+			savePwdInputed();
+			doConnectingAnimation(false);
+			
 			mWifiStatus.setText(str);
 			mWifiListScanned.refresh();
-			mIsWifiConnecting = false;
-			doConnectingAnimation(mIsWifiConnecting);
-			mWifiMore.setVisibility(View.VISIBLE);
+		}
+		
+		@Override
+		public void onWifiDisconnected(String str) {
+			//Log.d(TAG, "connectui onWifiDisconnected:" + str);
+			//forgetPwdInputed(mWifiNotAuthItem);
+			doConnectingAnimation(false);
 			
-			if (mIsWifiPassword) {
-				mWifiAdmin.saveConfig();
-				mIsWifiPassword = false;
+			mWifiStatus.setText(str);
+			mWifiListScanned.refresh();
+		}
+		
+		@Override
+		public void onWifiConnecting(String str) {
+			Log.d(TAG, "connectui onWifiConnecting:" + str);
+			mWifiStatus.setText(str);
+			doConnectingAnimation(true);
+			updateWifiConnectingContent();
+		}
+
+		@Override
+		public void onWifiDisconnecting(String str) {
+			//Log.d(TAG, "connectui onWifiDisconnecting:" + str);
+			mWifiStatus.setText(str);
+		}
+
+		@Override
+		public void onSupplicantChanged(String statusStr, boolean isDisconnected) {
+			Log.d(TAG, "connectui onSupplicantChanged:" + statusStr);
+			mWifiStatus.setText(statusStr);
+			if (isDisconnected) {
+				forgetPwdInputed(mWifiNotAuthItem);
+				doConnectingAnimation(false);
+				Toast.makeText(mActivity, "连接失败", Toast.LENGTH_SHORT).show();
+				mWifiListScanned.refresh();
+			} else {
+				//Log.d(TAG, "connectui doConnectingAnimation:" + statusStr);
+				doConnectingAnimation(true);
+				updateWifiConnectingContent();
 			}
 		}
 		
 		@Override
-		public void onNetWorkDisconnected(String str) {
-			mWifiStatus.setText(str);
-			mWifiListScanned.refresh();
-			mIsWifiConnecting = false;
-			mIsWifiPassword = false;
-			doConnectingAnimation(mIsWifiConnecting);
-			mWifiMore.setVisibility(View.INVISIBLE);
-		}
-
-		@Override
-		public void onSupplicantChanged(String statusStr) {
-			mWifiStatus.setText(statusStr);
-			//启动连接动画
-			mIsWifiConnecting = true;
-			doConnectingAnimation(mIsWifiConnecting);
-			setWifiConnectingContent();
-		}
-
-		@Override
-		public void onSupplicantDisconnected(String statusStr) {
-			mIsWifiPassword = false;
-		}
-		
-		@Override
 		public void onWrongPassword() {
-			mIsWifiPassword = false;
+			//Log.d(TAG, "connectui onWrongPassword: " + mWifiCurrent.getWifiNetworkID());
+			if (mIsWifiPassword && mWifiNotAuthItem != null) {
+				forgetPwdInputed(mWifiNotAuthItem);
+				showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
+			}
+			mWifiListScanned.refresh();
 		}
 
 		@Override
 		public void onScannableAvaliable() {
+			//Log.d(TAG, "connectui onScannableAvaliable:");
 			//仍需要做修改
 			mWifiListScanned.refresh();
 		}
 		
 		@Override
 		public void onWifiStatChanged(boolean isEnabled) {
+			//Log.d(TAG, "connectui onWifiStatChanged:" + isEnabled);
 		}
 	};
 	
@@ -180,7 +200,17 @@ public class WifiConnectUI {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			WifiListItem wifiListItem = mWifiListScanned.getAuthList().get(position);
 			if (wifiListItem.isAuthWifi()) {
-				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+				if (wifiListItem.getWifiType() == WifiListItem.WifiType.AUTH_WIFI)
+					showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+				else {
+					WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
+					wifiConnectDialog.setTitle("网上访问关闭");
+					String sourceStr = "当前认证Wi-Fi已被主人临时关闭，无法连接到网络，请稍后再试。";
+					wifiConnectDialog.setDefaultContent(Html.fromHtml(sourceStr));
+					wifiConnectDialog.setLeftBtnStr("太小气了");
+					wifiConnectDialog.setRightBtnStr("我知道了");
+					wifiConnectDialog.show();
+				}
 			} else {
 				WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
 		    	
@@ -208,11 +238,11 @@ public class WifiConnectUI {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			WifiListItem wifiListItem = mWifiListScanned.getNotAuthList().get(position);
-			if (wifiListItem.isLocalWifi() || wifiListItem.isOpenWifi()) {
-				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+			mWifiNotAuthItem = mWifiListScanned.getNotAuthList().get(position);
+			if (mWifiNotAuthItem.isLocalWifi() || mWifiNotAuthItem.isOpenWifi()) {
+				showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.DEFAULT);
 			} else {
-				showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.PASSWORD);
+				showWifiConnectDialog(mWifiNotAuthItem, WifiConnectDialog.DialogType.PASSWORD);
 			}
 		}
 	};
@@ -225,22 +255,33 @@ public class WifiConnectUI {
 		mWifiListScanned = WifiListScanned.getInstance(mActivity, wifiListHandler);
 		WifiBRService.setOnWifiStatusListener(mWifiStatusListener);
 		WifiBRService.bindWifiService(mActivity, conn);
-		getViewHolder();
+		
+		initViewHolder();
+		initMorePopWindows();
 		
 		//启动动画，更新WiFi扫描列表
 		doSearchAnimation(true);
 		mWifiListScanned.refresh();
 		
-		//设置为非手动输入密码登陆
+		//设置初始标签信息
 		mIsWifiPassword = false;
 	}
 	
-	private void setWifiConnectingContent() {
-		WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
-		if (wifiInfoCur == null || wifiInfoCur.getBSSID() == null) {
-			return;
-		}
-		String wifiCurMac = wifiInfoCur.getBSSID();
+	private void updateWifiConnectingContent() {
+		String wifiCurMac;
+		String wifiCurName;
+//		if (mWifiNotAuthItem != null) {
+//			wifiCurMac = mWifiNotAuthItem.getWifiMac();
+//			wifiCurName = mWifiNotAuthItem.getWifiName();
+//		} else {
+			WifiInfo wifiInfoCur = mWifiAdmin.getWifiInfo();
+			if (wifiInfoCur == null || wifiInfoCur.getBSSID() == null) {
+				return;
+			}
+			wifiCurMac = wifiInfoCur.getBSSID();
+			wifiCurName = wifiInfoCur.getSSID();
+//		}
+		
 		List<WifiListItem> wifiAuth = mWifiListScanned.getAuthList();
 		List<WifiListItem> wifiNotAuth = mWifiListScanned.getNotAuthList();
 		boolean wifiCurFound = false;
@@ -270,15 +311,17 @@ public class WifiConnectUI {
 				UIHelper.setListViewHeightBasedOnChildren(mWifiNotAuthListView);
 			}
 		}
-		mWifiName.setText(WifiAdmin.convertToNonQuotedString(wifiInfoCur.getSSID()));
+		mWifiName.setText(WifiAdmin.convertToNonQuotedString(wifiCurName));
 		mWifiAuthDesc.setVisibility(View.VISIBLE);
 		mWifiAuthDesc.setText("WiFi牵线中...");
 	}
 	
-	private void setWifiConnectedContent() {
+	private void updateWifiConnectionContent() {
+		//更新标题栏视图以及当前连接Wi-Fi信息
 		if (mWifiCurrent.isConnected()) {
+			mWifiMore.setVisibility(View.VISIBLE);
 			WifiListItem item = mWifiCurrent.getWifiListItem();
-			if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
+			if (item != null && item.isAuthWifi()) {
 				mWifiName.setText(item.getAlias());
 				mWifiAlias.setVisibility(View.VISIBLE);
 				mWifiAlias.setText("[" + mWifiCurrent.getWifiName() + "]");
@@ -290,27 +333,58 @@ public class WifiConnectUI {
 				} else {
 					mWifiConLogo.setImageResource(mWifiCurrent.getDefaultLogoID());
 				}
-			} else { //如果非认证显示默认信息
+				
+				//弹出窗口显示信息
+				popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.GONE);
+				//popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.VISIBLE);
+				popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.VISIBLE);
+			} else {
 				mWifiAlias.setVisibility(View.INVISIBLE);
 				mWifiName.setText(mWifiCurrent.getWifiName());
+				mWifiAuthDesc.setVisibility(View.VISIBLE);
+				mWifiAuthDesc.setText("[未认证]");
 				mWifiConLogo.setImageResource(mWifiCurrent.getDefaultLogoID());
-				mWifiAuthDesc.setText("[未认证]");
+				
+				//弹出窗口显示信息
+				popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.VISIBLE);
+				//popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.GONE);
+				popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.GONE);
 			}
-		} else {
-			if (!mIsWifiConnecting) {
+		} else if (mWifiCurrent.isConnecting()) {
+			updateWifiConnectingContent();
+		} else if (!WifiBRService.getWifiSupplicantState()) {
+				mWifiMore.setVisibility(View.INVISIBLE);
 				mWifiAlias.setVisibility(View.INVISIBLE);
-				mWifiName.setText("未连接WiFi");
+				mWifiName.setText("未连接任何Wi-Fi");
+				mWifiAuthDesc.setVisibility(View.INVISIBLE);
 				mWifiAuthDesc.setText("[未认证]");
+				mWifiStatus.setText("断开连接");
 				mWifiConLogo.setImageResource(R.drawable.ic_wifi_disconnected);
-			}
-			else {
-				WifiBRService.setWifiSupplicant(true);
-			}
 		}
 	}
+    
+    private void savePwdInputed() {
+    	Log.d(TAG, "connectui: savePwdInputed " + mIsWifiPassword + mWifiCurrent.getWifiName());
+    	if (mIsWifiPassword) {
+			mWifiAdmin.saveConfig();
+			mIsWifiPassword = false;
+		}
+    }
+    
+    private void forgetPwdInputed(WifiListItem wifiItem) {
+    		if (!mIsWifiPassword || wifiItem == null) {
+			return;
+		}
+    		WifiConfiguration config = mWifiAdmin.getWifiConfiguration(wifiItem.getScanResult(), null);
+    		if (config != null) {
+    			Log.d(TAG, "connectui forgetPwdInputed " + config.networkId + config.SSID);
+    			mWifiAdmin.forgetNetwork(config);
+		}
+    		mIsWifiPassword = false;	
+    }
 	
-	private void getViewHolder() {
-		//扫一扫连网		
+	private void initViewHolder() {
+		//扫一扫连网
 		mWifiScan = (ImageView)mView.findViewById(R.id.iv_wifi_scan);
 		mWifiScan.setOnClickListener(new OnClickListener() {
 			
@@ -395,7 +469,6 @@ public class WifiConnectUI {
 	}
 	
     //-----------------------------------------------------------------------------------------------------------------
-    //custom functions
     private void doSearchAnimation(boolean start) {
 	    	if (start) {
 	    		mAnimSearch.start();
@@ -408,20 +481,20 @@ public class WifiConnectUI {
     }
     
     private void doConnectingAnimation(boolean start) {
-	    	if (start) {
-	    		if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
-	    			return;
-	    		
-	    		mWifiConLogo.setImageResource(R.animator.animation_connecting);
-	    		mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
-	    		mAnimWifiCon.start();
-	    	} else if(mAnimWifiCon != null) {
-	    		if (!mAnimWifiCon.isRunning())
-	    			return;
-	    		
-	    		mAnimWifiCon.stop();
-	    		mAnimWifiCon.selectDrawable(0);
-	    	}
+    		if (start) {
+    			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+    			      return;
+    		
+    			mWifiConLogo.setImageResource(R.animator.animation_connecting);
+    			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+    			mAnimWifiCon.start();
+    		} else if(mAnimWifiCon != null) {
+    		    if (!mAnimWifiCon.isRunning())
+    			         return;
+    			
+    			mAnimWifiCon.stop();
+    			mAnimWifiCon.selectDrawable(0);
+    		}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
@@ -443,13 +516,13 @@ public class WifiConnectUI {
 	    	
 	    	wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				WifiBRService.setWifiSupplicant(true);
 				boolean connResult = false;
 				switch (dialogType) {
 				case DEFAULT:
 					if (wifiListItem.isAuthWifi() || wifiListItem.isOpenWifi()) {
-						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
+						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true);
 					} else if (wifiListItem.isLocalWifi()) {
+						//mIsWifiPassword = true;
 						WifiConfiguration cfgSelected = mWifiAdmin.getWifiConfiguration(wifiListItem);
 						connResult = mWifiAdmin.connectToConfiguredNetwork(cfgSelected, true);
 					} else {
@@ -465,7 +538,7 @@ public class WifiConnectUI {
 						}
 						wifiListItem.setWifiPwd(inputedPwd);
 						mIsWifiPassword = true;
-						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true, false);
+						connResult = mWifiAdmin.connectToNewNetwork(wifiListItem, true);
 						//shutdown soft keyboard if soft keyboard is actived
 						InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(mActivity.INPUT_METHOD_SERVICE);
 						if (imm.isActive()) {
@@ -513,37 +586,37 @@ public class WifiConnectUI {
 	                	
 	        });
 	    		
-	    		//测一测
-	    		customView.findViewById(R.id.ll_more_test).setOnClickListener(new OnClickListener() {
-	
-	        		@Override
-	            public void onClick(View v) {
-	        			if (mWifiCurrent.isConnected()) {
-	        				Intent i = new Intent(mActivity, WifiTestActivity.class);
-	        				i.putExtra("WifiSpeedName", mWifiCurrent.getWifiName());
-	        				i.putExtra("WifiSpeedEncrypt", mWifiCurrent.getWifiListItem().getEncryptStr());
-			        		mActivity.startActivity(i);
-			        		popupwindow.dismiss();
-					} else {
-						Toast.makeText(mActivity, "请保证WiFi已连接", Toast.LENGTH_SHORT).show();
-					}
-	            }
+    		//测一测
+    		customView.findViewById(R.id.ll_more_test).setOnClickListener(new OnClickListener() {
+
+        		@Override
+            public void onClick(View v) {
+        			if (mWifiCurrent.isConnected()) {
+        				Intent i = new Intent(mActivity, WifiTestActivity.class);
+        				i.putExtra("WifiSpeedName", mWifiCurrent.getWifiName());
+        				i.putExtra("WifiSpeedEncrypt", mWifiCurrent.getWifiListItem().getEncryptStr());
+		        		mActivity.startActivity(i);
+		        		popupwindow.dismiss();
+				} else {
+					Toast.makeText(mActivity, "请保证WiFi已连接", Toast.LENGTH_SHORT).show();
+				}
+            }
 	                	
 	        });
 	    		
-	    		//评论
-	    		customView.findViewById(R.id.ll_more_comment).setOnClickListener(new OnClickListener() {
-	
-	        		@Override
-	            public void onClick(View v) {
-		        		Intent i = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
-		        		mActivity.startActivity(i);
-		        		popupwindow.dismiss();
-	            }
+    		//评论
+    		customView.findViewById(R.id.ll_more_comment).setOnClickListener(new OnClickListener() {
+
+        		@Override
+            public void onClick(View v) {
+	        		Intent i = new Intent("com.anynet.wifiworld.wifi.ui.WIFI_COMMENT");
+	        		mActivity.startActivity(i);
+	        		popupwindow.dismiss();
+            }
 	                	
 	        });
     		
-            //扫一扫
+            //断开网络
             customView.findViewById(R.id.ll_more_disconnect).setOnClickListener(new OnClickListener() {
 
         			@Override
@@ -557,60 +630,62 @@ public class WifiConnectUI {
                 	
             });
 
-        //生成二维码
+            //生成二维码
             customView.findViewById(R.id.ll_more_create_code).setOnClickListener(new OnClickListener() {
 
         			@Override
                 public void onClick(View v) {
-	        			popupwindow.dismiss();
-	        			
-	        			WifiListItem wifiCurInfo = mWifiCurrent.getWifiListItem();
-	        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
-	        				((BaseActivity) mActivity).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
-	        				return;
-	        			}
-	        				
-	        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
-	        			PopupWindow image_display_popwin = new PopupWindow(customView);
-	        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);
-	        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
-	        			image_display_popwin.setTouchable(true);
-	        			image_display_popwin.setFocusable(true);
-	        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
-	        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
-	        			image_display_popwin.setOutsideTouchable(true);
-	        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
-	        			try {
-	        				JSONArray jsonarray = new JSONArray();
-	        				jsonarray.put(wifiCurInfo.getWifiName());
-	        				jsonarray.put(wifiCurInfo.getWifiMac());
-	        				jsonarray.put(wifiCurInfo.getWifiPwd());
-	        				jsonarray.put(wifiCurInfo.getEncryptType());
-	        				String object = jsonarray.toString();
-	        				String encryptObj = StringCrypto.encryptDES(object, CaptureActivity.KEY);
-		                    image.setImageBitmap(EncodingHandler.createQRCode(encryptObj, 640));
-	                    } catch (WriterException e) {
-		                    e.printStackTrace();
-	                    } catch (Exception e) {
-							e.printStackTrace();
-						}
-	        			image_display_popwin.showAtLocation(mView, Gravity.CENTER, 0, 0);	
+        			popupwindow.dismiss();
+        			
+        			WifiListItem wifiCurInfo = mWifiCurrent.getWifiListItem();
+        			if (wifiCurInfo == null || !wifiCurInfo.isAuthWifi()) {//如果网络没有连接不生成二维码
+        				((BaseActivity) mActivity).showToast("只有在连接到网络并且认证成功的情况下，才能生成二维码。");
+        				return;
+        			}
+        				
+        			View customView = layoutInflater.inflate(R.layout.popupwindow_display_scan, null, false);  
+        			PopupWindow image_display_popwin = new PopupWindow(customView);
+        			image_display_popwin.setWidth(LayoutParams.WRAP_CONTENT);
+        			image_display_popwin.setHeight(LayoutParams.WRAP_CONTENT);
+        			image_display_popwin.setTouchable(true);
+        			image_display_popwin.setFocusable(true);
+        			image_display_popwin.setBackgroundDrawable(new BitmapDrawable());
+        			image_display_popwin.setAnimationStyle(R.style.PopupFadeAnimation);
+        			image_display_popwin.setOutsideTouchable(true);
+        			ImageView image = (ImageView) customView.findViewById(R.id.iv_display_scan);
+        			try {
+        				JSONArray jsonarray = new JSONArray();
+        				jsonarray.put(wifiCurInfo.getWifiName());
+        				jsonarray.put(wifiCurInfo.getWifiMac());
+        				jsonarray.put(wifiCurInfo.getWifiPwd());
+        				jsonarray.put(wifiCurInfo.getEncryptType());
+        				String object = jsonarray.toString();
+        				String encryptObj = StringCrypto.encryptDES(object, CaptureActivity.KEY);
+	                    image.setImageBitmap(EncodingHandler.createQRCode(encryptObj, 640));
+                    } catch (WriterException e) {
+	                    e.printStackTrace();
+                    } catch (Exception e) {
+						e.printStackTrace();
+					}
+        			image_display_popwin.showAtLocation(mView, Gravity.CENTER, 0, 0);	
                 }
                 	
             });
 		}
-        
-        WifiListItem item = mWifiCurrent.getWifiListItem();
+	}
+    
+    private void updateMorePopWindowsLayout() {
+    	WifiListItem item = mWifiCurrent.getWifiListItem();
 		if (item != null && item.isAuthWifi()) { //如果是认证，显示认证信息
 			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.GONE);
-			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.VISIBLE);
+			//popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.VISIBLE);
 			//popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.VISIBLE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.VISIBLE);
 		} else {
 			popupwindow.getContentView().findViewById(R.id.ll_more_auth).setVisibility(View.VISIBLE);
-			popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.GONE);
+			//popupwindow.getContentView().findViewById(R.id.ll_more_comment).setVisibility(View.GONE);
 			//popupwindow.getContentView().findViewById(R.id.ll_more_scan).setVisibility(View.GONE);
 			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.GONE);
 		}
-	}
+    }
 }

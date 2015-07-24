@@ -16,7 +16,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.BaseFragment;
 import com.anynet.wifiworld.data.DataCallback;
-import com.anynet.wifiworld.data.WifiQuestions;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.util.DipPixelUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 
@@ -25,11 +25,11 @@ public class KnockStepFirstActivity extends BaseActivity {
 	private static final String TAG = KnockStepFirstActivity.class.getSimpleName();
 	BaseFragment[] mSetupFragment = new BaseFragment[4];
 	int currentIndex = 0;
-	private WifiQuestions mQuestions;
+	private WifiKnock mQuestions;
 	private boolean mAskOrAnswer = false; // true: ask, false: answer
 	private int moveRight = 0;
 	
-	public static void start(Context context, String whoami,WifiQuestions data){
+	public static void start(Context context, String whoami,WifiKnock data){
 		Intent i = new Intent(context, KnockStepFirstActivity.class);
 		if(whoami != null){
 			i.putExtra("whoami", whoami);
@@ -50,12 +50,12 @@ public class KnockStepFirstActivity extends BaseActivity {
 		String whoami = intent.getStringExtra("whoami");
 		if (whoami != null && whoami.equals("WifiDetailsActivity")) {
 			mAskOrAnswer = true;
-			mQuestions = (WifiQuestions) intent.getSerializableExtra("data");
+			mQuestions = (WifiKnock) intent.getSerializableExtra("data");
 			for (int i = 0; i < 3; i++) {
 				mSetupFragment[i] = new AnswerFragment(mQuestions.Question.get(i),i);
 			}
 		} else {
-			mQuestions = (WifiQuestions) intent.getSerializableExtra("data");
+			mQuestions = (WifiKnock) intent.getSerializableExtra("data");
 			mQuestions.MacAddr = LoginHelper.getInstance(getApplicationContext()).mWifiProfile.MacAddr;
 			for (int i = 0; i < 3; i++) {
 				mSetupFragment[i] = new StepFragment(mQuestions.Question.get(i),i);
@@ -216,10 +216,10 @@ public class KnockStepFirstActivity extends BaseActivity {
 				showToast("问题的每一项都不能为空，请补全。");
 				return;
 			}
-			mQuestions.StoreRemote(getApplicationContext(), new DataCallback<WifiQuestions>() {
+			mQuestions.StoreRemote(getApplicationContext(), new DataCallback<WifiKnock>() {
 
 				@Override
-				public void onSuccess(WifiQuestions object) {
+				public void onSuccess(WifiKnock object) {
 					showToast("上传敲门问题成功。");
 				}
 

@@ -11,6 +11,7 @@ public class WifiCurrent {
 	private static WifiCurrent mWifiCurrent = null;
 	private Context mContext;
 	private static WifiListItem mWifiListItem;
+	private WifiAdmin mWifiAdmin;
 	
 	public static WifiCurrent getInstance(Context context) {
 		if (mWifiCurrent == null) {
@@ -22,6 +23,7 @@ public class WifiCurrent {
 	private WifiCurrent(Context context) {
 		mContext = context;
 		mWifiListItem = null;
+		mWifiAdmin = WifiAdmin.getInstance(mContext);
 	}
 	
 	public void setWifiListItem(WifiListItem wifiListItem) {
@@ -36,12 +38,27 @@ public class WifiCurrent {
 		return NetHelper.isConnected(mContext);
 	}
 	
+	public boolean isConnecting() {
+		return NetHelper.isConnecting(mContext);
+	}
+	
+	public int getWifiNetworkID() {
+		return mWifiAdmin.getWifiInfo().getNetworkId();
+	}
+	
 	public String getWifiName() {
 		return WifiAdmin.convertToNonQuotedString(NetHelper.getCurrentSsid(mContext));
 	}
 	
 	//业务逻辑都放在非UI类里面实现，这里相当于MVP的P层
 	public int getDefaultLogoID() {
+		if (mWifiListItem == null) {
+			if (isConnected()) {
+				return R.drawable.ic_wifi_connected_1;
+			} else {
+				return R.drawable.ic_wifi_disconnected;
+			}
+		}
 		//根据wifi信号强度显示不同的信号图
 		int signalStrength = mWifiListItem.getWifiStrength();
 		if (signalStrength >= 80) {
