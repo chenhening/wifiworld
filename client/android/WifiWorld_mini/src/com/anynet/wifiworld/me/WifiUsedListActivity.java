@@ -59,11 +59,12 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private Marker currentMarker;
-	private Map<String, Marker> allMarkers = new HashMap<String, Marker>();
+	//private Map<String, Marker> allMarkers = new HashMap<String, Marker>();
 	private LatLng mMyPosition;
 	private RouteSearch routeSearch;
 	private MarkerOptions markOptions;
-
+	private Map<String, Long> mConnectTimes = new HashMap<String, Long>();;
+	
 	// ---------------------------------------------------------------------------------------------
 	// for Fragment
 	
@@ -280,30 +281,13 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 	/** 自定义infowinfow窗口，动态修改内容的 */
 	private void render(final Marker marker, View infoWindow) {
 		final WifiProfile mWP = (WifiProfile) marker.getObject();
-		TextView disTV = (TextView) infoWindow.findViewById(R.id.distance);
 		TextView wifiAlias = (TextView) infoWindow.findViewById(R.id.tv_wifi_alias);
 		TextView wifiNameTV = (TextView) infoWindow.findViewById(R.id.wifi_name);
 		TextView wifiNameExtTV = (TextView) infoWindow.findViewById(R.id.wifi_name_ext);
 		
-		//换算距离
-		final LatLng pos = new LatLng(mWP.Geometry.getLatitude(), mWP.Geometry.getLongitude());
-		float distance = AMapUtils.calculateLineDistance(mMyPosition, pos);
-		disTV.setText((int)distance + "米");
 		wifiAlias.setText(mWP.Ssid);
 		wifiNameTV.setText(mWP.Alias);
 		wifiNameExtTV.setText(mWP.ExtAddress);
-		infoWindow.findViewById(R.id.distance_ext).setOnClickListener(new OnClickListener() {
-			@Override
-            public void onClick(View v) {
-				
-				LatLonPoint to_point = new LatLonPoint(pos.latitude, pos.longitude);
-				LatLonPoint from_point = new LatLonPoint(mMyPosition.latitude, mMyPosition.longitude);
-				FromAndTo fromAndTo = new RouteSearch.FromAndTo(from_point, to_point);
-				WalkRouteQuery query = new WalkRouteQuery(fromAndTo, RouteSearch.WalkDefault);
-				routeSearch.calculateWalkRouteAsyn(query);
-            }
-			
-		});
 		
 		infoWindow.findViewById(R.id.ll_map_infowindows_desc).setOnClickListener(new OnClickListener() {
 
@@ -321,6 +305,10 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 		//显示认证WiFi的logo
 		ImageView logo = (ImageView) infoWindow.findViewById(R.id.iv_map_wifi_logo);
 		logo.setImageBitmap(mWP.getLogo());
+		
+		//设置连接次数和时长
+		TextView timesview = (TextView) infoWindow.findViewById(R.id.used_times);
+		timesview.setText(mConnectTimes.get(mWP.MacAddr) + "次");
 	}
 
 	// 点击非marker区域，将显示的InfoWindow隐藏
@@ -354,17 +342,17 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 	
 	private void analyseList(List<WifiDynamic> objects) {
 		//先去重
-		Map<String, Long> order = new HashMap<String, Long>();
+		mConnectTimes.clear();
 		for (WifiDynamic item : objects) {
-			if (!order.containsKey(item.MacAddr)) {
-				order.put(item.MacAddr, (long) 0);
+			if (!mConnectTimes.containsKey(item.MacAddr)) {
+				mConnectTimes.put(item.MacAddr, (long) 0);
 			}
-			order.put(item.MacAddr, order.get(item.MacAddr) + 1);
+			mConnectTimes.put(item.MacAddr, mConnectTimes.get(item.MacAddr) + 1);
 		}
 		
 		//再查询 TODO(binfei):这里的查询调用的api可能过多，需要优化
 		List<String> items = new ArrayList<String>();
-		for (String item : order.keySet()) {
+		for (String item : mConnectTimes.keySet()) {
 			items.add(item);
 		}
 		
@@ -385,11 +373,11 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 				LatLng southwest = mMyPosition;
 				LatLng northeast = mMyPosition;
 				mListData = objects;
-				allMarkers.clear();
+				//allMarkers.clear();
 				for (int i = 0; i < mListData.size(); ++i) {
 					WifiProfile wifi = mListData.get(i);
 					Marker mM = getMarkerByWifiProfile(wifi);
-					allMarkers.put(wifi.MacAddr, mM);
+					//allMarkers.put(wifi.MacAddr, mM);
 					LatLng tmp = new LatLng(wifi.Geometry.getLatitude(), wifi.Geometry.getLongitude());
 					opt.add(tmp);
 					if (southwest.latitude > wifi.Geometry.getLatitude() && 
