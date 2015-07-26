@@ -53,7 +53,7 @@
                         android:id="@+id/tv_detail_wifi_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="left"
                         android:text="未命名网络"
                         android:textSize="18sp" />
 

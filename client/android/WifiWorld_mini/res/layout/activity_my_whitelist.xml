@@ -65,7 +65,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="可用网成员列表(向右滑动可删除)"
+            android:text="可用网成员列表(向左滑动可删除)"
             android:textColor="@color/font_color_gray_2_dark" />
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
