@@ -10,7 +10,8 @@ import android.util.Log;
 import com.anynet.wifiworld.util.LoginHelper;
 
 public class WifiDataAnalyseHelper {
-	private String TAG = "WifiDataAnalyseHelper";
+	private final static String TAG = WifiDataAnalyseHelper.class.getSimpleName();
+	
 	private static WifiDataAnalyseHelper mInstance = null;
 	private Context mContext = null;
 	private int mReady = 0; //0:未下载     1：下载成功      2：下载失败

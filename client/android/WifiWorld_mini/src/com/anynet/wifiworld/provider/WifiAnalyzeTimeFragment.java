@@ -16,7 +16,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiDataAnalyseHelper;
 
-public class WifiReportTimerFragment extends Fragment {
+public class WifiAnalyzeTimeFragment extends Fragment {
 	private String TAG = "WifiReportSlidingFragment";
 	private UserTimerRadarChartView mTimerRadarChart = null;
 	private ListView mlistview = null;
@@ -28,10 +28,10 @@ public class WifiReportTimerFragment extends Fragment {
     	Bundle savedInstanceState) {
 		setRetainInstance(true);
 
-        View view = inflater.inflate(R.layout.fragment_report_timer, container, false);
+        View view = inflater.inflate(R.layout.fragment_provider_template, container, false);
         
         //display chart
-        RelativeLayout chartLayout = (RelativeLayout)view.findViewById(R.id.rl_report_timer);
+        RelativeLayout chartLayout = (RelativeLayout)view.findViewById(R.id.rl_provider_display);
 		//图表显示范围在占屏幕大小的90%的区域内	   
 		int scrWidth = chartLayout.getLayoutParams().width; 	
 		int scrHeight = chartLayout.getLayoutParams().height; 			   		
@@ -41,8 +41,8 @@ public class WifiReportTimerFragment extends Fragment {
         chartLayout.addView(mTimerRadarChart, layoutParams);
 
         //display lisview
-        mlistview = (ListView) view.findViewById(R.id.lv_wifi_report_2);
-        mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_wifi_comments, mdescriptions));
+//        mlistview = (ListView) view.findViewById(R.id.lv_detail_list);
+//        mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_wifi_comments, mdescriptions));
         mDataMin = WifiDataAnalyseHelper.getInstance(getActivity());
         mDataMin.Start(false, new DataCallback<WifiDataAnalyseHelper>() {
 
@@ -53,11 +53,11 @@ public class WifiReportTimerFragment extends Fragment {
 					@Override
                     public void run() {
 						mTimerRadarChart.DisplayOneWeek(mDataMin.timecount, 5);
-				        mdescriptions.clear();
-				        mdescriptions.add("分析报告如下：");
-				        mdescriptions.add("您的用户主要在18-24上网，建议您在这些时段开放网络");
-				        mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), 
-				        	R.layout.item_wifi_comments, mdescriptions));
+//				        mdescriptions.clear();
+//				        mdescriptions.add("分析报告如下：");
+//				        mdescriptions.add("您的用户主要在18-24上网，建议您在这些时段开放网络");
+//				        mlistview.setAdapter(new ArrayAdapter<String>(getActivity(), 
+//				        	R.layout.item_wifi_comments, mdescriptions));
                     }
 					
 				});

@@ -71,10 +71,10 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		bingdingTitleUI();
 		
 		//Add fragment
-		Fragment f1 = (Fragment)new WifiProviderOnline();
-		Fragment f2 = (Fragment)new WifiProviderOnline();
-		Fragment f3 = (Fragment)new WifiProviderOnline();
-		Fragment f4 = (Fragment)new WifiProviderOnline();
+		Fragment f1 = (Fragment)new WifiAnalyzeOnlineFragment();
+		Fragment f2 = (Fragment)new WifiAnalyzeStatictisFragment();
+		Fragment f3 = (Fragment)new WifiAnalyzeGeoFragment();
+		Fragment f4 = (Fragment)new WifiAnalyzeTimeFragment();
 		fragments.add(f1);
 		fragments.add(f2);
 		fragments.add(f3);
@@ -203,8 +203,8 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 		public void onPageScrolled(int arg0, float arg1, int arg2) {	
 		}
 
-		public void onPageSelected(int arg0) {
-
+		public void onPageSelected(int idx) {
+			setTitleTextColor(idx);
 		}
     	
     }
