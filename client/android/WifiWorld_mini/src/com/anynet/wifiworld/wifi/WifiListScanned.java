@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.GlobalHandler;
 import com.anynet.wifiworld.util.NetHelper;
 import com.anynet.wifiworld.wifi.WifiListItem.WifiType;
@@ -178,12 +179,15 @@ public class WifiListScanned{
 		if (scanResult != null && mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
 			Log.d(TAG, "current connected wifi: " + scanResult.SSID);
 			mWifiCurrent.setWifiListItem(wifiItem);
+			pullWifiWhites(wifiItem.getWifiProfile().Sponser, wifiItem);
 			return;
 		}
 		
 		if (wifiItem.isAuthWifi()) {
-			if (wifiItem.getWifiProfile().isShared())
+			if (wifiItem.getWifiProfile().isShared()) {
 				wifiItem.setWifiType(WifiType.AUTH_WIFI);
+				pullWifiWhites(wifiItem.getWifiProfile().Sponser, wifiItem);
+			}
 			else
 				wifiItem.setWifiType(WifiType.AUTH_CLOSE_WIFI);
 			mWifiAuth.add(wifiItem);
@@ -197,5 +201,22 @@ public class WifiListScanned{
 			}
 			mWifiNotAuth.add(wifiItem);
 		}
+	}
+	
+	private void pullWifiWhites(final String sponser, final WifiListItem wifi) {
+		WifiWhite wifiWhite = new WifiWhite();
+		wifiWhite.QueryWhitersByUser(mContext, sponser, new MultiDataCallback<WifiWhite>() {
+
+			@Override
+			public boolean onSuccess(List<WifiWhite> objects) {
+				wifi.setWifiWhites(objects);
+				return true;
+			}
+
+			@Override
+			public boolean onFailed(String msg) {
+				return false;
+			}
+		});
 	}
 }
