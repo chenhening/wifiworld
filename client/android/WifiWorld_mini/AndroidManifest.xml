@@ -100,6 +100,8 @@
         <activity android:name="com.anynet.wifiworld.provider.WifiProviderDetailsActivity" />
         <activity android:name="com.anynet.wifiworld.me.whitelist.MyWhiteListActivity" />
         <activity android:name="com.anynet.wifiworld.me.whitelist.AllContactActivity" />
+        <activity android:name="com.anynet.wifiworld.me.MySettingActivity" />
+        <activity android:name="com.anynet.wifiworld.me.ShareActivity" />
         
         <!-- 高德 -->
         <meta-data

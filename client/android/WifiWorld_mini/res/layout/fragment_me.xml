@@ -265,7 +265,7 @@
                     item:backgroundImage="top"
                     item:icon="@drawable/icon_person_setting"
                     item:label="我的设置"
-                    item:subLabel="即将开放" >
+                    item:subLabel="" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
                 <View
@@ -280,7 +280,7 @@
                     item:backgroundImage="middle"
                     item:icon="@drawable/icon_person_invitation"
                     item:label="邀请好友"
-                    item:subLabel="即将开放"
+                    item:subLabel=""
                     item:subLabelVisibility="visible" >
                 </com.anynet.wifiworld.view.SettingItemView>
 
