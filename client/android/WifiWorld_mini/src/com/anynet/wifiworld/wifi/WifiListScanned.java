@@ -176,17 +176,19 @@ public class WifiListScanned{
 	private void wifiDistribution(ScanResult scanResult, WifiConfiguration wifiCfg, WifiProfile wifiProfile) {
 		WifiListItem wifiItem = new WifiListItem(scanResult, wifiCfg);
 		wifiItem.setWifiProfile(wifiProfile);
+		if (wifiProfile != null) { //下载其他相关数据
+			pullWifiWhites(wifiProfile.Sponser, wifiItem);
+		}
+		
 		if (scanResult != null && mWifiCurrent.getWifiName().equals(WifiAdmin.convertToNonQuotedString(scanResult.SSID))) {
 			Log.d(TAG, "current connected wifi: " + scanResult.SSID);
 			mWifiCurrent.setWifiListItem(wifiItem);
-			pullWifiWhites(wifiItem.getWifiProfile().Sponser, wifiItem);
 			return;
 		}
 		
 		if (wifiItem.isAuthWifi()) {
 			if (wifiItem.getWifiProfile().isShared()) {
 				wifiItem.setWifiType(WifiType.AUTH_WIFI);
-				pullWifiWhites(wifiItem.getWifiProfile().Sponser, wifiItem);
 			}
 			else
 				wifiItem.setWifiType(WifiType.AUTH_CLOSE_WIFI);
