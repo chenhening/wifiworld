@@ -125,14 +125,26 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
         });
         
         //设置打开和关闭按钮
-        mRootView.findViewById(R.id.tb_wifi_share).setOnClickListener(new OnClickListener() {
-
+        mTbWifiShare = (ToggleButton)mRootView.findViewById(R.id.tb_wifi_share);
+        mTbWifiShare.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+			
 			@Override
-            public void onClick(View v) {
-				SetOpenOrCloseStatus();
-            }
-        	
-        });
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					mTvOnline.setText("0");
+					for (int i=0; i<mPhones.size(); ++i) {
+						mRlOnlineContent.removeView(mPhones.get(i));
+					}
+					mPhones.clear();
+				} else {
+					StartDisaplay();
+				}
+				
+				
+				LoginHelper.getInstance(getActivity()).mWifiProfile.setShared(isChecked);
+				LoginHelper.getInstance(getActivity()).mWifiProfile.update(getActivity());
+			}
+		});
 	}
 	
 	private List<Map<String, Object>> getData(List<WifiDynamic> objects) {

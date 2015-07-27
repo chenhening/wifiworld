@@ -225,7 +225,7 @@ public class WifiDetailsActivity extends BaseActivity {
         		break;
         	case MSG_COMMENTS_READY:
         		mListComments.setAdapter(new WifiCommentsListAdapter(mContext, (List<String>)msg.obj));
-        		UIHelper.setListViewHeightBasedOnChildren(mListComments);
+        		UIHelper.setListViewHeight(mListComments);
         		break;
         	}
         };  
