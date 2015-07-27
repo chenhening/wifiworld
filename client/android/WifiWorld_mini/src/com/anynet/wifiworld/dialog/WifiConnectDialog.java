@@ -49,7 +49,8 @@ public class WifiConnectDialog extends ANBaseDialog {
 	
 	public enum DialogType {
 		DEFAULT,
-		PASSWORD
+		PASSWORD,
+		REPORT
 	};
 	
 	private Context mContext;

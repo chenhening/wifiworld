@@ -512,31 +512,31 @@ public class WifiConnectUI {
 	
     //-----------------------------------------------------------------------------------------------------------------
     private void doSearchAnimation(boolean start) {
-	    	if (start) {
-	    		mAnimSearch.start();
-	    		mImageNeedle.startAnimation(mAnimNeedle);
-	    	} else {
-	    		mAnimSearch.stop();
-	    		mAnimSearch.selectDrawable(0);
-	    		mImageNeedle.clearAnimation();
-	    	}
+    	if (start) {
+    		mAnimSearch.start();
+    		mImageNeedle.startAnimation(mAnimNeedle);
+    	} else {
+    		mAnimSearch.stop();
+    		mAnimSearch.selectDrawable(0);
+    		mImageNeedle.clearAnimation();
+    	}
     }
     
     private void doConnectingAnimation(boolean start) {
-    		if (start) {
-    			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
-    			      return;
-    		
-    			mWifiConLogo.setImageResource(R.animator.animation_connecting);
-    			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
-    			mAnimWifiCon.start();
-    		} else if(mAnimWifiCon != null) {
-    		    if (!mAnimWifiCon.isRunning())
-    			         return;
-    			
-    			mAnimWifiCon.stop();
-    			mAnimWifiCon.selectDrawable(0);
-    		}
+		if (start) {
+			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+			      return;
+		
+			mWifiConLogo.setImageResource(R.animator.animation_connecting);
+			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+			mAnimWifiCon.start();
+		} else if(mAnimWifiCon != null) {
+		    if (!mAnimWifiCon.isRunning())
+			         return;
+			
+			mAnimWifiCon.stop();
+			mAnimWifiCon.selectDrawable(0);
+		}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
@@ -599,7 +599,7 @@ public class WifiConnectUI {
 			}
 		});
 	    	
-	    	wifiConnectDialog.show();
+	    wifiConnectDialog.show();
     }
     
     private void initMorePopWindows() {
