@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:text="    扫描以上二维码，浏览器打开，点击下载网络宝mini版，然后升级到正式版。感谢您的支持与厚爱。"
+                    android:text="    扫描以上二维码，浏览器打开，点击下载网络宝mini版(600k大小在没有连接Wi-Fi的情况下可以先用蜂窝移动数据下载mini版，使用mini连接Wi-Fi)，升级到正式版。感谢您的支持与厚爱。"
                     android:textSize="16sp" />
 
             </LinearLayout>

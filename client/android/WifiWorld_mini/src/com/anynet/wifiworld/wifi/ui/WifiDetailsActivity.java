@@ -96,7 +96,8 @@ public class WifiDetailsActivity extends BaseActivity {
 			mMacid = mWifi.MacAddr;
 			mLogo.setImageBitmap(mWifi.getLogo());
 			mAlias.setText(mWifi.Alias);
-			mSponser.setText(mWifi.Sponser);
+			//正则隐藏手机号中间4位
+			mSponser.setText(mWifi.Sponser.replaceAll("(?<=\\d{3})\\d(?=\\d{3})", "*"));
 			mBanner.setText(mWifi.Banner);
 			
 			//敲门
