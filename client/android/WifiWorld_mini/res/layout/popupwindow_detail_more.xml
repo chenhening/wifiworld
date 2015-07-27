@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/grey"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_detail_more_shoucang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/selector_wifi_plus_popup" >
+	
+	        <ImageView
+	            android:layout_width="24dp"
+	            android:layout_height="24dp"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginLeft="8dp"
+	            android:background="@drawable/ic_more_auth_wifi" />
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:padding="8dp"
+	            android:text="收藏此网络"
+	            android:textColor="@color/black"
+	            android:textSize="16sp" />
+	    </LinearLayout>
+	    
+	    <View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="@color/grey" />
+    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_detail_more_jubao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/selector_wifi_plus_popup" >
+	
+	        <ImageView
+	            android:layout_width="24dp"
+	            android:layout_height="24dp"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginLeft="8dp"
+	            android:background="@drawable/ic_more_disconnect" />
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:padding="8dp"
+	            android:text="举报此网络"
+	            android:textColor="@color/black"
+	            android:textSize="16sp" />
+	    </LinearLayout>
+	    
+	    <View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="@color/grey" />
+    
+    </LinearLayout>
+
+</LinearLayout>

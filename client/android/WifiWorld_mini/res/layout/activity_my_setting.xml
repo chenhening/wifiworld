@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:item="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header_setting" />
+
+    <com.anynet.wifiworld.view.ReboundScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_main_bg" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical" >
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_net_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="top"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="断开自动连接"
+                    item:subLabel=""
+                    item:subLabelColor="@color/red" >
+
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_mobile_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="middle"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="关闭蜂窝移动上网"
+                    item:subLabel=""
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey" />
+
+                <com.anynet.wifiworld.view.SettingItemView
+                    android:id="@+id/slv_notify_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    item:backgroundImage="bottom"
+                    item:icon="@drawable/icon_person_wifi_providor"
+                    item:label="关闭消息通知"
+                    item:subLabel=""
+                    item:subLabelColor="@color/red" >
+                </com.anynet.wifiworld.view.SettingItemView>
+            </LinearLayout>
+        </LinearLayout>
+    </com.anynet.wifiworld.view.ReboundScrollView>
+
+</LinearLayout>

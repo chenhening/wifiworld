@@ -247,11 +247,11 @@ public class MeFragment extends MainFragment {
 				}
 			});
 
-			mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+			mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+					Intent i = new Intent(getApplicationContext(), ShareActivity.class);
 					startActivity(i);
 				}
 			});

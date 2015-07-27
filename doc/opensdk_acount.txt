@@ -21,36 +21,36 @@ vpn地址：v.ipa.social
 	帐号密码同上
 	
 7.应用市场账号
-	http://open.apps.uc.cn/   阿里集团UC应用市场 (0715已经通过)
+	http://open.apps.uc.cn/   阿里集团UC应用市场 (0722更新已经通过)
 	179770346@qq.com
 	同上
 	
-	http://app.baidu.com/  百度集团应用市场(绑定binfeix.li@intel.com和18510870181) (0717通过审核)
+	http://app.baidu.com/  百度集团应用市场(绑定binfeix.li@intel.com和18510870181) (0722上传更新正在审核)
 	18688339822
 	同上 
 	
-	http://open.qq.com/ 腾讯集团应用市场 (0716审核通过)
+	http://open.qq.com/ 腾讯集团应用市场 (0722上传更新正在审核)
 	179770346@qq.com
 	同上
 
-	http://open.wandoujia.com/ 豌豆荚 (0715已经通过)
+	http://open.wandoujia.com/ 豌豆荚 (0722上传更新正在审核)
 	179770346@qq.com
 	密码同上
 	
 	
-	http://dev.xiaomi.com/ 小米集团 (0716上传正在审核)
+	http://dev.xiaomi.com/ 小米集团 (0722上传更新正在审核)
 	18688339822
 	同上
 	
-	http://open.flyme.cn/  魅族手机 (0716已经审核通过)
+	http://open.flyme.cn/  魅族手机 (0722上传更新正在审核)
 	18688339822
 	同上
 	
-	http://dev.anzhi.com/  安智 (0715通过审核)
+	http://dev.anzhi.com/  安智 (0722上传更新正在审核)
 	18688339822
 	同上
 	
-	http://dev.mumayi.com/ 木蚂蚁 (0715通过审核)
+	http://dev.mumayi.com/ 木蚂蚁 (0722上传更新正在审核)
 	buffer8848
 	同上
 	
@@ -58,13 +58,22 @@ vpn地址：v.ipa.social
 	buffer8848
 	同上
 	
-	http://dev.mopo.com/ 冒泡堂 (0717上传正在审核)
+	http://dev.mopo.com/ 冒泡堂 (0722上传更新正在审核)
 	179770346@qq.com
 	同上
 	
-	http://app.suning.com/ 苏宁应用商店 (还在审核开发者认证)
+	http://app.suning.com/ 苏宁应用商店 (0722上传更新正在审核)
 	179770346@qq.com
 	1986720fei
+	
+	http://open.lenovo.com/developer/ 联想应用商店 (0722上传更新正在认领)
+	179770346@qq.com
+	同上
+	
+	http://dev.wostore.cn/ 联通应用商店 (0722个人开发者还在审核)
+	buffer8848
+	同上
+	
 	
 	http://dev.app.360.cn/ 360集团(WiFi类应用必须要求企业提供)
 	18688339822
@@ -93,7 +102,7 @@ vpn地址：v.ipa.social
 	http://m.163.com/android/ 网易不支持个人开发者
 	oppo可可商店 不支持个人开发者
 	
-	http://dev.anzhuoapk.com/ 金立开发者平台 (个人应用需要提交软件著作权)
+	http://dev.anzhuoapk.com/ 易用汇 金立开发者平台 (个人应用需要提交软件著作权)
 	179770346@qq.com
 	1986720fei
 	

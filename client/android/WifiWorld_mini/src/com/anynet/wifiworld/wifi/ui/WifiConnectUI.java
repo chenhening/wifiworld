@@ -30,24 +30,26 @@ import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import cn.hugo.android.scanner.CaptureActivity;
 import cn.hugo.android.scanner.decode.EncodingHandler;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
+import com.anynet.wifiworld.data.DataCallback;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiProfile;
+import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
+import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
 import com.anynet.wifiworld.util.GlobalHandler;
+import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
@@ -199,9 +201,49 @@ public class WifiConnectUI {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			WifiListItem wifiListItem = mWifiListScanned.getAuthList().get(position);
+			//1.先验证是否是认证wifi
 			if (wifiListItem.isAuthWifi()) {
-				if (wifiListItem.getWifiType() == WifiListItem.WifiType.AUTH_WIFI)
-					showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+				//2.再验证当前认证wifi是否打开了共享
+				if (wifiListItem.getWifiType() == WifiListItem.WifiType.AUTH_WIFI) {
+					//3.再判断是否需要敲门
+					LoginHelper login = LoginHelper.getInstance(mActivity);
+					String userId = login.getUserid();
+					final String mac = wifiListItem.getWifiMac();
+					List<WifiWhite> whiteList = wifiListItem.getWifiWhites();
+					if (login.canAccessDirectly(mac) || login.mKnockList.contains(mac)
+						|| (whiteList != null && whiteList.size() > 0 && userId != null && isContainUserId(userId, whiteList))) {
+						showWifiConnectDialog(wifiListItem, WifiConnectDialog.DialogType.DEFAULT);
+					} else { //进入敲门
+						final WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
+						wifiConnectDialog.setTitle("网络敲门");
+						String sourceStr = "当前网络主人未对您完全开放，您需要敲门后才能访问。是否去敲门？";
+						wifiConnectDialog.setDefaultContent(Html.fromHtml(sourceStr));
+						wifiConnectDialog.setLeftBtnStr("取消");
+						wifiConnectDialog.setRightBtnStr("确定");
+						wifiConnectDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// 拉取敲门问题
+								final WifiKnock wifiQuestions = new WifiKnock();
+								wifiQuestions.QueryByMacAddress(mActivity, mac, new DataCallback<WifiKnock>() {
+
+										@Override
+										public void onSuccess(WifiKnock object) {
+											KnockStepFirstActivity.start(mActivity, "WifiDetailsActivity", object);
+										}
+
+										@Override
+										public void onFailed(String msg) {
+											KnockStepFirstActivity.start(mActivity, "WifiDetailsActivity", wifiQuestions);
+										}
+								});
+								wifiConnectDialog.dismiss();
+							}
+						});
+						wifiConnectDialog.show();
+					}
+				}
 				else {
 					WifiConnectDialog wifiConnectDialog = new WifiConnectDialog(mActivity, DialogType.DEFAULT);
 					wifiConnectDialog.setTitle("网上访问关闭");
@@ -470,31 +512,31 @@ public class WifiConnectUI {
 	
     //-----------------------------------------------------------------------------------------------------------------
     private void doSearchAnimation(boolean start) {
-	    	if (start) {
-	    		mAnimSearch.start();
-	    		mImageNeedle.startAnimation(mAnimNeedle);
-	    	} else {
-	    		mAnimSearch.stop();
-	    		mAnimSearch.selectDrawable(0);
-	    		mImageNeedle.clearAnimation();
-	    	}
+    	if (start) {
+    		mAnimSearch.start();
+    		mImageNeedle.startAnimation(mAnimNeedle);
+    	} else {
+    		mAnimSearch.stop();
+    		mAnimSearch.selectDrawable(0);
+    		mImageNeedle.clearAnimation();
+    	}
     }
     
     private void doConnectingAnimation(boolean start) {
-    		if (start) {
-    			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
-    			      return;
-    		
-    			mWifiConLogo.setImageResource(R.animator.animation_connecting);
-    			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
-    			mAnimWifiCon.start();
-    		} else if(mAnimWifiCon != null) {
-    		    if (!mAnimWifiCon.isRunning())
-    			         return;
-    			
-    			mAnimWifiCon.stop();
-    			mAnimWifiCon.selectDrawable(0);
-    		}
+		if (start) {
+			if (mAnimWifiCon != null && mAnimWifiCon.isRunning())
+			      return;
+		
+			mWifiConLogo.setImageResource(R.animator.animation_connecting);
+			mAnimWifiCon = (AnimationDrawable)mWifiConLogo.getDrawable();
+			mAnimWifiCon.start();
+		} else if(mAnimWifiCon != null) {
+		    if (!mAnimWifiCon.isRunning())
+			         return;
+			
+			mAnimWifiCon.stop();
+			mAnimWifiCon.selectDrawable(0);
+		}
     }
     
     private void showWifiConnectDialog(final WifiListItem wifiListItem, final DialogType dialogType) {
@@ -557,7 +599,7 @@ public class WifiConnectUI {
 			}
 		});
 	    	
-	    	wifiConnectDialog.show();
+	    wifiConnectDialog.show();
     }
     
     private void initMorePopWindows() {
@@ -688,4 +730,14 @@ public class WifiConnectUI {
 			popupwindow.getContentView().findViewById(R.id.ll_more_create_code).setVisibility(View.GONE);
 		}
     }
+    
+    private boolean isContainUserId(String userId, List<WifiWhite> wifiWhites) {
+		for (WifiWhite wifiWhite : wifiWhites) {
+			if (wifiWhite.Whiteid.equals(userId)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

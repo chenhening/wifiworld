@@ -30,9 +30,36 @@
                 android:text="深圳市南山高新技术园区"
                 android:textSize="10sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/btn_gray_bg" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/used_times"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="21次" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_gray_bg" />
+
+                <TextView
+                    android:id="@+id/used_duration"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="3.2小时" />
+
             </LinearLayout>
 
         </LinearLayout>

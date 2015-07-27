@@ -26,13 +26,15 @@
 
 package com.anynet.wifiworld.wifi;
 
+import java.util.List;
+
 import android.graphics.Bitmap;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.util.BitmapUtil;
+import com.anynet.wifiworld.data.WifiWhite;
 
 public class WifiListItem {
 	private final static String TAG = WifiListItem.class.getSimpleName();
@@ -41,6 +43,7 @@ public class WifiListItem {
 	private WifiConfiguration mWifiConfiguration;
 	
 	private WifiProfile mWifiProfile;
+	private List<WifiWhite> mWifiWhites;
 	
 	private String[] WifiStr = {
 			"未识别类型",
@@ -234,5 +237,13 @@ public class WifiListItem {
 				return R.drawable.ic_wifi_connecting_1;
 			}
 		}
+	}
+
+	public List<WifiWhite> getWifiWhites() {
+		return mWifiWhites;
+	}
+
+	public void setWifiWhites(List<WifiWhite> mWifiWhites) {
+		this.mWifiWhites = mWifiWhites;
 	}
 }

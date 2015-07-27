@@ -25,7 +25,6 @@ import com.anynet.wifiworld.dialog.WifiConnectDialog.DialogType;
 import com.anynet.wifiworld.me.whitelist.MyWhiteListActivity;
 import com.anynet.wifiworld.provider.WifiProviderDetailsActivity;
 import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
-import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
 import com.anynet.wifiworld.util.BitmapUtil;
 import com.anynet.wifiworld.util.LoginHelper;
 public class MeFragment extends MainFragment {
@@ -191,6 +190,26 @@ public class MeFragment extends MainFragment {
 					startActivity(i);
 	            }
 				
+			});
+			
+			//我的设置
+			mPageRoot.findViewById(R.id.slv_my_setting).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getApplicationContext(), MySettingActivity.class);
+					startActivity(i);
+				}
+			});
+			
+			//邀请好友
+			mPageRoot.findViewById(R.id.setiing_share_layout).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getApplicationContext(), ShareActivity.class);
+					startActivity(i);
+				}
 			});
 		}
 		
