@@ -367,6 +367,11 @@ public class WifiUsedListActivity extends BaseActivity implements OnMapClickList
 
 			@Override
             public boolean onSuccess(List<WifiProfile> objects) {
+				if (mMyPosition == null) { //当前地理位置获取失败稍后再试
+					finish();
+					return false;
+				}
+				
 				PolylineOptions opt = new PolylineOptions();
 				opt.width(20).color(Color.RED).setDottedLine(true).geodesic(true);
 				opt.add(mMyPosition);
