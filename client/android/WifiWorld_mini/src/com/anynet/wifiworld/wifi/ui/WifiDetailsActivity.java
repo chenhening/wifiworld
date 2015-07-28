@@ -99,6 +99,8 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifi = (WifiProfile) intent.getSerializableExtra(WifiProfile.TAG);
 		if (mWifi == null) { //重用了detail的页面显示未认证wifi的详细信息
+			findViewById(R.id.ll_wifi_msg).setVisibility(View.GONE);
+			findViewById(R.id.line_msg).setVisibility(View.GONE);
 			List<String> data = intent.getStringArrayListExtra(WifiNotAuthListAdapter.TAG);
 			mSSID = data.get(0);
 			mMacid = data.get(1);
@@ -307,7 +309,7 @@ public class WifiDetailsActivity extends BaseActivity {
     		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
     		popupwindow.setOutsideTouchable(true);
                 
-    		//认证
+    		//收藏
     		customView.findViewById(R.id.ll_detail_more_shoucang).setOnClickListener(new OnClickListener() {
 
         		@Override
@@ -320,6 +322,7 @@ public class WifiDetailsActivity extends BaseActivity {
     				
         			WifiFollow wifiFollow = new WifiFollow();
 					wifiFollow.MacAddr = mMacid;
+					wifiFollow.WifiSSID = mSSID;
 					wifiFollow.Userid = LoginHelper.getInstance(mContext).getCurLoginUserInfo().getUsername();
 					wifiFollow.MarkFollowTime();
 					
@@ -340,7 +343,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	                	
 	        });	
 	    		
-    		//评论
+    		//举报
     		customView.findViewById(R.id.ll_detail_more_jubao).setOnClickListener(new OnClickListener() {
 
         		@Override
