@@ -3,18 +3,14 @@ package com.anynet.wifiworld.wifi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,34 +20,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import cn.hugo.android.scanner.CaptureActivity;
-import cn.hugo.android.scanner.decode.EncodingHandler;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiFollow;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.data.WifiReport;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
-import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
-import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
+import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.dialog.WifiConnectDialog;
-import com.anynet.wifiworld.wifi.WifiListItem;
-import com.google.zxing.WriterException;
 
 public class WifiDetailsActivity extends BaseActivity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
@@ -225,7 +212,7 @@ public class WifiDetailsActivity extends BaseActivity {
         		break;
         	case MSG_COMMENTS_READY:
         		mListComments.setAdapter(new WifiCommentsListAdapter(mContext, (List<String>)msg.obj));
-        		UIHelper.setListViewHeight(mListComments);
+        		UIHelper.setListViewHeightBasedOnChildren(mListComments);
         		break;
         	}
         };  
