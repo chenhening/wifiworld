@@ -40,7 +40,7 @@ public class WifiProviderDetailsActivity extends BaseActivity {
 	private List<Fragment> fragments = new ArrayList<Fragment>();
 	
 	private void bingdingTitleUI() {
-		mTitlebar.tvTitle.setText("我提供的Wi-Fi");
+		mTitlebar.tvTitle.setText("我提供的网络");
 		
 		mTitlebar.ivHeaderLeft.setVisibility(View.VISIBLE);
 		mTitlebar.ivHeaderLeft.setOnClickListener(new OnClickListener() {
