@@ -65,7 +65,8 @@
             android:layout_height="35dp"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/selector_icon_next" />
+            android:src="@drawable/selector_icon_next"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_setting_header_right"
