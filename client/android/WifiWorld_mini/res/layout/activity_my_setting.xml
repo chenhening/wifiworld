@@ -23,49 +23,96 @@
                 android:layout_margin="15dp"
                 android:orientation="vertical" >
 
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_net_setting"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    item:backgroundImage="top"
-                    item:icon="@drawable/icon_person_wifi_providor"
-                    item:label="断开自动连接"
-                    item:subLabel=""
-                    item:subLabelColor="@color/red" >
-
-                </com.anynet.wifiworld.view.SettingItemView>
+                    android:background="@drawable/wifi_list_auth_item0" >
+                    
+                    <TextView
+                        android:id="@+id/tv_connect_auto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="自动连接"
+                        android:textSize="16sp" />
+                    
+                    <ToggleButton
+                        android:id="@+id/tb_connect_auto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/selector_checkbox_open_or_close"
+                        android:textOn=""
+                        android:textOff="" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/grey" />
 
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_mobile_setting"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    item:backgroundImage="middle"
-                    item:icon="@drawable/icon_person_wifi_providor"
-                    item:label="关闭蜂窝移动上网"
-                    item:subLabel=""
-                    item:subLabelColor="@color/red" >
-                </com.anynet.wifiworld.view.SettingItemView>
+                    android:background="@drawable/wifi_list_auth_item1" >
+                    
+                    <TextView
+                        android:id="@+id/tv_mobile_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="蜂窝移动上网"
+                        android:textSize="16sp" />
+                    
+                    <ToggleButton
+                        android:id="@+id/tb_mobile_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/selector_checkbox_open_or_close"
+                        android:textOn=""
+                        android:textOff="" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/grey" />
 
-                <com.anynet.wifiworld.view.SettingItemView
-                    android:id="@+id/slv_notify_setting"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    item:backgroundImage="bottom"
-                    item:icon="@drawable/icon_person_wifi_providor"
-                    item:label="关闭消息通知"
-                    item:subLabel=""
-                    item:subLabelColor="@color/red" >
-                </com.anynet.wifiworld.view.SettingItemView>
+                    android:background="@drawable/wifi_list_auth_item2" >
+                    
+                    <TextView
+                        android:id="@+id/tv_msg_notify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="消息通知"
+                        android:textSize="16sp" />
+                    
+                    <ToggleButton
+                        android:id="@+id/tb_msg_notify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/selector_checkbox_open_or_close"
+                        android:textOn=""
+                        android:textOff="" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </com.anynet.wifiworld.view.ReboundScrollView>

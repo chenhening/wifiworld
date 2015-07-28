@@ -3,18 +3,14 @@ package com.anynet.wifiworld.wifi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,34 +20,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import cn.hugo.android.scanner.CaptureActivity;
-import cn.hugo.android.scanner.decode.EncodingHandler;
 
 import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
-import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiComments;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.data.WifiFollow;
+import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiKnock;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.data.WifiReport;
+import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
-import com.anynet.wifiworld.provider.WifiProviderRigisterActivity;
-import com.anynet.wifiworld.provider.WifiProviderSettingActivity;
+import com.anynet.wifiworld.me.UserLoginActivity;
 import com.anynet.wifiworld.util.LoginHelper;
-import com.anynet.wifiworld.util.StringCrypto;
 import com.anynet.wifiworld.util.UIHelper;
 import com.anynet.wifiworld.wifi.WifiAdmin;
-import com.anynet.wifiworld.dialog.WifiConnectDialog;
-import com.anynet.wifiworld.wifi.WifiListItem;
-import com.google.zxing.WriterException;
 
 public class WifiDetailsActivity extends BaseActivity {
 	private final static String TAG = WifiDetailsActivity.class.getSimpleName();
@@ -112,6 +99,8 @@ public class WifiDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		mWifi = (WifiProfile) intent.getSerializableExtra(WifiProfile.TAG);
 		if (mWifi == null) { //重用了detail的页面显示未认证wifi的详细信息
+			findViewById(R.id.ll_wifi_msg).setVisibility(View.GONE);
+			findViewById(R.id.line_msg).setVisibility(View.GONE);
 			List<String> data = intent.getStringArrayListExtra(WifiNotAuthListAdapter.TAG);
 			mSSID = data.get(0);
 			mMacid = data.get(1);
@@ -225,7 +214,7 @@ public class WifiDetailsActivity extends BaseActivity {
         		break;
         	case MSG_COMMENTS_READY:
         		mListComments.setAdapter(new WifiCommentsListAdapter(mContext, (List<String>)msg.obj));
-        		UIHelper.setListViewHeight(mListComments);
+        		UIHelper.setListViewHeightBasedOnChildren(mListComments);
         		break;
         	}
         };  
@@ -320,7 +309,7 @@ public class WifiDetailsActivity extends BaseActivity {
     		popupwindow.setAnimationStyle(R.style.PopupFadeAnimation);
     		popupwindow.setOutsideTouchable(true);
                 
-    		//认证
+    		//收藏
     		customView.findViewById(R.id.ll_detail_more_shoucang).setOnClickListener(new OnClickListener() {
 
         		@Override
@@ -333,6 +322,7 @@ public class WifiDetailsActivity extends BaseActivity {
     				
         			WifiFollow wifiFollow = new WifiFollow();
 					wifiFollow.MacAddr = mMacid;
+					wifiFollow.WifiSSID = mSSID;
 					wifiFollow.Userid = LoginHelper.getInstance(mContext).getCurLoginUserInfo().getUsername();
 					wifiFollow.MarkFollowTime();
 					
@@ -353,7 +343,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	                	
 	        });	
 	    		
-    		//评论
+    		//举报
     		customView.findViewById(R.id.ll_detail_more_jubao).setOnClickListener(new OnClickListener() {
 
         		@Override

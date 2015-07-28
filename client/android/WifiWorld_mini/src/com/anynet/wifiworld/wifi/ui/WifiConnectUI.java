@@ -1,5 +1,6 @@
 package com.anynet.wifiworld.wifi.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -476,6 +477,13 @@ public class WifiConnectUI {
 					Bundle wifiData = new Bundle();
 					wifiData.putSerializable(WifiProfile.TAG, item.getWifiProfile());
 					i.putExtras(wifiData);
+					mActivity.startActivity(i);
+				} else if (item != null && !item.isAuthWifi()) {
+					Intent i = new Intent(mActivity, WifiDetailsActivity.class);
+					List<String> data = new ArrayList<String>();
+					data.add(item.getWifiName());
+					data.add(item.getWifiMac());
+					i.putStringArrayListExtra(WifiNotAuthListAdapter.TAG, (ArrayList<String>) data);
 					mActivity.startActivity(i);
 				}
 			}

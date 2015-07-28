@@ -19,6 +19,7 @@ public class WifiFollow extends BmobObject {
 	
 	public String Userid; //用户账号
 	public String MacAddr; //路由器地址
+	public String WifiSSID; //网络名称
 	public long FollowTime; //用户关注的时间
 	
 	public void QueryWifiByMac(final Context context, final String Mac, final String PhoneNumber, 

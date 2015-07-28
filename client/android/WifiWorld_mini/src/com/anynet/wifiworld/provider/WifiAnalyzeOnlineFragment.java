@@ -5,6 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.anynet.wifiworld.R;
@@ -12,28 +25,10 @@ import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.util.LoginHelper;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-
 public class WifiAnalyzeOnlineFragment extends Fragment {
 	private final static String TAG = WifiAnalyzeOnlineFragment.class.getSimpleName();
 	
 	private View mRootView = null;
-	private ImageView mCenterImage = null;
 	private TextView mTvOnline = null;
 	private ToggleButton mTbWifiShare = null;
 	private RelativeLayout mRlOnlineContent;
@@ -49,15 +44,12 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 
 	@Override
 	@Nullable
-	public View onCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_provider_template, container, false);
 		
 		mRlOnlineContent = (RelativeLayout)mRootView.findViewById(R.id.rl_provider_display);
         mTvOnline = (TextView)mRootView.findViewById(R.id.tv_online_num);
         //center_image = (ImageView)mRootView.findViewById(R.id.centerImage);
-        mCenterX = mRlOnlineContent.getWidth() / 2;
-        mCenterY = mRlOnlineContent.getHeight() / 2;
 		
         StartDisaplay();
         
@@ -72,6 +64,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 		if (mBmobGeoPoint == null) 
 			return;
 		
+        mCenterX = mRlOnlineContent.getWidth() / 2;
+        mCenterY = mRlOnlineContent.getHeight() / 2;
 		double center_x = mBmobGeoPoint.getLatitude();
 		double center_y = mBmobGeoPoint.getLongitude();
 		for (int i=0; i < objects.size(); ++i) {
@@ -83,8 +77,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 			double distance_x = one.Geometry.getLatitude() - center_x;
 			double distance_y = one.Geometry.getLongitude() - center_y;
 			ImageView image = new ImageView(getActivity());
-			int x = (int) (mCenterX + distance_x*1000000);
-			int y = (int) (mCenterY + distance_y*1000000);
+			int x = (int) (mCenterX + distance_x*100);
+			int y = (int) (mCenterY + distance_y*100);
 			image.setImageResource(R.drawable.ic_location_current);
 			RelativeLayout.LayoutParams relLayoutParams = new RelativeLayout.LayoutParams(64, 64);
 			relLayoutParams.leftMargin = x;
@@ -139,7 +133,6 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 				} else {
 					StartDisaplay();
 				}
-				
 				
 				LoginHelper.getInstance(getActivity()).mWifiProfile.setShared(isChecked);
 				LoginHelper.getInstance(getActivity()).mWifiProfile.update(getActivity());

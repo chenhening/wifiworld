@@ -13,7 +13,7 @@ import cn.bmob.v3.listener.SaveListener;
 public class WifiReport extends BmobObject {
 
 	private static final long serialVersionUID = 1L;
-	private static String TAG = "WifiBlack";
+	private static final String TAG = "WifiBlack";
 	
 	public String MacAddr; //路由器地址
 	public String Userid; //用户账号

@@ -11,6 +11,7 @@
         layout="@layout/header_setting" />
 
     <LinearLayout
+        android:id="@+id/ll_whitelist_setting"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -27,6 +28,11 @@
             item:subLabel="" >
         </com.anynet.wifiworld.view.SettingItemView>
         
+        <View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="@color/grey" />
+        
         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/siv_add_from_friends"
             android:layout_width="match_parent"
@@ -34,10 +40,14 @@
             item:backgroundImage="middle"
             item:icon="@drawable/icon_person_wifi_providor"
             item:label="添加网络宝好友到白名单"
-            item:subLabel=""
-            item:showTopDivider="true" >
+            item:subLabel="" >
         </com.anynet.wifiworld.view.SettingItemView>
 
+        <View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="@color/grey" />
+        
         <com.anynet.wifiworld.view.SettingItemView
             android:id="@+id/siv_add_by_input"
             android:layout_width="match_parent"
@@ -45,8 +55,7 @@
             item:backgroundImage="bottom"
             item:icon="@drawable/icon_person_wifi_providor"
             item:label="输入手机号添加到白名单"
-            item:subLabel=""
-            item:showTopDivider="true" >
+            item:subLabel="" >
         </com.anynet.wifiworld.view.SettingItemView>
     </LinearLayout>
 
@@ -62,9 +71,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:text="可用网成员列表(向左滑动可删除)"
             android:textColor="@color/font_color_gray_2_dark" />
 
