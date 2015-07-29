@@ -120,6 +120,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
         
         //设置打开和关闭按钮
         mTbWifiShare = (ToggleButton)mRootView.findViewById(R.id.tb_wifi_share);
+        boolean isshared = LoginHelper.getInstance(getActivity()).mWifiProfile.isShared();
+        mTbWifiShare.setChecked(isshared);
         mTbWifiShare.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
 			
 			@Override
