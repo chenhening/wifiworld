@@ -77,8 +77,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 			double distance_x = one.Geometry.getLatitude() - center_x;
 			double distance_y = one.Geometry.getLongitude() - center_y;
 			ImageView image = new ImageView(getActivity());
-			int x = (int) (mCenterX + distance_x*100);
-			int y = (int) (mCenterY + distance_y*100);
+			int x = (int) (mCenterX + distance_x*10000);
+			int y = (int) (mCenterY + distance_y*10000);
 			image.setImageResource(R.drawable.ic_location_current);
 			RelativeLayout.LayoutParams relLayoutParams = new RelativeLayout.LayoutParams(64, 64);
 			relLayoutParams.leftMargin = x;
@@ -120,6 +120,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
         
         //设置打开和关闭按钮
         mTbWifiShare = (ToggleButton)mRootView.findViewById(R.id.tb_wifi_share);
+        boolean isshared = LoginHelper.getInstance(getActivity()).mWifiProfile.isShared();
+        mTbWifiShare.setChecked(isshared);
         mTbWifiShare.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
 			
 			@Override
@@ -152,27 +154,5 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
         
         return list;
     }
-	
-	private void SetOpenOrCloseStatus() {
-		mTbWifiShare.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked) {
-					mTvOnline.setText("0");
-					for (int i=0; i<mPhones.size(); ++i) {
-						mRlOnlineContent.removeView(mPhones.get(i));
-					}
-					mPhones.clear();
-				} else {
-					StartDisaplay();
-				}
-				
-				
-				LoginHelper.getInstance(getActivity()).mWifiProfile.setShared(isChecked);
-				LoginHelper.getInstance(getActivity()).mWifiProfile.update(getActivity());
-			}
-		});
-	}
 
 }
