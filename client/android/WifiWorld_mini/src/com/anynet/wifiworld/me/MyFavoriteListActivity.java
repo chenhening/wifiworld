@@ -1,4 +1,4 @@
-package com.anynet.wifiworld.me.whitelist;
+package com.anynet.wifiworld.me;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,6 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiFollow;
 import com.anynet.wifiworld.data.WifiProfile;
-import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
 import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
 import com.anynet.wifiworld.wifi.ui.WifiNotAuthListAdapter;
@@ -65,6 +64,8 @@ public class MyFavoriteListActivity extends BaseActivity {
 		bingdingTitleUI();
 		mContext = this;
 		findViewById(R.id.ll_whitelist_setting).setVisibility(View.GONE);
+		TextView tvtile = (TextView) findViewById(R.id.tv_white_list_title);
+		tvtile.setText("当前收藏的网络列表(向左滑动可删除)");
 		
 		//查询服务器
 		WifiFollow records = new WifiFollow();
