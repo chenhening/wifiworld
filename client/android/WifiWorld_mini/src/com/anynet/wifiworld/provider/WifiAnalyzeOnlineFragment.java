@@ -126,7 +126,7 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked) {
+				if (!isChecked) {
 					mTvOnline.setText("0");
 					for (int i=0; i<mPhones.size(); ++i) {
 						mRlOnlineContent.removeView(mPhones.get(i));

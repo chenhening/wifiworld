@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anynet.wifiworld"
-    android:versionCode="311"
-    android:versionName="1.2.11" >
+    android:versionCode="314"
+    android:versionName="1.2.14" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -99,7 +99,8 @@
         <activity android:name="com.anynet.wifiworld.me.WifiUsedListActivity" />
         <activity android:name="com.anynet.wifiworld.provider.WifiProviderDetailsActivity" />
         <activity android:name="com.anynet.wifiworld.me.whitelist.MyWhiteListActivity" />
-        <activity android:name="com.anynet.wifiworld.me.whitelist.MyFavoriteListActivity" />
+        <activity android:name="com.anynet.wifiworld.me.MyFavoriteListActivity" />
+        <activity android:name="com.anynet.wifiworld.me.MyBlackListActivity" />
         <activity android:name="com.anynet.wifiworld.me.whitelist.AllContactActivity" />
         <activity android:name="com.anynet.wifiworld.me.MySettingActivity" />
         <activity android:name="com.anynet.wifiworld.me.ShareActivity" />
