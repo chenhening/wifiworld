@@ -1,7 +1,9 @@
 package com.anynet.wifiworld.me.whitelist;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -21,8 +24,11 @@ import com.anynet.wifiworld.BaseActivity;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiFollow;
+import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiWhite;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.wifi.ui.WifiDetailsActivity;
+import com.anynet.wifiworld.wifi.ui.WifiNotAuthListAdapter;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -33,7 +39,9 @@ public class MyFavoriteListActivity extends BaseActivity {
 	private final static String TAG = MyFavoriteListActivity.class.getSimpleName();
 	
 	//IPC
+	private Context mContext;
 	public static List<WifiFollow> mListData;
+	public static List<WifiProfile> mWifiProfiles;
 	private ListAdapter mAdapter;
 	private SwipeMenuListView mListView;
 	
@@ -55,19 +63,43 @@ public class MyFavoriteListActivity extends BaseActivity {
 		setContentView(R.layout.activity_my_whitelist);
 		super.onCreate(savedInstanceState);
 		bingdingTitleUI();
-		
+		mContext = this;
 		findViewById(R.id.ll_whitelist_setting).setVisibility(View.GONE);
 		
 		//查询服务器
 		WifiFollow records = new WifiFollow();
 		records.Userid = LoginHelper.getInstance(this).getCurLoginUserInfo().getUsername();
-		records.QueryWifiByUser(this, records.Userid, new MultiDataCallback<WifiFollow>() {
+		records.QueryWifiByUser(mContext, records.Userid, new MultiDataCallback<WifiFollow>() {
 
 			@Override
             public boolean onSuccess(List<WifiFollow> objects) {
 	            //分析一周的上网记录
 				mListData = objects;
-				displayList();
+				List<String> macs = new ArrayList<String>();
+				for (WifiFollow wifiFollow : objects) {
+					macs.add(wifiFollow.MacAddr);
+				}
+				if (macs.size() > 0) {
+					WifiProfile wifiProfile = new WifiProfile();
+					wifiProfile.BatchQueryByMacAddress(mContext, macs, false, new MultiDataCallback<WifiProfile>() {
+
+						@Override
+						public boolean onSuccess(List<WifiProfile> objects) {
+							mWifiProfiles = objects;
+							displayList(objects);
+							return false;
+						}
+
+						@Override
+						public boolean onFailed(String msg) {
+							Log.d(TAG, "获取WiFi信息失败，请稍后再试：" + msg);
+				            showToast("获取WiFi信息失败，请稍后再试：" + msg);
+							return false;
+						}
+						
+					});
+				}
+				
 				return true;
             }
 
@@ -126,7 +158,7 @@ public class MyFavoriteListActivity extends BaseActivity {
 			mAdapter.notifyDataSetChanged();
 	}
 	
-	private void displayList() {
+	private void displayList(final List<WifiProfile> wifiProfiles) {
 		mListView = (SwipeMenuListView) findViewById(R.id.listView);
 		mAdapter = new ListAdapter();
 		mListView.setAdapter(mAdapter);
@@ -204,6 +236,31 @@ public class MyFavoriteListActivity extends BaseActivity {
 				return false;
 			}
 		});
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				WifiFollow wifiFollow = mListData.get(position);
+				WifiProfile wifiProfile = getWifiProfile(wifiFollow.MacAddr, wifiProfiles);
+				if (wifiProfile != null) {
+					Intent i = new Intent(mContext, WifiDetailsActivity.class);
+					Bundle wifiData = new Bundle();
+					wifiData.putSerializable(WifiProfile.TAG, wifiProfile);
+					i.putExtras(wifiData);
+					mContext.startActivity(i);
+				} else {
+					Intent i = new Intent(mContext, WifiDetailsActivity.class);
+					List<String> data = new ArrayList<String>();
+					data.add(wifiFollow.WifiSSID);
+					data.add(wifiFollow.MacAddr);
+					i.putStringArrayListExtra(WifiNotAuthListAdapter.TAG, (ArrayList<String>) data);
+					mContext.startActivity(i);
+				}
+				
+			}
+		});
 	}
 	
 	class ListAdapter extends BaseAdapter {
@@ -230,9 +287,16 @@ public class MyFavoriteListActivity extends BaseActivity {
 				new ViewHolder(convertView);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
+			WifiFollow wifiFollow = mListData.get(position);
+			WifiProfile wifiProfile = getWifiProfile(wifiFollow.MacAddr, mWifiProfiles);
 			//holder.iv_icon.setImageResource(R.drawable.naicha);
-			holder.tv_wifi_name.setText(mListData.get(position).WifiSSID);
-			holder.tv_wifi_type.setText(mListData.get(position).MacAddr);
+			if (wifiProfile != null) {
+				holder.iv_icon.setImageBitmap(wifiProfile.getLogo());
+				holder.tv_wifi_name.setText(wifiProfile.Alias);
+			} else {
+				holder.tv_wifi_name.setText("未认证");
+			}
+			holder.tv_wifi_type.setText(mListData.get(position).WifiSSID);
 			
 			return convertView;
 		}
@@ -254,5 +318,17 @@ public class MyFavoriteListActivity extends BaseActivity {
 	private int dp2px(int dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getResources().getDisplayMetrics());
+	}
+	
+	private WifiProfile getWifiProfile(String macAddress, List<WifiProfile> wifiProfiles) {
+		if (wifiProfiles != null) {
+			for (int idx=0; idx<wifiProfiles.size(); ++idx) {
+				if (wifiProfiles.get(idx).MacAddr.equals(macAddress)) {
+					return wifiProfiles.get(idx);
+				}
+			}
+		}
+		
+		return null;
 	}
 }

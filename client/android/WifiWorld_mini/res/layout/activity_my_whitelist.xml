@@ -14,7 +14,9 @@
         android:id="@+id/ll_whitelist_setting"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical"
         android:visibility="visible" >
 
@@ -62,9 +64,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="15dp"
         android:background="@drawable/bg_detail_display"
         android:orientation="vertical" >
 
