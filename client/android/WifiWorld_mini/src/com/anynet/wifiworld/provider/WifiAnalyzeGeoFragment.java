@@ -1,16 +1,13 @@
 package com.anynet.wifiworld.provider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +15,6 @@ import android.widget.TextView;
 import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.DataCallback;
 import com.anynet.wifiworld.data.WifiDataAnalyseHelper;
-import com.anynet.wifiworld.data.WifiDynamic;
 
 public class WifiAnalyzeGeoFragment extends Fragment {
 	private final static String TAG = WifiAnalyzeGeoFragment.class.getSimpleName();

@@ -24,6 +24,7 @@ import com.anynet.wifiworld.R;
 import com.anynet.wifiworld.data.MultiDataCallback;
 import com.anynet.wifiworld.data.WifiDynamic;
 import com.anynet.wifiworld.util.LoginHelper;
+import com.anynet.wifiworld.util.UIHelper;
 
 public class WifiAnalyzeOnlineFragment extends Fragment {
 	private final static String TAG = WifiAnalyzeOnlineFragment.class.getSimpleName();
@@ -94,9 +95,8 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 		//数据库里面去查询当前正在线上的用户
         WifiDynamic record = new WifiDynamic();
         mlistview = (ListView) mRootView.findViewById(R.id.lv_detail_list);
-        final SimpleAdapter accountAdapter = new SimpleAdapter(getActivity(), getData(null), R.layout.item_wifi_comments,
-        		new String[]{"content"}, new int[]{R.id.tv_detail_wifi_comments});
-        mlistview.setAdapter(accountAdapter);
+        mlistview.setAdapter(new SimpleAdapter(getActivity(), getData(null), R.layout.item_wifi_comments,
+        		new String[]{"content"}, new int[]{R.id.tv_detail_wifi_comments}));
         record.MacAddr = LoginHelper.getInstance(getActivity()).mWifiProfile.MacAddr;
         record.MarkLoginTime();
         record.QueryUserCurrent(getActivity(), record.LoginTime, new MultiDataCallback<WifiDynamic>() {
@@ -105,8 +105,9 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 			public boolean onSuccess(List<WifiDynamic> objects) {
 				addMarkerOnView(objects);
 				//设置mOnlineAccount列表
-				getData(objects);
-				accountAdapter.notifyDataSetChanged();
+				mlistview.setAdapter(new SimpleAdapter(getActivity(), getData(objects), R.layout.item_wifi_comments,
+		        		new String[]{"content"}, new int[]{R.id.tv_detail_wifi_comments}));
+				UIHelper.setListViewHeightBasedOnChildren(mlistview);
 				return false;
 			}
 
@@ -126,7 +127,7 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked) {
+				if (!isChecked) {
 					mTvOnline.setText("0");
 					for (int i=0; i<mPhones.size(); ++i) {
 						mRlOnlineContent.removeView(mPhones.get(i));
@@ -145,10 +146,12 @@ public class WifiAnalyzeOnlineFragment extends Fragment {
 	private List<Map<String, Object>> getData(List<WifiDynamic> objects) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         if (objects != null) {
-        	for (WifiDynamic dynamic : objects) {
-        		Map<String, Object> map = new HashMap<String, Object>();
-                map.put("content", dynamic.Userid);
-                list.add(map);
+	        	for (WifiDynamic dynamic : objects) {
+	        		Map<String, Object> map = new HashMap<String, Object>();
+	            map.put("content", dynamic.Userid);
+	            if (!list.contains(map)) {
+	            		list.add(map);
+				}
 			}
 		}
         
