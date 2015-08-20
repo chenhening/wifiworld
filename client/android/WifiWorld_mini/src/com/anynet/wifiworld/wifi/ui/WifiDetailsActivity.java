@@ -33,6 +33,7 @@ import com.anynet.wifiworld.data.WifiMessages;
 import com.anynet.wifiworld.data.WifiProfile;
 import com.anynet.wifiworld.data.WifiRank;
 import com.anynet.wifiworld.data.WifiReport;
+import com.anynet.wifiworld.data.WifiUsed;
 import com.anynet.wifiworld.dialog.WifiConnectDialog;
 import com.anynet.wifiworld.knock.KnockStepFirstActivity;
 import com.anynet.wifiworld.me.UserLoginActivity;
@@ -53,6 +54,7 @@ public class WifiDetailsActivity extends BaseActivity {
 	private TextView mBanner;
 	private TextView mRank;
 	private TextView mConnectTimes;
+	private TextView mConnectDura;
 	private TextView mMessages;
 	private ListView mListComments;
 	
@@ -92,6 +94,7 @@ public class WifiDetailsActivity extends BaseActivity {
 		mBanner = (TextView)findViewById(R.id.tv_detail_wifi_banner);
 		mRank = (TextView)findViewById(R.id.tv_detail_wifi_rank);
 		mConnectTimes = (TextView)findViewById(R.id.tv_detail_wifi_times);
+		mConnectDura = (TextView)findViewById(R.id.tv_detail_wifi_dura);
 		mMessages = (TextView)findViewById(R.id.tv_detail_wifi_messages);
 		mListComments = (ListView) findViewById(R.id.lv_detail_wifi_comments);
 		
@@ -207,7 +210,9 @@ public class WifiDetailsActivity extends BaseActivity {
         		mRank.setText((String)msg.obj);
         		break;
         	case MSG_TIMES_READY:
-        		mConnectTimes.setText((String)msg.obj);
+        		WifiUsed object = (WifiUsed) msg.obj;
+        		mConnectTimes.setText(object.getCount() + "次");
+        		mConnectDura.setText(object.getTime()/(1000 * 60 * 60) + "时");
         		break;
         	case MSG_MESSAGE_READY:
         		mMessages.setText((String)msg.obj);
@@ -238,13 +243,13 @@ public class WifiDetailsActivity extends BaseActivity {
 			}
 		});
 		
-		WifiDynamic wifiDynamic = new WifiDynamic();
-		wifiDynamic.QueryConnectedTimes(this, mMacid, new DataCallback<Long>() {
+		WifiUsed wifiDynamic = new WifiUsed();
+		wifiDynamic.QueryByMacAddress(this, mMacid, new DataCallback<WifiUsed>() {
 
 			@Override
-			public void onSuccess(Long object) {
+			public void onSuccess(WifiUsed object) {
 				Message message = Message.obtain();  
-                message.obj = "" + object;  
+                message.obj = object;  
                 message.what = MSG_TIMES_READY;  
                 mHandler.sendMessage(message);
 			}
