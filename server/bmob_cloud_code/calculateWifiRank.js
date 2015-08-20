@@ -90,11 +90,11 @@ function onRequest(request, response, modules) {
     }
 
     //将评分数据插入表格
-    var index = 0;
+    var index = map_rank_sort.length;
     for (var cursor in map_rank_sort) {
       db.insert({
         "table":"WifiRankT",             //表名
-        "data":{"MacAddr" : map_rank_sort[cursor], "Score" : parseInt(map_rank[map_rank_sort[cursor]]), "Rank" : ++index} 
+        "data":{"MacAddr" : map_rank_sort[cursor], "Score" : parseInt(map_rank[map_rank_sort[cursor]]), "Rank" : index--} 
       }, function(err, data) {         //回调函数
           //if(err)  response.end("error is  " + err.code  + "error message is " + err.error );
       });
