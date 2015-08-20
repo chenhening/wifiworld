@@ -239,6 +239,11 @@ public class UserProfile extends BmobUser {
 		});
 	}
 	
+	private String getPassword() {
+		// TODO Auto-generated method stub
+		return "123456";
+	}
+
 	//退出登陆
 	public void logout(Context context) {
 		logOut(context);   //清除缓存用户对象
